@@ -6,5 +6,10 @@ export const UserSchema = new Schema({
     email: String,
     password: String,
     name: String,
-    role: String // Number
+    role: Number
 });
+
+export enum UserRoles {
+    admin = 1, 
+    user = 2
+}

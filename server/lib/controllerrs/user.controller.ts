@@ -2,7 +2,7 @@ import * as mongoose from "mongoose"
 import { UserSchema } from "../models/user.model"
 import { Request, Response } from "express"
 
-const User = mongoose.model('User', UserSchema);
+export const User = mongoose.model('User', UserSchema);
 
 export class UserController {
     public addNewUser (req: Request, res: Response) {                

@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const user_model_1 = require("../models/user.model");
-const User = mongoose.model('User', user_model_1.UserSchema);
+exports.User = mongoose.model('User', user_model_1.UserSchema);
 class UserController {
     addNewUser(req, res) {
-        let newUser = new User(req.body);
+        let newUser = new exports.User(req.body);
         newUser.save((err, user) => {
             if (err) {
                 res.send(err);
@@ -13,32 +13,24 @@ class UserController {
             res.json(user);
         });
     }
-    // public getUserById(req: Request, res: Response) {
-    //     User.findOne({_id: req.params.userId}, (err, user) => {
-    //         if (err) {
-    //             res.send(err)
-    //         }
-    //         res.json(user)
-    //     })
-    // }
-    getUserById(req, res) {
-        User.findById(req.params.contactId, (err, user) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(user);
-        });
-    }
     getAllUsers(req, res) {
-        User.find({}, (err, users) => {
+        exports.User.find({}, (err, users) => {
             if (err) {
                 res.send(err);
             }
             res.json(users);
         });
     }
+    getUserById(req, res) {
+        exports.User.findById(req.params.userId, (err, user) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json(user);
+        });
+    }
     updateUser(req, res) {
-        User.findByIdAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, user) => {
+        exports.User.findByIdAndUpdate(req.params.userId, req.body, { new: true }, (err, user) => {
             if (err) {
                 res.send(err);
             }
@@ -46,7 +38,7 @@ class UserController {
         });
     }
     deleteUser(req, res) {
-        User.findByIdAndRemove({ _id: req.params.userId }, (err, user) => {
+        exports.User.findByIdAndRemove(req.params.userId, (err, user) => {
             if (err) {
                 res.send(err);
             }
