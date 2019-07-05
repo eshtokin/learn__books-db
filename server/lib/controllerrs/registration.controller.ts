@@ -17,7 +17,7 @@ export class RegistrationController {
             }
             User.create({
                 email: req.body.email,
-                password: crypt.hashSync(req.body.password, 8),
+                password: crypt.hashSync(req.body.password),
                 name: req.body.name,
                 role: req.body.role
             }, (err, user) => {

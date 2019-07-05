@@ -5,16 +5,6 @@ import { Request, Response } from "express"
 export const User = mongoose.model('User', UserSchema);
 
 export class UserController {
-    public addNewUser (req: Request, res: Response) {                
-        let newUser = new User(req.body);
-    
-        newUser.save((err, user) => {
-            if(err){
-                res.send(err);
-            }    
-            res.json(user);
-        });
-    }
 
     public getAllUsers(req: Request, res: Response) {
         User.find({}, (err, users) => {

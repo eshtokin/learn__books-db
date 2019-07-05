@@ -1,6 +1,7 @@
 import * as jwt from "jsonwebtoken"
 import { UserRoles } from "../models/user.model";
 import { NextFunction } from "connect";
+import { AuthConfig } from "../enviroments/config";
 
 export const AuthMiddleware = (roles: UserRoles[]) => {
     return (req, res, next: NextFunction) => {
@@ -13,7 +14,7 @@ export const AuthMiddleware = (roles: UserRoles[]) => {
             })
         }
 
-        jwt.verify(token, "supersecretkey", (err, decoded) => {
+        jwt.verify(token, AuthConfig.privateKey, (err, decoded) => {
             if (err) {
                 return res.json({
                     authorization: false,
