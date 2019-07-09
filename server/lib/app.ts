@@ -2,6 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Routes } from "./routes/user.routers"
 import * as mongoose from "mongoose"
+import * as cors from "cors"
 
 class App {
 
@@ -11,6 +12,7 @@ class App {
 
     constructor() {
         this.app = express();
+        this.app.use(cors())
         this.config();
         this.route.routes(this.app);
         this.mongoSetup();

@@ -19,7 +19,7 @@ export class Routes {
         })
 
         app.route("/login")
-        .get(this.authentController.login)
+        .post(this.authentController.login)
 
         app.route("/registration")
         .post(this.registrationController.registration)

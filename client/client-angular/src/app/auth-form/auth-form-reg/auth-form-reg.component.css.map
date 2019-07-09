@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,IAAI,CAAC;EACD,OAAO,EAAE,KAAK;EACd,MAAM,EAAE,WAAW;CAAG",
+    "sources": [
+        "auth-form-reg.component.sass"
+    ],
+    "names": [],
+    "file": "auth-form-reg.component.css"
+}

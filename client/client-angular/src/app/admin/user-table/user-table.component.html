@@ -1,0 +1,22 @@
+<table class="col s8 offset-s2">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+            <!-- <th>Date</th> -->
+            <th>Role</th>
+            <th>Buttons</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ (user.role === 2) ? 'user' : 'admin' }}</td>
+            <td>
+                <button class="btn" id="user.id" (click)="deleteUser($event)">delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<button type="button" class="btn center" (click)="show()">show</button>

@@ -4,15 +4,6 @@ const mongoose = require("mongoose");
 const user_model_1 = require("../models/user.model");
 exports.User = mongoose.model('User', user_model_1.UserSchema);
 class UserController {
-    addNewUser(req, res) {
-        let newUser = new exports.User(req.body);
-        newUser.save((err, user) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(user);
-        });
-    }
     getAllUsers(req, res) {
         exports.User.find({}, (err, users) => {
             if (err) {

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,IAAI,CAAC;EACD,UAAU,EAAE,IAAI;CAAG",
+    "sources": [
+        "auth-fomr.component.sass"
+    ],
+    "names": [],
+    "file": "auth-fomr.component.css"
+}
