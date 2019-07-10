@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../service/users.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth-form-login',
@@ -8,12 +9,23 @@ import { UserService } from '../../service/users.service';
 })
 
 export class AuthFormLoginComponent {
-  constructor(private service: UserService) {}
+  constructor(
+    private userService: UserService,
+    private route: Router
+  ) {}
 
   user = {
     email: '',
     password: ''
   };
 
-  login = this.service.login;
+  async login() {
+    const res: any = await this.userService.login(this.user);
+    if (res.status !== 200) {
+      return;
+    }
+    this.route.navigate(['/profile']);
+    localStorage.clear();
+    localStorage.setItem('token', res.data.token);
+  }
 }

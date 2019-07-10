@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'client-angular';
+
+export class AppComponent implements OnInit {
+  constructor() {}
+  ngOnInit() {
+    // localStorage.clear();
+  }
 }

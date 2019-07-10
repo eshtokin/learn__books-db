@@ -1,6 +1,6 @@
 import { Inject, OnInit } from '@angular/core';
 import Axios from 'axios';
-import { parseSelectorToR3Selector } from '@angular/compiler/src/core';
+import { jwt_decode } from 'jwt-decode';
 
 export class UserService implements OnInit {
     constructor() {
@@ -14,20 +14,32 @@ export class UserService implements OnInit {
         loginUser: 'http://localhost:3000/login'
     };
 
-    login(user: {email: string, password: string}) {
-        Axios.post('http://localhost:3000/login', user)
-        .then(res => console.log(res))
+    async login(user: {email: string, password: string}) {
+        return await Axios.post('http://localhost:3000/login', user)
+        .then(res => {
+            console.log(res);
+            return res;
+        })
         .catch(err => console.log(err));
     }
 
-    registrate(user: {email: string, password: string, name: string, role: number}) {
-        Axios.post('http://localhost:3000/registration', user)
-        .then(res => console.log(res))
+    async registrate(user: {email: string, password: string, name: string, role: number}) {
+        return await Axios.post('http://localhost:3000/registration', user)
+        .then(res => {
+            console.log(res);
+            return res;
+        })
         .catch(err => console.log(err));
     }
 
-   async getAllUsers() {
-    return await Axios.get('http://localhost:3000/user');
+    async getAllUsers() {
+        return await Axios.get('http://localhost:3000/user');
+    }
+
+    async delete(id: string) {
+        return await Axios.delete(`http://localhost:3000/user/${id}`)
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
     }
 
     ngOnInit() {}

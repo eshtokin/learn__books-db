@@ -1,3 +1,22 @@
-<div class="container">
-    <app-user-table></app-user-table>
+<div class="container">    
+
+<div class="col s12 m7">
+    <!-- <h5 class="header">User profile</h5> -->
+    <div class="card horizontal">
+        <div class="card-image">
+            <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png">
+        </div>
+        <div class="card-stacked">
+            <div class="card-content">
+                <p>Name: {{ user.name }}</p>
+                <p>E-mail {{ user.email }}</p>
+                <p>Status: {{ (user.role === 2) }}</p>
+            </div>
+            <div class="card-action">
+                <a href="#">This is a link</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<app-user-table *ngIf="isAdmin()"></app-user-table>

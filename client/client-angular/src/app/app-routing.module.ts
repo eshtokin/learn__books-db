@@ -15,7 +15,9 @@ const routes: Routes = [
   {path: 'not-found', component: NotFoundComponent},
   {path: 'auth', component: AuthFomrComponent},
   {path: 'auth', component: AuthFomrComponent, children: authRoutes},
-  {path: 'profile', component: ProfileComponent}
+  // {path: 'login', component: AuthFormLoginComponent, children: authRoutes},
+  // {path: 'registr', component: AuthFormRegComponent},
+  {path: 'profile', component: ProfileComponent},
 ];
 
 @NgModule({

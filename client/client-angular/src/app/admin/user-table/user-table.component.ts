@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/service/users.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class UserTableComponent implements OnInit {
   }
 
   deleteUser(event) {
-    console.log(event);
+    this.userService.delete(event.target.id);
+    this.users = this.users.filter(el => el._id !== event.target.id);
   }
 }
