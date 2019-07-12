@@ -1,6 +1,5 @@
-import { Inject, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import Axios from 'axios';
-import { jwt_decode } from 'jwt-decode';
 
 export class UserService implements OnInit {
     constructor() {
@@ -41,6 +40,13 @@ export class UserService implements OnInit {
         .then(res => console.log(res))
         .catch(err => console.log(err));
     }
+
+    async edit(id: string, user: {email: string, password: string, name: string, role: number}) {
+        return await Axios.put(`http://localhost:3000/user/${id}`, user)
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+    }
+
 
     ngOnInit() {}
 }

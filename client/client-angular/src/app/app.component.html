@@ -1,10 +1,11 @@
-  <nav class="teal">
-      <div class="nav-wrapper row">
-        <ul id="nav-mobile" class="col s4 offset-s4 row">
-          <li class="col s4"><a routerLink="" class="center">home</a></li>
-          <li class="col s4"><a routerLink="auth/login" class="center">Log in</a></li>
-          <li class="col s4"><a routerLink="profile" class="center">Profile</a></li>
-        </ul>
-      </div>
-    </nav>
+<nav class="teal">
+  <div class="nav-wrapper row">
+    <ul id="nav-mobile" class="col s6 row">
+        <li class="col s3 center" *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth/login">Log in</a></li>
+        <li class="col s3 center" *ngIf="this.userInfo.isUserAuth()" (click)="this.userInfo.logout()"><a routerLink="">Log out</a></li>
+        <li class="col s3 center" *ngIf="this.userInfo.isUserAuth()"><a routerLink="profile">Profile</a></li>
+        <li class="col s3 center" *ngIf="(this.userInfo.isUserAuth() && this.userInfo.getStatus())"><a routerLink="user-manager">User manager</a></li>
+      </ul>
+  </div>
+</nav>
 <router-outlet></router-outlet> 

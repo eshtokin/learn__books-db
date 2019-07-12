@@ -1,3 +1,26 @@
+<div class="row">
+    <hr>
+    <div class="input-field col s3">
+        <input type="text" id="name" [(ngModel)]="userForEdite.name">
+        <label for="name" [ngClass]="{active: userForEdite.name}">Name</label>
+    </div>
+    <div class="input-field col s3">
+        <input type="text" id="email" [(ngModel)]="userForEdite.email">
+        <label for="email" [ngClass]="{active: userForEdite.email}">E-mail</label>
+    </div>
+    <div class="input-field col s3">
+        <input type="text" id="password" [(ngModel)]="userForEdite.password">
+        <label for="password" [ngClass]="{active: userForEdite.password}">Password</label>
+    </div>
+   <div class="input-field col s3">
+        <input type="number" id="role" [(ngModel)]="userForEdite.role">
+        <label for="role" [ngClass]="{active: userForEdite.role}">Role</label>
+    </div>
+</div>
+<div class="container center">
+    <button type="button" class="btn waves-effect" (click)="addAction()" *ngIf="!okBtnStatus">Add</button>
+    <button type="button" class="btn waves-effect " (click)="okAction()" *ngIf="okBtnStatus">OK</button>
+</div>
 <table class="table centered">
     <thead>
         <tr class="row">
@@ -12,8 +35,9 @@
             <td class="col s3">{{ user.name }}</td>
             <td class="col s3">{{ user.email }}</td>
             <td class="col s3">{{ (user.role === 2) ? 'user' : 'admin' }}</td>
-            <td class="col s3">
-                <button class="btn" id={{user._id}} (click)="deleteUser($event)">delete</button>
+            <td class="col s3 row">
+                <button class="btn col s5 red" id={{user._id}} (click)="deleteUser($event)">Delete</button>
+                <button class="btn col s5 amber" id={{user.id}} (click)="editeAction(user)">Edit</button>
             </td>
         </tr>
     </tbody>

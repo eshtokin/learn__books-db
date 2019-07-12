@@ -19,7 +19,7 @@ class Routes {
             });
         });
         app.route("/login")
-            .get(this.authentController.login);
+            .post(this.authentController.login);
         app.route("/registration")
             .post(this.registrationController.registration);
         app.route("/user")
@@ -27,8 +27,8 @@ class Routes {
         app.route("/user/:userId")
             .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.getUserById)
             .put(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.updateUser)
-            .delete(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.deleteUser);
-        // .delete(this.userController.deleteUser)
+            // .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.deleteUser)
+            .delete(this.userController.deleteUser);
     }
 }
 exports.Routes = Routes;

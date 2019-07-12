@@ -4,11 +4,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const user_routers_1 = require("./routes/user.routers");
 const mongoose = require("mongoose");
+const cors = require("cors");
 class App {
     constructor() {
         this.route = new user_routers_1.Routes();
         this.mongoUrl = "mongodb://localhost/CRMdb";
         this.app = express();
+        this.app.use(cors());
         this.config();
         this.route.routes(this.app);
         this.mongoSetup();

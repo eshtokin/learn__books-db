@@ -8,9 +8,9 @@
         </div>
         <div class="card-stacked">
             <div class="card-content">
-                <p>Name: {{ user.name }}</p>
-                <p>E-mail {{ user.email }}</p>
-                <p>Status: {{ (user.role === 2) }}</p>
+                <p>Name: {{ this.userInfo.getCurrentUser().name }}</p>
+                <p>E-mail {{ this.userInfo.getCurrentUser().email }}</p>
+                <p>Status: {{ (this.userInfo.getCurrentUser().role === 1) ? 'admin' : 'user'}}</p>
             </div>
             <div class="card-action">
                 <a href="#">This is a link</a>
@@ -18,5 +18,3 @@
         </div>
     </div>
 </div>
-
-<app-user-table *ngIf="isAdmin()"></app-user-table>
