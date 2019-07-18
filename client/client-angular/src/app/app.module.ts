@@ -11,6 +11,8 @@ import { UserService } from './service/users.service';
 import { ProfileComponent } from './shared/profile/profile.component';
 import { UserInfo } from './service/user-info.service';
 import { AuthFormEditComponent } from './auth-form/auth-form-edit/auth-form-edit.component';
+import { RouteGuard } from './service/route-guard.service';
+import { CatalogComponent } from './catalog/catalog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { AuthFormEditComponent } from './auth-form/auth-form-edit/auth-form-edit
     AuthFormEditComponent,
     UserTableComponent,
     ProfileComponent,
-    AuthFormEditComponent
+    AuthFormEditComponent,
+    CatalogComponent
     ],
   imports: [
     BrowserModule,
@@ -29,7 +32,7 @@ import { AuthFormEditComponent } from './auth-form/auth-form-edit/auth-form-edit
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [UserService, UserInfo],
+  providers: [UserService, UserInfo, RouteGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

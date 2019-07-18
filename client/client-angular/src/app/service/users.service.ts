@@ -7,11 +7,11 @@ export class UserService implements OnInit {
 
     users = [];
 
-    url = {
-        getAllUsers: 'http://localhost:3000/user',
-        registrateUser: 'http://localhost:3000/registration',
-        loginUser: 'http://localhost:3000/login'
-    };
+    // url = {
+    //     getAllUsers: 'http://localhost:3000/user',
+    //     registrateUser: 'http://localhost:3000/registration',
+    //     loginUser: 'http://localhost:3000/login'
+    // };
 
     async login(user: {email: string, password: string}) {
         return await Axios.post('http://localhost:3000/login', user)
