@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/service/users.service';
+import { FormGroup, FormControl, Validators, Form } from '@angular/forms';
 
 @Component({
   selector: 'app-user-table',
@@ -19,6 +20,46 @@ export class UserTableComponent implements OnInit {
     role: null
   };
   okBtnStatus = false; // true - visible; false - hidden
+
+
+  form = new FormGroup({
+    name: new FormControl('', [Validators.required, this.checkName]),
+    email: new FormControl('', [Validators.required, this.checkEmail]),
+    password: new FormControl('', [Validators.required, this.checkPassword]),
+    role: new FormControl('', [Validators.required, this.checkRole])
+  });
+
+  onSubmit() {
+    console.warn(this.form);
+  }
+
+  checkName(control: FormControl) {
+    if (control.value.search(/^[\w]{3,16}$/)) {
+      return {
+        '' : true
+      };
+    }
+  }
+
+  checkEmail(control: FormControl) {
+    if (control.value.search(/^[\w]{3,16}@[\w]{3,16}.[a-z]{2,}$/)) {
+      return {
+        '' : true
+      };
+    }
+  }
+
+  checkPassword(control: FormControl) {
+    if (control.value.search(/^[\w]{4,16}$/)) {
+      return {'' : true};
+    }
+  }
+
+  checkRole(control: FormControl) {
+    if (control.value !== 1 && control.value !== 2) {
+      return {'' : true};
+    }
+  }
 
   ngOnInit() {
     this.init();

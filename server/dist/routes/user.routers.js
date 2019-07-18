@@ -26,7 +26,8 @@ class Routes {
             .get(this.userController.getAllUsers);
         app.route("/user/:userId")
             .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.getUserById)
-            .put(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.updateUser)
+            // .put(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.updateUser)
+            .put(this.userController.updateUser)
             // .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.deleteUser)
             .delete(this.userController.deleteUser);
     }

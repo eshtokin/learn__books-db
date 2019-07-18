@@ -14,7 +14,6 @@ const authRoutes: Routes = [
 const routes: Routes = [
   {path: 'auth', component: AuthFomrComponent},
   {path: 'auth', component: AuthFomrComponent, children: authRoutes},
-  // {path: 'login', component: AuthFormLoginComponent, children: authRoutes},
   {path: 'user-manager', component: UserTableComponent},
   {path: 'profile', component: ProfileComponent},
 ];
