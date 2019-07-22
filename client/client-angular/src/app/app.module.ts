@@ -13,6 +13,7 @@ import { UserInfo } from './service/user-info.service';
 import { AuthFormEditComponent } from './auth-form/auth-form-edit/auth-form-edit.component';
 import { RouteGuard } from './service/route-guard.service';
 import { CatalogComponent } from './catalog/catalog.component';
+import { GoogleBooks } from './service/google-books.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { CatalogComponent } from './catalog/catalog.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [UserService, UserInfo, RouteGuard],
+  providers: [UserService, UserInfo, RouteGuard, GoogleBooks],
   bootstrap: [AppComponent]
 })
 export class AppModule {

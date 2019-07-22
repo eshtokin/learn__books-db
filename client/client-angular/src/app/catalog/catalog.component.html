@@ -1,1 +1,46 @@
-<p>catalog works!</p>
+<div class="container">
+    <div class="input-field">
+        <input id="search" type="text" class="validate" [(ngModel)]="searchString">
+        <label for="search" [ngClass]="{active: this.searchString}">Search field</label>
+    </div>
+    <button class="btn" (click)="searchForBook( this.searchString, {startIndex: 0, maxResults: 10})">GO</button>
+    <div class="catalog-list col s12 m7 z-depth-4" *ngFor="let book of listOfBook">
+        <div class="card horizontal">
+            <div class="card-image">
+                <img src="{{book.imageLinks ? book.imageLinks.thumbnail : '../../assets/default-image-book.png'}}">
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">
+                    <div class="card-title"><p><b>{{book.title}}</b></p></div>
+                    <b>Categories: </b>
+                    <div class="chip" *ngFor="let categorie of book.categories">
+                        {{categorie}}
+                    </div>
+                    <br>
+                    <b>Authors: </b>
+                    <div class="chip" *ngFor="let author of book.authors">
+                        {{author}}
+                    </div>
+                    <p><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
+                </div> 
+                <div class="card-action">
+                    <button
+                        class="btn"
+                        (click)="show(book)"
+                    >
+                    add to profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="pagination">
+        <li class="waves-effect"
+            *ngFor="let page of this.googleBooks.getPageInfo().availablePages"
+            [ngClass]="{active: (this.currentPage === page)}"
+            (click)="this.changePage(page)"
+            >
+            <a routeLink="catalog">{{page + 1}}</a>
+        </li>
+    </ul>
+</div>
