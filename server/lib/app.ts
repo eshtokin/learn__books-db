@@ -12,7 +12,7 @@ class App {
 
     constructor() {
         this.app = express();
-        this.app.use(cors())
+        this.app.use(cors());
         this.config();
         this.route.routes(this.app);
         this.mongoSetup();

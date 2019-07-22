@@ -5,11 +5,13 @@ const authorization_controller_1 = require("../controllerrs/authorization.contro
 const user_model_1 = require("../models/user.model");
 const auth_middleware_1 = require("../middleware/auth.middleware");
 const registration_controller_1 = require("../controllerrs/registration.controller");
+const book_controller_1 = require("../controllerrs/book.controller");
 class Routes {
     constructor() {
         this.userController = new user_controller_1.UserController();
         this.authentController = new authorization_controller_1.AuthorizationController();
         this.registrationController = new registration_controller_1.RegistrationController();
+        this.bookController = new book_controller_1.BookController();
     }
     routes(app) {
         app.route("/")
@@ -30,6 +32,9 @@ class Routes {
             .put(this.userController.updateUser)
             // .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.deleteUser)
             .delete(this.userController.deleteUser);
+        app.route("/books")
+            .get(this.bookController.getAllBook)
+            .post(this.bookController.addBook);
     }
 }
 exports.Routes = Routes;
