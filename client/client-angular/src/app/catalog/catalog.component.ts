@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GoogleBooks } from '../service/google-books.service';
-import { ConditionalExpr } from '@angular/compiler';
+import { BookService } from '../service/books.service';
 
 @Component({
   selector: 'app-catalog',
@@ -9,11 +9,14 @@ import { ConditionalExpr } from '@angular/compiler';
 })
 export class CatalogComponent implements OnInit {
 
-  searchString = '';
+  searchString = 'The Last Wish';
   listOfBook: any = this.googleBooks.getPageInfo().currentItems;
-  currentPage = 0;
+  currentPage = this.googleBooks.getPageInfo().currentPage;
 
-  constructor(private googleBooks: GoogleBooks) { }
+  constructor(
+    private googleBooks: GoogleBooks,
+    private booksService: BookService
+    ) { }
 
   ngOnInit() {
   }
@@ -28,7 +31,30 @@ export class CatalogComponent implements OnInit {
     this.currentPage = page;
   }
 
-  show(book) {
-    console.log(book);
+  addBookToDB(book) {
+    const newBook = {
+      title: book.title.toLowerCase(),
+      authors: book.authors.map(element => element.toLowerCase()),
+      categories: book.categories ? book.categories.map(element => element.toLowerCase()) : [],
+      description: book.description,
+      image: book.imageLinks.thumbnail,
+      pageCount: book.pageCount,
+      printType: book.printType.toLowerCase(0)
+    };
+    console.log(newBook);
+    this.booksService.addBookToDB(newBook);
+  }
+
+  addBookToProfile(book) {
+    const newBook = {
+      title: book.title.toLowerCase(),
+      authors: book.authors.map(element => element.toLowerCase()),
+      categories: book.categories ? book.categories.map(element => element.toLowerCase()) : [],
+      description: book.description,
+      image: book.imageLinks.thumbnail,
+      pageCount: book.pageCount,
+      printType: book.printType.toLowerCase(0)
+    };
+    this.booksService.addBookToProfile();
   }
 }

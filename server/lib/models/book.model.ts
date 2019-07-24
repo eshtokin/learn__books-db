@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 
 export const BookSchema = new Schema({
   title: String,
-  authors: String,
-  categories: [],
+  authors: Array,
+  categories: Array,
   description: String,
-  avatar: String,
+  image: String,
   pageCount: Number,
-  type: String
+  printType: String
 });

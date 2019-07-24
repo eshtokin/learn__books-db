@@ -8,7 +8,11 @@ const cors = require("cors");
 class App {
     constructor() {
         this.route = new user_routers_1.Routes();
-        this.mongoUrl = "mongodb://localhost/CRMdb";
+        // change "<password>"
+        this.password = "BestOppai24!";
+        this.collection = "book-db";
+        this.mongoUrl = `mongodb+srv://Eshtokin:${this.password}@book-db-lmley.mongodb.net/${this.collection}?retryWrites=true&w=majority`;
+        this.localMongoUrl = "mongodb://localhost/CRMdb";
         this.app = express();
         this.app.use(cors());
         this.config();
@@ -23,7 +27,7 @@ class App {
     }
     mongoSetup() {
         mongoose.Promise = global.Promise;
-        mongoose.connect(this.mongoUrl);
+        mongoose.connect(this.localMongoUrl);
     }
 }
 exports.default = new App().app;

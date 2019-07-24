@@ -7,6 +7,7 @@ import { RegistrationController } from "../controllerrs/registration.controller"
 import { BookController } from '../controllerrs/book.controller';
 import { CategoryController } from '../controllerrs/category.controller';
 import { AuthorController } from '../controllerrs/author.controller';
+import { request } from 'https';
 
 export class Routes {
     public userController : UserController = new UserController();

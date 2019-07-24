@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose'
 import { AuthorSchema } from '../models/author.model'
 import { Request, Response } from 'express'
 
-const Authors = mongoose.model('Author', AuthorSchema);
+export const Authors = mongoose.model('Author', AuthorSchema);
 
 export class AuthorController {
   public getAllAuthor(req: Request, res: Response) {
@@ -10,7 +10,7 @@ export class AuthorController {
       if (err) {
         res.send(err)
       }
-      res.json(authors)
+      res.send(authors)
     })
   }
 

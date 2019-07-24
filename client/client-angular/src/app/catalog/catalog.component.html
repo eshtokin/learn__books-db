@@ -12,12 +12,12 @@
             <div class="card-stacked">
                 <div class="card-content">
                     <div class="card-title"><p><b>{{book.title}}</b></p></div>
-                    <b>Categories: </b>
+                    <b *ngIf="book.categories">Categories: </b>
                     <div class="chip" *ngFor="let categorie of book.categories">
                         {{categorie}}
                     </div>
                     <br>
-                    <b>Authors: </b>
+                    <b *ngIf="book.authors">Authors: </b>
                     <div class="chip" *ngFor="let author of book.authors">
                         {{author}}
                     </div>
@@ -26,13 +26,13 @@
                 <div class="card-action">
                     <button
                         class="btn add-to-pro-btn"
-                        (click)="show(book)"
+                        (click)="addBookToProfile(book)"
                     >
-                    add to profile
+                    add to 'my list'
                     </button>
                     <button
                         class="btn"
-                        (click)="show(book)"
+                        (click)="addBookToDB(book)"
                     >
                         add to database
                     </button>

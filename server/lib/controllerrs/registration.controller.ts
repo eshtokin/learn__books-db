@@ -19,6 +19,7 @@ export class RegistrationController {
                 email: req.body.email,
                 password: crypt.hashSync(req.body.password),
                 name: req.body.name,
+                books: [],
                 role: req.body.role
             }, (err, user) => {
                 res.status(200).send({

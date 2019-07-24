@@ -14,6 +14,7 @@ import { AuthFormEditComponent } from './auth-form/auth-form-edit/auth-form-edit
 import { RouteGuard } from './service/route-guard.service';
 import { CatalogComponent } from './catalog/catalog.component';
 import { GoogleBooks } from './service/google-books.service';
+import { BookService } from './service/books.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { GoogleBooks } from './service/google-books.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [UserService, UserInfo, RouteGuard, GoogleBooks],
+  providers: [UserService, UserInfo, RouteGuard, GoogleBooks, BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -4,6 +4,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 exports.BookSchema = new Schema({
     title: String,
-    authors: String
+    authors: Array,
+    categories: Array,
+    description: String,
+    image: String,
+    pageCount: Number,
+    printType: String,
+    id: {}
 });
 //# sourceMappingURL=book.model.js.map

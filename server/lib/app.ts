@@ -8,7 +8,12 @@ class App {
 
     public app: express.Application;
     public route: Routes = new Routes();
-    public mongoUrl : String = "mongodb://localhost/CRMdb"
+
+    // change "<password>"
+    private password = "BestOppai24!";
+    private collection = "book-db"
+    public mongoUrl: String = `mongodb+srv://Eshtokin:${this.password}@book-db-lmley.mongodb.net/${this.collection}?retryWrites=true&w=majority`;
+    public localMongoUrl : String = "mongodb://localhost/CRMdb";
 
     constructor() {
         this.app = express();
@@ -27,7 +32,7 @@ class App {
 
     private mongoSetup() {
         mongoose.Promise = global.Promise;
-        mongoose.connect(this.mongoUrl);
+        mongoose.connect(this.localMongoUrl);
     }
 
 }

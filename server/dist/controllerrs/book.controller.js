@@ -12,13 +12,41 @@ class BookController {
             res.json(books);
         });
     }
-    addBook(res, req) {
-        exports.Books.create({
-            title: req.body.title,
-            authors: req.body.authors
-        }, (err, book) => {
-            res.status(200).send({
-                message: 'successful'
+    addBook(req, res) {
+        exports.Books.findOne({ title: req.body.title, authors: req.body.authors }, (err, book) => {
+            if (err) {
+                return res.status(500).send({
+                    message: `error on the server`
+                });
+            }
+            if (book) {
+                return res.status(400).send({
+                    message: `book already exist`
+                });
+            }
+            exports.Books.create({
+                title: req.body.title,
+                authors: req.body.authors,
+                categories: req.body.categories,
+                description: req.body.description,
+                image: req.body.image,
+                pageCount: req.body.pageCount,
+                printType: req.body.printType,
+                id: mongoose.Types.ObjectId(),
+            }, (err, book) => {
+                res.status(200).send({
+                    message: `successful`
+                });
+            });
+        });
+    }
+    deleteBook(req, res) {
+        exports.Books.findOneAndDelete({ title: req.body.title }, (err) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.status(200).send({
+                message: 'successfuly deleted'
             });
         });
     }
