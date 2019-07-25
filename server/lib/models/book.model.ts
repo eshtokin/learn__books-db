@@ -9,5 +9,6 @@ export const BookSchema = new Schema({
   description: String,
   image: String,
   pageCount: Number,
-  printType: String
+  printType: String,
+  industryIdentifiers: Array
 });

@@ -37,9 +37,10 @@ export class CatalogComponent implements OnInit {
       authors: book.authors.map(element => element.toLowerCase()),
       categories: book.categories ? book.categories.map(element => element.toLowerCase()) : [],
       description: book.description,
-      image: book.imageLinks.thumbnail,
+      image: book.imageLinks.thumbnail || '',
       pageCount: book.pageCount,
-      printType: book.printType.toLowerCase(0)
+      printType: book.printType.toLowerCase(0),
+      industryIdentifiers: [...book.industryIdentifiers]
     };
     console.log(newBook);
     this.booksService.addBookToDB(newBook);

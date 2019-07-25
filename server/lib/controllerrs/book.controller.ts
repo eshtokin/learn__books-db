@@ -17,7 +17,7 @@ export class BookController {
   }
 
   public addBook(req: Request, res: Response) {
-    Books.findOne({title: req.body.title, authors: req.body.authors}, (err, book) => {
+    Books.findOne({title: req.body.title, industryIdentifiers: req.body.industryIdentifiers}, (err, book) => {
       if (err) {
         return res.status(500).send({
           message: `error on the server`
@@ -29,58 +29,83 @@ export class BookController {
         })
       }
 
-      req.body.categories.forEach( name => {
-        Category.findOne({name}, (err, result) => {
-          let timeId = mongoose.Types.ObjectId();
-  
-          if (!result) {
-            Category.create({_id: timeId, name})
-          }
-  
-          setTimeout(() => {
-            Books.findOneAndUpdate(
-              {title: req.body.title}, 
-              { $set: {categories: result? mongoose.Types.ObjectId(result._id) : timeId}}, 
-              (err, book) => {}
-            )
-          }, 1000)
-        })
-      });
+      let listCategories = [];
+      let listCategoriesId = [];
+      let listAuthors = [];
+      let listAuthorsId =[];
 
+      Category.find({ name: {$in: req.body.categories}}, (err, category) => {
+        console.log('request', req.body.categories);
+        console.log('find', category, 'length', category.length);
 
-      req.body.authors.forEach( name => {
-        Authors.findOne({name}, (err, result) => {
-          let timeId = mongoose.Types.ObjectId();
-   
-          if (!result) {
-            Authors.create({_id: timeId, name})
-          }
-  
-          setTimeout(() => {
-            Books.findOneAndUpdate(
-              {title: req.body.title}, 
-              { $set: {authors: result? mongoose.Types.ObjectId(result._id) : timeId}}, 
-              (err, book) => {}
-            )
-          }, 1000)
-        })
-      });
-
-      Books.create({
-        title: req.body.title,
-        authors: req.body.authors,
-        categories: req.body.categories,
-        description: req.body.description,
-        image: req.body.image,
-        pageCount: req.body.pageCount,
-        printType: req.body.printType
-      }, (err, book) => {
-        res.status(200).send({
-          message: `successful`
-        })
+        if (category.length > 0) {
+          category.forEach(el => {
+            listCategoriesId.push(el._id)
+          })
+        }
+        if (category.length === 0) {
+          req.body.categories.forEach(el => {
+            const id = mongoose.Types.ObjectId()
+            listCategories.push({
+              _id: id,
+              name: el,
+              _v: 0
+            });
+            listCategoriesId.push(id)
+          })
+        }
+        Category.insertMany(listCategories)
       })
-     
-    }) 
+
+      Authors.find({ name: {$in: req.body.authors}}, (err, author) => {
+        if (author.length > 0) {
+          author.forEach(el => {
+            listAuthorsId.push(el._id)
+          })
+        }
+        if (author.length === 0) {
+          req.body.authors.forEach(el => {
+            const id = mongoose.Types.ObjectId()
+            listAuthors.push({
+              _id: id,
+              name: el,
+              _v: 0
+            });
+            listAuthorsId.push(id)
+          })
+        }
+        Authors.insertMany(listAuthors)
+      })
+      
+      Books.findOne({title: req.body.title, authors: req.body.authors}, (err, book) => {
+        if (err) {
+          res.status(500).send({
+            message: 'error on the server'
+          })
+        }
+        if (book) {
+          res.status(400).send({
+            message: 'book already exist'
+          })
+        }
+
+        Books.create({
+          title: req.body.title,
+          authors: listAuthorsId,
+          categories: listCategoriesId,
+          description: req.body.description,
+          image: req.body.image,
+          pageCount: req.body.pageCount,
+          printType: req.body.printType,
+          industryIdentifiers: req.body.industryIdentifiers
+        }, (err, book) => {
+          res.status(200).send({
+            message: 'successfull'
+          })
+        })
+
+      })
+    })
   }
 
   public deleteBook(req: Request, res: Response) {
