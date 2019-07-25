@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GoogleBooks } from '../service/google-books.service';
 import { BookService } from '../service/books.service';
+import { UserInfo } from '../service/user-info.service';
 
 @Component({
   selector: 'app-catalog',
@@ -15,7 +16,8 @@ export class CatalogComponent implements OnInit {
 
   constructor(
     private googleBooks: GoogleBooks,
-    private booksService: BookService
+    private booksService: BookService,
+    private userInfo: UserInfo
     ) { }
 
   ngOnInit() {
@@ -31,7 +33,7 @@ export class CatalogComponent implements OnInit {
     this.currentPage = page;
   }
 
-  addBookToDB(book) {
+  addBookToDB(book, user) {
     const newBook = {
       title: book.title.toLowerCase(),
       authors: book.authors.map(element => element.toLowerCase()),
@@ -43,19 +45,6 @@ export class CatalogComponent implements OnInit {
       industryIdentifiers: [...book.industryIdentifiers]
     };
     console.log(newBook);
-    this.booksService.addBookToDB(newBook);
-  }
-
-  addBookToProfile(book) {
-    const newBook = {
-      title: book.title.toLowerCase(),
-      authors: book.authors.map(element => element.toLowerCase()),
-      categories: book.categories ? book.categories.map(element => element.toLowerCase()) : [],
-      description: book.description,
-      image: book.imageLinks.thumbnail,
-      pageCount: book.pageCount,
-      printType: book.printType.toLowerCase(0)
-    };
-    this.booksService.addBookToProfile();
+    this.booksService.addBookToDB(newBook, user);
   }
 }

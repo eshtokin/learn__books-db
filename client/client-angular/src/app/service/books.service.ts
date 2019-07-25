@@ -13,8 +13,8 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  addBookToDB(book) {
-    return Axios.post('http://localhost:3000/books', book)
+  addBookToDB(book, user) {
+    return Axios.post('http://localhost:3000/books', {book, user})
     .then(res => {
       console.log(book);
       console.log(res);
