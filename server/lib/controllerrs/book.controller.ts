@@ -79,11 +79,10 @@ export class BookController {
       if (book && req.body.user) {
         User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
           console.log(book._id);
-          
         });
 
         return res.status(200).send({
-          message: `OK do next`
+          message: `added in bd and profile`
         })
       }
 
@@ -108,6 +107,10 @@ export class BookController {
         printType: req.body.book.printType,
         industryIdentifiers: req.body.book.industryIdentifiers
       }, (err, book) => {
+        User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
+          console.log(book._id);
+        });
+
           return res.status(200).send({
           message: 'added in bd'
         })
