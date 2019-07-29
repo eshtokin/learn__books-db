@@ -9,6 +9,22 @@ export const Books = mongoose.model('Books', BookSchema);
 
 export class BookController {
   public getAllBook(req: Request, res: Response) {
+    let sortData = {};
+    if (req.query.title) {
+      sortData = {title: Number(req.query.title)}
+    }
+    if (req.query.authors) {
+      sortData = {authors: Number(req.query.authors)}
+    }
+    if (req.query.categories) {
+      sortData = {categories: Number(req.query.categories)}
+    }
+    if (req.query.page) {
+      sortData = {pageCount: Number(req.query.page)}
+    }
+
+    console.log(sortData);
+
     Books.aggregate([{
       $lookup: {
           from: "categories",
@@ -23,6 +39,8 @@ export class BookController {
         foreignField: "_id",
         as: "authors_list"
     }
+    }, {
+      $sort: sortData
     }], (err, list) => {
       res.json(list)
     })

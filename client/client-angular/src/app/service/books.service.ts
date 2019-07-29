@@ -4,8 +4,8 @@ import Axios from 'axios';
 export class BookService implements OnInit {
   constructor() {}
 
-  getAllBooks() {
-    return Axios.get('http://localhost:3000/books')
+  getAllBooks(data) {
+    return Axios.get('http://localhost:3000/books', {params: data})
     .then(res => {
       console.log(res);
       return res.data;

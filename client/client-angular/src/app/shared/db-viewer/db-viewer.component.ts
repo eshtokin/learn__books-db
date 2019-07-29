@@ -15,12 +15,12 @@ export class DbViewerComponent implements OnInit {
   constructor(private bookService: BookService) {}
 
   ngOnInit() {
-    this.init();
+    this.getBooksWitgSort();
     // console.log(SortBy);
   }
 
-  init() {
-    this.bookService.getAllBooks().then(el => {
+  getBooksWitgSort(sortType = {title: -1}) {
+    this.bookService.getAllBooks(sortType).then(el => {
       this.books = el.slice();
       console.log('oninit ', this.books);
     });
@@ -40,9 +40,5 @@ export class DbViewerComponent implements OnInit {
   changeBookImg(id, image) {
     console.log('image', image.length);
     this.bookService.changeImageInBook({id, image});
-  }
-
-  show(message) {
-    console.log(message);
   }
 }

@@ -2,7 +2,7 @@ table {
   margin-top: 20px;
 }
 
-th>span:hover {
+th>i:hover {
   cursor: pointer;
 }
 
@@ -16,5 +16,9 @@ input#img-field {
 }
 
 label:hover {
+  cursor: pointer;
+}
+
+i:hover {
   cursor: pointer;
 }
