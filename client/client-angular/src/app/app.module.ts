@@ -15,6 +15,7 @@ import { RouteGuard } from './service/route-guard.service';
 import { CatalogComponent } from './catalog/catalog.component';
 import { GoogleBooks } from './service/google-books.service';
 import { BookService } from './service/books.service';
+import { DbViewerComponent } from './shared/db-viewer/db-viewer.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { BookService } from './service/books.service';
     UserTableComponent,
     ProfileComponent,
     AuthFormEditComponent,
-    CatalogComponent
+    CatalogComponent,
+    DbViewerComponent
     ],
   imports: [
     BrowserModule,

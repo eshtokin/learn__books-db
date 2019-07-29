@@ -7,6 +7,7 @@ import { ProfileComponent } from './shared/profile/profile.component';
 import { UserTableComponent } from './admin/user-table/user-table.component';
 import { RouteGuard } from './service/route-guard.service';
 import { CatalogComponent } from './catalog/catalog.component';
+import { DbViewerComponent } from './shared/db-viewer/db-viewer.component';
 
 const authRoutes: Routes = [
   {path: 'login', component: AuthFormLoginComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'auth', component: AuthFomrComponent},
   {path: 'auth', component: AuthFomrComponent, children: authRoutes},
   {path: 'catalog', component: CatalogComponent},
+  {path: 'dbviewer', component: DbViewerComponent},
   {path: 'user-manager', component: UserTableComponent, canActivate: [RouteGuard]},
   {path: 'profile', component: ProfileComponent},
 ];

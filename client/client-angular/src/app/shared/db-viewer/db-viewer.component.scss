@@ -1,0 +1,20 @@
+table {
+  margin-top: 20px;
+}
+
+th>span:hover {
+  cursor: pointer;
+}
+
+.img-for-book {
+  max-width: 128px;
+}
+
+input#img-field {
+  visibility: hidden
+  // width: 91px;
+}
+
+label:hover {
+  cursor: pointer;
+}

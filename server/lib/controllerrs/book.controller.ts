@@ -9,11 +9,22 @@ export const Books = mongoose.model('Books', BookSchema);
 
 export class BookController {
   public getAllBook(req: Request, res: Response) {
-    Books.find({}, (err, books) => {
-      if (err) {
-        res.send(err)
+    Books.aggregate([{
+      $lookup: {
+          from: "categories",
+          localField: "categories",
+          foreignField: "_id",
+          as: "categories_list"
       }
-      res.json(books)
+    }, {
+      $lookup: {
+        from: "authors",
+        localField: "authors",
+        foreignField: "_id",
+        as: "authors_list"
+    }
+    }], (err, list) => {
+      res.json(list)
     })
   }
 
@@ -73,9 +84,6 @@ export class BookController {
         })
       }
 
-      console.log(book);
-      console.log(req.body.user);
-
       if (book && req.body.user) {
         User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
           console.log(book._id);
@@ -92,8 +100,6 @@ export class BookController {
         })
       }
 
-      
-
       const bookId = mongoose.Types.ObjectId();
 
       Books.create({
@@ -107,17 +113,17 @@ export class BookController {
         printType: req.body.book.printType,
         industryIdentifiers: req.body.book.industryIdentifiers
       }, (err, book) => {
-        User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
-          console.log(book._id);
-        });
+        if (book && req.body.user) {
+          User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
+            console.log(book._id);
+          });
+        }
 
           return res.status(200).send({
           message: 'added in bd'
         })
       });
     })
-      // })
-    // })
   }
 
   public deleteBook(req: Request, res: Response) {
@@ -127,6 +133,19 @@ export class BookController {
       }
       return res.status(200).send({
         message: 'successfuly deleted'
+      })
+    })
+  }
+
+  public changeBookImg(req: Request, res: Response) { 
+    Books.updateOne({_id: req.body.id}, {$set: {image: req.body.image}}, (err) => {
+      if (err) {
+        return res.status(500).send({
+          message: `error on the server`
+        })
+      }
+      return res.status(200).send({
+        message: `successfuly changed`
       })
     })
   }

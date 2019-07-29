@@ -1,0 +1,25 @@
+<table class="table centered">
+  <thead>
+      <tr class="row">
+        <th class="col s2">Image</th>
+        <th class="col s3"><span (click)="show('title')">Title</span></th>
+        <th class="col s2"><span (click)="show('author')">Authors</span></th>
+        <th class="col s2"><span (click)="show('categories')">Categories</span></th>
+        <th class="col s1"><span (click)="show('page')">Page</span></th>
+        <th class="col s2"><span (click)="show('type')">Type</span></th>
+      </tr>
+  </thead>
+  <tbody class="tbody">
+      <tr class="row" *ngFor="let book of books">
+        <td class="col s2"> 
+          <label for="img-field" class="label"><img src={{book.image}} alt="book image" class="img-for-book"></label>
+          <input id="img-field" name="img-field" (change)="uploadFile($event, book._id)" type="file" accept=".png,.jpg,.jpeg.gif">
+        </td>
+        <td class="col s3">{{book.title}}</td>
+        <td class="col s2"><span *ngFor="let author of book.authors_list">{{author.name}}<br></span></td>
+        <td class="col s2"><span *ngFor="let category of book.categories_list">{{category.name}}<br></span></td>
+        <td class="col s1">{{book.pageCount}}</td>
+        <td class="col s2">{{book.printType}}</td>
+      </tr>
+  </tbody>
+</table>

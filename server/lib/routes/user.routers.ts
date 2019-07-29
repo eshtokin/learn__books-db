@@ -44,6 +44,9 @@ export class Routes {
         .post(this.bookController.addBook)
         .delete(this.bookController.deleteBook)
 
+        app.route("/book")
+        .post(this.bookController.changeBookImg)
+
         app.route("/category")
         .get(this.categoryController.getAllCategory)
         .post(this.categoryController.addCategory)

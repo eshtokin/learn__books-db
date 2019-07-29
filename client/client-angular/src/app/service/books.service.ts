@@ -4,11 +4,11 @@ import Axios from 'axios';
 export class BookService implements OnInit {
   constructor() {}
 
-  async getAllBooks() {
-    return await Axios.get('http://localhost:3000/books')
+  getAllBooks() {
+    return Axios.get('http://localhost:3000/books')
     .then(res => {
       console.log(res);
-      return res;
+      return res.data;
     })
     .catch(err => console.log(err));
   }
@@ -25,6 +25,15 @@ export class BookService implements OnInit {
 
   addBookToProfile() {
     console.log('add to profile');
+  }
+
+  changeImageInBook(data) {
+    return Axios.post('http://localhost:3000/book', data)
+    .then(res => {
+      console.log(res);
+      return res;
+    })
+    .catch(err => console.log(err));
   }
 
   ngOnInit() {}
