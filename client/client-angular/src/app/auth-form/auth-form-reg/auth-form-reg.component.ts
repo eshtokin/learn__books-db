@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/service/users.service';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-auth-form-reg',
   templateUrl: './auth-form-reg.component.html',
-  styleUrls: ['./auth-form-reg.component.sass']
+  styleUrls: ['./auth-form-reg.component.scss']
 })
 export class AuthFormRegComponent {
   constructor(
@@ -13,13 +14,14 @@ export class AuthFormRegComponent {
     private router: Router
   ) { }
 
-  roles: number[] = [2, 1];
-
-  user = {
+  user: User = {
     email: '',
     password: '',
     name: '',
-    role: 2
+    role: 2,
+    books: [],
+    image: '',
+    _id: ''
   };
 
   async registrate() {

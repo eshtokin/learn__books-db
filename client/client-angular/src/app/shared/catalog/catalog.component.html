@@ -1,6 +1,6 @@
 <div class="container">
     <div class="input-field">
-        <input id="search" type="text" class="validate" [(ngModel)]="searchString">
+        <input id="search" type="text" class="validate" [(ngModel)]="this.searchString">
         <label for="search" [ngClass]="{active: this.searchString}">Search field</label>
     </div>
     <button class="btn" (click)="searchForBook( this.searchString, {startIndex: 0, maxResults: 10})">GO</button>
@@ -34,7 +34,7 @@
                         class="btn"
                         (click)="addBookToDB(book)"
                     >
-                        add to database
+                    add to database
                     </button>
                 </div>
             </div>

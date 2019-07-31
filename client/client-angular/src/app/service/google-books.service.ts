@@ -32,7 +32,6 @@ export class GoogleBooks {
       }
 
       this.pageInfo.currentPage = params.startIndex / 10;
-      console.log('res: ', res, 'pageInfo ', this.pageInfo);
       return res;
     })
     .catch(err => console.log(err));

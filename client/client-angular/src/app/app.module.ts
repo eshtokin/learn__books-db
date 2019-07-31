@@ -10,12 +10,14 @@ import { UserTableComponent } from './admin/user-table/user-table.component';
 import { UserService } from './service/users.service';
 import { ProfileComponent } from './shared/profile/profile.component';
 import { UserInfo } from './service/user-info.service';
-import { AuthFormEditComponent } from './auth-form/auth-form-edit/auth-form-edit.component';
-import { RouteGuard } from './service/route-guard.service';
-import { CatalogComponent } from './catalog/catalog.component';
+import { RouteGuard } from './guard/route.guard';
+import { CatalogComponent } from './shared/catalog/catalog.component';
 import { GoogleBooks } from './service/google-books.service';
 import { BookService } from './service/books.service';
-import { DbViewerComponent } from './shared/db-viewer/db-viewer.component';
+import { DbViewerComponent } from './admin/db-viewer/db-viewer.component';
+import { BookCardComponent } from './shared/component/book-card/book-card.component';
+// import { HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { TokenInterceptor } from './interceptor/token.interseptor';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,11 @@ import { DbViewerComponent } from './shared/db-viewer/db-viewer.component';
     AuthFomrComponent,
     AuthFormRegComponent,
     AuthFormLoginComponent,
-    AuthFormEditComponent,
     UserTableComponent,
     ProfileComponent,
-    AuthFormEditComponent,
     CatalogComponent,
-    DbViewerComponent
+    DbViewerComponent,
+    BookCardComponent
     ],
   imports: [
     BrowserModule,
@@ -36,7 +37,14 @@ import { DbViewerComponent } from './shared/db-viewer/db-viewer.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [UserService, UserInfo, RouteGuard, GoogleBooks, BookService],
+  providers: [
+    UserService,
+    UserInfo,
+    RouteGuard,
+    GoogleBooks,
+    BookService,
+    // {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

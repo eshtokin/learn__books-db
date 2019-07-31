@@ -5,9 +5,9 @@ import { AuthFormLoginComponent } from './auth-form/auth-form-login/auth-form-lo
 import { AuthFormRegComponent } from './auth-form/auth-form-reg/auth-form-reg.component';
 import { ProfileComponent } from './shared/profile/profile.component';
 import { UserTableComponent } from './admin/user-table/user-table.component';
-import { RouteGuard } from './service/route-guard.service';
-import { CatalogComponent } from './catalog/catalog.component';
-import { DbViewerComponent } from './shared/db-viewer/db-viewer.component';
+import { RouteGuard } from './guard/route.guard';
+import { CatalogComponent } from './shared/catalog/catalog.component';
+import { DbViewerComponent } from './admin/db-viewer/db-viewer.component'
 
 const authRoutes: Routes = [
   {path: 'login', component: AuthFormLoginComponent},

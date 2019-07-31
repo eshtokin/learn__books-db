@@ -14,6 +14,15 @@ export class AuthorController {
     })
   }
 
+  public getAuthor(req: Request, res: Response) {
+    Authors.findById({_id: req.params.authorId}, (err, author) => {
+      if (err) {
+        return res.send(err)
+      }
+      return res.json(author)
+    })
+  }
+
   public addAuthor(req: Request, res: Response) {
     Authors.findOne({name: req.body.name}, (err, author) => {
       if (err) {

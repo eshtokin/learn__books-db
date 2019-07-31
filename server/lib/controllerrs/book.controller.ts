@@ -23,8 +23,6 @@ export class BookController {
       sortData = {pageCount: Number(req.query.page)}
     }
 
-    console.log(sortData);
-
     Books.aggregate([{
       $lookup: {
           from: "categories",
@@ -155,16 +153,12 @@ export class BookController {
     })
   }
 
-  public changeBookImg(req: Request, res: Response) { 
-    Books.updateOne({_id: req.body.id}, {$set: {image: req.body.image}}, (err) => {
+  public getBook(req: Request, res: Response) {
+    Books.findById({_id: req.params.bookId}, (err, book) => {
       if (err) {
-        return res.status(500).send({
-          message: `error on the server`
-        })
+        return res.send(err)
       }
-      return res.status(200).send({
-        message: `successfuly changed`
-      })
+      return res.json(book)
     })
   }
 }

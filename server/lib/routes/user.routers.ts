@@ -3,16 +3,13 @@ import { UserController } from "../controllerrs/user.controller"
 import { AuthorizationController } from "../controllerrs/authorization.controller"
 import { UserRoles } from "../models/user.model";
 import { AuthMiddleware } from '../middleware/auth.middleware';
-import { RegistrationController } from "../controllerrs/registration.controller"
 import { BookController } from '../controllerrs/book.controller';
 import { CategoryController } from '../controllerrs/category.controller';
 import { AuthorController } from '../controllerrs/author.controller';
-import { request } from 'https';
 
 export class Routes {
     public userController : UserController = new UserController();
     public authentController : AuthorizationController = new AuthorizationController();
-    public registrationController : RegistrationController = new RegistrationController();
     public bookController: BookController = new BookController();
     public categoryController: CategoryController = new CategoryController;
     public authorController: AuthorController = new AuthorController;
@@ -29,13 +26,14 @@ export class Routes {
         .post(this.authentController.login)
 
         app.route("/registration")
-        .post(this.registrationController.registration)
+        .post(this.authentController.registration)
 
         app.route("/user")
         .get(this.userController.getAllUsers)
         
         app.route("/user/:userId")
-        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
+        // .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
+        .get(this.userController.getUserById)
         .put(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.updateUser)
         .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.deleteUser)
 
@@ -44,8 +42,8 @@ export class Routes {
         .post(this.bookController.addBook)
         .delete(this.bookController.deleteBook)
 
-        app.route("/book")
-        .post(this.bookController.changeBookImg)
+        app.route("/books/:bookId")
+        .get(this.bookController.getBook)
 
         app.route("/category")
         .get(this.categoryController.getAllCategory)
@@ -56,5 +54,8 @@ export class Routes {
         .get(this.authorController.getAllAuthor)
         .post(this.authorController.addAuthor)
         .delete(this.authorController.deleteAuthor)
+
+        app.route("/author/:authorId")
+        .get(this.authorController.getAuthor)
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/service/users.service';
 import { FormGroup, FormControl, Validators, Form } from '@angular/forms';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-user-table',
@@ -11,13 +12,15 @@ export class UserTableComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  users = [];
-  userForEdite = {
-    _id: '',
+  users: object[];
+  userForEdite: User = {
     name: '',
     email: '',
     password: '',
-    role: null
+    role: null,
+    books: [],
+    image: '',
+    _id: ''
   };
   okBtnStatus = false; // true - visible; false - hidden
 
@@ -65,48 +68,49 @@ export class UserTableComponent implements OnInit {
     this.init();
   }
 
-  init() {
+  init(): void {
     this.userService.getAllUsers().then(el => {
       this.users = el.data.slice();
     });
   }
 
-  deleteUser(event) {
+  deleteUser(event): void {
     this.userService.delete(event.target.id);
-    this.users = this.users.filter(el => el._id !== event.target.id);
+    this.users = this.users.filter((el: User) => el._id !== event.target.id);
   }
 
-  selectUser(user) {
+  selectUser(user: User): void {
     this.userForEdite = user;
   }
 
-  resetUserForEdite() {
+  resetUserForEdite(): void {
     this.userForEdite = {
       _id: '',
       name: '',
       email: '',
       password: '',
+      books: [],
+      image: '',
       role: null
     };
   }
 
-  okBtn() {
+  okBtn(): void {
     this.okBtnStatus = !this.okBtnStatus;
   }
 
-  editeAction(user) {
+  editeAction(user: User): void {
     this.selectUser(user);
     this.okBtn();
   }
 
-  okAction() {
+  okAction(): void {
     this.userService.edit(this.userForEdite._id, this.userForEdite);
-    console.log(this.userForEdite);
     this.resetUserForEdite();
     this.okBtn();
   }
 
-  addAction() {
+  addAction(): void {
     this.userService.registrate(this.userForEdite);
     this.users.push(this.userForEdite);
     this.resetUserForEdite();

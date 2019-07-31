@@ -1,18 +1,26 @@
+<div class="row">
+  <div class="col s3">filters</div>
+  <div class="col s9">
+    
+  </div>
+</div>
+<hr>
+<hr>
 <table class="table centered">
   <thead>
       <tr class="row">
         <th class="col s2">Image</th>
         <th class="col s3">
-          <i class="small material-icons" (click)="getBooksWitgSort({'title': -1})">arrow_drop_up</i>Title<i class="small material-icons" (click)="getBooksWitgSort({'title': 1})">arrow_drop_down</i>
+          <i class="small material-icons" (click)="getBooksWithSort({'title': -1})">arrow_drop_up</i>Title<i class="small material-icons" (click)="getBooksWithSort({'title': 1})">arrow_drop_down</i>
         </th>
         <th class="col s2">
-          <i class="small material-icons" (click)="getBooksWitgSort({authors: -1})">arrow_drop_up</i>Authors<i class="small material-icons" (click)="getBooksWitgSort({authors: 1})">arrow_drop_down</i>
+          <i class="small material-icons" (click)="getBooksWithSort({authors: -1})">arrow_drop_up</i>Authors<i class="small material-icons" (click)="getBooksWithSort({authors: 1})">arrow_drop_down</i>
         </th>
         <th class="col s2">
-          <i class="small material-icons" (click)="getBooksWitgSort({categories: -1})">arrow_drop_up</i>Categories<i class="small material-icons" (click)="getBooksWitgSort({categories: 1})">arrow_drop_down</i>
+          <i class="small material-icons" (click)="getBooksWithSort({categories: -1})">arrow_drop_up</i>Categories<i class="small material-icons" (click)="getBooksWithSort({categories: 1})">arrow_drop_down</i>
         </th>
         <th class="col s2">
-          <i class="small material-icons" (click)="getBooksWitgSort({page: -1})">arrow_drop_up</i><span>Page</span><i class="small material-icons" (click)="getBooksWitgSort({page: 1})">arrow_drop_down</i>
+          <i class="small material-icons" (click)="getBooksWithSort({page: -1})">arrow_drop_up</i><span>Page</span><i class="small material-icons" (click)="getBooksWithSort({page: 1})">arrow_drop_down</i>
         </th>
         <th class="col s1"><span (click)="show('type')">Type</span></th>
       </tr>

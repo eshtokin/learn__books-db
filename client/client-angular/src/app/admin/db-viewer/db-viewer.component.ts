@@ -1,44 +1,41 @@
 import { Component, OnInit, SecurityContext } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { BookService } from 'src/app/service/books.service';
+import { Book } from '../../models/book.model';
+import { SortType } from '../../models/sort-type.model';
 
 @Component({
   selector: 'app-db-viewer',
   templateUrl: './db-viewer.component.html',
   styleUrls: ['./db-viewer.component.scss']
 })
-
 export class DbViewerComponent implements OnInit {
-  image;
-  books;
+  image: string | ArrayBuffer;
+
+  books: Book;
 
   constructor(private bookService: BookService) {}
 
   ngOnInit() {
-    this.getBooksWitgSort();
-    // console.log(SortBy);
+    this.getBooksWithSort();
   }
 
-  getBooksWitgSort(sortType = {title: -1}) {
+  getBooksWithSort(sortType: SortType = {title: -1}) {
     this.bookService.getAllBooks(sortType).then(el => {
       this.books = el.slice();
-      console.log('oninit ', this.books);
     });
   }
 
-  uploadFile(e, id) {
+  uploadFile(e, id: string) {
     const input = e.target;
     const reader = new FileReader();
     reader.onload = () => {
       this.image = reader.result;
-      console.log(this.image, this.image.indexOf(','));
       this.changeBookImg(id, this.image);
     };
     reader.readAsDataURL(input.files[0]);
   }
 
-  changeBookImg(id, image) {
-    console.log('image', image.length);
+  changeBookImg(id: string, image: string | ArrayBuffer) {
     this.bookService.changeImageInBook({id, image});
   }
 }

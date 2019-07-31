@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-auth-form-login',
   templateUrl: './auth-form-login.component.html',
-  styleUrls: ['./auth-form-login.component.sass']
+  styleUrls: ['./auth-form-login.component.scss']
 })
 
 export class AuthFormLoginComponent {
