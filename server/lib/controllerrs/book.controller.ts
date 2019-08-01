@@ -54,15 +54,33 @@ export class BookController {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
     }
-
-    Books.find({
-      $and: [
-        {categories: {$in: categoriesFilter}},
-        {authors: {$in: authorsFilter}}
-      ]
-    }, (err, list) => {
-        res.json(list)
-    })
+    console.log(req.query); 
+    if (req.query.authors && req.query.categories) {
+      console.log('&&');
+      
+      Books.find({
+        $and: [
+          {categories: {$in: categoriesFilter}},
+          {authors: {$in: authorsFilter}}
+        ]
+      }, (err, list) => {
+          res.json(list)
+      })
+      return
+    }
+    if (req.query.authors || req.query.categories) {
+      console.log('||');
+      
+      Books.find({
+        $or: [
+          {categories: {$in: categoriesFilter}},
+          {authors: {$in: authorsFilter}}
+        ]
+      }, (err, list) => {
+          res.json(list)
+      })
+      return
+    }
   }
 
   public addBook(req: Request, res: Response) {
@@ -125,7 +143,6 @@ export class BookController {
         User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
           console.log(book._id);
         });
-
         return res.status(200).send({
           message: `added in bd and profile`
         })

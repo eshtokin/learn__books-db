@@ -50,7 +50,6 @@ export class DbViewerComponent implements OnInit {
 
   filtering() {
     const data = {
-      title: this.filterData.title,
       categories: [],
       authors: []
     };
@@ -60,6 +59,14 @@ export class DbViewerComponent implements OnInit {
     this.filterData.authors.forEach(author => {
       data.authors.push(author._id);
     });
+
+    if (!(data.categories.length && data.authors.length)) {
+      this.bookService.getAllBooks()
+      .then(el => {
+        this.books = el.slice();
+      });
+    }
+
     this.bookService.getSomeBooks(data)
     .then(list => {
       this.books = list.slice();
@@ -67,7 +74,7 @@ export class DbViewerComponent implements OnInit {
   }
 
   getBooksWithSort(sortType: SortType = {title: -1}) { // SortType
-    this.bookService.getAllBooks(sortType)
+    this.bookService.getAllBooks()
     .then(el => {
       this.books = el.slice();
     });

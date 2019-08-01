@@ -7,10 +7,9 @@ import { User } from '../models/user.model';
 export class BookService implements OnInit {
   constructor() {}
 
-  getAllBooks(data) { // Sort Type model
-    return Axios.get('/books', {params: data})
+  getAllBooks() { // Sort Type model
+    return Axios.get('/books')
     .then(res => {
-      console.log('get all book', res);
       return res.data;
     })
     .catch(err => console.log(err));
@@ -19,7 +18,6 @@ export class BookService implements OnInit {
   getSomeBooks(data) {
     return Axios.get('/somebooks', {params: data})
     .then(res => {
-      console.log('Some books: ', res);
       return res.data;
     });
   }
