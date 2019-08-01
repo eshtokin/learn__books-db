@@ -7,7 +7,7 @@ import { ProfileComponent } from './shared/profile/profile.component';
 import { UserTableComponent } from './admin/user-table/user-table.component';
 import { RouteGuard } from './guard/route.guard';
 import { CatalogComponent } from './shared/catalog/catalog.component';
-import { DbViewerComponent } from './admin/db-viewer/db-viewer.component'
+import { DbViewerComponent } from './admin/db-viewer/db-viewer.component';
 
 const authRoutes: Routes = [
   {path: 'login', component: AuthFormLoginComponent},

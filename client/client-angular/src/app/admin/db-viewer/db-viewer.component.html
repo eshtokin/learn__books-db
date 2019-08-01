@@ -1,38 +1,29 @@
 <div class="row">
-  <div class="col s2">
-<!--     
-      <div class="input-field">
-        <form class="row">
-          <input type="text" [(ngModel)]="filterData.title" id="title" name='title'>
-          <label for="title">Title</label>
-        </form>
-      </div> -->
-
+  <div class="col s2 filters">
       <div class="author-input" *ngFor="let category of categories">
-        <input type="checkbox" id={{category._id}} (click)="chooseCategory(category)" />
+        <input type="checkbox" id={{category._id}} (click)="chooseCategory(category)"/>
         <label for={{category._id}}>{{category.name}}</label>
       </div>
-
       <hr>
-      
       <div class="author-input" *ngFor="let author of authors">
         <input type="checkbox" id={{author._id}} (click)="chooseAuthor(author)"/>
         <label for={{author._id}}>{{author.name}}</label>
       </div>
-      
       <hr>
-
       <button class="btn" (click)="filtering()">OK</button>
   </div>
-  <div class="col s10">
+  <div class="col s7">
     <div class="z-depth-4" *ngFor="let book of books">
       <div class="card horizontal">
         <div class="card-image">
-          <img src="{{book.image}}">
+          <img src="{{book.image}}" class="book-image">
+          <button (click)=editeBook(book) class="btn edite-btn"><i class="material-icons">edite</i></button>
         </div>
         <div class="card-stacked">
           <div class="card-content">
-            <div class="card-title"><p><b>{{book.title}}</b></p></div>
+            <div class="card-title">
+              <b>{{book.title}}</b>
+            </div>     
             <b *ngIf="book.categories_list">Categories: </b>
               <span class="chip" *ngFor="let category of book.categories_list">{{category.name}}<br></span>
             <br>
@@ -41,7 +32,7 @@
               {{author.name}}
             </span>
             <p><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
-            <p>Pages: {{book.pageCount}}</p>
+            <p><b>Pages: </b>{{book.pageCount}}</p>
           </div> 
           <div class="card-action">
             <button
@@ -50,49 +41,24 @@
             >
             add to 'my list'
             </button>
-            <button
-              class="btn"
-              (click)="addBookToDB(book)"
-            >
-            add to database
-            </button>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="col s3">
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title" [(ngModel)]="editeBookData.title">
+    <label for="authors">authors</label>    
+    <input type="text" name="authors" id="authors" [(ngModel)]="editeBookData.authors">
+    <label for="categories">categories</label>
+    <input type="text" name="categories" id="categories" [(ngModel)]="editeBookData.categories">
+    <label for="description">description</label>
+    <input type="text" name="description" id="description" [(ngModel)]="editeBookData.description">
+    <label for="pageCount">Pages</label>
+    <input type="text" name="pageCount" id="pageCount" [(ngModel)]="editeBookData.pageCount">
+    <label for="image">image</label>
+    <input type="file" name="image" id="image">
+    <button class="btn">edite</button>
   </div>
 </div>
-<!-- <hr>
-<hr>
-<table class="table centered">
-  <thead>
-      <tr class="row">
-        <th class="col s2">Image</th>
-        <th class="col s3">
-          <i class="small material-icons" (click)="getBooksWithSort({'title': -1})">arrow_drop_up</i>Title<i class="small material-icons" (click)="getBooksWithSort({'title': 1})">arrow_drop_down</i>
-        </th>
-        <th class="col s2">
-          <i class="small material-icons" (click)="getBooksWithSort({authors: -1})">arrow_drop_up</i>Authors<i class="small material-icons" (click)="getBooksWithSort({authors: 1})">arrow_drop_down</i>
-        </th>
-        <th class="col s2">
-          <i class="small material-icons" (click)="getBooksWithSort({categories: -1})">arrow_drop_up</i>Categories<i class="small material-icons" (click)="getBooksWithSort({categories: 1})">arrow_drop_down</i>
-        </th>
-        <th class="col s2">
-          <i class="small material-icons" (click)="getBooksWithSort({page: -1})">arrow_drop_up</i><span>Page</span><i class="small material-icons" (click)="getBooksWithSort({page: 1})">arrow_drop_down</i>
-        </th>
-        <th class="col s1"><span (click)="show('type')">Type</span></th>
-      </tr>
-  </thead>
-  <tbody class="tbody">
-      <tr class="row" *ngFor="let book of books">
-        <td class="col s2"> 
-          <label for="img-field" class="label"><img src={{book.image}} alt="book image" class="img-for-book"></label>
-          <input id="img-field" name="img-field" (change)="uploadFile($event, book._id)" type="file" accept=".png,.jpg,.jpeg.gif">
-        </td>
-        <td class="col s3">{{book.title}}</td>
-        <td class="col s2"><span *ngFor="let author of book.authors_list">{{author.name}}<br></span></td>
-        <td class="col s2"><span *ngFor="let category of book.categories_list">{{category.name}}<br></span></td>
-        <td class="col s2">{{book.pageCount}}</td>
-        <td class="col s1">{{book.printType}}</td>
-      </tr>
-  </tbody>
-</table> -->

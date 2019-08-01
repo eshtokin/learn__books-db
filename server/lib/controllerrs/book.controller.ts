@@ -9,20 +9,6 @@ export const Books = mongoose.model('Books', BookSchema);
 
 export class BookController {
   public getAllBook(req: Request, res: Response) {
-    // let sortData = {};
-    // if (req.query.title) {
-    //   sortData = {title: Number(req.query.title)}
-    // }
-    // if (req.query.authors) {
-    //   sortData = {authors: Number(req.query.authors)}
-    // }
-    // if (req.query.categories) {
-    //   sortData = {categories: Number(req.query.categories)}
-    // }
-    // if (req.query.page) {
-    //   sortData = {pageCount: Number(req.query.page)}
-    // }
-
     Books.aggregate([{
       $lookup: {
         from: "categories",
@@ -54,10 +40,7 @@ export class BookController {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
     }
-    console.log(req.query); 
     if (req.query.authors && req.query.categories) {
-      console.log('&&');
-      
       Books.find({
         $and: [
           {categories: {$in: categoriesFilter}},
@@ -69,8 +52,6 @@ export class BookController {
       return
     }
     if (req.query.authors || req.query.categories) {
-      console.log('||');
-      
       Books.find({
         $or: [
           {categories: {$in: categoriesFilter}},
@@ -140,9 +121,7 @@ export class BookController {
       }
 
       if (book && req.body.user) {
-        User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
-          console.log(book._id);
-        });
+        User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} });
         return res.status(200).send({
           message: `added in bd and profile`
         })
@@ -168,9 +147,7 @@ export class BookController {
         industryIdentifiers: req.body.book.industryIdentifiers
       }, (err, book) => {
         if (book && req.body.user) {
-          User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
-            console.log(book._id);
-          });
+          User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} });
         }
 
           return res.status(200).send({

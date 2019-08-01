@@ -15,9 +15,6 @@ import { CatalogComponent } from './shared/catalog/catalog.component';
 import { GoogleBooks } from './service/google-books.service';
 import { BookService } from './service/books.service';
 import { DbViewerComponent } from './admin/db-viewer/db-viewer.component';
-import { BookCardComponent } from './shared/component/book-card/book-card.component';
-// import { HTTP_INTERCEPTORS } from '@angular/common/http';
-// import { TokenInterceptor } from './interceptor/token.interseptor';
 
 @NgModule({
   declarations: [
@@ -28,8 +25,7 @@ import { BookCardComponent } from './shared/component/book-card/book-card.compon
     UserTableComponent,
     ProfileComponent,
     CatalogComponent,
-    DbViewerComponent,
-    BookCardComponent
+    DbViewerComponent
     ],
   imports: [
     BrowserModule,
@@ -42,8 +38,7 @@ import { BookCardComponent } from './shared/component/book-card/book-card.compon
     UserInfo,
     RouteGuard,
     GoogleBooks,
-    BookService,
-    // {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+    BookService
   ],
   bootstrap: [AppComponent]
 })

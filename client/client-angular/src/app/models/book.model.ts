@@ -5,7 +5,7 @@ export interface Book {
   categories_list?: object[];
   description: string;
   image: string;
-  industryIdentifiers: object[];
+  industryIdentifiers?: object[];
   pageCount: number;
   printType: string;
   title: string;

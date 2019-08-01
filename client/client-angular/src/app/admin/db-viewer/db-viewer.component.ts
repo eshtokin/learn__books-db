@@ -1,7 +1,7 @@
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
-import { SortType } from '../../models/sort-type.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-db-viewer',
@@ -13,6 +13,15 @@ export class DbViewerComponent implements OnInit {
   books: Book;
   categories: object[] = [];
   authors: object[] = [];
+  editeBookData: Book = {
+    title: '',
+    authors: [],
+    categories: [],
+    description: '',
+    image: '',
+    pageCount: 0,
+    printType: 'Book'
+  };
 
   filterData = {
     title: '',
@@ -20,7 +29,10 @@ export class DbViewerComponent implements OnInit {
     authors: new Set()
   };
 
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private router: Router
+    ) {}
 
   ngOnInit() {
     this.getBooksWithSort();
@@ -73,7 +85,7 @@ export class DbViewerComponent implements OnInit {
     });
   }
 
-  getBooksWithSort(sortType: SortType = {title: -1}) { // SortType
+  getBooksWithSort() {
     this.bookService.getAllBooks()
     .then(el => {
       this.books = el.slice();
@@ -106,5 +118,29 @@ export class DbViewerComponent implements OnInit {
 
   changeBookImg(id: string, image: string | ArrayBuffer) {
     this.bookService.changeImageInBook({id, image});
+  }
+
+  editeBook(book) {
+    console.log(this.books);
+    console.log(book);
+
+    this.editeBookData  = {
+      title: book.title,
+      authors: [],
+      categories: [],
+      pageCount: book.pageCount,
+      description: book.description,
+      industryIdentifiers: book.industryIdentifiers,
+      image: book.image,
+      printType: book.printType
+    };
+
+    book.authors_list.forEach(a => {
+      this.editeBookData.authors.push(a.name);
+    });
+
+    book.categories_list.forEach(c => {
+      this.editeBookData.categories.push(c.name);
+    });
   }
 }
