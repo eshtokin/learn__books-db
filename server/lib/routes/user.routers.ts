@@ -42,6 +42,9 @@ export class Routes {
         .post(this.bookController.addBook)
         .delete(this.bookController.deleteBook)
 
+        app.route("/somebooks")
+        .get(this.bookController.getSomeBooks)
+
         app.route("/books/:bookId")
         .get(this.bookController.getBook)
 

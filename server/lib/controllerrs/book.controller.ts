@@ -9,26 +9,26 @@ export const Books = mongoose.model('Books', BookSchema);
 
 export class BookController {
   public getAllBook(req: Request, res: Response) {
-    let sortData = {};
-    if (req.query.title) {
-      sortData = {title: Number(req.query.title)}
-    }
-    if (req.query.authors) {
-      sortData = {authors: Number(req.query.authors)}
-    }
-    if (req.query.categories) {
-      sortData = {categories: Number(req.query.categories)}
-    }
-    if (req.query.page) {
-      sortData = {pageCount: Number(req.query.page)}
-    }
+    // let sortData = {};
+    // if (req.query.title) {
+    //   sortData = {title: Number(req.query.title)}
+    // }
+    // if (req.query.authors) {
+    //   sortData = {authors: Number(req.query.authors)}
+    // }
+    // if (req.query.categories) {
+    //   sortData = {categories: Number(req.query.categories)}
+    // }
+    // if (req.query.page) {
+    //   sortData = {pageCount: Number(req.query.page)}
+    // }
 
     Books.aggregate([{
       $lookup: {
-          from: "categories",
-          localField: "categories",
-          foreignField: "_id",
-          as: "categories_list"
+        from: "categories",
+        localField: "categories",
+        foreignField: "_id",
+        as: "categories_list"
       }
     }, {
       $lookup: {
@@ -36,11 +36,32 @@ export class BookController {
         localField: "authors",
         foreignField: "_id",
         as: "authors_list"
-    }
-    }, {
-      $sort: sortData
-    }], (err, list) => {
+    }}], (err, list) => {
       res.json(list)
+    })
+  }
+
+  public getSomeBooks(req: Request, res: Response) {
+    const authorsFilter = [];
+    const categoriesFilter = [];
+    if (req.query.authors) {
+      req.query.authors.forEach(author => {
+        authorsFilter.push(mongoose.Types.ObjectId(author))
+      })
+    }
+    if (req.query.categories) {
+      req.query.categories.forEach(category => {
+        categoriesFilter.push(mongoose.Types.ObjectId(category))
+      })
+    }
+
+    Books.find({
+      $and: [
+        {categories: {$in: categoriesFilter}},
+        {authors: {$in: authorsFilter}}
+      ]
+    }, (err, list) => {
+        res.json(list)
     })
   }
 
