@@ -4,7 +4,7 @@ export interface Book {
   categories: string[];
   categories_list?: object[];
   description: string;
-  image: string;
+  image: string | ArrayBuffer;
   industryIdentifiers?: object[];
   pageCount: number;
   printType: string;

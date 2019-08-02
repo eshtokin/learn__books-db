@@ -12,12 +12,18 @@
       <hr>
       <button class="btn" (click)="filtering()">OK</button>
   </div>
-  <div class="col s7">
+  <div class="col s7" [ngClass]="{s10 : !this.userInfo.getStatus()}">
     <div class="z-depth-4" *ngFor="let book of books">
       <div class="card horizontal">
         <div class="card-image">
           <img src="{{book.image}}" class="book-image">
-          <button (click)=editeBook(book) class="btn edite-btn"><i class="material-icons">edite</i></button>
+          <button (click)=chooseEditeBook(book) class="btn edite-btn rework-btn"><i class="material-icons">edite</i></button>
+          <button 
+            *ngIf="this.userInfo.getStatus()"
+            (click)=deleteBook(book)
+            class="btn delete-btn rework-btn">
+            <i class="material-icons">delete</i>
+          </button>
         </div>
         <div class="card-stacked">
           <div class="card-content">
@@ -46,19 +52,30 @@
       </div>
     </div>
   </div>
-  <div class="col s3">
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title" [(ngModel)]="editeBookData.title">
-    <label for="authors">authors</label>    
-    <input type="text" name="authors" id="authors" [(ngModel)]="editeBookData.authors">
-    <label for="categories">categories</label>
-    <input type="text" name="categories" id="categories" [(ngModel)]="editeBookData.categories">
-    <label for="description">description</label>
-    <input type="text" name="description" id="description" [(ngModel)]="editeBookData.description">
-    <label for="pageCount">Pages</label>
-    <input type="text" name="pageCount" id="pageCount" [(ngModel)]="editeBookData.pageCount">
-    <label for="image">image</label>
-    <input type="file" name="image" id="image">
-    <button class="btn">edite</button>
+  <div *ngIf="this.userInfo.getStatus()" class="col s3">
+    <div class="input-field">
+      <label for="title" class="active">title</label>
+      <input type="text" name="title" id="title" [(ngModel)]="editeBookData.title">
+    </div>
+    <div class="input-field">
+      <label for="authors"  class="active">authors</label>    
+      <input type="text" name="authors" id="authors" [(ngModel)]="editeBookData.authors">
+    </div>
+    <div class="input-field">
+      <label for="categories" class="active">categories</label>
+      <input type="text" name="categories" id="categories" [(ngModel)]="editeBookData.categories">
+    </div>
+    <div class="input-field">
+      <label for="description" class="active">description</label>
+      <input type="text" name="description" id="description" [(ngModel)]="editeBookData.description">
+    </div>
+    <div class="input-field">
+      <label for="pageCount" class="active">pages</label>
+      <input type="number" name="pageCount" id="pageCount" min="0" [(ngModel)]="editeBookData.pageCount">
+    </div>
+    <label for="image" class="active" [ngClass]="{alredy: this.editeBookData.image}">image</label>
+    <input type="file" name="image" id="image" (change)="uploadFile($event)">
+    <hr>
+    <button class="btn btn-save-change" (click)="editeBook()">Edite</button>
   </div>
 </div>

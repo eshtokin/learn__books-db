@@ -2,6 +2,7 @@ import { Component, OnInit, SecurityContext } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
 import {Router} from '@angular/router';
+import { UserInfo } from 'src/app/service/user-info.service';
 
 @Component({
   selector: 'app-db-viewer',
@@ -19,7 +20,7 @@ export class DbViewerComponent implements OnInit {
     categories: [],
     description: '',
     image: '',
-    pageCount: 0,
+    pageCount: null,
     printType: 'Book'
   };
 
@@ -30,12 +31,17 @@ export class DbViewerComponent implements OnInit {
   };
 
   constructor(
+    private userInfo: UserInfo,
     private bookService: BookService,
     private router: Router
     ) {}
 
   ngOnInit() {
-    this.getBooksWithSort();
+    this.init();
+  }
+
+  init() {
+    this.getBooks();
     this.getAuthors();
     this.getCategories();
   }
@@ -85,7 +91,7 @@ export class DbViewerComponent implements OnInit {
     });
   }
 
-  getBooksWithSort() {
+  getBooks() {
     this.bookService.getAllBooks()
     .then(el => {
       this.books = el.slice();
@@ -110,20 +116,12 @@ export class DbViewerComponent implements OnInit {
     const input = e.target;
     const reader = new FileReader();
     reader.onload = () => {
-      this.image = reader.result;
-      this.changeBookImg(id, this.image);
+      this.editeBookData.image = reader.result;
     };
     reader.readAsDataURL(input.files[0]);
   }
 
-  changeBookImg(id: string, image: string | ArrayBuffer) {
-    this.bookService.changeImageInBook({id, image});
-  }
-
-  editeBook(book) {
-    console.log(this.books);
-    console.log(book);
-
+  chooseEditeBook(book) {
     this.editeBookData  = {
       title: book.title,
       authors: [],
@@ -142,5 +140,15 @@ export class DbViewerComponent implements OnInit {
     book.categories_list.forEach(c => {
       this.editeBookData.categories.push(c.name);
     });
+  }
+
+  editeBook() {
+    this.bookService.updateBook(this.editeBookData);
+    this.init();
+  }
+
+  deleteBook(book: Book): void {
+    this.bookService.deleteBook(book);
+    this.init();
   }
 }

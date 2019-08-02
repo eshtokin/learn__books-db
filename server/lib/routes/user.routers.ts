@@ -40,6 +40,7 @@ export class Routes {
         app.route("/books")
         .get(this.bookController.getAllBook)
         .post(this.bookController.addBook)
+        .put(this.bookController.updateBook)
         .delete(this.bookController.deleteBook)
 
         app.route("/somebooks")

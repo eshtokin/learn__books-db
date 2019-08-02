@@ -30,8 +30,24 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
+  updateBook(data: Book) {
+    return Axios.put('/books', data)
+    .then(res => {
+      return res;
+    })
+    .catch(err => console.log(err));
+  }
+
   changeImageInBook(data: {id: string, image: string | ArrayBuffer}) {
     return Axios.post('/book', data)
+    .then(res => {
+      return res;
+    })
+    .catch(err => console.log(err));
+  }
+
+  deleteBook(data: Book) {
+    return Axios.delete('/books', {data})
     .then(res => {
       return res;
     })

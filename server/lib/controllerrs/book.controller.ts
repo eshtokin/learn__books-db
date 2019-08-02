@@ -157,8 +157,28 @@ export class BookController {
     })
   }
 
+  public updateBook(req: Request, res: Response) {
+     Books.findOneAndUpdate({industryIdentifiers: req.body.industryIdentifiers},
+    {
+      title: req.body.title,
+      authors: req.body.authors,
+      categories: req.body.categories,
+      description: req.body.description,
+      pageCount: req.body.pageCount,
+      image: req.body.image
+
+    }, (err, book) => {
+      if (err) {
+        return res.send(err)
+      }
+      return res.status(200).send({
+        message: 'Successfuy updated'
+      })
+    })
+  }
+
   public deleteBook(req: Request, res: Response) {
-    Books.findOneAndDelete({title: req.body.title}, (err) => {
+    Books.findOneAndDelete({industryIdentifiers: req.body.industryIdentifiers}, (err) => {
       if (err) {
         return res.send(err)
       }
