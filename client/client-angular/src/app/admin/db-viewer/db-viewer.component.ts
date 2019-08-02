@@ -1,7 +1,6 @@
 import { Component, OnInit, SecurityContext } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
-import {Router} from '@angular/router';
 import { UserInfo } from 'src/app/service/user-info.service';
 
 @Component({
@@ -33,21 +32,20 @@ export class DbViewerComponent implements OnInit {
   constructor(
     private userInfo: UserInfo,
     private bookService: BookService,
-    private router: Router
     ) {}
 
   ngOnInit() {
     this.init();
   }
 
-  init() {
+  init(): void {
     this.getBooks();
     this.getAuthors();
     this.getCategories();
   }
 
-  chooseCategory(category) {
-    const status = document.getElementById(category._id).checked; // error
+  chooseCategory(category): void {
+    const status: boolean = document.getElementById(category._id).checked;
     if (status) {
       this.filterData.categories.add(category);
     }
@@ -56,8 +54,8 @@ export class DbViewerComponent implements OnInit {
     }
   }
 
-  chooseAuthor(author) {
-    const status = document.getElementById(author._id).checked;
+  chooseAuthor(author): void {
+    const status: boolean = document.getElementById(author._id).checked;
     if (status) {
       this.filterData.authors.add(author);
     }
@@ -66,7 +64,7 @@ export class DbViewerComponent implements OnInit {
     }
   }
 
-  filtering() {
+  filtering(): void {
     const data = {
       categories: [],
       authors: []
@@ -91,28 +89,28 @@ export class DbViewerComponent implements OnInit {
     });
   }
 
-  getBooks() {
+  getBooks(): void {
     this.bookService.getAllBooks()
     .then(el => {
       this.books = el.slice();
     });
   }
 
-  getAuthors() {
+  getAuthors(): void {
     this.bookService.getAllAuthors()
     .then(el => {
       this.authors = el.slice();
     });
   }
 
-  getCategories() {
+  getCategories(): void {
     this.bookService.getAllCategories()
     .then(el => {
       this.categories = el.slice();
     });
   }
 
-  uploadFile(e, id: string) {
+  uploadFile(e, id: string): void {
     const input = e.target;
     const reader = new FileReader();
     reader.onload = () => {
@@ -121,8 +119,8 @@ export class DbViewerComponent implements OnInit {
     reader.readAsDataURL(input.files[0]);
   }
 
-  chooseEditeBook(book) {
-    this.editeBookData  = {
+  chooseEditeBook(book): void {
+    this.editeBookData = {
       title: book.title,
       authors: [],
       categories: [],
@@ -142,7 +140,7 @@ export class DbViewerComponent implements OnInit {
     });
   }
 
-  editeBook() {
+  editeBook(): void {
     this.bookService.updateBook(this.editeBookData);
     this.init();
   }

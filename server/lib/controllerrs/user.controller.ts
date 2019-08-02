@@ -7,11 +7,15 @@ export const User = mongoose.model('User', UserSchema);
 export class UserController {
 
     public getAllUsers(req: Request, res: Response) {
-        User.find({}, (err, users) => {
-            if (err) {
-                res.send(err)
+        User.aggregate([{
+            $lookup: {
+              from: "books",
+              localField: "books",
+              foreignField: "_id",
+              as: "book_list"
             }
-            res.json(users)
+          }], (err, list) => {
+            res.json(list)
         })
     }
     
@@ -25,7 +29,9 @@ export class UserController {
     }
 
     public updateUser(req: Request, res: Response) {
-        User.findByIdAndUpdate(req.params.userId, req.body, {new:true}, (err, user) => {
+        console.log('work');
+        
+        User.findOneAndUpdate({_id: req.params.userId}, req.body, {new:true}, (err, user) => {
             if (err) {
                 res.send(err)
             }
@@ -34,7 +40,7 @@ export class UserController {
     }
 
     public deleteUser(req: Request, res: Response) {
-        User.findByIdAndRemove(req.params.userId, (err, user) => {
+        User.findOneAndDelete({_id: req.params.userId}, (err, user) => {
             if (err) {
                 res.send(err)
             }

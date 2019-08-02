@@ -20,7 +20,8 @@ export class UserTableComponent implements OnInit {
     role: null,
     books: [],
     image: '',
-    _id: ''
+    _id: '',
+    book_list: []
   };
   okBtnStatus = false; // true - visible; false - hidden
 
@@ -28,8 +29,7 @@ export class UserTableComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl('', [Validators.required, this.checkName]),
     email: new FormControl('', [Validators.required, this.checkEmail]),
-    password: new FormControl('', [Validators.required, this.checkPassword]),
-    role: new FormControl('', [Validators.required, this.checkRole])
+    role: new FormControl('', [Validators.required, this.checkRole]),
   });
 
   onSubmit() {
@@ -45,7 +45,7 @@ export class UserTableComponent implements OnInit {
   }
 
   checkEmail(control: FormControl) {
-    if (control.value.search(/^[\w]{3,16}@[\w]{3,16}.[a-z]{2,}$/)) {
+    if (control.value.search(/^[\w]{3,16}@[\w]{1,16}.[a-z]{1,}$/)) {
       return {
         '' : true
       };
@@ -64,23 +64,35 @@ export class UserTableComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.init();
-  }
+  // checkBooks(control: FormControl) {
+  //   if (control.value )
+  // }
 
   init(): void {
     this.userService.getAllUsers().then(el => {
       this.users = el.data.slice();
     });
+
   }
 
-  deleteUser(event): void {
-    this.userService.delete(event.target.id);
-    this.users = this.users.filter((el: User) => el._id !== event.target.id);
+  deleteUser(id): void {
+    this.userService.delete(id)
+    .then(res => {
+      this.init();
+    });
   }
 
   selectUser(user: User): void {
-    this.userForEdite = user;
+    this.okBtnStatus = !this.okBtnStatus;
+    this.userForEdite = {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+      image: user.image,
+      _id: user._id,
+      book_list: user.book_list
+    };
   }
 
   resetUserForEdite(): void {
@@ -108,11 +120,18 @@ export class UserTableComponent implements OnInit {
     this.userService.edit(this.userForEdite._id, this.userForEdite);
     this.resetUserForEdite();
     this.okBtn();
+    this.init();
   }
 
   addAction(): void {
-    this.userService.registrate(this.userForEdite);
-    this.users.push(this.userForEdite);
+    this.userService.registrate(this.userForEdite)
+    .then(() => {
+      this.init();
+      });
     this.resetUserForEdite();
+  }
+
+  ngOnInit() {
+    this.init();
   }
 }

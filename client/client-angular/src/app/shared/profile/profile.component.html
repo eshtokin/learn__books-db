@@ -1,20 +1,58 @@
-<div class="container">    
-
-<div class="col s12 m7">
-    <!-- <h5 class="header">User profile</h5> -->
-    <div class="card horizontal">
+<div class="container">
+    <div class="col s12 m7">
+        <!-- <h5 class="header">User profile</h5> -->
+        <div class="card horizontal">
+            <div class="card-image">
+                <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png">
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">
+                    <p>Name: {{ this.userInfo.getCurrentUser().name }}</p>
+                    <p>E-mail {{ this.userInfo.getCurrentUser().email }}</p>
+                    <p>Status: {{ (this.userInfo.getCurrentUser().role === 1) ? 'admin' : 'user'}}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">This is a link</a>
+                </div>
+            </div>
+        </div>
+    </div>            
+</div>
+<div class="container">
+    <p>My book list: </p>
+    <div class="card horizontal" *ngFor="let book of books">
         <div class="card-image">
-            <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png">
+          <img src="{{book.image}}" class="book-image">
+          <button 
+            *ngIf="this.userInfo.getStatus()"
+            (click)=deleteBookFromProfile(book)
+            class="btn delete-btn rework-btn">
+            <i class="material-icons">delete</i>
+          </button>
         </div>
         <div class="card-stacked">
-            <div class="card-content">
-                <p>Name: {{ this.userInfo.getCurrentUser().name }}</p>
-                <p>E-mail {{ this.userInfo.getCurrentUser().email }}</p>
-                <p>Status: {{ (this.userInfo.getCurrentUser().role === 1) ? 'admin' : 'user'}}</p>
-            </div>
-            <div class="card-action">
-                <a href="#">This is a link</a>
-            </div>
+          <div class="card-content">
+            <div class="card-title">
+              <b>{{book.title}}</b>
+            </div>     
+            <b *ngIf="book.categories_list">Categories: </b>
+              <span class="chip" *ngFor="let category of book.categories_list">{{category.name}}<br></span>
+            <br>
+            <b *ngIf="book.authors_list">Authors: </b>
+            <span class="chip" *ngFor="let author of book.authors_list">
+              {{author.name}}
+            </span>
+            <p><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
+            <p><b>Pages: </b>{{book.pageCount}}</p>
+          </div> 
+          <div class="card-action">
+            <button
+              class="btn add-to-pro-btn"
+              (click)="addBookToDB(book, this.userInfo.getCurrentUser())"
+            >
+            add to 'my list'
+            </button>
+          </div>
         </div>
     </div>
 </div>

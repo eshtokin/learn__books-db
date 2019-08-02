@@ -4,6 +4,7 @@ import {Response, Request} from 'express'
 import { Category } from './category.controller'
 import { Authors } from './author.controller'
 import { User } from './user.controller';
+import { monitorEventLoopDelay } from 'perf_hooks';
 
 export const Books = mongoose.model('Books', BookSchema);
 
@@ -118,13 +119,15 @@ export class BookController {
         return res.status(500).send({
           message: `error on the server`
         })
-      }
-
+      }  
+      
       if (book && req.body.user) {
-        User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} });
-        return res.status(200).send({
-          message: `added in bd and profile`
+        User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
+          return res.status(200).send({
+            message: `added in bd and profile`
+          })
         })
+        return;
       }
 
       if (book) {
@@ -146,10 +149,16 @@ export class BookController {
         printType: req.body.book.printType,
         industryIdentifiers: req.body.book.industryIdentifiers
       }, (err, book) => {
+        console.log(bookId);
+        
         if (book && req.body.user) {
-          User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} });
+          User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
+            return res.status(200).send({
+              message: `added in bd and profile 222`
+            })
+          })
+          return;
         }
-
           return res.status(200).send({
           message: 'added in bd'
         })
