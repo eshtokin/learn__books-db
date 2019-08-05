@@ -12,6 +12,7 @@ import { User } from 'src/app/models/user.model';
 })
 export class ProfileComponent implements OnInit {
   books: Book[];
+  booksId: string[];
   user: User;
 
   constructor(
@@ -37,16 +38,29 @@ export class ProfileComponent implements OnInit {
       this.user.books = books;
       console.log(this.user);
 
-      this.userService.edit(userId, this.user);
+      this.userService.edit(userId, this.user)
+      .then(res => {
+        this.init();
+      });
+    });
+  }
+
+  init() {
+    this.userService.getUser(this.userInfo.getCurrentUser().id)
+    .then(user => {
+      if (user.books.length > 0) {
+        this.userService.getUserBooks(user.books)
+        .then(books => {
+          this.books = books;
+        });
+      }
+      if (user.books.length === 0) {
+        this.books = [];
+      }
     });
   }
 
   ngOnInit() {
-    this.bookService.getAllBooks()
-    .then(data => {
-      this.books = data.slice();
-      console.log(this.books);
-
-    });
+    this.init();
   }
 }

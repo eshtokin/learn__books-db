@@ -1,6 +1,7 @@
 import * as mongoose from "mongoose"
 import { UserSchema } from "../models/user.model"
 import { Request, Response } from "express"
+import { Books } from "./book.controller";
 
 export const User = mongoose.model('User', UserSchema);
 
@@ -21,17 +22,19 @@ export class UserController {
     
     public getUserById(req: Request, res: Response) {           
         User.findById(req.params.userId, (err, user) => {
-            if(err){
-                res.send(err);
+            if (err){
+                return res.send(err);
             }
-            res.json(user);
+            return res.json(user);
         });
     }
 
     public updateUser(req: Request, res: Response) {
         console.log('work');
+
+        let bookList = req.body.books.map(el => mongoose.Types.ObjectId(el));
         
-        User.findOneAndUpdate({_id: req.params.userId}, req.body, {new:true}, (err, user) => {
+        User.findOneAndUpdate({_id: req.params.userId}, { books: bookList }, {new:true}, (err, user) => {
             if (err) {
                 res.send(err)
             }

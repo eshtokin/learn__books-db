@@ -34,7 +34,14 @@ export class UserService implements OnInit {
         .catch(err => console.log(err));
     }
 
-    delete(id: string) {
+    public getUserBooks(books) {
+        console.log('get user books: ', books);
+        return Axios.get('/userbooks', {params: {books}})
+        .then(res => res.data)
+        .catch(err => console.log(err));
+    }
+
+    public delete(id: string) {
         return Axios.delete(`/user/${id}`)
         .then(res => res)
         .catch(err => console.log(err));

@@ -65,6 +65,13 @@ export class BookController {
     }
   }
 
+  public getUserBooks(req: Request, res: Response) {
+    let oIdBooks = req.query.books.map(el => mongoose.Types.ObjectId(el));
+    Books.find({_id: {$in: oIdBooks}}, (err, bookList) => {
+      return res.json(bookList);
+    })
+  }
+
   public addBook(req: Request, res: Response) {
     let listCategories = [];
     let listCategoriesId = [];
@@ -149,8 +156,6 @@ export class BookController {
         printType: req.body.book.printType,
         industryIdentifiers: req.body.book.industryIdentifiers
       }, (err, book) => {
-        console.log(bookId);
-        
         if (book && req.body.user) {
           User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
             return res.status(200).send({
