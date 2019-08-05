@@ -30,11 +30,17 @@ export class UserController {
     }
 
     public updateUser(req: Request, res: Response) {
-        console.log('work');
-
-        let bookList = req.body.books.map(el => mongoose.Types.ObjectId(el));
-        
-        User.findOneAndUpdate({_id: req.params.userId}, { books: bookList }, {new:true}, (err, user) => {
+        let data = req.body;
+        let booksId = [];
+        if (req.body.books) {
+            booksId = req.body.books.map(el => mongoose.Types.ObjectId(el));
+            data = {
+                books: booksId
+            }
+        }
+        // let bookList = req.body.books.map(el => mongoose.Types.ObjectId(el));
+        // User.findOneAndUpdate({_id: req.params.userId}, { books: bookList }, {new:true}, (err, user) => {
+        User.findOneAndUpdate({_id: req.params.userId}, data, {new:true}, (err, user) => {
             if (err) {
                 res.send(err)
             }

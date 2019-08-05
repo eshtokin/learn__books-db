@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserInfo } from 'src/app/service/user-info.service';
-import { BookService } from 'src/app/service/books.service';
 import { Book } from 'src/app/models/book.model';
 import { UserService } from 'src/app/service/users.service';
 import { User } from 'src/app/models/user.model';
@@ -13,11 +12,10 @@ import { User } from 'src/app/models/user.model';
 export class ProfileComponent implements OnInit {
   books: Book[];
   booksId: string[];
-  user: User;
+  user: User = this.userInfo.getCurrentUser();
 
   constructor(
     private userInfo: UserInfo,
-    private bookService: BookService,
     private userService: UserService
   ) { }
 
@@ -40,14 +38,16 @@ export class ProfileComponent implements OnInit {
 
       this.userService.edit(userId, this.user)
       .then(res => {
-        this.init();
+        this.ngOnInit();
       });
     });
   }
 
-  init() {
+  ngOnInit() {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
     .then(user => {
+      this.user = user;
+
       if (user.books.length > 0) {
         this.userService.getUserBooks(user.books)
         .then(books => {
@@ -58,9 +58,5 @@ export class ProfileComponent implements OnInit {
         this.books = [];
       }
     });
-  }
-
-  ngOnInit() {
-    this.init();
   }
 }

@@ -35,7 +35,6 @@ export class UserService implements OnInit {
     }
 
     public getUserBooks(books) {
-        console.log('get user books: ', books);
         return Axios.get('/userbooks', {params: {books}})
         .then(res => res.data)
         .catch(err => console.log(err));

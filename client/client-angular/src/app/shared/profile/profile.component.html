@@ -7,12 +7,11 @@
             </div>
             <div class="card-stacked">
                 <div class="card-content">
-                    <p>Name: {{ this.userInfo.getCurrentUser().name }}</p>
-                    <p>E-mail {{ this.userInfo.getCurrentUser().email }}</p>
-                    <p>Status: {{ (this.userInfo.getCurrentUser().role === 1) ? 'admin' : 'user'}}</p>
+                    <p>Name: {{ user.name }}</p>
+                    <p>E-mail {{ user.email }}</p>
+                    <p>Status: {{ (user.role === 1) ? 'admin' : 'user'}}</p>
                 </div>
                 <div class="card-action">
-                    <a href="#">This is a link</a>
                 </div>
             </div>
         </div>
@@ -46,12 +45,6 @@
             <p><b>Pages: </b>{{book.pageCount}}</p>
           </div> 
           <div class="card-action">
-            <button
-              class="btn add-to-pro-btn"
-              (click)="addBookToDB(book, this.userInfo.getCurrentUser())"
-            >
-            add to 'my list'
-            </button>
           </div>
         </div>
     </div>

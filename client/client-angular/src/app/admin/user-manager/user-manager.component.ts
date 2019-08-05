@@ -4,11 +4,11 @@ import { FormGroup, FormControl, Validators, Form } from '@angular/forms';
 import { User } from '../../models/user.model';
 
 @Component({
-  selector: 'app-user-table',
-  templateUrl: './user-table.component.html',
-  styleUrls: ['./user-table.component.scss']
+  selector: 'app-user-manager',
+  templateUrl: './user-manager.component.html',
+  styleUrls: ['./user-manager.component.scss']
 })
-export class UserTableComponent implements OnInit {
+export class UserManagerComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
@@ -117,10 +117,10 @@ export class UserTableComponent implements OnInit {
   }
 
   okAction(): void {
-    this.userService.edit(this.userForEdite._id, this.userForEdite);
+    this.userService.edit(this.userForEdite._id, this.userForEdite)
+    .then(() => {this.init(); });
     this.resetUserForEdite();
     this.okBtn();
-    this.init();
   }
 
   addAction(): void {

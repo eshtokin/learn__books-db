@@ -2,13 +2,14 @@ import { Component, OnInit, SecurityContext } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
-  selector: 'app-db-viewer',
-  templateUrl: './db-viewer.component.html',
-  styleUrls: ['./db-viewer.component.scss']
+  selector: 'app-books-manager',
+  templateUrl: './books-manager.component.html',
+  styleUrls: ['./books-manager.component.scss']
 })
-export class DbViewerComponent implements OnInit {
+export class BooksManagerComponent implements OnInit {
   image: string | ArrayBuffer;
   books: Book;
   categories: object[] = [];
@@ -69,10 +70,10 @@ export class DbViewerComponent implements OnInit {
       categories: [],
       authors: []
     };
-    this.filterData.categories.forEach(category => {
+    this.filterData.categories.forEach((category: {name: string, _id: string}) => {
       data.categories.push(category._id);
     });
-    this.filterData.authors.forEach(author => {
+    this.filterData.authors.forEach((author: {name: string, _id: string}) => {
       data.authors.push(author._id);
     });
 
