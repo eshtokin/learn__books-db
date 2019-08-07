@@ -15,7 +15,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  getSomeBooks(data) {
+  getSomeBooks(data: {categories?: string[], authors?: string[]}) {
     return Axios.get('/somebooks', {params: data})
     .then(res => {
       return res.data;
@@ -71,7 +71,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  filtering(data) {
+  filtering(data: {categories?: string[], authors?: string[]}) {
     return Axios.get('/books', {params: data});
   }
 

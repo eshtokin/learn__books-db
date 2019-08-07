@@ -61,7 +61,7 @@ export class AuthorizationController {
                 name: req.body.name,
                 image: '',
                 books: [],
-                role: req.body.role
+                role: req.body.role || 2
             }, (err, user) => {
                 res.status(200).send({
                     message: `Registration success`

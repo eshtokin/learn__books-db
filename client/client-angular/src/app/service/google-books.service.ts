@@ -9,14 +9,15 @@ export class GoogleBooks {
     currentPage: 0
   };
 
-  async searchForBook(searchString, params) {
+  async searchForBook(searchString: string, params: {startIndex: number, maxResults: number}) {
     const url = `https://www.googleapis.com/books/v1/volumes?q=${searchString}`;
 
     this.pageInfo.currentItems.length = 0;
 
     return await Axios.get(url, {params})
     .then(res => {
-      res.data.items.forEach(element => {
+      res.data.items.forEach((element) => {
+        console.log('Volume info', element)
         this.pageInfo.currentItems.push(element.volumeInfo);
       });
 
