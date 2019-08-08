@@ -2,7 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 
 class AuthFormlogin extends React.Component {
-  constructor(props) {
+  constructor(props: object) {
     super(props);
 
     this.state = {
@@ -14,7 +14,7 @@ class AuthFormlogin extends React.Component {
     this.buttonHandler = this.buttonHandler.bind(this);
   }
 
-  handleInput(event) {
+  handleInput(event: React.ChangeEvent<HTMLInputElement>) {
     let data;
     switch (event.target.id) {
       case 'email': 

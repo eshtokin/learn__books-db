@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 export interface Book {
   authors: string[];
   author_list?: object[];
@@ -5,6 +7,9 @@ export interface Book {
   categories_list?: object[];
   description: string;
   image: string | ArrayBuffer;
+  imageLinks?: {
+    thumbnail: string
+  };
   industryIdentifiers?: object[];
   pageCount: number;
   printType: string;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, NavLink } from 'react-router-dom';
 
-import Profile from './Profile/Profile';
-import Catalog from './Catalog/Catalog';
+import Profile from './Shared/Profile/Profile';
+import Catalog from './Shared/Catalog/Catalog';
 import BookManager from './Admin/BookManager/BookManager';
 import UserManager from './Admin/UserManager/UserManager';
 import AuthForm from './AuthForm/Auth-form';

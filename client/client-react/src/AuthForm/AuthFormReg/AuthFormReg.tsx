@@ -3,8 +3,9 @@ import Axios from 'axios';
 // need to rework queries
  
 class AuthFormReg extends React.Component {
-  constructor(props) {
+  constructor(props: object) {
     super(props);
+
     this.state = {
       email: '',
       password: '',
@@ -15,7 +16,7 @@ class AuthFormReg extends React.Component {
     this.buttonHandler = this.buttonHandler.bind(this)
   }
 
-  handleInput(event) {
+  handleInput(event: React.ChangeEvent<HTMLInputElement>) {
     let data;
     switch (event.target.id) {
       case 'email': 
