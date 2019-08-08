@@ -1,13 +1,17 @@
 import React from 'react';
 import Axios from 'axios';
+// import UserService from '../../service/user.service';
+import { UserForLoginReg } from '../../models/user.model';
 
-class AuthFormlogin extends React.Component {
+class AuthFormlogin extends React.Component<{}, {user: UserForLoginReg}> {
   constructor(props: object) {
     super(props);
 
     this.state = {
-      email: '',
-      password: ''
+      user: {
+        email: '',
+        password: ''
+      }
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -18,13 +22,13 @@ class AuthFormlogin extends React.Component {
     let data;
     switch (event.target.id) {
       case 'email': 
-        data = {email: event.target.value};
+        data = {user: {email: event.target.value}};
         break;
       case 'password':
-        data = {password: event.target.value};
+        data = {user: {password: event.target.value}};
         break;
       default:
-        data = {};
+        data = {user: {email: '', password: ''}};
     }
     this.setState(data)
   }

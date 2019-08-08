@@ -1,4 +1,5 @@
 import React from 'react';
+import './Profile.css'
 
 class Profile extends React.Component {
   render() {
@@ -6,7 +7,6 @@ class Profile extends React.Component {
       <div>
           <div className="container">
           <div className="col s12 m7">
-            {/* <!-- <h5 className="header">User profile</h5> --> */}
             <div className="card horizontal">
               <div className="card-image">
                 <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png" alt="profile img"/>
@@ -30,7 +30,8 @@ class Profile extends React.Component {
             <div className="card-image">
               <img src="{{book.image}}" alt="books img" className="book-image"/>
               <button
-                className="btn delete-btn rework-btn">
+                // className="btn delete-btn rework-btn"
+                >
                 <i className="material-icons">delete</i>
               </button>
             </div>

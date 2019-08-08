@@ -1,4 +1,5 @@
 import  React from 'react';
+import './BookManager.css';
 
 class BookManager extends React.Component {
   render() {

@@ -1,9 +1,9 @@
 import React from 'react';
 import Axios from 'axios';
 import { NavLink } from 'react-router-dom';
-import GoogleBook from '../../components/GoogleBook/GoogleBook';
 import { Book } from '../../models/book.model';
 import { User } from '../../models/user.model';
+import GoogleBook from '../../components/GoogleBook/GoogleBook';
 
 type CatalogProps = {
   searchString: string,
@@ -30,7 +30,6 @@ class Catalog extends React.Component<{}, CatalogProps> {
         maxResult: 10
       }
     };
-
     this.inputHandler = this.inputHandler.bind(this);
     this.buttonHandler = this.buttonHandler.bind(this);
   };
@@ -72,7 +71,7 @@ class Catalog extends React.Component<{}, CatalogProps> {
       this.setState({
         currentItems,
         currentPage
-      })
+      });
       return res;
     })
     .catch(err => console.log(err));
@@ -137,7 +136,7 @@ class Catalog extends React.Component<{}, CatalogProps> {
           { this.state.availablePages ?
             this.state.availablePages.map((page, index) => {
               return (
-                <li 
+                <li
                   className={(this.state.currentPage === page) ? "waves-effect active" : "waves-effect"}
                   key={index}
                   onClick={() => {this.changePage(page)}}

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { UrlHandlingStrategy } from '@angular/router';
 
 axios.defaults.baseURL = 'http://localhost:3000/';
 

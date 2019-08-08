@@ -1,9 +1,14 @@
 import Axios from 'axios';
+import { Book } from '../models/book.model';
+
+type f = {
+  currentItems: Book[],
+  availablePages: number[],
+  currentPage: number
+}
 
 export class GoogleBooks {
-  constructor() {}
-
-  pageInfo = {
+  pageInfo:f = {
     currentItems: [],
     availablePages: [],
     currentPage: 0
@@ -16,7 +21,7 @@ export class GoogleBooks {
 
     return await Axios.get(url, {params})
     .then(res => {
-      res.data.items.forEach((element) => {
+      res.data.items.forEach((element: {volumeInfo: Book}) => {
         this.pageInfo.currentItems.push(element.volumeInfo);
       });
 
