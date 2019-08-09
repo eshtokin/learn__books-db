@@ -10,8 +10,8 @@ export interface User {
   id?: string;
 }
 
-export interface UserForLoginReg {
-  email?: string | undefined;
-  password?: string | undefined;
-  name?: string | undefined;
-}
+// export interface UserForLoginReg {
+//   email?: string | undefined;
+//   password?: string | undefined;
+//   name?: string | undefined;
+// }

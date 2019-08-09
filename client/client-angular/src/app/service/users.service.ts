@@ -5,6 +5,8 @@ export class UserService {
     login(user: {email: string, password: string}) {
         return Axios.post('/login', user)
         .then(res => {
+            localStorage.clear();
+            localStorage.setItem('token', res.data.token);
             return res;
         })
         .catch(err => console.log(err));

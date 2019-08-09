@@ -25,7 +25,7 @@ export class AuthFormLoginComponent {
       return;
     }
     this.route.navigate(['/profile']);
-    localStorage.clear();
-    localStorage.setItem('token', res.data.token);
+    // localStorage.clear();
+    // localStorage.setItem('token', res.data.token);
   }
 }

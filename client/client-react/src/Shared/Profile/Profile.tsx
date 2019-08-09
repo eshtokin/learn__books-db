@@ -1,7 +1,60 @@
 import React from 'react';
 import './Profile.css'
+import UserService from '../../service/user.service';
+import { UserInfo } from '../../service/user-info.service';
+import { User } from '../../models/user.model';
+import { Book } from '../../models/book.model';
+import GoogleBook from '../../components/GoogleBook/GoogleBook';
 
-class Profile extends React.Component {
+type ProfileProps = {
+  userBooks: string[],
+  user: User,
+  books: Book[] | []
+}
+
+class Profile extends React.Component<{}, ProfileProps> {
+  constructor(props: ProfileProps) {
+    super(props);
+
+    this.state = {
+      user: {
+        books: [''],
+        email: '',
+        image: '',
+        name: '',
+        password: '',
+        role: 0,
+        _id: '',
+        id: ''
+      },
+      userBooks: [],
+      books: []
+    }
+  }
+
+  componentDidMount() {
+    const userInfo = UserInfo;
+    const userId = userInfo.getCurrentUser().id;
+    
+    UserService.getUser(userId)
+    .then((userData: User) => {
+      this.setState({user: userData});
+      console.log("books: ", this.state.user.books);
+
+      if ((this.state.user.books as []).length > 0) {
+        UserService.getUserBooks(this.state.user.books)
+        .then((books: Book[]) => {
+          this.setState({
+            books
+          })
+        });
+      }
+      // if (user.books.length === 0) {
+      //   this.books = [];
+      // }
+    })
+  }
+
   render() {
     return (
       <div>
@@ -13,9 +66,9 @@ class Profile extends React.Component {
               </div>
                 <div className="card-stacked">
                   <div className="card-content">
-                    <p>Name: user.name</p>
-                    <p>E-mail user.email</p>
-                    <p>Status: (user.role === 1) ? 'admin' : 'user'</p>
+                    <p>Name: {this.state.user.name}</p>
+                    <p>E-mail {this.state.user.email}</p>
+                    <p>Status: {(this.state.user.role === 1) ? 'admin' : 'user'}</p>
                   </div>
                   <div className="card-action">
                   </div>
@@ -25,41 +78,27 @@ class Profile extends React.Component {
         </div>
         <div className="container">
           <p>My book list:</p>
-          {/* let books of book */}
-          <div className="card horizontal">
-            <div className="card-image">
-              <img src="{{book.image}}" alt="books img" className="book-image"/>
-              <button
-                // className="btn delete-btn rework-btn"
-                >
-                <i className="material-icons">delete</i>
-              </button>
-            </div>
-            <div className="card-stacked">
-              <div className="card-content">
-                <div className="card-title">
-                  {/* <b>{{book.title}}</b> */}
-                  book.title
-                </div>     
-                {/* if categories.list */}
-                  <b>Categories: </b>
-                  {/* *ngFor="let category of book.categories_list" */}
-                    <span className="chip">category.name<br /></span>
-                  <br />
-                  {/* *ngIf="book.authors_list" */}
-                  <b>Authors: </b>
-                  {/*  *ngFor="let author of book.authors_list" */}
-                  <span className="chip">
-                  author.name
-                  </span>
-                  {/* *ngIf="book.description" */}
-                  <p><span><b>Description</b>:</span>book.description</p>
-                  <p><b>Pages: </b>book.pageCount</p>
-                </div> 
-                <div className="card-action">
-                </div>
-              </div>
-          </div>
+          <ul className="">
+            { this.state.books ?
+              (this.state.books as []).map((book: Book, index: number) => {
+                return (
+                  <li
+                    key={index}
+                    >
+                    <GoogleBook 
+                      book={book} 
+                      key={index}
+                      inProfile={true}
+                      btnDelete={true}
+                      btnEdite={false}
+                      addBook={()=>(console.log('some function'))}
+                    />
+                  </li>
+                )
+              })
+              : null
+            }
+          </ul>
         </div>
       </div>
     )

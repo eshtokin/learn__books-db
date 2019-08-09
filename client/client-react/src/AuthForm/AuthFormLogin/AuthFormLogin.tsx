@@ -1,17 +1,13 @@
 import React from 'react';
-import Axios from 'axios';
-// import UserService from '../../service/user.service';
-import { UserForLoginReg } from '../../models/user.model';
+import UserService from '../../service/user.service';
 
-class AuthFormlogin extends React.Component<{}, {user: UserForLoginReg}> {
+class AuthFormlogin extends React.Component<{}, {email?: string, password?: string}> {
   constructor(props: object) {
     super(props);
 
     this.state = {
-      user: {
-        email: '',
-        password: ''
-      }
+      email: '',
+      password: ''
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -22,25 +18,24 @@ class AuthFormlogin extends React.Component<{}, {user: UserForLoginReg}> {
     let data;
     switch (event.target.id) {
       case 'email': 
-        data = {user: {email: event.target.value}};
+        data = {email: event.target.value};
         break;
       case 'password':
-        data = {user: {password: event.target.value}};
+        data = {password: event.target.value};
         break;
       default:
-        data = {user: {email: '', password: ''}};
-    }
-    this.setState(data)
+        data = {email: '', password: ''};
+        break;
+    };
+    this.setState(data);
   }
 
   buttonHandler() {
-    console.log(this.state)
-    Axios.post('http://localhost:3000/login', this.state)
-      .then(res => {
-        console.log(res)
-          return res;
-      })
-      .catch(err => console.log(err));
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    UserService.login(user);
   }
 
   render() {

@@ -4,6 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { Book } from '../../models/book.model';
 import { User } from '../../models/user.model';
 import GoogleBook from '../../components/GoogleBook/GoogleBook';
+import { BookService } from '../../service/books.service';
+
+import './Catalog.scss'
 
 type CatalogProps = {
   searchString: string,
@@ -21,7 +24,7 @@ class Catalog extends React.Component<{}, CatalogProps> {
     super(props);
 
     this.state = {
-      searchString: 'witcher',
+      searchString: '',
       currentItems: [],
       availablePages: [],
       currentPage: 0,
@@ -98,14 +101,8 @@ class Catalog extends React.Component<{}, CatalogProps> {
       printType: cbook.printType.toLowerCase(),
       industryIdentifiers: cbook.industryIdentifiers
     };
-    // this.booksService.addBookToDB(newBook, user);
-    
-    Axios.post('http://localhost:3000/books', {book, user})
-    .then(res => {
-      console.log(res);
-      return res;
-    })
-    .catch(err => console.log(err));
+    console.log('books in catalog', book);
+    BookService.addBookToDB(book, user)
   } 
 
   render() {
@@ -118,7 +115,7 @@ class Catalog extends React.Component<{}, CatalogProps> {
             className="validate"
             onChange={this.inputHandler}
           />
-          <label htmlFor="search">Search field</label>
+          <label htmlFor="search" className={this.state.searchString.length > 0 ? 'active' : ''}>Search field</label>
         </div>
         <button 
           className="btn"
@@ -128,7 +125,14 @@ class Catalog extends React.Component<{}, CatalogProps> {
 
         { this.state.currentItems.map((item, index) => {
           return (
-            <GoogleBook book={item} key={index} addBook={this.addBookToDB} />
+            <GoogleBook 
+              book={item}
+              key={index}
+              inProfile={false}
+              btnDelete={false}
+              btnEdite={false}
+              addBook={this.addBookToDB} 
+            />
           )
         }) }
         

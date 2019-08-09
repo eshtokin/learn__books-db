@@ -4,7 +4,6 @@ import {Response, Request} from 'express'
 import { Category } from './category.controller'
 import { Authors } from './author.controller'
 import { User } from './user.controller';
-import { monitorEventLoopDelay } from 'perf_hooks';
 
 export const Books = mongoose.model('Books', BookSchema);
 

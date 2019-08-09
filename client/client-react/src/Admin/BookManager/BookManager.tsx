@@ -1,92 +1,135 @@
 import  React from 'react';
-import './BookManager.css';
+import './BookManager.scss';
+import { BookService } from '../../service/books.service';
+import { Book } from '../../models/book.model';
+import GoogleBook from '../../components/GoogleBook/GoogleBook';
 
-class BookManager extends React.Component {
+class BookManager extends React.Component<{}, {
+  books: Book[],
+  authors: {name: string, _id: string}[],
+  categories: {name: string, _id: string}[]
+}> {
+  constructor(props: object) {
+    super(props);
+
+    this.state = {
+      books: [],
+      authors: [],
+      categories: []
+    }
+  }
+
+  getBooks() {
+    BookService.getAllBooks()
+    .then(el => {
+      // this.books = el.slice();
+      this.setState({
+        books: el
+      })
+    });
+  }
+
+  getAuthors(): void {
+    BookService.getAllAuthors()
+    .then(el => {
+      this.setState({
+        authors: el
+      })
+    });
+  }
+
+  getCategories(): void {
+    BookService.getAllCategories()
+    .then(el => {
+      this.setState({
+        categories: el
+      })
+    });
+  }
+
+  chooseCategory() {
+
+  }
+
+  componentDidMount() {
+    this.getBooks();
+    this.getAuthors();
+    this.getCategories();
+    setTimeout(() => {
+      console.log(this.state);
+    }, 1000);
+  }
+
   render() {
     return (
       <div className="row">
-  <div className="col s2 filters">
-      <div className="author-input"
-      //  *ngFor="let category of categories"
-       >
-        <input type="checkbox" 
-        // id={{category._id}} (click)="chooseCategory(category)"/
-        />
-        <label 
-        // for={{category._id}}
-        >category.name</label>
-      </div>
-      <hr/>
-      <div className="author-input"
-      //  *ngFor="let author of authors"
-       >
-        <input type="checkbox" 
-        // id={{author._id}} (click)="chooseAuthor(author)"
-        />
-        <label 
-        // for={{author._id}}
-        >author.name</label>
-      </div>
-      <hr/>
-      <button className="btn" 
-      // (click)="filtering()"
-      >OK</button>
-  </div>
-  <div className="col s7" 
-  // [ngClass]="{s10 : !this.userInfo.getStatus()}"
-  >
-    <div className="z-depth-4" 
-    // *ngFor="let book of books"
-    >
-      <div className="card horizontal">
-        <div className="card-image">
-          <img src="{{book.image}}" className="book-image" alt="book`s img"/>
-          <button 
-          // (click)=chooseEditeBook(book) 
-          className="btn edite-btn rework-btn"><i className="material-icons">edite</i></button>
-          <button 
-            // *ngIf="this.userInfo.getStatus()"
-            // (click)=deleteBook(book)
-            className="btn delete-btn rework-btn">
-            <i className="material-icons">delete</i>
-          </button>
-        </div>
-        <div className="card-stacked">
-          <div className="card-content">
-            <div className="card-title">
-              <b>book.title</b>
-            </div>     
-            <b 
-            // *ngIf="book.categories_list"
-            >Categories: </b>
-              <span className="chip" 
-              // *ngFor="let category of book.categories_list"
-              >category.name<br/></span>
-            <br/>
-            <b 
-            // *ngIf="book.authors_list"
-            >Authors: </b>
-            <span className="chip" 
-            // *ngFor="let author of book.authors_list"
-            >
-              author.name
-            </span>
-            <p><span 
-            // *ngIf="book.description"
-            ><b>Description</b>:</span> book.description</p>
-            <p><b>Pages: </b>book.pageCount</p>
-          </div> 
-          <div className="card-action">
-            <button
-              className="btn add-to-pro-btn"
-              // (click)="addBookToDB(book, this.userInfo.getCurrentUser())"
-            >
-            add to 'my list'
-            </button>
+        <div className="col s2 filters">
+          <div className="categories-input">
+          {
+            this.state.categories.length ?
+            this.state.categories.map((category, index: number) => {
+            return (
+                <label 
+                  key={index}
+                  htmlFor={category._id}
+                >
+                  <input 
+                    type="checkbox" 
+                    id={category._id}
+                    onClick={() => {this.chooseCategory()}}
+                  />
+                  <span>{category.name}</span>
+                </label>
+            )
+            })
+            : null
+          }
           </div>
+          <hr/>
+          {
+            this.state.authors.length ?
+            this.state.authors.map((author, index: number) => {
+            return (
+                <label 
+                  key={index}
+                  htmlFor={author._id}
+                >
+                  <input 
+                    type="checkbox" 
+                    id={author._id}
+                    onClick={() => {this.chooseCategory()}}
+                  />
+                  <span>{author.name}</span>
+                </label>
+            )
+            })
+            : null
+          }
+          <hr/>
+          <button className="btn" 
+          // (click)="filtering()"
+          >OK</button>
         </div>
-      </div>
-    </div>
+      <div className="col s7"
+      // [ngClass]="{s10 : !this.userInfo.getStatus()}"
+      >
+      {
+        this.state.books.length ?
+        this.state.books.map((book: Book, index) => {
+          return (
+              <GoogleBook 
+                book={book}
+                addBook={()=>{}}
+                btnDelete={true}
+                btnEdite={true}
+                inProfile={false}
+                key={index}
+              />
+          )
+        })
+        : null
+      }
+    
   </div>
     <div 
     // *ngIf="this.userInfo.getStatus()" 

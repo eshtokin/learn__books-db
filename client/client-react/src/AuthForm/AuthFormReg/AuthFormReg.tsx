@@ -1,8 +1,7 @@
 import React from 'react';
-import Axios from 'axios';
-// need to rework queries
+import UserService from '../../service/user.service';
  
-class AuthFormReg extends React.Component {
+class AuthFormReg extends React.Component<{}, {email?: string, password?: string, name?: string}> {
   constructor(props: object) {
     super(props);
 
@@ -35,12 +34,18 @@ class AuthFormReg extends React.Component {
   }
 
   buttonHandler() {
-    Axios.post('http://localhost:3000/registration', this.state)
-      .then(res => {
-        console.log(res)
-          return res;
-      })
-      .catch(err => console.log(err));
+    const user = {
+      email: this.state.email,
+      password: this.state.password,
+      name: this.state.name
+    };
+    UserService.registrate(user);
+    // Axios.post('http://localhost:3000/registration', this.state)
+    //   .then(res => {
+    //     console.log(res)
+    //       return res;
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   render() {

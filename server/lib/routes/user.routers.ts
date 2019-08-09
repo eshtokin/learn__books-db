@@ -35,7 +35,6 @@ export class Routes {
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
         .put(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.updateUser)
         .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.deleteUser)
-        // .delete(this.userController.deleteUser)
 
         app.route("/userbooks")
         .get(this.bookController.getUserBooks)
