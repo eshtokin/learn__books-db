@@ -89,8 +89,8 @@ class Profile extends React.Component<{}, ProfileProps> {
                       book={book} 
                       key={index}
                       inProfile={true}
-                      btnDelete={true}
-                      btnEdite={false}
+                      btnDelete={{flag: true}}
+                      btnEdite={{flag: false}}
                       addBook={()=>(console.log('some function'))}
                     />
                   </li>

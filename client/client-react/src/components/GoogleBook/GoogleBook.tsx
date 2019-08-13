@@ -7,8 +7,8 @@ import { createCoverageSummary } from 'istanbul-lib-coverage';
 const GoogleBook = (props: {
   book: Book,
   addBook: Function,
-  btnDelete: boolean,
-  btnEdite: boolean,
+  btnDelete: {flag: boolean, function?: Function},
+  btnEdite: {flag: boolean, function?: Function},
   inProfile: boolean
 }) => {
   return (
@@ -21,20 +21,24 @@ const GoogleBook = (props: {
             alt="book`s img"
           />
           {
-            props.btnEdite ?
+            props.btnEdite.flag ?
             <button 
               // *ngIf="this.userInfo.getStatus()"
               // (click)=deleteBookFromProfile(book)
+              onClick={() => {
+                (props.btnEdite.function as Function)(props.book)
+              }}
               className="btn edite-btn rework-btn">
               <i className="material-icons">edite</i>
             </button>
             : null
           }
           {
-            props.btnDelete ?
+            props.btnDelete.flag ?
             <button 
               // *ngIf="this.userInfo.getStatus()"
               // (click)=deleteBookFromProfile(book)
+              onClick={() => {(props.btnDelete.function as Function)(props.book)}}
               className="btn delete-btn rework-btn">
               <i className="material-icons">delete</i>
             </button>
@@ -71,8 +75,8 @@ const GoogleBook = (props: {
             <br/>
               <b>Authors: </b>
               { 
-                props.book.author_list?
-                (props.book.categories_list as {name: string, _id: string}[]).map((category, index) => {
+                props.book.authors_list?
+                (props.book.authors_list as {name: string, _id: string}[]).map((category, index) => {
                   return (
                     <div className="chip" key={index}>
                       {category.name}

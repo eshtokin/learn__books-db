@@ -90,10 +90,10 @@ class Catalog extends React.Component<{}, CatalogProps> {
   }
 
   addBookToDB(cbook: Book, user: User) { // user in ardument
-    console.log('book: ', cbook, 'user: ', user)
+    console.log('book: ', cbook, 'user: ', user);
     const book = {
       title: cbook.title.toLowerCase(),
-      authors: cbook.authors.map((element: string) => element.toLowerCase()),
+      authors: cbook.authors ? cbook.authors.map((element: string) => element.toLowerCase()) : [],
       categories: cbook.categories ? cbook.categories.map((element: string) => element.toLowerCase()) : [],
       description: cbook.description,
       image: cbook.imageLinks ? cbook.imageLinks.thumbnail : '',
@@ -129,8 +129,8 @@ class Catalog extends React.Component<{}, CatalogProps> {
               book={item}
               key={index}
               inProfile={false}
-              btnDelete={false}
-              btnEdite={false}
+              btnDelete={{flag: false}}
+              btnEdite={{flag: false}}
               addBook={this.addBookToDB} 
             />
           )

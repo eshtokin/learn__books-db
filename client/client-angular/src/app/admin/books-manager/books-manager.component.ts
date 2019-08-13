@@ -46,7 +46,7 @@ export class BooksManagerComponent implements OnInit {
   }
 
   chooseCategory(category): void {
-    const status: boolean = document.getElementById(category._id).checked;
+    const status = (document.getElementById(category._id) as HTMLInputElement).checked;
     if (status) {
       this.filterData.categories.add(category);
     }
@@ -56,7 +56,7 @@ export class BooksManagerComponent implements OnInit {
   }
 
   chooseAuthor(author): void {
-    const status: boolean = document.getElementById(author._id).checked;
+    const status: boolean = (document.getElementById(author._id) as HTMLInputElement).checked;
     if (status) {
       this.filterData.authors.add(author);
     }

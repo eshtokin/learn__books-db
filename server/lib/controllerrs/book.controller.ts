@@ -171,21 +171,48 @@ export class BookController {
   }
 
   public updateBook(req: Request, res: Response) {
-     Books.findOneAndUpdate({industryIdentifiers: req.body.industryIdentifiers},
-    {
-      title: req.body.title,
-      authors: req.body.authors,
-      categories: req.body.categories,
-      description: req.body.description,
-      pageCount: req.body.pageCount,
-      image: req.body.image
+    let authors = [];
+    let categories = [];
+    let newCategories = [];
+    let newAuthors = [];
 
-    }, (err, book) => {
-      if (err) {
-        return res.send(err)
-      }
-      return res.status(200).send({
-        message: 'Successfuy updated'
+    Authors.find({name: {$in: req.body.authors}}, (err, authorList) => {
+      req.body.authors.forEach((authorReq) => {
+        authorList.forEach((authorDb) => {
+          if (authorReq !== authorDb.name) {
+            const id = mongoose.Types.ObjectId();
+            newCategories.push({
+              _id: id,
+              name: authorReq,
+              __v: 0
+            })
+          }
+          if (authorReq === authorDb.name) {
+            authors.push(authorDb._id)
+          }
+        })
+      })
+
+      Authors.insertMany(newAuthors);
+      newAuthors.forEach(author => {
+        authors.push(author._id)
+      });
+    })
+
+    Books.findOneAndUpdate({industryIdentifiers: req.body.industryIdentifiers},
+      {
+        title: req.body.title,
+        authors,
+        categories,
+        description: req.body.description,
+        pageCount: req.body.pageCount,
+        image: req.body.image
+      }, (err, book) => {
+        if (err) {
+          return res.send(err)
+        }
+        return res.status(200).send({
+          message: 'Successfuy updated'
       })
     })
   }
