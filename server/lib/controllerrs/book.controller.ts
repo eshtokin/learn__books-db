@@ -1,15 +1,17 @@
 import * as mongoose from 'mongoose'
 import { BookSchema } from "../models/book.model"
 import {Response, Request} from 'express'
-import { Category } from './category.controller'
-import { Authors } from './author.controller'
+import { Category } from './category.controller';
+import { Authors } from './author.controller';
 import { User } from './user.controller';
+import { MongoDbService } from '../service/mongodb.service';
 
 export const Books = mongoose.model('Books', BookSchema);
+const mongoDbService = new MongoDbService();
 
 export class BookController {
   public getAllBook(req: Request, res: Response) {
-    Books.aggregate([{
+    const query = [{
       $lookup: {
         from: "categories",
         localField: "categories",
@@ -22,9 +24,13 @@ export class BookController {
         localField: "authors",
         foreignField: "_id",
         as: "authors_list"
-    }}], (err, list) => {
-      res.json(list)
+    }}];
+
+    mongoDbService.Aggreagate(Books, query)
+    .then(list => {
+      return res.json(list)
     })
+    .catch(err => res.send(err))
   }
 
   public getSomeBooks(req: Request, res: Response) {
@@ -41,34 +47,46 @@ export class BookController {
       })
     }
     if (req.query.authors && req.query.categories) {
-      Books.find({
+      const query = {
         $and: [
           {categories: {$in: categoriesFilter}},
           {authors: {$in: authorsFilter}}
         ]
-      }, (err, list) => {
-          res.json(list)
+      };
+      mongoDbService.find(Books, query)
+      .then(list => {
+        return res.json(list)
       })
+      .catch(err => res.send(err))
+
       return
     }
     if (req.query.authors || req.query.categories) {
-      Books.find({
+      const query = {
         $or: [
           {categories: {$in: categoriesFilter}},
           {authors: {$in: authorsFilter}}
         ]
-      }, (err, list) => {
-          res.json(list)
-      })
+      };
+
+      mongoDbService.find(Books, query)
+      .then(list => res.json(list))
+      .catch(err => res.send(err))
+
       return
     }
   }
 
   public getUserBooks(req: Request, res: Response) {
-    let oIdBooks = req.query.books.map(el => mongoose.Types.ObjectId(el));
-    Books.find({_id: {$in: oIdBooks}}, (err, bookList) => {
-      return res.json(bookList);
-    })
+    let objIdBooks = req.query.books.map(el => mongoose.Types.ObjectId(el));
+    const query = {
+      _id: {
+        $in: objIdBooks
+      }
+    }
+    mongoDbService.find(Books, query)
+    .then(list => res.json(list))
+    .catch(err => res.send(err))
   }
 
   public addBook(req: Request, res: Response) {
@@ -76,9 +94,14 @@ export class BookController {
     let listCategoriesId = [];
     let listAuthors = [];
     let listAuthorsId =[];
+    let query: object = {
+      name: {
+        $in: req.body.book.categories
+      }
+    };
 
-    Category.find({ name: {$in: req.body.book.categories}}, (err, category) => {
-
+    mongoDbService.find(Category, query)
+    .then(category => {
       if (category.length > 0) {
         category.forEach(el => {
           listCategoriesId.push(el._id)
@@ -98,8 +121,15 @@ export class BookController {
       }
       Category.insertMany(listCategories)
     })
+    .catch(err => res.send(err))
 
-    Authors.find({ name: {$in: req.body.book.authors}}, (err, author) => {
+    query = {
+      name: {
+        $in: req.body.book.authors
+      }
+    };
+    mongoDbService.find(Authors, query)
+    .then(author => {
       if (author.length > 0) {
         author.forEach(el => {
           listAuthorsId.push(el._id)
@@ -118,21 +148,29 @@ export class BookController {
       }
       Authors.insertMany(listAuthors)
     })
+    .catch(err => res.send(err))
  
-    Books.findOne({title: req.body.book.title, industryIdentifiers: req.body.book.industryIdentifiers}, (err, book) => {
-
-      if (err) {
-        return res.status(500).send({
-          message: `error on the server`
-        })
-      }  
-      
+    query = {
+      title: req.body.book.title,
+      industryIdentifiers: req.body.book.industryIdentifiers
+    };
+    mongoDbService.findOne(Books, query)
+    .then(book => {
       if (book && req.body.user) {
-        User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
+        const query = {
+          _id: mongoose.Types.ObjectId(req.body.user.id)
+        };
+        const data = {
+          $addToSet: { books: book._id}
+        };
+
+        mongoDbService.findOneAndUpdate(User, query, data)
+        .then(() => {
           return res.status(200).send({
             message: `added in bd and profile`
           })
         })
+        .catch(err => res.send(err))
         return;
       }
 
@@ -143,8 +181,7 @@ export class BookController {
       }
 
       const bookId = mongoose.Types.ObjectId();
-
-      Books.create({
+      query = {
         _id: bookId,
         title: req.body.book.title,
         authors: listAuthorsId,
@@ -154,20 +191,33 @@ export class BookController {
         pageCount: req.body.book.pageCount,
         printType: req.body.book.printType,
         industryIdentifiers: req.body.book.industryIdentifiers
-      }, (err, book) => {
-        if (book && req.body.user) {
-          User.findOneAndUpdate({_id: mongoose.Types.ObjectId(req.body.user.id)}, { $addToSet: { books: book._id} }, (err, user) => {
-            return res.status(200).send({
-              message: `added in bd and profile 222`
-            })
-          })
-          return;
-        }
+      };
+
+      mongoDbService.create(Books, query)
+      .then(book => {
+        // if (book && req.body.user) {
+        //   query = {
+        //     _id: mongoose.Types.ObjectId(req.body.user.id)
+        //   };
+        //   const data = {
+        //     $addToSet: { books: book._id} 
+        //   }
+
+        //   mongoDbService.findOneAndUpdate(User, query, data)
+        //   .then(() => {
+        //     return res.status(200).send({
+        //       message: `added in bd and profile`
+        //     })
+        //   })
+        //   .catch(err => res.send(err))
+        // }
           return res.status(200).send({
           message: 'added in bd'
         })
-      });
+      })
+      .catch(err => res.send(err))
     })
+    .catch(err => res.send(err))
   }
 
   public updateBook(req: Request, res: Response) {
@@ -218,22 +268,27 @@ export class BookController {
   }
 
   public deleteBook(req: Request, res: Response) {
-    Books.findOneAndDelete({industryIdentifiers: req.body.industryIdentifiers}, (err) => {
-      if (err) {
-        return res.send(err)
-      }
+    const query = {
+      industryIdentifiers: req.body.industryIdentifiers
+    };
+
+    mongoDbService.findOneAndDelete(Books, query)
+    .then(() => {
       return res.status(200).send({
         message: 'successfuly deleted'
       })
     })
+    .catch(err => res.send(err))
   }
 
   public getBook(req: Request, res: Response) {
-    Books.findById({_id: req.params.bookId}, (err, book) => {
-      if (err) {
-        return res.send(err)
-      }
+    const query = {
+      _id: req.params.bookId
+    };
+    mongoDbService.findById(Books, query)
+    .then(book => {
       return res.json(book)
     })
+    .catch(err => res.send(err))
   }
 }

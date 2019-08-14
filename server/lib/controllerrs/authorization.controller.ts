@@ -3,15 +3,17 @@ import * as jwt from "jsonwebtoken"
 import {User} from "../controllerrs/user.controller"
 import * as crypt from "bcryptjs"
 import { AuthConfig } from "../enviroments/config"
+import { MongoDbService } from "../service/mongodb.service";
+
+const mongoDbService = new MongoDbService();
 
 export class AuthorizationController {
     public login(req: Request, res: Response) {
-        User.findOne({email: req.body.email}, (err, user) => {
-            if (err) {
-                return res.status(500).send({
-                    message: "Error on the server"
-                })
-            }
+        const query = {
+            email: req.body.email
+        };
+        mongoDbService.findOne(User, query)
+        .then(user => {
             if (!user) {
                 return res.status(400).send({
                     message: "User not found"
@@ -35,12 +37,15 @@ export class AuthorizationController {
                 role: user.role
             }, AuthConfig.privateKey);
 
-            res.status(200).send({
+            return res.status(200).send({
                 authorization: true,
                 token,
                 user
             })
         })
+        .catch(err => res.status(500).send({
+            message: "Error on the server"
+        }))
     }
 
     public registration(req: Request, res: Response) {   

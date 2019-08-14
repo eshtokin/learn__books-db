@@ -1,32 +1,44 @@
 import * as mongoose from "mongoose"
 import { UserSchema } from "../models/user.model"
 import { Request, Response } from "express"
-import { Books } from "./book.controller";
+import { MongoDbService } from "../service/mongodb.service";
 
 export const User = mongoose.model('User', UserSchema);
+
+const mongoDbService = new MongoDbService();
 
 export class UserController {
 
     public getAllUsers(req: Request, res: Response) {
-        User.aggregate([{
+        const query = [{
             $lookup: {
-              from: "books",
-              localField: "books",
-              foreignField: "_id",
-              as: "book_list"
+                from: "books",
+                localField: "books",
+                foreignField: "_id",
+                as: "book_list"
             }
-          }], (err, list) => {
-            res.json(list)
+        }];
+
+        mongoDbService.Aggreagate(User, query)
+        .then(result => {
+            return res.send(result)
+        })
+        .catch(err => {
+            return res.send(err)
         })
     }
     
-    public getUserById(req: Request, res: Response) {           
-        User.findById(req.params.userId, (err, user) => {
-            if (err){
-                return res.send(err);
-            }
-            return res.json(user);
-        });
+    public getUserById(req: Request, res: Response) {
+        const query = {
+            _id: req.params.userId
+        }
+        mongoDbService.findById(User, query)
+        .then(value => {
+            return res.json(value);
+        })
+        .catch(err => {
+            return res.send(err);
+        })
     }
 
     public updateUser(req: Request, res: Response) {
@@ -38,22 +50,32 @@ export class UserController {
                 books: booksId
             }
         }
-        // let bookList = req.body.books.map(el => mongoose.Types.ObjectId(el));
-        // User.findOneAndUpdate({_id: req.params.userId}, { books: bookList }, {new:true}, (err, user) => {
-        User.findOneAndUpdate({_id: req.params.userId}, data, {new:true}, (err, user) => {
-            if (err) {
-                res.send(err)
-            }
-            res.json(user)
+        const query = {
+            _id: req.params.userId
+        };
+        
+        mongoDbService.findOneAndUpdate(User, query, data)
+        .then(value => {
+            return res.json(value)
+        })
+        .catch(err => {
+            return res.send(err)
         })
     }
 
     public deleteUser(req: Request, res: Response) {
-        User.findOneAndDelete({_id: req.params.userId}, (err, user) => {
-            if (err) {
-                res.send(err)
-            }
-            res.json({message: 'User successfully deleted!'})
+        const query = {
+            _id: req.params.userId
+        };
+
+        mongoDbService.findOneAndDelete(User, query)
+        .then(() => {
+            return res.send({
+                message: 'User successfully deleted!'
+            })
+        })
+        .catch(err => {
+            return res.send(err)
         })
     }
 }
