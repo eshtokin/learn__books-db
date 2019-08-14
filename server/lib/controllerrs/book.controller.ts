@@ -11,6 +11,7 @@ const mongoDbService = new MongoDbService();
 
 export class BookController {
   public getAllBook(req: Request, res: Response) {
+    const geralt = mongoose.Types.ObjectId('5d52c65532a6e40e30459aa6');
     const query = [{
       $lookup: {
         from: "categories",
@@ -24,7 +25,8 @@ export class BookController {
         localField: "authors",
         foreignField: "_id",
         as: "authors_list"
-    }}];
+      }
+    }];
 
     mongoDbService.Aggreagate(Books, query)
     .then(list => {
@@ -79,12 +81,30 @@ export class BookController {
 
   public getUserBooks(req: Request, res: Response) {
     let objIdBooks = req.query.books.map(el => mongoose.Types.ObjectId(el));
-    const query = {
-      _id: {
-        $in: objIdBooks
+
+    const query = [{
+      $match: {
+        _id: {
+          $in: objIdBooks
+        }
+      } 
+    }, {
+      $lookup: {
+        from: "categories",
+        localField: "categories",
+        foreignField: "_id",
+        as: "categories_list"
       }
-    }
-    mongoDbService.find(Books, query)
+    }, {
+      $lookup: {
+        from: "authors",
+        localField: "authors",
+        foreignField: "_id",
+        as: "authors_list"
+      }
+    }];
+
+    mongoDbService.Aggreagate(Books, query)
     .then(list => res.json(list))
     .catch(err => res.send(err))
   }
