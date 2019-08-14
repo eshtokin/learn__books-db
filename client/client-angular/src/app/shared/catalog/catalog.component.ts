@@ -34,7 +34,6 @@ export class CatalogComponent implements OnInit {
   }
 
   addBookToDB(book, user) {
-    console.log('book: ', book, 'user: ', user)
     const newBook = {
       title: book.title.toLowerCase(),
       authors: book.authors.map(element => element.toLowerCase()),
