@@ -3,12 +3,20 @@
     <a href="#" class="brand-logo">Logo</a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       
-      <li><a routerLink="catalog">Catalog</a></li>
-      <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="dbviewer">Book manager</a></li>
-      <li *ngIf="(this.userInfo.isUserAuth() && this.userInfo.getStatus())"><a routerLink="user-manager">User manager</a></li>
-      <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="profile">Profile</a></li>
-      <li *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth/login">Log in</a></li>
-      <li *ngIf="this.userInfo.isUserAuth()" (click)="this.userInfo.logout()"><a routerLink="auth/login">Log out</a></li>
+      <li><a routerLink="catalog">Search</a></li>
+      <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="dbviewer">Books</a></li>
+      <li *ngIf="(this.userInfo.isUserAuth() && this.userInfo.getStatus())"><a routerLink="user-manager">Users</a></li>
+      <li class="dropdown">
+          <a class="btn-floating btn-large  waves-effect waves-light teal">
+            <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png" alt="user avatar">
+          </a>
+        <ul>
+          <li><a routerLink="profile">My profile</a></li>
+          <li><a routerLink="favorites">My favorites</a></li>
+          <li *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth/login">Log in</a></li>
+          <li *ngIf="this.userInfo.isUserAuth()" (click)="this.userInfo.logout()"><a routerLink="auth/login">Log out</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </nav>

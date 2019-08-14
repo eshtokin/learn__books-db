@@ -1,0 +1,28 @@
+<h3 *ngIf="!books.length">Your list are empty</h3>
+<div class="container">
+  <ul class="collection z-depth-4">
+    <li
+      class="collection-item avatar"
+      (click)="some(book)"
+      *ngFor="let book of books"
+    >
+      <img src={{book.image}} alt="book image" class="circle">
+      <span class="title">{{book.title}}</span>
+      <p>
+        <b>Authors:</b> <span *ngFor="let author of book.authors_list" class="chip">{{author.name}}</span> <br>
+        <b>Categories:</b> <span *ngFor="let category of book.categories_list" class="chip">{{category.name}}</span>
+      </p>
+      <a routerLink="/favorites" class="secondary-content"><i class="material-icons">favorite</i></a>
+    </li>
+  </ul>
+</div>
+
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>Title</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <a class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>

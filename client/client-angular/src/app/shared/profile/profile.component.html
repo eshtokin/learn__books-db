@@ -1,51 +1,56 @@
-<div class="container">
-    <div class="col s12 m7">
-        <!-- <h5 class="header">User profile</h5> -->
-        <div class="card horizontal">
-            <div class="card-image">
-                <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png">
-            </div>
-            <div class="card-stacked">
-                <div class="card-content">
-                    <p>Name: {{ user.name }}</p>
-                    <p>E-mail {{ user.email }}</p>
-                    <p>Status: {{ (user.role === 1) ? 'admin' : 'user'}}</p>
-                </div>
-                <div class="card-action">
-                </div>
-            </div>
-        </div>
-    </div>            
-</div>
-<div class="container">
-    <p>My book list:</p>
-    <div class="card horizontal" *ngFor="let book of books">
-        <div class="card-image">
-          <img src="{{book.image}}" class="book-image">
-          <button 
-            *ngIf="this.userInfo.getStatus()"
-            (click)=deleteBookFromProfile(book)
-            class="btn delete-btn rework-btn">
-            <i class="material-icons">delete</i>
-          </button>
-        </div>
-        <div class="card-stacked">
+<!-- <div class="container">
+  <div class="col s12 m7">
+    <div class="card horizontal">
+      <div class="card-image">
+          <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png">
+      </div>
+      <div class="card-stacked">
           <div class="card-content">
-            <div class="card-title">
-              <b>{{book.title}}</b>
-            </div>     
-            <b *ngIf="book.categories_list">Categories: </b>
-              <span class="chip" *ngFor="let category of book.categories_list">{{category.name}}<br></span>
-            <br>
-            <b *ngIf="book.authors_list">Authors: </b>
-            <span class="chip" *ngFor="let author of book.authors_list">
-              {{author.name}}
-            </span>
-            <p><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
-            <p><b>Pages: </b>{{book.pageCount}}</p>
-          </div> 
+              <p>Name: {{ user.name }}</p>
+              <p>E-mail {{ user.email }}</p>
+              <p>Status: {{ (user.role === 1) ? 'admin' : 'user'}}</p>
+          </div>
           <div class="card-action">
           </div>
-        </div>
+      </div>
     </div>
-</div>
+  </div>            
+</div> -->
+
+<div class="container">
+    <div class="header">
+      <div class="icon"><i class="fa fa-ellipsis-h"></i></div>
+      <div class="icon"><i class="fa fa-plus"></i></div>
+    </div>
+    <div class="content">
+      <img class="face" src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png"/>
+        <!-- <div class="number">22</div> -->
+      <div class="name">{{user.name}}</div>
+      <div class="email">{{user.email}}</div>
+      <!-- <div class="social">
+        <div class="text"><span><i class="material-icons">instagram</i></span>3.5k</div>
+        <div class="text"><span><i class="material-icons"></i></span>11k</div>
+        <div class="text"><span><i class="material-icons"></i></span>155</div>
+        <div class="text"><span><i class="material-icons"></i></span>2.7k</div>
+      </div> -->
+    </div>
+    <!-- <div class="photo-section">
+      <div class="photo-title">
+        <div class="title"><a href="#">All</a></div>
+        <div class="title"><a href="#">Photos</a></div>
+        <div class="title"><a href="#">Music</a></div>
+        <div class="title"><a href="#">Videos</a></div>
+      </div>
+      <div class="thumb-wrapper">
+        <div class="thumb-unit"></div>
+        <div class="thumb-unit"></div>
+        <div class="thumb-unit"></div>
+        <div class="thumb-unit"></div>
+        <div class="thumb-unit"></div>
+        <div class="thumb-unit"></div>
+      </div>
+      <div class="footer"><i class="fa fa-camera"></i><i class="fa fa-play"></i>
+        <div class="face"></div><i class="fa fa-search"></i><i class="fa fa-globe"></i>
+      </div>
+    </div> -->
+  </div>

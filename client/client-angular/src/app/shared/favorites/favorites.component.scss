@@ -1,0 +1,35 @@
+body {
+  text-align: center;
+}
+
+h3 {
+  display: inline-block;
+  width: 360px;
+  margin: 100px calc(50% - 180px);
+}
+
+.collection-item {
+  &:hover {
+    cursor: pointer;
+    background: #80cbc4 ;
+  }
+}
+
+#modal1 {
+  display: block;
+}
+
+.collection .collection-item.avatar {
+  min-height: 84px;
+  padding-left: 125px;
+  position: relative;
+}
+.collection .collection-item.avatar:not(.circle-clipper)>.circle, .collection .collection-item.avatar :not(.circle-clipper)>.circle {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  left: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}

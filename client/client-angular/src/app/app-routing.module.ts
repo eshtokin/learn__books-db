@@ -8,6 +8,7 @@ import { UserManagerComponent } from './admin/user-manager/user-manager.componen
 import { RouteGuard } from './guard/route.guard';
 import { CatalogComponent } from './shared/catalog/catalog.component';
 import { BooksManagerComponent } from './admin/books-manager/books-manager.component';
+import { FavoritesComponent } from './shared/favorites/favorites.component';
 
 const authRoutes: Routes = [
   {path: 'login', component: AuthFormLoginComponent},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'dbviewer', component: BooksManagerComponent},
   {path: 'user-manager', component: UserManagerComponent, canActivate: [RouteGuard]},
   {path: 'profile', component: ProfileComponent},
+  {path: 'favorites', component: FavoritesComponent}
 ];
 
 @NgModule({

@@ -15,6 +15,7 @@ import { CatalogComponent } from './shared/catalog/catalog.component';
 import { GoogleBooks } from './service/google-books.service';
 import { BookService } from './service/books.service';
 import { BooksManagerComponent } from './admin/books-manager/books-manager.component';
+import { FavoritesComponent } from './shared/favorites/favorites.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { BooksManagerComponent } from './admin/books-manager/books-manager.compo
     UserManagerComponent,
     ProfileComponent,
     CatalogComponent,
-    BooksManagerComponent
+    BooksManagerComponent,
+    FavoritesComponent
     ],
   imports: [
     BrowserModule,

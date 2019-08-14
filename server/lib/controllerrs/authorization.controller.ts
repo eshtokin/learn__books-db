@@ -64,7 +64,6 @@ export class AuthorizationController {
                 email: req.body.email,
                 password: crypt.hashSync(req.body.password),
                 name: req.body.name,
-                image: '',
                 books: [],
                 role: req.body.role || 2
             }, (err, user) => {

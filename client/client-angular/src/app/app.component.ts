@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
     private userInfo: UserInfo
   ) {}
 
+
   ngOnInit() {
   }
 }
