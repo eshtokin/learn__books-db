@@ -10,6 +10,7 @@ import { stringify } from '@angular/compiler/src/util';
   styleUrls: ['./books-manager.component.scss']
 })
 export class BooksManagerComponent implements OnInit {
+  editeMode = false;
   image: string | ArrayBuffer;
   books: Book;
   categories: object[] = [];
@@ -39,6 +40,9 @@ export class BooksManagerComponent implements OnInit {
     this.init();
   }
 
+  editeModeToggle() {
+    this.editeMode = !this.editeMode;
+  }
   init(): void {
     this.getBooks();
     this.getAuthors();
@@ -121,6 +125,7 @@ export class BooksManagerComponent implements OnInit {
   }
 
   chooseEditeBook(book): void {
+    this.editeModeToggle();
     this.editeBookData = {
       title: book.title,
       authors: [],

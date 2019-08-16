@@ -22,7 +22,6 @@ export class FavoritesComponent implements OnInit {
 
   openDialog(book): void {
     const dialogRef = this.dialog.open(FavoritesModalComponent, {
-      width: '250px',
       data: {book}
     });
 

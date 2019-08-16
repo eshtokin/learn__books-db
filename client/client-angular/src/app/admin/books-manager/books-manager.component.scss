@@ -84,3 +84,8 @@ label[for="image"] {
 .delete-btn:hover {
   color: #000;
 }
+
+.book-description {
+  max-height: 86px;
+  overflow: hidden;
+}

@@ -12,12 +12,17 @@
       <hr>
       <button class="btn" (click)="filtering()">OK</button>
   </div>
-  <div class="col s7" [ngClass]="{s10 : !this.userInfo.getStatus()}">
+  <div class="col s7" [ngClass]="{s10 : !this.editeMode}">
     <div class="z-depth-4" *ngFor="let book of books">
       <div class="card horizontal">
         <div class="card-image">
           <img src="{{book.image}}" class="book-image">
-          <button (click)=chooseEditeBook(book) class="btn edite-btn rework-btn"><i class="material-icons">edite</i></button>
+          <button 
+            *ngIf="userInfo.getStatus()"
+            (click)="chooseEditeBook(book)"
+            class="btn edite-btn rework-btn">
+            <i class="material-icons">edite</i>
+          </button>
           <button 
             *ngIf="this.userInfo.getStatus()"
             (click)=deleteBook(book)
@@ -37,7 +42,7 @@
             <span class="chip" *ngFor="let author of book.authors_list">
               {{author.name}}
             </span>
-            <p><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
+            <p class="book-description"><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
             <p><b>Pages: </b>{{book.pageCount}}</p>
           </div> 
           <div class="card-action">
@@ -52,7 +57,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="this.userInfo.getStatus()" class="col s3">
+  <div class="col s3" *ngIf="editeMode">
     <div class="input-field">
       <label for="title" class="active">title</label>
       <input type="text" name="title" id="title" [(ngModel)]="editeBookData.title">
@@ -76,6 +81,7 @@
     <label for="image" class="active" [ngClass]="{alredy: this.editeBookData.image}">image</label>
     <input type="file" name="image" id="image" (change)="uploadFile($event)">
     <hr>
+    <button class="btn" (click)="editeModeToggle()">Close</button>
     <button class="btn btn-save-change" (click)="editeBook()">Edite</button>
   </div>
 </div>
