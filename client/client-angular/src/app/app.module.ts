@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +17,8 @@ import { GoogleBooks } from './service/google-books.service';
 import { BookService } from './service/books.service';
 import { BooksManagerComponent } from './admin/books-manager/books-manager.component';
 import { FavoritesComponent } from './shared/favorites/favorites.component';
+import { FavoritesModalComponent } from './shared/favorites/favorites-modal/favorites-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -27,13 +30,19 @@ import { FavoritesComponent } from './shared/favorites/favorites.component';
     ProfileComponent,
     CatalogComponent,
     BooksManagerComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    FavoritesModalComponent
     ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
+  ],
+  entryComponents: [
+    FavoritesModalComponent
   ],
   providers: [
     UserService,

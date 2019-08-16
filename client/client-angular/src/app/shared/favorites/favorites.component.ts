@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserInfo } from 'src/app/service/user-info.service';
 import { UserService } from 'src/app/service/users.service';
 import { Book } from 'src/app/models/book.model';
+import {MatDialog} from '@angular/material/dialog';
+import { FavoritesModalComponent } from './favorites-modal/favorites-modal.component';
 
 @Component({
   selector: 'app-favorites',
@@ -12,13 +14,21 @@ export class FavoritesComponent implements OnInit {
 
   constructor(
     private userInfo: UserInfo,
-    private userService: UserService
+    private userService: UserService,
+    public dialog: MatDialog
   ) { }
 
   books: Book[] = [];
 
-  some() {
-    console.log('click');
+  openDialog(book): void {
+    const dialogRef = this.dialog.open(FavoritesModalComponent, {
+      width: '250px',
+      data: {book}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   ngOnInit() {

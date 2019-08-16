@@ -3,7 +3,8 @@
   <ul class="collection z-depth-4">
     <li
       class="collection-item avatar"
-      (click)="some(book)"
+      mat-raised-button
+      (click)="openDialog(book)"
       *ngFor="let book of books"
     >
       <img src={{book.image}} alt="book image" class="circle">
@@ -15,14 +16,4 @@
       <a routerLink="/favorites" class="secondary-content"><i class="material-icons">favorite</i></a>
     </li>
   </ul>
-</div>
-
-<div id="modal1" class="modal">
-  <div class="modal-content">
-    <h4>Title</h4>
-    <p>A bunch of text</p>
-  </div>
-  <div class="modal-footer">
-    <a class="modal-close waves-effect waves-green btn-flat">Agree</a>
-  </div>
 </div>
