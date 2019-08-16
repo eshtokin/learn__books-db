@@ -120,6 +120,7 @@ export class BooksManagerComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.editeBookData.image = reader.result;
+      (document.getElementById('blah') as HTMLImageElement).src = (this.editeBookData.image as  string);
     };
     reader.readAsDataURL(input.files[0]);
   }

@@ -19,6 +19,7 @@ import { BooksManagerComponent } from './admin/books-manager/books-manager.compo
 import { FavoritesComponent } from './shared/favorites/favorites.component';
 import { FavoritesModalComponent } from './shared/favorites/favorites-modal/favorites-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { UserManagerModalComponent } from './admin/user-manager/user-manager-modal/user-manager-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     CatalogComponent,
     BooksManagerComponent,
     FavoritesComponent,
-    FavoritesModalComponent
+    FavoritesModalComponent,
+    UserManagerModalComponent
     ],
   imports: [
     BrowserModule,
@@ -42,7 +44,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule
   ],
   entryComponents: [
-    FavoritesModalComponent
+    FavoritesModalComponent,
+    UserManagerModalComponent
   ],
   providers: [
     UserService,

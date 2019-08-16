@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/service/users.service';
 import { FormGroup, FormControl, Validators, Form } from '@angular/forms';
 import { User } from '../../models/user.model';
+import { UserManagerModalComponent } from './user-manager-modal/user-manager-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user-manager',
@@ -10,7 +12,12 @@ import { User } from '../../models/user.model';
 })
 export class UserManagerComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    public dialog: MatDialog
+  ) { }
+
+  editeMode = false;
 
   users: object[];
   userForEdite: User = {
@@ -83,6 +90,7 @@ export class UserManagerComponent implements OnInit {
   }
 
   selectUser(user: User): void {
+    this.editeModeToggle();
     this.okBtnStatus = !this.okBtnStatus;
     this.userForEdite = {
       name: user.name,
@@ -129,6 +137,32 @@ export class UserManagerComponent implements OnInit {
       this.init();
       });
     this.resetUserForEdite();
+  }
+
+  editeModeToggle() {
+    this.editeMode = !this.editeMode;
+  }
+
+  uploadFile(e, id: string): void {
+    const input = e.target;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.userForEdite.image = reader.result;
+      console.log(this.userForEdite);
+      (document.getElementById('preview') as HTMLImageElement).src = (this.userForEdite.image as  string);
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+
+  openDialog(book): void {
+    const dialogRef = this.dialog.open(UserManagerModalComponent, {
+      data: {book}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   ngOnInit() {
