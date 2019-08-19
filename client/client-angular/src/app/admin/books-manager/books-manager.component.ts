@@ -147,6 +147,10 @@ export class BooksManagerComponent implements OnInit {
     });
   }
 
+  addBookToFavorite(book, user) {
+    this.bookService.addBookToDB(book, user);
+  }
+
   editeBook(): void {
     this.bookService.updateBook(this.editeBookData);
     this.init();

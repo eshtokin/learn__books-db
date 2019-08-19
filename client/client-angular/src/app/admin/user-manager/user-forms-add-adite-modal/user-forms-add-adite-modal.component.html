@@ -1,0 +1,55 @@
+<form class="example-container" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="input-field">
+    <input type="text" id="name" 
+    [(ngModel)]='userForEdite.name'
+    formControlName='name'
+    >
+    <label for="name" [ngClass]="{active: userForEdite.name}">Name</label>
+  </div>
+  <div class="input-field">
+      <input type="text" id="email" 
+      [(ngModel)]="userForEdite.email"
+      formControlName='email'
+      >
+    <label for="email" [ngClass]="{active: userForEdite.email}">E-mail</label>
+  </div>
+  <div class="input-field">
+      <input type="text" id="password" 
+      [(ngModel)]="userForEdite.password"
+      formControlName='password'
+      >
+    <label for="password" [ngClass]="{active: userForEdite.password}">password</label>
+  </div>
+  <div class="input-field">
+    <input type="text" id="confirmPassword"
+    [(ngModel)]="confPassword"
+    formControlName="confirmPassword"
+    >
+    <label for="confirmPassword">repeate password</label>
+  </div>
+  <div class="input-field">
+    <input type="number" id="role" 
+    min="1"
+    max="2"
+    [(ngModel)]="userForEdite.role"
+    formControlName='role'
+    >
+    <label for="role" [ngClass]="{active: userForEdite.role}">Role</label>
+  </div>
+  <div class="container center">
+      <button type="button" class="btn waves-effect"
+        (click)="addAction()" 
+        *ngIf="showAddBtn"
+        [disabled]="form.invalid"
+        >Add
+      </button>
+      <button type="button" class="btn waves-effect"
+        *ngIf="!showAddBtn"
+        (click)="okAction()"
+        [disabled]="form.invalid"
+        >Ok
+      </button>
+      <button (click)="dialogRef.close()" class="btn">Close</button>
+      <button (click)="onSubmit()">submit</button>
+    </div>
+</form>

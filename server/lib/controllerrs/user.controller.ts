@@ -41,17 +41,10 @@ export class UserController {
         })
     }
 
-    public updateUser(req: Request, res: Response) {
+    public updateUser(req: Request, res: Response) {        
         let data = req.body;
-        let booksId = [];
-        if (req.body.books) {
-            booksId = req.body.books.map(el => mongoose.Types.ObjectId(el));
-            data = {
-                books: booksId
-            }
-        }
         const query = {
-            _id: req.params.userId
+            _id: req.body._id
         };
         
         mongoDbService.findOneAndUpdate(User, query, data)

@@ -19,7 +19,8 @@ import { BooksManagerComponent } from './admin/books-manager/books-manager.compo
 import { FavoritesComponent } from './shared/favorites/favorites.component';
 import { FavoritesModalComponent } from './shared/favorites/favorites-modal/favorites-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { UserManagerModalComponent } from './admin/user-manager/user-manager-modal/user-manager-modal.component';
+import { UserFormAddEditeModalComponent } from './admin/user-manager/user-forms-add-adite-modal/user-forms-add-adite-modal.component';
+import { UserDeleteModalComponent } from './admin/user-manager/user-delete-modal/user-delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { UserManagerModalComponent } from './admin/user-manager/user-manager-mod
     BooksManagerComponent,
     FavoritesComponent,
     FavoritesModalComponent,
-    UserManagerModalComponent
+    UserFormAddEditeModalComponent,
+    UserDeleteModalComponent
     ],
   imports: [
     BrowserModule,
@@ -44,8 +46,9 @@ import { UserManagerModalComponent } from './admin/user-manager/user-manager-mod
     MatDialogModule
   ],
   entryComponents: [
+    UserDeleteModalComponent,
     FavoritesModalComponent,
-    UserManagerModalComponent
+    UserFormAddEditeModalComponent
   ],
   providers: [
     UserService,

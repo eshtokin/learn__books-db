@@ -44,7 +44,7 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-     edit(id: string, user: User) {
+    edit(id: string, user: User) {
         return Axios.put(`/user/${id}`, user)
         .catch(err => console.log(err));
     }
