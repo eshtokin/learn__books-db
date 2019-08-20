@@ -11,6 +11,7 @@ import { stringify } from '@angular/compiler/src/util';
 })
 export class BooksManagerComponent implements OnInit {
   public editeMode = false;
+  public searchField = 'the last wish';
   public image: string | ArrayBuffer;
   public books: Book;
   public categories: object[] = [];
@@ -72,9 +73,11 @@ export class BooksManagerComponent implements OnInit {
 
   public filtering(): void {
     const data = {
+      title: this.searchField,
       categories: [],
       authors: []
     };
+
     this.filterData.categories.forEach((category: {name: string, _id: string}) => {
       data.categories.push(category._id);
     });
@@ -91,7 +94,8 @@ export class BooksManagerComponent implements OnInit {
 
     this.bookService.getSomeBooks(data)
     .then(list => {
-      this.books = list.slice();
+      console.log(list);
+      
     });
   }
 

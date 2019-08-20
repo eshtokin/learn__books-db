@@ -36,8 +36,11 @@ export class BookController {
   }
 
   public getSomeBooks(req: Request, res: Response) {
+    console.log(req.query);
+    
     const authorsFilter = [];
     const categoriesFilter = [];
+
     if (req.query.authors) {
       req.query.authors.forEach(author => {
         authorsFilter.push(mongoose.Types.ObjectId(author))
@@ -48,14 +51,37 @@ export class BookController {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
     }
-    if (req.query.authors && req.query.categories) {
+    if (req.query.title && req.query.authors && req.query.categories) {
       const query = {
         $and: [
+          {title: req.query.title},
           {categories: {$in: categoriesFilter}},
           {authors: {$in: authorsFilter}}
         ]
       };
-      mongoDbService.find(Books, query)
+
+      
+      const agreagateQuery = [{
+        $match: {
+          query
+        } 
+      }, {
+        $lookup: {
+          from: "categories",
+          localField: "categories",
+          foreignField: "_id",
+          as: "categories_list"
+        }
+      }, {
+        $lookup: {
+          from: "authors",
+          localField: "authors",
+          foreignField: "_id",
+          as: "authors_list"
+        }
+      }];
+
+      mongoDbService.Aggreagate(Books, agreagateQuery)
       .then(list => {
         return res.json(list)
       })
@@ -63,15 +89,35 @@ export class BookController {
 
       return
     }
-    if (req.query.authors || req.query.categories) {
+    if (req.query.title || req.query.authors || req.query.categories) {
       const query = {
         $or: [
+          {title: req.query.title},
           {categories: {$in: categoriesFilter}},
           {authors: {$in: authorsFilter}}
         ]
       };
 
-      mongoDbService.find(Books, query)
+      const agreagateQuery = [
+        {$match: query},
+        {
+          $lookup: {
+          from: "categories",
+          localField: "categories",
+          foreignField: "_id",
+          as: "categories_list"
+        }
+      }, {
+        $lookup: {
+          from: "authors",
+          localField: "authors",
+          foreignField: "_id",
+          as: "authors_list"
+        }
+      }];
+
+      // mongoDbService.find(Books, query)
+      mongoDbService.Aggreagate(Books, agreagateQuery)
       .then(list => res.json(list))
       .catch(err => res.send(err))
 

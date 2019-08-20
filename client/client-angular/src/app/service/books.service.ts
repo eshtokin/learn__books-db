@@ -17,6 +17,7 @@ export class BookService implements OnInit {
   }
 
   public getSomeBooks(data: BookFilter) {
+    console.log(data);
     return Axios.get('/somebooks', {params: data})
     .then(res => {
       return res.data;
@@ -72,7 +73,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  public filtering(data: BookFilter) {
-    return Axios.get('/books', {params: data});
-  }
+  // public filtering(data: BookFilter) {
+  //   return Axios.get('/books', {params: data});
+  // }
 }
