@@ -10,25 +10,18 @@ import { FormControleResult } from '../../../models/form-controle-result.model';
   styleUrls: ['./user-forms-add-adite-modal.component.scss']
 })
 export class UserFormAddEditeModalComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<UserFormAddEditeModalComponent>,
-    private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-
-  userForEdite = this.data.user || {
+  public confPass = true;
+  public userForEdite = this.data.user || {
     name: '',
     email: '',
     role: null,
     id: '',
     password: ''
   };
-  confPassword = '';
-  showAddBtn = this.data.user ? false : true;
+  public confPassword = '';
+  public showAddBtn = this.data.user ? false : true;
 
-  // passwordValidator = new FormControl('', [Validators.required, this.checkPassword]);
-  form = new FormGroup({
+  public form = new FormGroup({
     name: new FormControl('', [Validators.required, this.checkName]),
     email: new FormControl('', [Validators.required, this.checkEmail]),
     role: new FormControl('', [Validators.required, this.checkRole]),
@@ -36,9 +29,15 @@ export class UserFormAddEditeModalComponent {
     confirmPassword: new FormControl('', [Validators.required, this.confirmPassword])
   });
 
-  okBtnStatus = false; // true - visible; false - hidden
+  public okBtnStatus = false; // true - visible; false - hidden
 
-  onSubmit() {
+  constructor(
+    public dialogRef: MatDialogRef<UserFormAddEditeModalComponent>,
+    private userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+
+  onSubmit(): void {
     console.log(this.form);
   }
 
@@ -63,6 +62,15 @@ export class UserFormAddEditeModalComponent {
       return {
         result: true
       };
+    }
+  }
+
+  checkPass() {
+    if (this.form.controls.password.value === this.form.controls.confirmPassword.value) {
+
+      this.confPass =  true;
+    } else {
+      this.confPass =  false;
     }
   }
 

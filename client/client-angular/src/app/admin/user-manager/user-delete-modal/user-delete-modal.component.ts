@@ -13,11 +13,11 @@ export class UserDeleteModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  cancel() {
+  cancel(): void {
     this.confirmDialog.close();
   }
 
-  delete() {
+  delete(): void {
     this.data.deleteFunc(this.data.userId);
     this.confirmDialog.close();
   }

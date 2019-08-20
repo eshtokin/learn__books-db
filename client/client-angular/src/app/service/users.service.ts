@@ -2,7 +2,7 @@ import { Axios } from '../interceptor/token.interseptor';
 import { User } from '../models/user.model';
 
 export class UserService {
-    login(user: {email: string, password: string}) {
+    login(user: {email: string, password: string}): Promise<any> {
         return Axios.post('/login', user)
         .then(res => {
             localStorage.clear();
@@ -12,7 +12,7 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    registrate(user: User) {
+    registrate(user: User): Promise<any> {
         return Axios.post('/registration', user)
         .then(res => {
             return res;
@@ -20,11 +20,11 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    getAllUsers() {
+    getAllUsers(): Promise<any> {
         return Axios.get('/user');
     }
 
-    getUser(id) {
+    getUser(id: string): Promise<any> {
         return Axios.get(`/user/${id}`)
         .then(res => {
             return res.data;
@@ -32,19 +32,19 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    getUserBooks(books: string[]) {
+    getUserBooks(books: string[]): Promise<any> {
         return Axios.get('/userbooks', {params: {books}})
         .then(res => res.data)
         .catch(err => console.log(err));
     }
 
-    delete(id: string) {
+    delete(id: string): Promise<any> {
         return Axios.delete(`/user/${id}`)
         .then(res => res)
         .catch(err => console.log(err));
     }
 
-    edit(id: string, user: User) {
+    edit(id: string, user: User): Promise<any> {
         return Axios.put(`/user/${id}`, user)
         .catch(err => console.log(err));
     }

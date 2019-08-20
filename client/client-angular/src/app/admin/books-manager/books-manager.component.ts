@@ -83,7 +83,7 @@ export class BooksManagerComponent implements OnInit {
 
     if (!(data.categories.length && data.authors.length)) {
       this.bookService.getAllBooks()
-      .then(el => {
+      .then((el: any) => {
         this.books = el.slice();
       });
     }
@@ -96,7 +96,7 @@ export class BooksManagerComponent implements OnInit {
 
   getBooks(): void {
     this.bookService.getAllBooks()
-    .then(el => {
+    .then((el: any) => {
       this.books = el.slice();
     });
   }

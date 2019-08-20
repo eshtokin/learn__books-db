@@ -17,6 +17,7 @@
       <input type="text" id="password" 
       [(ngModel)]="userForEdite.password"
       formControlName='password'
+      (ngModelChange)="checkPass()"
       >
     <label for="password" [ngClass]="{active: userForEdite.password}">password</label>
   </div>
@@ -24,6 +25,7 @@
     <input type="text" id="confirmPassword"
     [(ngModel)]="confPassword"
     formControlName="confirmPassword"
+    (ngModelChange)="checkPass()"
     >
     <label for="confirmPassword">repeate password</label>
   </div>
@@ -37,19 +39,19 @@
     <label for="role" [ngClass]="{active: userForEdite.role}">Role</label>
   </div>
   <div class="container center">
-      <button type="button" class="btn waves-effect"
+      <button type="button" class="btn waves-effect green"
         (click)="addAction()" 
         *ngIf="showAddBtn"
         [disabled]="form.invalid"
         >Add
       </button>
-      <button type="button" class="btn waves-effect"
+      <button type="button" class="btn waves-effect green"
         *ngIf="!showAddBtn"
         (click)="okAction()"
-        [disabled]="form.invalid"
+        [disabled]=" form.invalid  || !confPass"
         >Ok
       </button>
-      <button (click)="dialogRef.close()" class="btn">Close</button>
+      <button (click)="dialogRef.close()" class="btn blue-grey">Close</button>
       <button (click)="onSubmit()">submit</button>
     </div>
 </form>

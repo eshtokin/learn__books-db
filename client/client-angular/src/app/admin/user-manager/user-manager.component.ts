@@ -3,6 +3,7 @@ import { UserService } from 'src/app/service/users.service';
 import { UserFormAddEditeModalComponent } from './user-forms-add-adite-modal/user-forms-add-adite-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-user-manager',
@@ -24,18 +25,18 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  deleteUser(id): void {
+  deleteUser(id: string): void {
     this.userService.delete(id)
     .then(res => {
       this.init();
     });
   }
 
-  openDialog(user): void {
+  openDialog(user: User): void {
     const dialogRef = this.dialog.open(UserFormAddEditeModalComponent, {
       data: {
         user,
-        reloadPage: this.ngOnInit.bind(this)
+        reloadPage:  this.init
       }
     });
 
@@ -43,7 +44,7 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  confirmDialog(userId, userName) {
+  confirmDialog(userId: string, userName: string): void {
     const confirmDialog = this.dialog.open(UserDeleteModalComponent, {
       data: {
         userId,
@@ -56,7 +57,7 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.init();
   }
 }

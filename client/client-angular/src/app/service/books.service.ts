@@ -3,19 +3,21 @@ import { Axios } from '../interceptor/token.interseptor';
 // import { SortType } from '../models/sort-type.model';
 import { Book } from '../models/book.model';
 import { User } from '../models/user.model';
+import { BookFilter } from '../models/book-filter.model';
 
 export class BookService implements OnInit {
   constructor() {}
 
-  getAllBooks() { // Sort Type model
+  getAllBooks(): Promise<Book[]> {
     return Axios.get('/books')
     .then(res => {
+      console.log(res.data);
       return res.data;
     })
     .catch(err => console.log(err));
   }
 
-  getSomeBooks(data: {categories?: string[], authors?: string[]}) {
+  getSomeBooks(data: BookFilter) {
     return Axios.get('/somebooks', {params: data})
     .then(res => {
       return res.data;
@@ -71,7 +73,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  filtering(data: {categories?: string[], authors?: string[]}) {
+  filtering(data: BookFilter) {
     return Axios.get('/books', {params: data});
   }
 

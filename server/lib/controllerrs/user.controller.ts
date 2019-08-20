@@ -43,6 +43,8 @@ export class UserController {
 
     public updateUser(req: Request, res: Response) {        
         let data = req.body;
+        console.log('data: ', data);
+        
         const query = {
             _id: req.body._id
         };

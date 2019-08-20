@@ -114,6 +114,7 @@ export class BookController {
     let listCategoriesId = [];
     let listAuthors = [];
     let listAuthorsId =[];
+    
     let query: object = {
       name: {
         $in: req.body.book.categories
