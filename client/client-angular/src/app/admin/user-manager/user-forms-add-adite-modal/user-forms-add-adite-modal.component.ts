@@ -4,6 +4,11 @@ import { FormGroup, FormControl, Validators, ControlContainer } from '@angular/f
 import { UserService } from 'src/app/service/users.service';
 import { FormControleResult } from '../../../models/form-controle-result.model';
 
+export enum UserRole {
+  admin,
+  user
+}
+
 @Component({
   selector: 'app-user-forms-add-adite-modal.component',
   templateUrl: './user-forms-add-adite-modal.component.html',
@@ -18,6 +23,7 @@ export class UserFormAddEditeModalComponent {
     id: '',
     password: ''
   };
+
   public confPassword = '';
   public showAddBtn = this.data.user ? false : true;
 
@@ -26,7 +32,7 @@ export class UserFormAddEditeModalComponent {
     email: new FormControl('', [Validators.required, this.checkEmail]),
     role: new FormControl('', [Validators.required, this.checkRole]),
     password: new FormControl('', [Validators.required, this.checkPassword]),
-    confirmPassword: new FormControl('', [Validators.required, this.confirmPassword])
+    confirmPassword: new FormControl('', [Validators.required, this.checkPassword])
   });
 
   public okBtnStatus = false; // true - visible; false - hidden
@@ -71,14 +77,6 @@ export class UserFormAddEditeModalComponent {
       this.confPass =  true;
     } else {
       this.confPass =  false;
-    }
-  }
-
-  confirmPassword(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{4,16}$/))  {
-      return {
-        result: true
-      };
     }
   }
 

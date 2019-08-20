@@ -11,24 +11,13 @@ import { FavoritesModalComponent } from './favorites-modal/favorites-modal.compo
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit {
+  public books: Book[] = [];
 
   constructor(
     private userInfo: UserInfo,
     private userService: UserService,
     public dialog: MatDialog
   ) { }
-
-  books: Book[] = [];
-
-  openDialog(book): void {
-    const dialogRef = this.dialog.open(FavoritesModalComponent, {
-      data: {book}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 
   ngOnInit() {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
@@ -45,4 +34,13 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
+  public openDialog(book): void {
+    const dialogRef = this.dialog.open(FavoritesModalComponent, {
+      data: {book}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 }

@@ -11,28 +11,31 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ['./user-manager.component.scss']
 })
 export class UserManagerComponent implements OnInit {
+  public users: object[];
 
   constructor(
     private userService: UserService,
     public dialog: MatDialog
   ) { }
 
-  users: object[];
+  ngOnInit(): void {
+    this.init();
+  }
 
-  init(): void {
+  public init(): void {
     this.userService.getAllUsers().then(el => {
       this.users = el.data.slice();
     });
   }
 
-  deleteUser(id: string): void {
+  public deleteUser(id: string): void {
     this.userService.delete(id)
     .then(res => {
       this.init();
     });
   }
 
-  openDialog(user: User): void {
+  public openDialog(user: User): void {
     const dialogRef = this.dialog.open(UserFormAddEditeModalComponent, {
       data: {
         user,
@@ -44,7 +47,7 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  confirmDialog(userId: string, userName: string): void {
+  public confirmDialog(userId: string, userName: string): void {
     const confirmDialog = this.dialog.open(UserDeleteModalComponent, {
       data: {
         userId,
@@ -55,9 +58,5 @@ export class UserManagerComponent implements OnInit {
 
     confirmDialog.afterClosed().subscribe(result => {
     });
-  }
-
-  ngOnInit(): void {
-    this.init();
   }
 }

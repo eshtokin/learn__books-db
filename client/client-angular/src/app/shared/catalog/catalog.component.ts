@@ -10,9 +10,9 @@ import { UserInfo } from '../../service/user-info.service';
 })
 export class CatalogComponent implements OnInit {
 
-  searchString = 'The last wish';
-  listOfBook: any = this.googleBooks.getPageInfo().currentItems;
-  currentPage = this.googleBooks.getPageInfo().currentPage;
+  public searchString = 'The last wish';
+  public listOfBook: any = this.googleBooks.getPageInfo().currentItems;
+  public currentPage = this.googleBooks.getPageInfo().currentPage;
 
   constructor(
     private googleBooks: GoogleBooks,
@@ -23,17 +23,17 @@ export class CatalogComponent implements OnInit {
   ngOnInit() {
   }
 
-  searchForBook(searchString, configForBookReq) {
+  public searchForBook(searchString, configForBookReq) {
     this.googleBooks.searchForBook(searchString, configForBookReq);
     this.currentPage  = configForBookReq.startIndex;
   }
 
-  changePage(page) {
+  public changePage(page) {
     this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10});
     this.currentPage = page;
   }
 
-  addBookToDB(book, user) {
+  public addBookToDB(book, user) {
     const newBook = {
       title: book.title.toLowerCase(),
       authors: book.authors.map(element => element.toLowerCase()),

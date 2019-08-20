@@ -7,13 +7,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./favorites-modal.component.scss']
 })
 export class FavoritesModalComponent {
+  public book = this.data.book;
 
   constructor(
     public dialogRef: MatDialogRef<FavoritesModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  book = this.data.book;
   onNoClick(): void {
     this.dialogRef.close();
   }

@@ -1,14 +1,14 @@
 import { OnInit } from '@angular/core';
 import { Axios } from '../interceptor/token.interseptor';
-// import { SortType } from '../models/sort-type.model';
 import { Book } from '../models/book.model';
 import { User } from '../models/user.model';
 import { BookFilter } from '../models/book-filter.model';
 
 export class BookService implements OnInit {
   constructor() {}
+  ngOnInit() {}
 
-  getAllBooks(): Promise<Book[]> {
+  public getAllBooks(): Promise<Book[]> {
     return Axios.get('/books')
     .then(res => {
       console.log(res.data);
@@ -17,14 +17,14 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  getSomeBooks(data: BookFilter) {
+  public getSomeBooks(data: BookFilter) {
     return Axios.get('/somebooks', {params: data})
     .then(res => {
       return res.data;
     });
   }
 
-  addBookToDB(book: Book, user: User) {
+  public addBookToDB(book: Book, user: User) {
     return Axios.post('/books', {book, user})
     .then(res => {
       return res;
@@ -32,7 +32,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  updateBook(data: Book) {
+  public updateBook(data: Book) {
     return Axios.put('/books', data)
     .then(res => {
       return res;
@@ -40,7 +40,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  changeImageInBook(data: {id: string, image: string | ArrayBuffer}) {
+  public changeImageInBook(data: {id: string, image: string | ArrayBuffer}) {
     return Axios.post('/book', data)
     .then(res => {
       return res;
@@ -48,7 +48,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  deleteBook(data: Book) {
+  public deleteBook(data: Book) {
     return Axios.delete('/books', {data})
     .then(res => {
       return res;
@@ -56,7 +56,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  getAllAuthors() {
+  public getAllAuthors() {
     return Axios.get('/author')
     .then(res => {
       return res.data;
@@ -65,7 +65,7 @@ export class BookService implements OnInit {
     );
   }
 
-  getAllCategories() {
+  public getAllCategories() {
     return Axios.get('/category')
     .then(res => {
       return res.data;
@@ -73,9 +73,7 @@ export class BookService implements OnInit {
     .catch(err => console.log(err));
   }
 
-  filtering(data: BookFilter) {
+  public filtering(data: BookFilter) {
     return Axios.get('/books', {params: data});
   }
-
-  ngOnInit() {}
 }

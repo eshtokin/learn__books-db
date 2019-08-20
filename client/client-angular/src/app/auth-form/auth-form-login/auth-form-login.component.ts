@@ -9,17 +9,17 @@ import { Router } from '@angular/router';
 })
 
 export class AuthFormLoginComponent {
+  public user = {
+    email: '',
+    password: ''
+  };
+
   constructor(
     private userService: UserService,
     private route: Router
   ) {}
 
-  user = {
-    email: '',
-    password: ''
-  };
-
-  async login() {
+  public async login() {
     const res: any = await this.userService.login(this.user);
     if (res.status !== 200) {
       return;

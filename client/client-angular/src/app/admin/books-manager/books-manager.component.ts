@@ -10,12 +10,12 @@ import { stringify } from '@angular/compiler/src/util';
   styleUrls: ['./books-manager.component.scss']
 })
 export class BooksManagerComponent implements OnInit {
-  editeMode = false;
-  image: string | ArrayBuffer;
-  books: Book;
-  categories: object[] = [];
-  authors: object[] = [];
-  editeBookData: Book = {
+  public editeMode = false;
+  public image: string | ArrayBuffer;
+  public books: Book;
+  public categories: object[] = [];
+  public authors: object[] = [];
+  public editeBookData: Book = {
     title: '',
     authors: [],
     categories: [],
@@ -25,7 +25,7 @@ export class BooksManagerComponent implements OnInit {
     printType: 'Book'
   };
 
-  filterData = {
+  public filterData = {
     title: '',
     categories: new Set(),
     authors: new Set()
@@ -40,16 +40,16 @@ export class BooksManagerComponent implements OnInit {
     this.init();
   }
 
-  editeModeToggle() {
+  public editeModeToggle() {
     this.editeMode = !this.editeMode;
   }
-  init(): void {
+  public init(): void {
     this.getBooks();
     this.getAuthors();
     this.getCategories();
   }
 
-  chooseCategory(category): void {
+  public chooseCategory(category): void {
     const status = (document.getElementById(category._id) as HTMLInputElement).checked;
     if (status) {
       this.filterData.categories.add(category);
@@ -59,7 +59,7 @@ export class BooksManagerComponent implements OnInit {
     }
   }
 
-  chooseAuthor(author): void {
+  public chooseAuthor(author): void {
     const status: boolean = (document.getElementById(author._id) as HTMLInputElement).checked;
     if (status) {
       this.filterData.authors.add(author);
@@ -69,7 +69,7 @@ export class BooksManagerComponent implements OnInit {
     }
   }
 
-  filtering(): void {
+  public filtering(): void {
     const data = {
       categories: [],
       authors: []
@@ -94,28 +94,28 @@ export class BooksManagerComponent implements OnInit {
     });
   }
 
-  getBooks(): void {
+  public getBooks(): void {
     this.bookService.getAllBooks()
     .then((el: any) => {
       this.books = el.slice();
     });
   }
 
-  getAuthors(): void {
+  public getAuthors(): void {
     this.bookService.getAllAuthors()
     .then(el => {
       this.authors = el.slice();
     });
   }
 
-  getCategories(): void {
+  public getCategories(): void {
     this.bookService.getAllCategories()
     .then(el => {
       this.categories = el.slice();
     });
   }
 
-  uploadFile(e, id: string): void {
+  public uploadFile(e, id: string): void {
     const input = e.target;
     const reader = new FileReader();
     reader.onload = () => {
@@ -125,7 +125,7 @@ export class BooksManagerComponent implements OnInit {
     reader.readAsDataURL(input.files[0]);
   }
 
-  chooseEditeBook(book): void {
+  public chooseEditeBook(book): void {
     this.editeModeToggle();
     this.editeBookData = {
       title: book.title,
@@ -147,16 +147,16 @@ export class BooksManagerComponent implements OnInit {
     });
   }
 
-  addBookToFavorite(book, user) {
+  public addBookToFavorite(book, user) {
     this.bookService.addBookToDB(book, user);
   }
 
-  editeBook(): void {
+  public editeBook(): void {
     this.bookService.updateBook(this.editeBookData);
     this.init();
   }
 
-  deleteBook(book: Book): void {
+  public deleteBook(book: Book): void {
     this.bookService.deleteBook(book);
     this.init();
   }

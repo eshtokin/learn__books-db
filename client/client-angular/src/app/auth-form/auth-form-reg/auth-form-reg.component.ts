@@ -9,12 +9,8 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ['./auth-form-reg.component.scss']
 })
 export class AuthFormRegComponent {
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ) { }
 
-  user: User = {
+  public user: User = {
     email: '',
     password: '',
     name: '',
@@ -24,7 +20,13 @@ export class AuthFormRegComponent {
     _id: ''
   };
 
-  async registrate() {
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) { }
+
+
+  public async registrate() {
     const res: any = await this.userService.registrate(this.user);
     if (res.status !== 200) {
       return;

@@ -10,17 +10,33 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  books: Book[];
-  booksId: string[];
-  user: User = this.userInfo.getCurrentUser();
+  public books: Book[];
+  public booksId: string[];
+  public user: User = this.userInfo.getCurrentUser();
 
   constructor(
     private userInfo: UserInfo,
     private userService: UserService
   ) { }
 
+  ngOnInit() {
+    this.userService.getUser(this.userInfo.getCurrentUser().id)
+    .then(user => {
+      this.user = user;
 
-  deleteBookFromProfile(book) {
+      if (user.books.length > 0) {
+        this.userService.getUserBooks(user.books)
+        .then(books => {
+          this.books = books;
+        });
+      }
+      if (user.books.length === 0) {
+        this.books = [];
+      }
+    });
+  }
+
+  public deleteBookFromProfile(book) {
     const userId = this.userInfo.getCurrentUser().id;
     const bookId = book._id;
     const books = [];
@@ -40,23 +56,6 @@ export class ProfileComponent implements OnInit {
       .then(res => {
         this.ngOnInit();
       });
-    });
-  }
-
-  ngOnInit() {
-    this.userService.getUser(this.userInfo.getCurrentUser().id)
-    .then(user => {
-      this.user = user;
-
-      if (user.books.length > 0) {
-        this.userService.getUserBooks(user.books)
-        .then(books => {
-          this.books = books;
-        });
-      }
-      if (user.books.length === 0) {
-        this.books = [];
-      }
     });
   }
 }
