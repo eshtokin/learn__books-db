@@ -36,7 +36,7 @@ export class BookController {
   }
 
   public getSomeBooks(req: Request, res: Response) {
-    console.log(req.query);
+    console.log('__________---------__________');
     
     const authorsFilter = [];
     const categoriesFilter = [];
@@ -59,8 +59,8 @@ export class BookController {
           {authors: {$in: authorsFilter}}
         ]
       };
-
-      
+      console.log('three');
+  
       const agreagateQuery = [{
         $match: {
           query
@@ -115,6 +115,7 @@ export class BookController {
           as: "authors_list"
         }
       }];
+      console.log('one of');
 
       // mongoDbService.find(Books, query)
       mongoDbService.Aggreagate(Books, agreagateQuery)

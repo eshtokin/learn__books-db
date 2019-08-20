@@ -73,7 +73,7 @@ export class BooksManagerComponent implements OnInit {
 
   public filtering(): void {
     const data = {
-      title: this.searchField,
+      title: this.searchField.length > 0 ? this.searchField : null,
       categories: [],
       authors: []
     };
@@ -88,21 +88,20 @@ export class BooksManagerComponent implements OnInit {
     if (!(data.categories.length && data.authors.length)) {
       this.bookService.getAllBooks()
       .then((el: any) => {
-        this.books = el.slice();
+        this.books = el;
       });
     }
 
     this.bookService.getSomeBooks(data)
     .then(list => {
-      console.log(list);
-      
+      this.books = list;
     });
   }
 
   public getBooks(): void {
     this.bookService.getAllBooks()
     .then((el: any) => {
-      this.books = el.slice();
+      this.books = el;
     });
   }
 
