@@ -4,6 +4,7 @@ import { UserService } from 'src/app/service/users.service';
 import { Book } from 'src/app/models/book.model';
 import {MatDialog} from '@angular/material/dialog';
 import { FavoritesModalComponent } from './favorites-modal/favorites-modal.component';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-favorites',
@@ -12,7 +13,7 @@ import { FavoritesModalComponent } from './favorites-modal/favorites-modal.compo
 })
 export class FavoritesComponent implements OnInit {
   public books: Book[] = [];
-
+  public user: User;
   constructor(
     private userInfo: UserInfo,
     private userService: UserService,
@@ -21,9 +22,13 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
-    .then(user => {
+    .then((data) => {
+      this.user = data;
+      return data;
+    })
+    .then((user: User) => {
       if (user.books.length > 0) {
-        this.userService.getUserBooks(user.books)
+        this.userService.getUserBooks(user.books as string[])
         .then(books => {
           this.books = books;
         });
@@ -34,13 +39,25 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
-  public openDialog(book): void {
+  public openDialog(book: Book): void {
     const dialogRef = this.dialog.open(FavoritesModalComponent, {
-      data: {book}
+      data: {
+        book,
+        allBooks: this.books,
+        user: this.user,
+        delete: this.deleteBookFromFavorite.bind(this)
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+    });
+  }
+
+  public deleteBookFromFavorite(user) {
+    this.userService.edit(this.user._id, user)
+    .then(() => {
+      this.ngOnInit();
     });
   }
 }

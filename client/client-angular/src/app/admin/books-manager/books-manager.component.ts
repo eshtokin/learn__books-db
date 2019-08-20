@@ -43,6 +43,7 @@ export class BooksManagerComponent implements OnInit {
   public editeModeToggle() {
     this.editeMode = !this.editeMode;
   }
+
   public init(): void {
     this.getBooks();
     this.getAuthors();

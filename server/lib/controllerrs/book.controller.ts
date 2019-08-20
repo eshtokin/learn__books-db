@@ -114,18 +114,22 @@ export class BookController {
     let listCategoriesId = [];
     let listAuthors = [];
     let listAuthorsId =[];
-    
-    let query: object = {
-      name: {
-        $in: req.body.book.categories
-      }
-    };
 
-    mongoDbService.find(Category, query)
+    let queryForCategory: object = req.body.book.categories_list ?
+    { name: {
+      $in: req.body.book.categories_list.map(el => {
+        return el.name;
+      })
+    }}
+    : { name: {
+      $in: req.body.book.categories
+    }};
+
+    mongoDbService.find(Category, queryForCategory)
     .then(category => {
       if (category.length > 0) {
         category.forEach(el => {
-          listCategoriesId.push(el._id)
+          listCategoriesId.push(mongoose.Types.ObjectId(el._id))
         })
       }
 
@@ -138,22 +142,28 @@ export class BookController {
             _v: 0
           });
           listCategoriesId.push(id)
-        })
+        });
+        Category.insertMany(listCategories);
       }
-      Category.insertMany(listCategories)
+      
     })
     .catch(err => res.send(err))
 
-    query = {
-      name: {
-        $in: req.body.book.authors
-      }
-    };
-    mongoDbService.find(Authors, query)
+    let queryForAuthor: object = req.body.book.authors_list ?
+    { name: {
+      $in: req.body.book.authors_list.map(el => {
+        return el.name;
+      })
+    }}
+    : { name: {
+      $in: req.body.book.authors
+    }};
+
+    mongoDbService.find(Authors, queryForAuthor)
     .then(author => {
       if (author.length > 0) {
         author.forEach(el => {
-          listAuthorsId.push(el._id)
+          listAuthorsId.push(mongoose.Types.ObjectId(el._id))
         })
       }
       if (author.length === 0) {
@@ -165,17 +175,18 @@ export class BookController {
             _v: 0
           });
           listAuthorsId.push(id)
-        })
+        });
+        Authors.insertMany(listAuthors);
       }
-      Authors.insertMany(listAuthors)
+      
     })
     .catch(err => res.send(err))
  
-    query = {
+    let queryForBook= {
       title: req.body.book.title,
       industryIdentifiers: req.body.book.industryIdentifiers
     };
-    mongoDbService.findOne(Books, query)
+    mongoDbService.findOne(Books, queryForBook)
     .then(book => {
       if (book && req.body.user) {
         const query = {
@@ -202,7 +213,7 @@ export class BookController {
       }
 
       const bookId = mongoose.Types.ObjectId();
-      query = {
+      let query = {
         _id: bookId,
         title: req.body.book.title,
         authors: listAuthorsId,

@@ -8,6 +8,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class FavoritesModalComponent {
   public book = this.data.book;
+  public allBooks = this.data.allBooks;
+  public user = this.data.user;
 
   constructor(
     public dialogRef: MatDialogRef<FavoritesModalComponent>,
@@ -18,4 +20,15 @@ export class FavoritesModalComponent {
     this.dialogRef.close();
   }
 
+  public deleteBook() {
+    const restOfBook = [];
+    this.data.allBooks.forEach(book => {
+      if (book._id !== this.data.book._id) {
+        restOfBook.push(book._id);
+      }
+    });
+    this.user.books = restOfBook;
+    this.data.delete(this.user);
+    this.dialogRef.close();
+  }
 }

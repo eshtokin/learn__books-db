@@ -11,7 +11,6 @@ export class BookService implements OnInit {
   public getAllBooks(): Promise<Book[]> {
     return Axios.get('/books')
     .then(res => {
-      console.log(res.data);
       return res.data;
     })
     .catch(err => console.log(err));

@@ -43,8 +43,11 @@ export class UserController {
 
     public updateUser(req: Request, res: Response) {        
         let data = req.body;
-        console.log('data: ', data);
-        
+        const bookArray = req.body.books.map(book => {
+            return mongoose.Types.ObjectId(book)
+        })
+        data.books = bookArray;
+  
         const query = {
             _id: req.body._id
         };
