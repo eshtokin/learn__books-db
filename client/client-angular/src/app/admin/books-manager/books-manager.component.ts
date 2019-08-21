@@ -35,7 +35,7 @@ export class BooksManagerComponent implements OnInit {
   constructor(
     private userInfo: UserInfo,
     private bookService: BookService,
-    ) {}
+  ) { }
 
   ngOnInit() {
     this.init();
@@ -73,50 +73,50 @@ export class BooksManagerComponent implements OnInit {
 
   public filtering(): void {
     const data = {
-      title: this.searchField.length > 0 ? this.searchField : null,
+      title: this.searchField.length ? this.searchField : '',
       categories: [],
       authors: []
     };
 
-    this.filterData.categories.forEach((category: {name: string, _id: string}) => {
+    this.filterData.categories.forEach((category: { name: string, _id: string }) => {
       data.categories.push(category._id);
     });
-    this.filterData.authors.forEach((author: {name: string, _id: string}) => {
+    this.filterData.authors.forEach((author: { name: string, _id: string }) => {
       data.authors.push(author._id);
     });
 
-    if (!(data.categories.length && data.authors.length)) {
+    if (data.title.length == 0 && data.categories.length == 0 && data.authors.length == 0) {
       this.bookService.getAllBooks()
-      .then((el: any) => {
-        this.books = el;
-      });
+        .then((el: any) => {
+          this.books = el;
+        });
+    } else {
+      this.bookService.getSomeBooks(data)
+        .then(list => {
+          this.books = list;
+        });
     }
-
-    this.bookService.getSomeBooks(data)
-    .then(list => {
-      this.books = list;
-    });
   }
 
   public getBooks(): void {
     this.bookService.getAllBooks()
-    .then((el: any) => {
-      this.books = el;
-    });
+      .then((el: any) => {
+        this.books = el;
+      });
   }
 
   public getAuthors(): void {
     this.bookService.getAllAuthors()
-    .then(el => {
-      this.authors = el.slice();
-    });
+      .then(el => {
+        this.authors = el.slice();
+      });
   }
 
   public getCategories(): void {
     this.bookService.getAllCategories()
-    .then(el => {
-      this.categories = el.slice();
-    });
+      .then(el => {
+        this.categories = el.slice();
+      });
   }
 
   public uploadFile(e, id: string): void {
@@ -124,7 +124,7 @@ export class BooksManagerComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.editeBookData.image = reader.result;
-      (document.getElementById('blah') as HTMLImageElement).src = (this.editeBookData.image as  string);
+      (document.getElementById('blah') as HTMLImageElement).src = (this.editeBookData.image as string);
     };
     reader.readAsDataURL(input.files[0]);
   }

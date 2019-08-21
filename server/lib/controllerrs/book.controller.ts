@@ -11,7 +11,6 @@ const mongoDbService = new MongoDbService();
 
 export class BookController {
   public getAllBook(req: Request, res: Response) {
-    const geralt = mongoose.Types.ObjectId('5d52c65532a6e40e30459aa6');
     const query = [{
       $lookup: {
         from: "categories",
@@ -36,94 +35,39 @@ export class BookController {
   }
 
   public getSomeBooks(req: Request, res: Response) {
-    console.log('__________---------__________');
-    
     const authorsFilter = [];
     const categoriesFilter = [];
 
-    if (req.query.authors) {
+    if (req.query.authors.length) {
       req.query.authors.forEach(author => {
         authorsFilter.push(mongoose.Types.ObjectId(author))
       })
     }
-    if (req.query.categories) {
+    if (req.query.categories.length) {
       req.query.categories.forEach(category => {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
     }
-    if (req.query.title && req.query.authors && req.query.categories) {
-      const query = {
-        $and: [
-          {title: req.query.title},
-          {categories: {$in: categoriesFilter}},
-          {authors: {$in: authorsFilter}}
-        ]
-      };
-      console.log('three');
-  
-      const agreagateQuery = [{
-        $match: {
-          query
-        } 
-      }, {
-        $lookup: {
-          from: "categories",
-          localField: "categories",
-          foreignField: "_id",
-          as: "categories_list"
-        }
-      }, {
-        $lookup: {
-          from: "authors",
-          localField: "authors",
-          foreignField: "_id",
-          as: "authors_list"
-        }
-      }];
 
-      mongoDbService.Aggreagate(Books, agreagateQuery)
-      .then(list => {
-        return res.json(list)
-      })
-      .catch(err => res.send(err))
+    const queryTitle =  req.query.title? {title: req.query.title} : {};
+    const queryCategories =  categoriesFilter.length > 0 ? {categories: {$in: categoriesFilter}} : {};
+    const queryAuthors =  authorsFilter.length > 0 ?  {authors: {$in: authorsFilter}} : {};
 
-      return
-    }
-    if (req.query.title || req.query.authors || req.query.categories) {
-      const query = {
-        $or: [
-          {title: req.query.title},
-          {categories: {$in: categoriesFilter}},
-          {authors: {$in: authorsFilter}}
-        ]
-      };
-
-      const agreagateQuery = [
-        {$match: query},
-        {
-          $lookup: {
-          from: "categories",
-          localField: "categories",
-          foreignField: "_id",
-          as: "categories_list"
-        }
-      }, {
-        $lookup: {
-          from: "authors",
-          localField: "authors",
-          foreignField: "_id",
-          as: "authors_list"
-        }
-      }];
-      console.log('one of');
-
-      // mongoDbService.find(Books, query)
-      mongoDbService.Aggreagate(Books, agreagateQuery)
-      .then(list => res.json(list))
-      .catch(err => res.send(err))
-
-      return
-    }
+    const query = {
+      $and: [
+        {...queryTitle},
+        {...queryCategories},
+        {...queryAuthors}
+      ]
+    };
+    console.log('query: ', JSON.stringify(query));
+   
+    mongoDbService.find(Books, query)
+    // mongoDbService.Aggreagate(Books, agreagateQuery)
+    .then(list => {
+      return res.json(list)
+    })
+    .catch(err => res.send(err))
   }
 
   public getUserBooks(req: Request, res: Response) {
