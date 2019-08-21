@@ -5,7 +5,10 @@
       <li><a routerLink="catalog">Search</a></li>
       <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="dbviewer">Books</a></li>
       <li *ngIf="(this.userInfo.isUserAuth() && this.userInfo.getStatus())"><a routerLink="user-manager">Users</a></li>
-      <li class="dropdown">
+      <li *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth/login">Log in</a></li>
+      <li class="dropdown"
+      *ngIf="(this.userInfo.isUserAuth())"
+      >
           <a class="btn-floating btn-large  waves-effect waves-light teal">
             <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png" alt="user avatar">
           </a>

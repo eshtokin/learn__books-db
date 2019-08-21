@@ -12,7 +12,7 @@ import { User } from 'src/app/models/user.model';
 })
 export class BooksManagerComponent implements OnInit {
   public editeMode = false;
-  public searchField = 'the last wish';
+  public searchField = '';
   public image: string | ArrayBuffer;
   public books: Book[];
   public categories: object[] = [];
@@ -74,7 +74,7 @@ export class BooksManagerComponent implements OnInit {
 
   public filtering(): void {
     const data = {
-      title: this.searchField.length ? this.searchField : '',
+      title: this.searchField,
       categories: [],
       authors: []
     };
@@ -115,8 +115,8 @@ export class BooksManagerComponent implements OnInit {
 
   public getCategories(): void {
     this.bookService.getAllCategories()
-      .then((category: CategoryAuthor[]) => {
-        this.categories = category;
+      .then((categories: CategoryAuthor[]) => {
+        this.categories = categories;
       });
   }
 

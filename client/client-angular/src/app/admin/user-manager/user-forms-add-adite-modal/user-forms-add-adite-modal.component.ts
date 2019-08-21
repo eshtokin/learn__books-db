@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormControl, Validators, ControlContainer } from '@angular/forms';
-import { UserService } from 'src/app/service/users.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserService } from '../../../service/users.service';
 import { FormControleResult } from '../../../models/form-controle-result.model';
-import { User } from 'src/app/models/user.model';
+import { User } from '../../../models/user.model';
 
 export enum UserRole {
   admin,
@@ -33,8 +33,8 @@ export class UserFormAddEditeModalComponent {
     name: new FormControl('', [Validators.required, this.checkName]),
     email: new FormControl('', [Validators.required, this.checkEmail]),
     role: new FormControl('', [Validators.required, this.checkRole]),
-    password: new FormControl('', [Validators.required, this.checkPassword]),
-    confirmPassword: new FormControl('', [Validators.required, this.checkPassword])
+    password: new FormControl('', [Validators.required]),
+    confirmPassword: new FormControl('', [Validators.required]) // this.checkPassword
   });
 
   public okBtnStatus = false; // true - visible; false - hidden
@@ -71,6 +71,7 @@ export class UserFormAddEditeModalComponent {
 
   checkPassword(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{4,16}$/)) {
+    // if (control.value) {
       return {
         result: true
       };

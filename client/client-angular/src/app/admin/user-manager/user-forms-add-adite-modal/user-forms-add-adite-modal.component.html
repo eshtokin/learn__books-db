@@ -14,29 +14,28 @@
     <label for="email" [ngClass]="{active: userForEdite.email}">E-mail</label>
   </div>
   <div class="input-field">
-      <input type="text" id="password" 
-      [(ngModel)]="userForEdite.password"
+      <input type="password" id="password" 
+      [ngModel]="userForEdite.password"
       formControlName='password'
       (ngModelChange)="checkPass()"
       >
     <label for="password" [ngClass]="{active: userForEdite.password}">password</label>
   </div>
   <div class="input-field">
-    <input type="text" id="confirmPassword"
+    <input type="password" id="confirmPassword"
+    [ngModel]="userForEdite.password"
     [(ngModel)]="confPassword"
     formControlName="confirmPassword"
     (ngModelChange)="checkPass()"
     >
-    <label for="confirmPassword">repeate password</label>
+    <label for="confirmPassword" [ngClass]="{active: userForEdite.password}">repeate password</label>
   </div>
-  <div class="input-field">
-    <input type="number" id="role" 
-    min="1"
-    max="2"
-    [(ngModel)]="userForEdite.role"
-    formControlName='role'
-    >
-    <label for="role" [ngClass]="{active: userForEdite.role}">Role</label>
+  <div class="my-input-field">
+      <label for="roles">Role</label>
+      <select name="roles"  [(ngModel)]="userForEdite.role" formControlName='role'>
+        <option value={{+2}}>User</option>
+        <option value={{+1}}>Admin</option>
+      </select>
   </div>
   <div class="container center">
       <button type="button" class="btn waves-effect green"

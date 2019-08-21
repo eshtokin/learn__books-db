@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from 'src/app/service/users.service';
+import { UserService } from '../../service/users.service';
 import { UserFormAddEditeModalComponent } from './user-forms-add-adite-modal/user-forms-add-adite-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
-import { User } from 'src/app/models/user.model';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-user-manager',
@@ -40,7 +40,7 @@ export class UserManagerComponent implements OnInit {
     const dialogRef = this.dialog.open(UserFormAddEditeModalComponent, {
       data: {
         user,
-        reloadPage:  this.init
+        reloadPage:  this.init.bind(this)
       }
     });
 
