@@ -23,8 +23,9 @@ export class UserManagerComponent implements OnInit {
   }
 
   public init(): void {
-    this.userService.getAllUsers().then(el => {
-      this.users = el.data.slice();
+    this.userService.getAllUsers()
+    .then(users => {
+      this.users = users;
     });
   }
 
@@ -47,11 +48,11 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  public confirmDialog(userId: string, userName: string): void {
+  public confirmDialog(userId: string, userEmail: string): void {
     const confirmDialog = this.dialog.open(UserDeleteModalComponent, {
       data: {
         userId,
-        userName,
+        userEmail,
         deleteFunc: this.deleteUser.bind(this)
       }
     });

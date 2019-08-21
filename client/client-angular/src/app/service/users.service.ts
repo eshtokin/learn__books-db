@@ -14,21 +14,19 @@ export class UserService {
 
     public registrate(user: User): Promise<any> {
         return Axios.post('/registration', user)
-        .then(res => {
-            return res;
-        })
+        .then(res => res)
         .catch(err => console.log(err));
     }
 
     public getAllUsers(): Promise<any> {
-        return Axios.get('/user');
+        return Axios.get('/user')
+        .then(res => res.data)
+        .catch(err => console.log(err));
     }
 
     public getUser(id: string): Promise<any> {
         return Axios.get(`/user/${id}`)
-        .then(res => {
-            return res.data;
-        })
+        .then(res => res.data)
         .catch(err => console.log(err));
     }
 

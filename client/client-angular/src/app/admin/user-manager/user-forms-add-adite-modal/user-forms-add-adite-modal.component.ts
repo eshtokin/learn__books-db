@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators, ControlContainer } from '@angular/forms';
 import { UserService } from 'src/app/service/users.service';
 import { FormControleResult } from '../../../models/form-controle-result.model';
+import { User } from 'src/app/models/user.model';
 
 export enum UserRole {
   admin,
@@ -16,16 +17,17 @@ export enum UserRole {
 })
 export class UserFormAddEditeModalComponent {
   public confPass = true;
-  public userForEdite = this.data.user || {
+  public userForEdite: User = this.data.user || {
     name: '',
     email: '',
     role: null,
     id: '',
-    password: ''
+    password: '',
+    _id: this.data.user._id
   };
 
   public confPassword = '';
-  public showAddBtn = this.data.user ? false : true;
+  public showAddBtn: boolean = this.data.user ? false : true;
 
   public form = new FormGroup({
     name: new FormControl('', [Validators.required, this.checkName]),
@@ -40,11 +42,15 @@ export class UserFormAddEditeModalComponent {
   constructor(
     public dialogRef: MatDialogRef<UserFormAddEditeModalComponent>,
     private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: {
+      user: User,
+      reloadPage: () => void
+    }
   ) {}
 
   onSubmit(): void {
     console.log(this.form);
+    console.log(this.data);
   }
 
   checkName(control: FormControl): FormControleResult {
@@ -102,18 +108,6 @@ export class UserFormAddEditeModalComponent {
       this.data.reloadPage();
       this.dialogRef.close();
     });
-  }
-
-  resetUserForEdite(): void {
-    this.userForEdite = {
-      _id: '',
-      name: '',
-      email: '',
-      password: '',
-      books: [],
-      image: '',
-      role: null
-    };
   }
 
   onNoClick(): void {

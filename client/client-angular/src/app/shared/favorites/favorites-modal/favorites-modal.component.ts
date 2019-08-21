@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Book } from 'src/app/models/book.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-favorites-modal',
@@ -7,13 +9,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./favorites-modal.component.scss']
 })
 export class FavoritesModalComponent {
-  public book = this.data.book;
-  public allBooks = this.data.allBooks;
-  public user = this.data.user;
+  public book: Book = this.data.book;
+  public allBooks: Book[] = this.data.allBooks;
+  public user: User = this.data.user;
 
   constructor(
     public dialogRef: MatDialogRef<FavoritesModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: {
+      book: Book,
+      allBooks: Book[],
+      user: User,
+      delete: (user: User) => void
+    }
   ) {}
 
   onNoClick(): void {
@@ -22,7 +29,7 @@ export class FavoritesModalComponent {
 
   public deleteBook() {
     const restOfBook = [];
-    this.data.allBooks.forEach(book => {
+    this.data.allBooks.forEach((book: Book) => {
       if (book._id !== this.data.book._id) {
         restOfBook.push(book._id);
       }

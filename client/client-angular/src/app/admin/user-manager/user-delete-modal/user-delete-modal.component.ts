@@ -10,7 +10,11 @@ export class UserDeleteModalComponent {
 
   constructor(
     public confirmDialog: MatDialogRef<UserDeleteModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: {
+      userId: string,
+      userEmail: string,
+      deleteFunc: (userId: string) => void
+    }
   ) {}
 
   public cancel(): void {

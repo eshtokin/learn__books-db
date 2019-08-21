@@ -49,12 +49,10 @@ export class FavoritesComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    dialogRef.afterClosed().subscribe();
   }
 
-  public deleteBookFromFavorite(user) {
+  public deleteBookFromFavorite(user: User) {
     this.userService.edit(this.user._id, user)
     .then(() => {
       this.ngOnInit();

@@ -9,4 +9,8 @@ export interface Book {
   pageCount: number;
   printType: string;
   title: string;
+  _id?: string;
+  imageLinks?: {
+    thumbnail: string
+  };
 }

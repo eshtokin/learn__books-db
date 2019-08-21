@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GoogleBooks } from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { UserInfo } from '../../service/user-info.service';
+import { Book } from 'src/app/models/book.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-catalog',
@@ -10,9 +12,9 @@ import { UserInfo } from '../../service/user-info.service';
 })
 export class CatalogComponent implements OnInit {
 
-  public searchString = 'The last wish';
+  public searchString: string;
   public listOfBook: any = this.googleBooks.getPageInfo().currentItems;
-  public currentPage = this.googleBooks.getPageInfo().currentPage;
+  public currentPage: number = this.googleBooks.getPageInfo().currentPage;
 
   constructor(
     private googleBooks: GoogleBooks,
@@ -23,25 +25,25 @@ export class CatalogComponent implements OnInit {
   ngOnInit() {
   }
 
-  public searchForBook(searchString, configForBookReq) {
+  public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}) {
     this.googleBooks.searchForBook(searchString, configForBookReq);
     this.currentPage  = configForBookReq.startIndex;
   }
 
-  public changePage(page) {
+  public changePage(page: number) {
     this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10});
     this.currentPage = page;
   }
 
-  public addBookToDB(book, user) {
-    const newBook = {
+  public addBookToDB(book: Book, user: User) {
+    const newBook: Book = {
       title: book.title.toLowerCase(),
       authors: book.authors.map(element => element.toLowerCase()),
       categories: book.categories ? book.categories.map(element => element.toLowerCase()) : [],
       description: book.description,
       image: book.imageLinks.thumbnail || '',
       pageCount: book.pageCount,
-      printType: book.printType.toLowerCase(0),
+      printType: book.printType.toLowerCase(),
       industryIdentifiers: [...book.industryIdentifiers]
     };
     this.booksService.addBookToDB(newBook, user);

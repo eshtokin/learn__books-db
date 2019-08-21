@@ -1,4 +1,4 @@
-<h3 *ngIf="!books.length">Your list are empty</h3>
+<h3 *ngIf="!books.length">Your list is empty</h3>
 <div class="container">
   <ul class="collection z-depth-4">
     <li
@@ -10,8 +10,8 @@
       <img src={{book.image}} alt="book image" class="circle">
       <span class="title">{{book.title}}</span>
       <p>
-        <b>Authors:</b> <span *ngFor="let author of book.authors_list" class="chip">{{author.name}}</span> <br>
-        <b>Categories:</b> <span *ngFor="let category of book.categories_list" class="chip">{{category.name}}</span>
+        <b>Categories:</b> <span *ngFor="let category of book.categories_list" class="chip">{{category.name}}</span><br>
+        <b>Authors:</b> <span *ngFor="let author of book.authors_list" class="chip">{{author.name}}</span> 
       </p>
     </li>
   </ul>

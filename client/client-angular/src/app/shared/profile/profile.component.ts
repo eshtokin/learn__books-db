@@ -21,41 +21,18 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
-    .then(user => {
+    .then((user: User) => {
       this.user = user;
 
       if (user.books.length > 0) {
-        this.userService.getUserBooks(user.books)
-        .then(books => {
+        this.userService.getUserBooks(user.books as string[])
+        .then((books: Book[]) => {
           this.books = books;
         });
       }
       if (user.books.length === 0) {
         this.books = [];
       }
-    });
-  }
-
-  public deleteBookFromProfile(book) {
-    const userId = this.userInfo.getCurrentUser().id;
-    const bookId = book._id;
-    const books = [];
-
-    this.userService.getUser(userId)
-    .then(data => {
-      data.books.forEach(id => {
-        if (bookId !== id) {
-          books.push(id);
-        }
-      });
-      this.user = data;
-      this.user.books = books;
-      console.log(this.user);
-
-      this.userService.edit(userId, this.user)
-      .then(res => {
-        this.ngOnInit();
-      });
     });
   }
 }

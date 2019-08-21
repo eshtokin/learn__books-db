@@ -2,7 +2,8 @@ import { Component, OnInit, SecurityContext } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
-import { stringify } from '@angular/compiler/src/util';
+import { CategoryAuthor } from 'src/app/models/category-author.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-books-manager',
@@ -13,7 +14,7 @@ export class BooksManagerComponent implements OnInit {
   public editeMode = false;
   public searchField = 'the last wish';
   public image: string | ArrayBuffer;
-  public books: Book;
+  public books: Book[];
   public categories: object[] = [];
   public authors: object[] = [];
   public editeBookData: Book = {
@@ -41,7 +42,7 @@ export class BooksManagerComponent implements OnInit {
     this.init();
   }
 
-  public editeModeToggle() {
+  public editeModeToggle(): void {
     this.editeMode = !this.editeMode;
   }
 
@@ -51,7 +52,7 @@ export class BooksManagerComponent implements OnInit {
     this.getCategories();
   }
 
-  public chooseCategory(category): void {
+  public chooseCategory(category: CategoryAuthor): void {
     const status = (document.getElementById(category._id) as HTMLInputElement).checked;
     if (status) {
       this.filterData.categories.add(category);
@@ -61,7 +62,7 @@ export class BooksManagerComponent implements OnInit {
     }
   }
 
-  public chooseAuthor(author): void {
+  public chooseAuthor(author: CategoryAuthor): void {
     const status: boolean = (document.getElementById(author._id) as HTMLInputElement).checked;
     if (status) {
       this.filterData.authors.add(author);
@@ -78,21 +79,21 @@ export class BooksManagerComponent implements OnInit {
       authors: []
     };
 
-    this.filterData.categories.forEach((category: { name: string, _id: string }) => {
+    this.filterData.categories.forEach((category: CategoryAuthor) => {
       data.categories.push(category._id);
     });
-    this.filterData.authors.forEach((author: { name: string, _id: string }) => {
+    this.filterData.authors.forEach((author: CategoryAuthor) => {
       data.authors.push(author._id);
     });
 
     if (data.title.length === 0 && data.categories.length === 0 && data.authors.length === 0) {
       this.bookService.getAllBooks()
-        .then((el: any) => {
-          this.books = el;
+        .then((list: Book[]) => {
+          this.books = list;
         });
     } else {
       this.bookService.getSomeBooks(data)
-        .then(list => {
+        .then((list: Book[]) => {
           this.books = list;
         });
     }
@@ -100,22 +101,22 @@ export class BooksManagerComponent implements OnInit {
 
   public getBooks(): void {
     this.bookService.getAllBooks()
-      .then((el: any) => {
+      .then((el: Book[]) => {
         this.books = el;
       });
   }
 
   public getAuthors(): void {
     this.bookService.getAllAuthors()
-      .then(el => {
-        this.authors = el.slice();
+      .then((author: CategoryAuthor[]) => {
+        this.authors = author;
       });
   }
 
   public getCategories(): void {
     this.bookService.getAllCategories()
-      .then(el => {
-        this.categories = el.slice();
+      .then((category: CategoryAuthor[]) => {
+        this.categories = category;
       });
   }
 
@@ -129,7 +130,7 @@ export class BooksManagerComponent implements OnInit {
     reader.readAsDataURL(input.files[0]);
   }
 
-  public chooseEditeBook(book): void {
+  public chooseEditeBook(book: Book): void {
     this.editeModeToggle();
     this.editeBookData = {
       title: book.title,
@@ -142,16 +143,16 @@ export class BooksManagerComponent implements OnInit {
       printType: book.printType
     };
 
-    book.authors_list.forEach(a => {
-      this.editeBookData.authors.push(a.name);
+    book.author_list.forEach((author: CategoryAuthor) => {
+      this.editeBookData.authors.push(author.name);
     });
 
-    book.categories_list.forEach(c => {
-      this.editeBookData.categories.push(c.name);
+    book.categories_list.forEach((category: CategoryAuthor) => {
+      this.editeBookData.categories.push(category.name);
     });
   }
 
-  public addBookToFavorite(book, user) {
+  public addBookToFavorite(book: Book, user: User) {
     this.bookService.addBookToDB(book, user);
   }
 

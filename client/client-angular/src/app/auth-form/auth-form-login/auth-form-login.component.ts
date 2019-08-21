@@ -9,7 +9,10 @@ import { Router } from '@angular/router';
 })
 
 export class AuthFormLoginComponent {
-  public user = {
+  public user: {
+    email: string,
+    password: string
+  } = {
     email: '',
     password: ''
   };
