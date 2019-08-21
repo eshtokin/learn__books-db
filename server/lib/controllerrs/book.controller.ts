@@ -38,18 +38,18 @@ export class BookController {
     const authorsFilter = [];
     const categoriesFilter = [];
 
-    if (req.query.authors.length) {
+    if (req.query.authors) {
       req.query.authors.forEach(author => {
         authorsFilter.push(mongoose.Types.ObjectId(author))
       })
     }
-    if (req.query.categories.length) {
+    if (req.query.categories) {
       req.query.categories.forEach(category => {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
     }
 
-    const queryTitle =  req.query.title? {title: req.query.title} : {};
+    const queryTitle =  req.query.title? {$text: {$search: req.query.title}} : {};
     const queryCategories =  categoriesFilter.length > 0 ? {categories: {$in: categoriesFilter}} : {};
     const queryAuthors =  authorsFilter.length > 0 ?  {authors: {$in: authorsFilter}} : {};
 
@@ -60,10 +60,29 @@ export class BookController {
         {...queryAuthors}
       ]
     };
+
+    const agreagateQuery = [{
+      $match: 
+        query
+    }, {
+      $lookup: {
+        from: "categories",
+        localField: "categories",
+        foreignField: "_id",
+        as: "categories_list"
+      }
+    }, {
+      $lookup: {
+        from: "authors",
+        localField: "authors",
+        foreignField: "_id",
+        as: "authors_list"
+      }
+    }];
+
     console.log('query: ', JSON.stringify(query));
    
-    mongoDbService.find(Books, query)
-    // mongoDbService.Aggreagate(Books, agreagateQuery)
+    mongoDbService.Aggreagate(Books, agreagateQuery)
     .then(list => {
       return res.json(list)
     })

@@ -85,7 +85,7 @@ export class BooksManagerComponent implements OnInit {
       data.authors.push(author._id);
     });
 
-    if (data.title.length == 0 && data.categories.length == 0 && data.authors.length == 0) {
+    if (data.title.length === 0 && data.categories.length === 0 && data.authors.length === 0) {
       this.bookService.getAllBooks()
         .then((el: any) => {
           this.books = el;
