@@ -3,6 +3,8 @@ import { UserInfo } from 'src/app/service/user-info.service';
 import { Book } from 'src/app/models/book.model';
 import { UserService } from 'src/app/service/users.service';
 import { User } from 'src/app/models/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ProfileEditeModalComponent } from './profile-edite-modal/profile-edite-modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +18,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userInfo: UserInfo,
-    private userService: UserService
+    private userService: UserService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -34,5 +37,15 @@ export class ProfileComponent implements OnInit {
         this.books = [];
       }
     });
+  }
+
+  public editeProfile() {
+    const editeProfileModal = this.dialog.open(ProfileEditeModalComponent, {
+      data: {
+        user: this.user
+      }
+    });
+
+    editeProfileModal.afterClosed().subscribe(result => {});
   }
 }

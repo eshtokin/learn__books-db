@@ -25,6 +25,7 @@ import { BookComponent } from './shared/book/book.component';
 import { BookEditeModalComponent } from './shared/book/book-edite-modal/book-edite-modal.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FilterComponent } from './shared/filter/filter.component';
+import { ProfileEditeModalComponent } from './shared/profile/profile-edite-modal/profile-edite-modal.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { FilterComponent } from './shared/filter/filter.component';
     UserDeleteModalComponent,
     BookComponent,
     BookEditeModalComponent,
-    FilterComponent
+    FilterComponent,
+    ProfileEditeModalComponent
     ],
   imports: [
     BrowserModule,
@@ -57,7 +59,8 @@ import { FilterComponent } from './shared/filter/filter.component';
     UserDeleteModalComponent,
     FavoritesModalComponent,
     UserFormAddEditeModalComponent,
-    BookEditeModalComponent
+    BookEditeModalComponent,
+    ProfileEditeModalComponent
   ],
   providers: [
     UserService,

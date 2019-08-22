@@ -67,7 +67,6 @@ export class BookComponent implements OnInit {
     // book.categories_list.forEach((category: CategoryAuthor) => {
     //   this.editeBookData.categories.push(category.name);
     // });
-    editeFormDialog.afterClosed().subscribe(result => {
-    });
+    editeFormDialog.afterClosed().subscribe(result => {});
   }
 }

@@ -20,10 +20,10 @@ export class UserFormAddEditeModalComponent {
   public userForEdite: User = this.data.user || {
     name: '',
     email: '',
-    role: null,
+    role: 2,
     id: '',
     password: '',
-    _id: this.data.user._id
+    _id: ''
   };
 
   public confPassword = '';
@@ -48,12 +48,12 @@ export class UserFormAddEditeModalComponent {
     }
   ) {}
 
-  onSubmit(): void {
+  public onSubmit(): void {
     console.log(this.form);
     console.log(this.data);
   }
 
-  checkName(control: FormControl): FormControleResult {
+  public checkName(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{3,16}$/)) {
       return {
         result: true
@@ -61,7 +61,7 @@ export class UserFormAddEditeModalComponent {
     }
   }
 
-  checkEmail(control: FormControl): FormControleResult {
+  public checkEmail(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{3,16}@[\w]{1,16}.[a-z]{1,}$/)) {
       return {
         result: true
@@ -69,7 +69,7 @@ export class UserFormAddEditeModalComponent {
     }
   }
 
-  checkPassword(control: FormControl): FormControleResult {
+  public checkPassword(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{4,16}$/)) {
     // if (control.value) {
       return {
@@ -78,7 +78,7 @@ export class UserFormAddEditeModalComponent {
     }
   }
 
-  checkPass() {
+  public checkPass(): void {
     if (this.form.controls.password.value === this.form.controls.confirmPassword.value) {
 
       this.confPass =  true;
@@ -87,7 +87,7 @@ export class UserFormAddEditeModalComponent {
     }
   }
 
-  checkRole(control: FormControl): FormControleResult {
+  public checkRole(control: FormControl): FormControleResult {
     if (control.value !== 1 && control.value !== 2) {
       return {
         result: true
@@ -95,7 +95,7 @@ export class UserFormAddEditeModalComponent {
     }
   }
 
-  okAction(): void {
+  public okAction(): void {
     this.userService.edit(this.userForEdite._id, this.userForEdite)
     .then(() => {
       this.data.reloadPage();
@@ -103,7 +103,7 @@ export class UserFormAddEditeModalComponent {
     });
   }
 
-  addAction(): void {
+  public addAction(): void {
     this.userService.registrate(this.userForEdite)
     .then(() => {
       this.data.reloadPage();
@@ -111,7 +111,7 @@ export class UserFormAddEditeModalComponent {
     });
   }
 
-  onNoClick(): void {
+  public onNoClick(): void {
     this.dialogRef.close();
   }
 }

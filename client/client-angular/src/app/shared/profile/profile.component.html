@@ -1,30 +1,13 @@
-<!-- <div class="container">
-  <div class="col s12 m7">
-    <div class="card horizontal">
-      <div class="card-image">
-          <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png">
-      </div>
-      <div class="card-stacked">
-          <div class="card-content">
-              <p>Name: {{ user.name }}</p>
-              <p>E-mail {{ user.email }}</p>
-              <p>Status: {{ (user.role === 1) ? 'admin' : 'user'}}</p>
-          </div>
-          <div class="card-action">
-          </div>
-      </div>
-    </div>
-  </div>            
-</div> -->
-
 <div class="container">
     <div class="header">
       <div class="icon"><i class="fa fa-ellipsis-h"></i></div>
       <div class="icon"><i class="fa fa-plus"></i></div>
+      <i class="material-icons edite-btn"
+      (click)="editeProfile()"
+      >edite</i>
     </div>
     <div class="content">
       <img class="face" src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png"/>
-        <!-- <div class="number">22</div> -->
       <div class="name">{{user.name}}</div>
       <div class="email">{{user.email}}</div>
       <!-- <div class="social">
@@ -34,8 +17,8 @@
         <div class="text"><span><i class="material-icons"></i></span>2.7k</div>
       </div> -->
     </div>
-    <!-- <div class="photo-section">
-      <div class="photo-title">
+    <div class="photo-section">
+      <!-- <div class="photo-title">
         <div class="title"><a href="#">All</a></div>
         <div class="title"><a href="#">Photos</a></div>
         <div class="title"><a href="#">Music</a></div>
@@ -48,9 +31,10 @@
         <div class="thumb-unit"></div>
         <div class="thumb-unit"></div>
         <div class="thumb-unit"></div>
-      </div>
+      </div> -->
       <div class="footer"><i class="fa fa-camera"></i><i class="fa fa-play"></i>
-        <div class="face"></div><i class="fa fa-search"></i><i class="fa fa-globe"></i>
+        <div class="face"></div>
+        <i class="fa fa-globe"></i>
       </div>
-    </div> -->
+    </div>
   </div>

@@ -1,0 +1,46 @@
+<div class="profile-edite-modal" [formGroup]="profileForm">
+  <div class="input-field">
+    <input
+    type="text" name="name"
+    [(ngModel)]="this.data.user.name"
+    formControlName="name"
+    >
+    <label
+    [ngClass]="{active: this.data.user.name}"
+    for="name">Enter new name.</label>
+  </div>
+  <div class="input-field">
+    <input
+    type="text" name="email"
+    [(ngModel)]="this.data.user.email"
+    formControlName="email"
+    >
+    <label
+    [ngClass]="{active: this.data.user.email}" 
+    for="email">
+      Type new e-mai.</label>
+  </div>
+  <div class="input-field">
+    <input 
+    type="text" name="password"
+    formControlName="password"  
+    (ngModelChange)="checkPass()"
+    >
+    <label for="password">Enter new password.</label>
+  </div>
+  <div class="input-field">
+    <input 
+    type="text" name="confirmPass"
+    formControlName="confirmPassword"
+    (ngModelChange)="checkPass()"
+    >
+    <label for="confirmPass">Please repeat new password.</label>
+  </div>
+  <button class="btn grey darken-2"
+  (click)="closeModal()"
+  >Close</button>
+  <button class="btn green"
+  (click)="save()"
+  [disabled]="profileForm.invalid  || !confPass"
+  >Save</button>
+</div>
