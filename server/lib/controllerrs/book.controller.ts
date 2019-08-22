@@ -79,8 +79,6 @@ export class BookController {
         as: "authors_list"
       }
     }];
-
-    console.log('query: ', JSON.stringify(query));
    
     mongoDbService.Aggreagate(Books, agreagateQuery)
     .then(list => {
@@ -168,15 +166,31 @@ export class BookController {
     : { name: {
       $in: req.body.book.authors
     }};
-
+  
     mongoDbService.find(Authors, queryForAuthor)
-    .then(author => {
-      if (author.length > 0) {
-        author.forEach(el => {
-          listAuthorsId.push(mongoose.Types.ObjectId(el._id))
+    .then(authors => {
+      if (authors.length > 0) {
+        authors.forEach(author => {
+          listAuthorsId.push(mongoose.Types.ObjectId(author._id))
         })
+        if (authors.length !== req.body.book.authors.length) {
+          req.body.book.authors.forEach(author => {
+            authors.forEach(auth => {
+              if (auth.name !== author) {
+                const id = mongoose.Types.ObjectId()
+                listAuthors.push({
+                  _id: id,
+                  name: author,
+                  _v: 0
+                });
+                listAuthorsId.push(id)
+              }
+            })
+          })
+          Authors.insertMany(listAuthors);
+        }
       }
-      if (author.length === 0) {
+      if (authors.length === 0) {
         req.body.book.authors.forEach(el => {
           const id = mongoose.Types.ObjectId()
           listAuthors.push({
@@ -188,7 +202,6 @@ export class BookController {
         });
         Authors.insertMany(listAuthors);
       }
-      
     })
     .catch(err => res.send(err))
  
@@ -265,47 +278,34 @@ export class BookController {
   public updateBook(req: Request, res: Response) {
     let authors = [];
     let categories = [];
-    let newCategories = [];
-    let newAuthors = [];
-
+    
     Authors.find({name: {$in: req.body.authors}}, (err, authorList) => {
-      req.body.authors.forEach((authorReq) => {
-        authorList.forEach((authorDb) => {
-          if (authorReq !== authorDb.name) {
-            const id = mongoose.Types.ObjectId();
-            newCategories.push({
-              _id: id,
-              name: authorReq,
-              __v: 0
-            })
-          }
-          if (authorReq === authorDb.name) {
-            authors.push(authorDb._id)
-          }
-        })
-      })
-
-      Authors.insertMany(newAuthors);
-      newAuthors.forEach(author => {
-        authors.push(author._id)
+      authorList.forEach(author => {
+        authors.push(mongoose.Types.ObjectId(author._id))
       });
-    })
 
-    Books.findOneAndUpdate({industryIdentifiers: req.body.industryIdentifiers},
-      {
-        title: req.body.title,
-        authors,
-        categories,
-        description: req.body.description,
-        pageCount: req.body.pageCount,
-        image: req.body.image
-      }, (err, book) => {
-        if (err) {
-          return res.send(err)
-        }
-        return res.status(200).send({
-          message: 'Successfuy updated'
-      })
+      Category.find({name: {$in: req.body.categories}}, (err, categoryList) => {
+        categoryList.forEach(category => {
+          categories.push(mongoose.Types.ObjectId(category._id))
+        });
+
+        Books.findOneAndUpdate({industryIdentifiers: req.body.industryIdentifiers},
+          {
+            title: req.body.title,
+            authors,
+            categories,
+            description: req.body.description,
+            pageCount: req.body.pageCount,
+            image: req.body.image
+          }, (err, book) => {
+            if (err) {
+              return res.send(err)
+            }
+            return res.status(200).send({
+              message: 'Successfuy updated'
+          })
+        })
+      });
     })
   }
 

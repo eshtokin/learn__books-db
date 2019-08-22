@@ -1,0 +1,58 @@
+<div class="z-depth-4">
+  <div class="card horizontal">
+    <div class="card-image">
+      <img
+      *ngIf="book.imageLinks"
+      src="{{book.imageLinks.thumbnail}}" class="book-image">
+      <img
+      *ngIf="book.image"
+      src="{{book.image}}" class="book-image">
+      <button 
+        *ngIf="userInfo.getStatus() && buttonStatus.editeBtn"
+        (click)="chooseEditeBook(book)"
+        class="btn edite-btn rework-btn">
+        <i class="material-icons">edite</i>
+      </button>
+      <button 
+        *ngIf="this.userInfo.getStatus() && buttonStatus.editeBtn"
+        (click)=deleteBook(book)
+        class="btn delete-btn rework-btn">
+        <i class="material-icons">delete</i>
+      </button>
+    </div>
+    <div class="card-stacked">
+      <div class="card-content">
+        <div class="card-title">
+          <b>{{book.title}}</b>
+        </div>     
+        <b *ngIf="book.categories_list || book.categories">Categories: </b>
+          <span class="chip" *ngFor="let category of book.categories_list || book.categories">
+            {{category.name || category}}<br>
+          </span>
+        <br>
+        <b *ngIf="book.authors_list || book.authors">Authors: </b>
+        <span class="chip" *ngFor="let author of book.authors_list || book.authors">
+          {{author.name || author}}
+        </span>
+        <p class="book-description"><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
+        <p><b>Pages: </b>{{book.pageCount}}</p>
+      </div> 
+      <div class="card-action">
+        <button
+          *ngIf="buttonStatus.addToFavoriteBtn"
+          class="btn add-to-pro-btn"
+          (click)="addBookToFavorite(book, this.userInfo.getCurrentUser())"
+        >
+        add to 'my list'
+        </button>
+        <button
+          *ngIf="buttonStatus.addToDbBtn"
+          class="btn add-to-pro-btn"
+          (click)="addBookToDB(book)"
+        >
+        add to DB
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

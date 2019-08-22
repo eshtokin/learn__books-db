@@ -21,6 +21,10 @@ import { FavoritesModalComponent } from './shared/favorites/favorites-modal/favo
 import { MatDialogModule } from '@angular/material/dialog';
 import { UserFormAddEditeModalComponent } from './admin/user-manager/user-forms-add-adite-modal/user-forms-add-adite-modal.component';
 import { UserDeleteModalComponent } from './admin/user-manager/user-delete-modal/user-delete-modal.component';
+import { BookComponent } from './shared/book/book.component';
+import { BookEditeModalComponent } from './shared/book/book-edite-modal/book-edite-modal.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { FilterComponent } from './shared/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,10 @@ import { UserDeleteModalComponent } from './admin/user-manager/user-delete-modal
     FavoritesComponent,
     FavoritesModalComponent,
     UserFormAddEditeModalComponent,
-    UserDeleteModalComponent
+    UserDeleteModalComponent,
+    BookComponent,
+    BookEditeModalComponent,
+    FilterComponent
     ],
   imports: [
     BrowserModule,
@@ -43,12 +50,14 @@ import { UserDeleteModalComponent } from './admin/user-manager/user-delete-modal
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   entryComponents: [
     UserDeleteModalComponent,
     FavoritesModalComponent,
-    UserFormAddEditeModalComponent
+    UserFormAddEditeModalComponent,
+    BookEditeModalComponent
   ],
   providers: [
     UserService,

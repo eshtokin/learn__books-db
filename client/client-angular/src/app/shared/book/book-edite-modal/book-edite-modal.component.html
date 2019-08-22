@@ -1,0 +1,51 @@
+<div class="modal-window">
+  <div class="input-field">
+    <label for="title" class="active">title</label>
+    <input type="text" name="title" id="title" [(ngModel)]="editeBookData.title">
+  </div>
+  <div class="input-field">
+    <label  class="active">authors</label>
+    <ng-multiselect-dropdown
+    [placeholder]="'No author'"
+    [data]="dropdownAuthorsList"
+    [(ngModel)]="selectedItemsAuthor"
+    [settings]="dropdownSettings"
+    (onSelect)="onItemSelect($event)"
+    (onSelectAll)="onSelectAll($event)"
+    >
+    </ng-multiselect-dropdown>
+    <!-- <input type="text" name="authors" id="authors" [(ngModel)]="editeBookData.authors"> -->
+  </div>
+  <div class="input-field">
+    <label for="categories" class="active">categories</label>
+    <ng-multiselect-dropdown
+    [placeholder]="'No category'"
+    [data]="dropdownCategoriesList"
+    [(ngModel)]="selectedItemsCategories"
+    [settings]="dropdownSettings"
+    (onSelect)="onItemSelect($event)"
+    (onSelectAll)="onSelectAll($event)"
+    >
+    </ng-multiselect-dropdown>
+    <!-- <input type="text" name="categories" id="categories" [(ngModel)]="editeBookData.categories"> -->
+  </div>
+  <div class="input-field">
+    <label for="description" class="active">description</label>
+    <textarea type="text" name="description" id="description" 
+    [(ngModel)]="editeBookData.description"
+    spellcheck="false"
+    ></textarea>
+  </div>
+  <div class="input-field">
+    <label for="pageCount" class="active">pages</label>
+    <input type="number" name="pageCount" id="pageCount" min="0" [(ngModel)]="editeBookData.pageCount">
+  </div>
+  <div class="preview">
+    <label class="preview-label" for="image" class="active" [ngClass]="{alredy: this.editeBookData.image}">Click for change image</label>
+    <input type="file" name="image" id="image" (change)="uploadFile($event)">
+    <img [src]="this.editeBookData.image" alt="image book" id="preview">
+  </div>
+  <hr>
+  <button class="btn" (click)="close()">Close</button>
+  <button class="btn btn-save-change" (click)="editeBook()">Edite</button>
+</div>

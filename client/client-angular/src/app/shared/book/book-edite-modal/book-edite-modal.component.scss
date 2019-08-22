@@ -1,0 +1,31 @@
+.modal-window {
+  width: 650px;
+
+  #image{
+    display: none;
+  }
+  .preview {
+    .preview-label {
+      margin: 0 auto;
+      display: block;
+      text-align: center;
+    }
+
+    #preview {
+      margin: 0 auto;
+      display: block
+    }  
+  }
+  
+  label:hover {
+    cursor: pointer;
+  }
+
+  i:hover {
+    cursor: pointer;
+  }
+
+  #description {
+    height: 270px;
+  }
+}

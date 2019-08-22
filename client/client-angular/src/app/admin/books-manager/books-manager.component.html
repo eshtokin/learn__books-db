@@ -1,96 +1,19 @@
 <div class="row">
-  <div class="col s2 filters">
-    <div class="input-field">
-      <input type="text" id="searchField"
-        [(ngModel)]="this.searchField"
-      >
-      <label for="searchField"
-      [ngClass]="{active: this.searchField}"      
-      >Enter title of book</label>
-    </div>
-    <div class="author-input" *ngFor="let category of categories">
-      <input type="checkbox" id={{category._id}} (click)="chooseCategory(category)"/>
-      <label for={{category._id}}>{{category.name}}</label>
-    </div>
-    <hr>
-    <div class="author-input" *ngFor="let author of authors">
-      <input type="checkbox" id={{author._id}} (click)="chooseAuthor(author)"/>
-      <label for={{author._id}}>{{author.name}}</label>
-    </div>
-    <hr>
-    <button class="btn" (click)="filtering()">OK</button>
-  </div>
-  <div class="col s7" [ngClass]="{s10 : !this.editeMode}">
-    <div class="z-depth-4" *ngFor="let book of books">
-      <div class="card horizontal">
-        <div class="card-image">
-          <img src="{{book.image}}" class="book-image">
-          <button 
-            *ngIf="userInfo.getStatus()"
-            (click)="chooseEditeBook(book)"
-            class="btn edite-btn rework-btn">
-            <i class="material-icons">edite</i>
-          </button>
-          <button 
-            *ngIf="this.userInfo.getStatus()"
-            (click)=deleteBook(book)
-            class="btn delete-btn rework-btn">
-            <i class="material-icons">delete</i>
-          </button>
-        </div>
-        <div class="card-stacked">
-          <div class="card-content">
-            <div class="card-title">
-              <b>{{book.title}}</b>
-            </div>     
-            <b *ngIf="book.categories_list">Categories: </b>
-              <span class="chip" *ngFor="let category of book.categories_list">{{category.name}}<br></span>
-            <br>
-            <b *ngIf="book.authors_list">Authors: </b>
-            <span class="chip" *ngFor="let author of book.authors_list">
-              {{author.name}}
-            </span>
-            <p class="book-description"><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
-            <p><b>Pages: </b>{{book.pageCount}}</p>
-          </div> 
-          <div class="card-action">
-            <button
-              class="btn add-to-pro-btn"
-              (click)="addBookToFavorite(book, this.userInfo.getCurrentUser())"
-            >
-            add to 'my list'
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col s3" *ngIf="editeMode">
-    <div class="input-field">
-      <label for="title" class="active">title</label>
-      <input type="text" name="title" id="title" [(ngModel)]="editeBookData.title">
-    </div>
-    <div class="input-field">
-      <label for="authors"  class="active">authors</label>    
-      <input type="text" name="authors" id="authors" [(ngModel)]="editeBookData.authors">
-    </div>
-    <div class="input-field">
-      <label for="categories" class="active">categories</label>
-      <input type="text" name="categories" id="categories" [(ngModel)]="editeBookData.categories">
-    </div>
-    <div class="input-field">
-      <label for="description" class="active">description</label>
-      <input type="text" name="description" id="description" [(ngModel)]="editeBookData.description">
-    </div>
-    <div class="input-field">
-      <label for="pageCount" class="active">pages</label>
-      <input type="number" name="pageCount" id="pageCount" min="0" [(ngModel)]="editeBookData.pageCount">
-    </div>
-    <label for="image" class="active" [ngClass]="{alredy: this.editeBookData.image}">Click for change image</label>
-    <input type="file" name="image" id="image" (change)="uploadFile($event)">
-    <img [src]="this.editeBookData.image" alt="image book" id="preview">
-    <hr>
-    <button class="btn" (click)="editeModeToggle()">Close</button>
-    <button class="btn btn-save-change" (click)="editeBook()">Edite</button>
+  <app-filter
+  [getAllBooks]="getBooks.bind(this)"
+  [getFilteredBooks]="getFilteredBooks.bind(this)"
+  ></app-filter>
+  <div class="col s10">
+    <app-book
+    *ngFor="let book of books"
+    [book]="book"
+    [buttonStatus]="{
+      editeBtn: true,
+      deleteBtn: true,
+      ddToDbBtn: false,
+      addToFavoriteBtn: true
+    }"
+    [reloadPage]="this.getBooks.bind(this)"
+    ></app-book>
   </div>
 </div>

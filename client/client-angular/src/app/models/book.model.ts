@@ -1,6 +1,6 @@
 export interface Book {
   authors: string[];
-  author_list?: object[];
+  authors_list?: object[];
   categories: string[];
   categories_list?: object[];
   description: string;

@@ -34,18 +34,4 @@ export class CatalogComponent implements OnInit {
     this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10});
     this.currentPage = page;
   }
-
-  public addBookToDB(book: Book, user: User) {
-    const newBook: Book = {
-      title: book.title.toLowerCase(),
-      authors: book.authors.map(element => element.toLowerCase()),
-      categories: book.categories ? book.categories.map(element => element.toLowerCase()) : [],
-      description: book.description,
-      image: book.imageLinks.thumbnail || '',
-      pageCount: book.pageCount,
-      printType: book.printType.toLowerCase(),
-      industryIdentifiers: [...book.industryIdentifiers]
-    };
-    this.booksService.addBookToDB(newBook, user);
-  }
 }
