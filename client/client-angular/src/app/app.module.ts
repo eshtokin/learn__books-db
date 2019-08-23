@@ -13,20 +13,19 @@ import { ProfileComponent } from './shared/profile/profile.component';
 import { UserInfo } from './service/user-info.service';
 import { AdminGuardService } from './guard/admin-guard.service';
 import { UserGuardService } from './guard/user-gurad.service';
-import { CatalogComponent } from './shared/catalog/catalog.component';
-import { GoogleBooks } from './service/google-books.service';
 import { BookService } from './service/books.service';
-import { BooksManagerComponent } from './admin/books-manager/books-manager.component';
 import { FavoritesComponent } from './shared/favorites/favorites.component';
 import { FavoritesModalComponent } from './shared/favorites/favorites-modal/favorites-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { UserFormAddEditeModalComponent } from './admin/user-manager/user-forms-add-adite-modal/user-forms-add-adite-modal.component';
 import { UserDeleteModalComponent } from './admin/user-manager/user-delete-modal/user-delete-modal.component';
-import { BookComponent } from './shared/book/book.component';
 import { BookEditeModalComponent } from './shared/book/book-edite-modal/book-edite-modal.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { FilterComponent } from './shared/filter/filter.component';
 import { ProfileEditeModalComponent } from './shared/profile/profile-edite-modal/profile-edite-modal.component';
+import { CatalogModule } from './shared/catalog/catalog.module';
+import { BooksManagerModule } from './admin/books-manager/books-manager.module';
+import { SharedModule } from './shared/shared.module';
+import { UserManagerModule } from './admin/user-manager/user-manager.module';
 
 @NgModule({
   declarations: [
@@ -34,17 +33,12 @@ import { ProfileEditeModalComponent } from './shared/profile/profile-edite-modal
     AuthFomrComponent,
     AuthFormRegComponent,
     AuthFormLoginComponent,
-    UserManagerComponent,
     ProfileComponent,
-    CatalogComponent,
-    BooksManagerComponent,
     FavoritesComponent,
     FavoritesModalComponent,
     UserFormAddEditeModalComponent,
     UserDeleteModalComponent,
-    BookComponent,
     BookEditeModalComponent,
-    FilterComponent,
     ProfileEditeModalComponent
     ],
   imports: [
@@ -54,7 +48,11 @@ import { ProfileEditeModalComponent } from './shared/profile/profile-edite-modal
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    UserManagerModule,
+    CatalogModule,
+    BooksManagerModule,
+    SharedModule
   ],
   entryComponents: [
     UserDeleteModalComponent,
@@ -67,10 +65,9 @@ import { ProfileEditeModalComponent } from './shared/profile/profile-edite-modal
     UserService,
     UserInfo,
     AdminGuardService,
-    UserGuardService,
-    GoogleBooks,
-    BookService
+    UserGuardService
   ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

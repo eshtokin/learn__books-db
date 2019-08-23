@@ -21,13 +21,18 @@ export class BookComponent implements OnInit {
   };
   @Input() reloadPage: () => void;
 
+  public bookImage: string | ArrayBuffer;
+
   constructor(
     public userInfo: UserInfo,
     public bookService: BookService,
     public dialog: MatDialog
-  ) { }
+  ) {
+    this.bookImage = '';
+  }
 
   ngOnInit() {
+    this.bookImage = this.book.imageLinks ? this.book.imageLinks.thumbnail : this.book.image;
   }
 
   public addBookToFavorite(book: Book, user: User) {
@@ -60,13 +65,10 @@ export class BookComponent implements OnInit {
         reloadPage: this.reloadPage
       }
     });
-    // book.author_list.forEach((author: CategoryAuthor) => {
-    //   data.editeBookData.authors.push(author.name);
-    // });
-
-    // book.categories_list.forEach((category: CategoryAuthor) => {
-    //   this.editeBookData.categories.push(category.name);
-    // });
     editeFormDialog.afterClosed().subscribe(result => {});
+  }
+
+  public checkEditAccess(): boolean {
+    return this.userInfo.getStatus() && this.buttonStatus.editeBtn;
   }
 }

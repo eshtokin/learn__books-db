@@ -23,7 +23,9 @@ export class FilterComponent implements OnInit {
 
   constructor(
     private bookService: BookService
-  ) { }
+  ) {
+    this.bookService = new BookService();
+  }
 
   ngOnInit() {
     this.getAuthors();
