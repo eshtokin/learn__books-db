@@ -5,10 +5,11 @@ import { AuthFormLoginComponent } from './auth-form/auth-form-login/auth-form-lo
 import { AuthFormRegComponent } from './auth-form/auth-form-reg/auth-form-reg.component';
 import { ProfileComponent } from './shared/profile/profile.component';
 import { UserManagerComponent } from './admin/user-manager/user-manager.component';
-import { RouteGuard } from './guard/route.guard';
+import { AdminGuardService } from './guard/admin-guard.service';
 import { CatalogComponent } from './shared/catalog/catalog.component';
 import { BooksManagerComponent } from './admin/books-manager/books-manager.component';
 import { FavoritesComponent } from './shared/favorites/favorites.component';
+import { UserGuardService } from './guard/user-gurad.service';
 
 const authRoutes: Routes = [
   {path: 'login', component: AuthFormLoginComponent},
@@ -16,13 +17,14 @@ const authRoutes: Routes = [
 ];
 
 const routes: Routes = [
-  {path: 'auth', component: AuthFomrComponent},
+  {path: 'auth', component: AuthFomrComponent, canActivate: [UserGuardService]},
   {path: 'auth', component: AuthFomrComponent, children: authRoutes},
-  {path: 'catalog', component: CatalogComponent},
-  {path: 'dbviewer', component: BooksManagerComponent},
-  {path: 'user-manager', component: UserManagerComponent, canActivate: [RouteGuard]},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'favorites', component: FavoritesComponent}
+  {path: 'catalog', component: CatalogComponent, canActivate: [UserGuardService]},
+  {path: 'dbviewer', component: BooksManagerComponent, canActivate: [UserGuardService]},
+  {path: 'user-manager', component: UserManagerComponent, canActivate: [AdminGuardService]},
+  {path: 'profile', component: ProfileComponent, canActivate: [UserGuardService]},
+  {path: 'favorites', component: FavoritesComponent, canActivate: [UserGuardService]},
+  {path: '', component: AuthFomrComponent, children: authRoutes}
 ];
 
 @NgModule({

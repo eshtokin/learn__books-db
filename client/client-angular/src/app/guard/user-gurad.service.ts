@@ -5,10 +5,19 @@ import { UserInfo } from '../service/user-info.service';
 
 
 @Injectable()
-export class RouteGuard implements CanActivate {
+export class UserGuardService implements CanActivate {
     constructor(private userInfo: UserInfo) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        return this.userInfo.getStatus();
+      const currentUser = this.userInfo.getCurrentUser();
+      if (currentUser.role === 1) {
+        return true;
+      }
+
+      if (currentUser.role === 2) {
+        return true;
+      }
+
+      return false;
     }
 }

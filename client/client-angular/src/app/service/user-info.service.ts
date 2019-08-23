@@ -19,7 +19,7 @@ export class UserInfo {
     // return true (admin) or false (user)
     getStatus(): boolean {
         const user = decode(localStorage.getItem('token'));
-        if (1 === decode(localStorage.getItem('token')).role) {
+        if (1 === user.role) {
             return true;
         }
         return false;

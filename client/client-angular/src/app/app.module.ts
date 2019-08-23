@@ -11,7 +11,8 @@ import { UserManagerComponent } from './admin/user-manager/user-manager.componen
 import { UserService } from './service/users.service';
 import { ProfileComponent } from './shared/profile/profile.component';
 import { UserInfo } from './service/user-info.service';
-import { RouteGuard } from './guard/route.guard';
+import { AdminGuardService } from './guard/admin-guard.service';
+import { UserGuardService } from './guard/user-gurad.service';
 import { CatalogComponent } from './shared/catalog/catalog.component';
 import { GoogleBooks } from './service/google-books.service';
 import { BookService } from './service/books.service';
@@ -65,7 +66,7 @@ import { ProfileEditeModalComponent } from './shared/profile/profile-edite-modal
   providers: [
     UserService,
     UserInfo,
-    RouteGuard,
+    AdminGuardService,
     GoogleBooks,
     BookService
   ],

@@ -1,34 +1,23 @@
-<div class="card horizontal">
-  <div class="card-image">
-    <img src="{{book.image}}" class="book-image">
-  </div>
-  <div class="card-stacked">
-    <div class="card-content">
-      <div class="card-title">
-        <b>{{book.title}}</b>
-      </div>     
-      <b *ngIf="book.categories_list">Categories: </b>
-        <span class="chip" *ngFor="let category of book.categories_list">{{category.name}}<br></span>
-      <br>
-      <b *ngIf="book.authors_list">Authors: </b>
-      <span class="chip" *ngFor="let author of book.authors_list">
-        {{author.name}}
-      </span>
-      <p><span *ngIf="book.description"><b>Description</b>:</span> {{book.description}}</p>
-      <p><b>Pages: </b>{{book.pageCount}}</p>
-    </div> 
-    <div class="card-action">
-      <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial
-        class="btn grey darken-2"
-      >Close</button>
-      <button class="btn red"
-      (click)="deleteBook()">
-        <i class="material-icons">
-          delete
-        </i>
-      </button>
-    </div>
-  </div>
-</div>
-
-
+<app-book
+[book]="book"
+[buttonStatus]="{
+  editeBtn: false,
+  deleteBtn:  false,
+  addToDbBtn: false,
+  addToFavoriteBtn: false
+}"
+></app-book>
+<button 
+  mat-button
+  [mat-dialog-close]
+  class="btn grey darken-2 closeBtn"
+>
+  Close
+</button>
+<button class="btn red"
+  (click)="deleteBook()"
+  >
+  <i class="material-icons">
+    delete
+  </i>
+</button>
