@@ -67,6 +67,7 @@ import { ProfileEditeModalComponent } from './shared/profile/profile-edite-modal
     UserService,
     UserInfo,
     AdminGuardService,
+    UserGuardService,
     GoogleBooks,
     BookService
   ],

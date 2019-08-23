@@ -23,11 +23,10 @@ export class AuthFormLoginComponent {
   ) {}
 
   public async login() {
-    const res: any = await this.userService.login(this.user);
-    if (res.status !== 200) {
-      return;
-    }
-    this.route.navigate(['/profile']);
+    const res: any = await this.userService.login(this.user)
+    .then(() => {
+      this.route.navigate(['/profile']);
+    });
     // localStorage.clear();
     // localStorage.setItem('token', res.data.token);
   }
