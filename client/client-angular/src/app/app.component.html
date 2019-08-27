@@ -2,7 +2,7 @@
   <div class="nav-wrapper teal">
     <ul id="nav-mobile" class="right ">
       <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="catalog">Search</a></li>
-      <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="dbviewer">Books</a></li>
+      <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="gbooks">Books</a></li>
       <li *ngIf="(this.userInfo.isUserAuth() && this.userInfo.getStatus())"><a routerLink="user-manager">Users</a></li>
       <li *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth/login">Log in</a></li>
       <li class="dropdown"
@@ -13,7 +13,7 @@
           </a>
         <ul>
           <li><a routerLink="profile">My profile</a></li>
-          <li><a routerLink="favorites">My favorites</a></li>
+          <li><a routerLink="profile/favorites">My favorites</a></li>
           <li *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth/login">Log in</a></li>
           <li *ngIf="this.userInfo.isUserAuth()" (click)="this.userInfo.logout()"><a routerLink="auth/login">Log out</a></li>
         </ul>
@@ -21,6 +21,6 @@
     </ul>
   </div>
 </nav>
-<button routerLink="/lazy">lazy</button>
-<button routerLink="">Home</button>
+<!-- <button routerLink="/lazy">lazy</button>
+<button routerLink="">Home</button> -->
 <router-outlet></router-outlet> 

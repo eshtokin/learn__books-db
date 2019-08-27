@@ -8,7 +8,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { BookService } from 'src/app/service/books.service';
 import { BookEditeModalComponent } from 'src/app/shared/book/book-edite-modal/book-edite-modal.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { UserDeleteModalComponent } from '../user-manager/user-delete-modal/user-delete-modal.component';
+import { RouterModule } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -19,8 +20,12 @@ import { UserDeleteModalComponent } from '../user-manager/user-delete-modal/user
   imports: [
     CommonModule,
     FormsModule,
+    MatDialogModule,
     NgMultiSelectDropDownModule.forRoot(),
-    SharedModule
+    SharedModule,
+    RouterModule.forChild([
+      {path: '', component: BooksManagerComponent}
+    ])
   ],
   entryComponents: [
     BookEditeModalComponent
@@ -31,4 +36,4 @@ import { UserDeleteModalComponent } from '../user-manager/user-delete-modal/user
   ],
   exports: []
 })
-export class BooksManagerModule { }
+export class GBookModule { }

@@ -1,37 +1,37 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../shared.module';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProfileComponent } from './profile.component';
-import { FavoritesComponent } from '../favorites/favorites.component';
-import { ProfileEditeModalComponent } from './profile-edite-modal/profile-edite-modal.component';
-import { FavoritesModalComponent } from '../favorites/favorites-modal/favorites-modal.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 import { UserService } from 'src/app/service/users.service';
-
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { SharedModule } from '../shared.module';
+import { FavoritesComponent } from '../favorites/favorites.component';
+import { CommonModule } from '@angular/common';
+import { FavoritesModalComponent } from '../favorites/favorites-modal/favorites-modal.component';
+import { BookService } from 'src/app/service/books.service';
 
 @NgModule({
   declarations: [
     ProfileComponent,
     FavoritesComponent,
-    FavoritesModalComponent,
-    ProfileEditeModalComponent,
+    FavoritesModalComponent
+  ],
+  entryComponents: [
+    FavoritesModalComponent
   ],
   imports: [
     CommonModule,
-    FormsModule,
     MatDialogModule,
-    ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    RouterModule.forChild([
+      {path: '' , component: ProfileComponent},
+      {path: 'favorites', component: FavoritesComponent}
+    ])
   ],
   providers: [
-    UserService
+    UserService,
+    BookService
   ],
-  entryComponents: [
-    FavoritesModalComponent,
-    ProfileEditeModalComponent
-  ],
-  exports: []
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ProfileModule { }
+
+export class ProfileModule {}

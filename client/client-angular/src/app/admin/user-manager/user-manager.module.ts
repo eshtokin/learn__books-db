@@ -7,6 +7,9 @@ import { UserFormAddEditeModalComponent } from './user-forms-add-adite-modal/use
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { AdminGuardService } from 'src/app/guard/admin-guard.service';
 import { AppRoutingModule } from 'src/app/app-routing.module';
+import { RouterModule } from '@angular/router';
+import { UserService } from 'src/app/service/users.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -18,13 +21,18 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    MatDialogModule,
+    RouterModule.forChild([
+      {path: '', component: UserManagerComponent}
+    ])
   ],
   entryComponents: [
     UserFormAddEditeModalComponent,
     UserDeleteModalComponent
   ],
   providers: [
+    UserService
     // AdminGuardService
   ],
   exports: []

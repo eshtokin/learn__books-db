@@ -54,8 +54,10 @@ export class BookComponent implements OnInit {
   }
 
   public deleteBook(book: Book): void {
-    this.bookService.deleteBook(book);
-    // this.init();
+    this.bookService.deleteBook(book)
+    .then(() => {
+      this.reloadPage();
+    });
   }
 
   public chooseEditeBook(book) {

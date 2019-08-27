@@ -1,26 +1,31 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { GoogleBooks } from 'src/app/service/google-books.service';
+import { NgModule, RootRenderer } from '@angular/core';
 import { CatalogComponent } from './catalog.component';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared.module';
+import { GoogleBooks } from 'src/app/service/google-books.service';
 import { BookService } from 'src/app/service/books.service';
-
-
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
-    CatalogComponent
+    CatalogComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule
+    ReactiveFormsModule,
+    MatDialogModule,
+    SharedModule,
+    RouterModule.forChild([
+      {path: '', component: CatalogComponent}
+    ])
   ],
   providers: [
     GoogleBooks,
     BookService
-  ],
-  exports: []
+  ]
 })
-export class CatalogModule { }
+
+export class CatalogModule {}
