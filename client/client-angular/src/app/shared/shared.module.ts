@@ -3,10 +3,13 @@ import { BookComponent } from './book/book.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { JwPaginationComponent } from 'jw-angular-pagination';
+
 
 @NgModule({
   declarations: [
     BookComponent,
+    JwPaginationComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
   ],
   exports: [
-    BookComponent
+    BookComponent,
+    JwPaginationComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

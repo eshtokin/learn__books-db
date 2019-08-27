@@ -12,7 +12,8 @@ import { User } from 'src/app/models/user.model';
 })
 export class BooksManagerComponent implements OnInit {
   public editeMode = false;
-  public books: Book[];
+  public books: Book[]; // All items from db
+  public pageOfItems: Book[]; // Items on the page
 
   constructor(
     private userInfo: UserInfo,
@@ -21,6 +22,10 @@ export class BooksManagerComponent implements OnInit {
 
   ngOnInit() {
     this.init();
+  }
+
+  onChangePage(pageOfItems: Array<any>) {
+    this.pageOfItems = pageOfItems;
   }
 
   public editeModeToggle(): void {

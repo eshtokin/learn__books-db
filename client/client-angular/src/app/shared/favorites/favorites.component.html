@@ -5,7 +5,7 @@
       class="collection-item avatar"
       mat-raised-button
       (click)="openDialog(book)"
-      *ngFor="let book of books"
+      *ngFor="let book of pageOfItems"
     >
       <img src={{book.image}} alt="book image" class="circle">
       <span class="title">{{book.title}}</span>
@@ -15,4 +15,9 @@
       </p>
     </li>
   </ul>
-</div> 
+</div>
+<jw-pagination
+class="center"
+[items]="books"
+(changePage)="onChangePage($event)"
+></jw-pagination>

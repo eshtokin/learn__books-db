@@ -12,8 +12,10 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit {
-  public books: Book[] = [];
+  public books: Book[] = []; // all book from favorite
   public user: User;
+  public pageOfItems: Book[]; // book on page
+
   constructor(
     private userInfo: UserInfo,
     private userService: UserService,
@@ -38,6 +40,11 @@ export class FavoritesComponent implements OnInit {
       }
     });
   }
+
+  onChangePage(pageOfItems: Array<any>) {
+    // update current page of items
+    this.pageOfItems = pageOfItems;
+}
 
   public openDialog(book: Book): void {
     const dialogRef = this.dialog.open(FavoritesModalComponent, {

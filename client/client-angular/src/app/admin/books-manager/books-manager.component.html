@@ -5,7 +5,7 @@
   ></app-filter>
   <div class="col s10">
     <app-book
-    *ngFor="let book of books"
+    *ngFor="let book of pageOfItems"
     [book]="book"
     [buttonStatus]="{
       editeBtn: true,
@@ -15,5 +15,10 @@
     }"
     [reloadPage]="this.getBooks.bind(this)"
     ></app-book>
+    <jw-pagination
+    class="center"
+    [items]="books"
+    (changePage)="onChangePage($event)"
+    ></jw-pagination>
   </div>
 </div>

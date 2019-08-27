@@ -12,6 +12,7 @@ import { User } from '../../models/user.model';
 })
 export class UserManagerComponent implements OnInit {
   public users: object[];
+  public userOnPage: object[];
 
   constructor(
     private userService: UserService,
@@ -21,6 +22,10 @@ export class UserManagerComponent implements OnInit {
   ngOnInit(): void {
     this.init();
   }
+
+  onChangePage(userOnPage: Array<any>) {
+    this.userOnPage = userOnPage;
+}
 
   public init(): void {
     this.userService.getAllUsers()

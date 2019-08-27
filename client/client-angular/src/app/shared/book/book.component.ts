@@ -35,8 +35,8 @@ export class BookComponent implements OnInit {
     this.bookImage = this.book.imageLinks ? this.book.imageLinks.thumbnail : this.book.image;
   }
 
-  public addBookToFavorite(book: Book, user: User) {
-    this.bookService.addBookToDB(book, user);
+  public addBookToFavorite(book: Book) {
+    this.bookService.addBookToDB(book,  this.userInfo.getCurrentUser());
   }
 
   public addBookToDB(book: Book, user: User) {

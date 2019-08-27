@@ -14,7 +14,7 @@
         addToDbBtn: true
     }"
     ></app-book>
-    <ul class="pagination">
+    <ul class="pagination center">
         <li class="waves-effect"
             *ngFor="let page of this.googleBooks.getPageInfo().availablePages"
             [ngClass]="{active: (this.currentPage === page)}"
