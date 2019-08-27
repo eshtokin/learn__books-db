@@ -15,7 +15,7 @@ import { AuthFormModule } from './auth-form/auth-form.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
     ],
   imports: [
     BrowserModule,
