@@ -16,15 +16,23 @@ const authRoutes: Routes = [
   {path: 'registr', component: AuthFormRegComponent}
 ];
 
+// const routes: Routes = [
+//   {path: 'auth', component: AuthFomrComponent, canActivate: [UserGuardService]},
+//   {path: 'auth', component: AuthFomrComponent, children: authRoutes},
+//   {path: 'catalog', component: CatalogComponent, canActivate: [UserGuardService]},
+//   {path: 'dbviewer', component: BooksManagerComponent, canActivate: [UserGuardService]},
+//   {path: 'user-manager', component: UserManagerComponent, canActivate: [AdminGuardService]},
+//   {path: 'profile', component: ProfileComponent, canActivate: [UserGuardService]},
+//   {path: 'favorites', component: FavoritesComponent, canActivate: [UserGuardService]},
+//   {path: '', component: AuthFomrComponent, children: authRoutes}
+// ];
+
 const routes: Routes = [
-  {path: 'auth', component: AuthFomrComponent, canActivate: [UserGuardService]},
-  {path: 'auth', component: AuthFomrComponent, children: authRoutes},
-  {path: 'catalog', component: CatalogComponent, canActivate: [UserGuardService]},
-  {path: 'dbviewer', component: BooksManagerComponent, canActivate: [UserGuardService]},
-  {path: 'user-manager', component: UserManagerComponent, canActivate: [AdminGuardService]},
-  {path: 'profile', component: ProfileComponent, canActivate: [UserGuardService]},
-  {path: 'favorites', component: FavoritesComponent, canActivate: [UserGuardService]},
-  {path: '', component: AuthFomrComponent, children: authRoutes}
+  {
+    path: 'lazy',
+    // loadChildren: './test/test.module#TestModule', // use this syntax for non-ivy or Angular 7 and below
+    loadChildren : () => import('./test/test.module').then(m => m.TestModule), // new dynamic import method
+  }
 ];
 
 @NgModule({
