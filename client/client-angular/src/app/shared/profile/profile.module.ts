@@ -8,19 +8,25 @@ import { FavoritesComponent } from '../favorites/favorites.component';
 import { CommonModule } from '@angular/common';
 import { FavoritesModalComponent } from '../favorites/favorites-modal/favorites-modal.component';
 import { BookService } from 'src/app/service/books.service';
+import { ProfileEditeModalComponent } from './profile-edite-modal/profile-edite-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     ProfileComponent,
     FavoritesComponent,
-    FavoritesModalComponent
+    FavoritesModalComponent,
+    ProfileEditeModalComponent
   ],
   entryComponents: [
-    FavoritesModalComponent
+    FavoritesModalComponent,
+    ProfileEditeModalComponent
   ],
   imports: [
     CommonModule,
     MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     RouterModule.forChild([
       {path: '' , component: ProfileComponent},

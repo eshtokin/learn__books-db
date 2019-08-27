@@ -2,6 +2,7 @@ import * as mongoose from "mongoose"
 import { UserSchema } from "../models/user.model"
 import { Request, Response } from "express"
 import { MongoDbService } from "../service/mongodb.service";
+import * as crypt from "bcryptjs"
 
 export const User = mongoose.model('User', UserSchema);
 
@@ -41,14 +42,20 @@ export class UserController {
         })
     }
 
-    public updateUser(req: Request, res: Response) {        
-        let data = req.body;
-        console.log("data", data);
+    public updateUser(req: Request, res: Response) {
+        const data = req.body;
         
-        const bookArray = req.body.books.map(book => {
-            return mongoose.Types.ObjectId(book)
-        })
-        data.books = bookArray;
+        if (req.body.password[0] !== '$') {
+            data.password = crypt.hashSync(req.body.password)
+        }
+        console.log(data.password);
+        
+        if (req.body.books) {
+            const bookArray = req.body.books.map(book => {
+                return mongoose.Types.ObjectId(book)
+            })
+            data.books = bookArray;
+        }
   
         const query = {
             _id: req.body._id

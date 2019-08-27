@@ -15,20 +15,20 @@ export class ProfileEditeModalComponent implements OnInit {
   public profileForm = new FormGroup({
     name: new FormControl('', [Validators.required, this.checkName]),
     email: new FormControl('', [Validators.required, this.checkEmail]),
-    password: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [Validators.required]) // this.checkPassword
+    password: new FormControl('', []),
+    confirmPassword: new FormControl('', []) // this.checkPassword
   });
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
-      user: User
+      user: User,
+      refresh: () => void
     },
     public editeProfileModal: MatDialogRef<ProfileEditeModalComponent>,
     public userService: UserService
   ) { }
 
   ngOnInit() {
-    console.log('User', this.data.user);
   }
 
   public checkName(control: FormControl): FormControleResult {
@@ -70,10 +70,18 @@ export class ProfileEditeModalComponent implements OnInit {
   }
 
   public save() {
+    console.log(this.data.user);
+    if (this.profileForm.value.password.length && this.data.user.password !== this.profileForm.value.password) {
+      this.data.user.password = this.profileForm.value.password;
+    }
     this.userService.edit(this.data.user._id, this.data.user)
     .then(() => {
       this.editeProfileModal.close();
-      alert('successful');
+      this.data.refresh();
     });
+  }
+
+  show() {
+    console.log(this.profileForm);
   }
 }

@@ -10,12 +10,10 @@ export class UserGuardService implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
       const currentUser = this.userInfo.getCurrentUser();
-      if (currentUser.role === 1) {
-        return true;
-      }
-
-      if (currentUser.role === 2) {
-        return true;
+      if (currentUser) {
+        if (currentUser.role === 1 || currentUser.role === 2) {
+          return true;
+        }
       }
 
       return false;

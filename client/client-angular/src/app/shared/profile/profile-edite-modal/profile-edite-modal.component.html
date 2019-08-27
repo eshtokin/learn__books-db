@@ -23,10 +23,11 @@
   <div class="input-field">
     <input 
     type="text" name="password"
-    formControlName="password"  
+    formControlName="password"
     (ngModelChange)="checkPass()"
     >
-    <label for="password">Enter new password.</label>
+    <label for="password"
+    >Enter new password.</label>
   </div>
   <div class="input-field">
     <input 
@@ -34,7 +35,8 @@
     formControlName="confirmPassword"
     (ngModelChange)="checkPass()"
     >
-    <label for="confirmPass">Please repeat new password.</label>
+    <label for="confirmPass"  
+    >Please repeat new password.</label>
   </div>
   <button class="btn grey darken-2"
   (click)="closeModal()"
@@ -43,4 +45,7 @@
   (click)="save()"
   [disabled]="profileForm.invalid  || !confPass"
   >Save</button>
+  <button
+  (click)=show()
+  >show user</button>
 </div>

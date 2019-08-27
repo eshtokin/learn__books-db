@@ -42,7 +42,8 @@ export class ProfileComponent implements OnInit {
   public editeProfile() {
     const editeProfileModal = this.dialog.open(ProfileEditeModalComponent, {
       data: {
-        user: this.user
+        user: this.user,
+        refresh: this.ngOnInit.bind(this)
       }
     });
 

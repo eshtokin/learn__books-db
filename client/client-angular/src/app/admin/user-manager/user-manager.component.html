@@ -5,7 +5,7 @@
 </div>
 <div class="row">
     <div class="col s8 offset-s2">
-        <div class="card horizontal z-depth-4" *ngFor="let user of users">
+        <div class="card horizontal z-depth-4" *ngFor="let user of userOnPage">
             <div class="card-image col s4">
                 <img src="{{user.image || 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'}}" class="user-image">
                 <button 
