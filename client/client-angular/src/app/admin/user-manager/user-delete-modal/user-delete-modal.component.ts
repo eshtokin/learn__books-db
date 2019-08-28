@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserInfo } from 'src/app/service/user-info.service';
 
 @Component({
   selector: 'app-user-delete-modal',
@@ -14,7 +15,8 @@ export class UserDeleteModalComponent {
       userId: string,
       userEmail: string,
       deleteFunc: (userId: string) => void
-    }
+    },
+    public userInfo: UserInfo
   ) {}
 
   public cancel(): void {
@@ -22,7 +24,9 @@ export class UserDeleteModalComponent {
   }
 
   public delete(): void {
-    this.data.deleteFunc(this.data.userId);
+    if (this.data.userId !== this.userInfo.getCurrentUser().id) {
+      this.data.deleteFunc(this.data.userId);
+    }
     this.confirmDialog.close();
   }
 

@@ -5,6 +5,8 @@
     display: none;
   }
   .preview {
+    border: 1px dashed grey;
+    font-size: 15px;
     #preview {
       display: block;
       max-width: 250px;

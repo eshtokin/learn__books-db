@@ -34,11 +34,14 @@
     <label for="pageCount" class="active">pages</label>
     <input type="number" name="pageCount" id="pageCount" min="0" [(ngModel)]="editeBookData.pageCount">
   </div>
-  <div class="preview">
-    <label class="preview-label" for="image" class="active" [ngClass]="{alredy: this.editeBookData.image}">Click for change image</label>
-    <input type="file" name="image" id="image" (change)="uploadFile($event)">
-    <img [src]="this.editeBookData.image" alt="image book" id="preview">
-  </div>
+  <label class="preview-label" for="image" class="active" [ngClass]="{alredy: this.image}"> 
+    <div class="preview">
+      Click for change image
+      <input type="file" name="image" id="image" (change)="uploadFile($event)">
+      <img [src]="this.editeBookData.image" alt="image book" id="preview">
+    </div>
+  </label>
+    
   <hr>
   <button class="btn green" (click)="close()">Close</button>
   <button class="btn btn-save-change orange" (click)="editeBook()">Edite</button>
