@@ -5,3 +5,28 @@
     margin: 0 10px;
   }
 }
+
+.preview {
+  #image {
+    display: none;
+  }
+  #preview {
+     width: 150px;
+    height: 150px;
+    background-size: cover;
+    background-position: top center;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+  }
+  .preview-label {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+  }
+
+  #preview {
+    margin: 0 auto;
+    display: block
+  }  
+}

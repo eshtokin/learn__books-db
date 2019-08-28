@@ -35,6 +35,7 @@ export class UserController {
         }
         mongoDbService.findById(User, query)
         .then(value => {
+            value.password = '';
             return res.json(value);
         })
         .catch(err => {
@@ -48,7 +49,6 @@ export class UserController {
         if (req.body.password[0] !== '$') {
             data.password = crypt.hashSync(req.body.password)
         }
-        console.log(data.password);
         
         if (req.body.books) {
             const bookArray = req.body.books.map(book => {
@@ -60,7 +60,7 @@ export class UserController {
         const query = {
             _id: req.body._id
         };
-        
+       
         mongoDbService.findOneAndUpdate(User, query, data)
         .then(value => {
             return res.json(value)

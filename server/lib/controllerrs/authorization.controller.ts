@@ -31,11 +31,11 @@ export class AuthorizationController {
             }
             const token = jwt.sign({
                 id: user._id,
+                password: '',
                 email: user.email,
-                password: user.password,
                 name: user.name,
                 role: user.role
-            }, AuthConfig.privateKey);
+            }, AuthConfig.privateKey); // publicKey
 
             return res.status(200).send({
                 authorization: true,
@@ -65,7 +65,8 @@ export class AuthorizationController {
                 password: crypt.hashSync(req.body.password),
                 name: req.body.name,
                 books: [],
-                role: req.body.role || 2
+                role: req.body.role || 2,
+                image: 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'
             }, (err, user) => {
                 res.status(200).send({
                     message: `Registration success`

@@ -5,6 +5,11 @@
     display: none;
   }
   .preview {
+    #preview {
+      display: block;
+      max-width: 250px;
+      margin: 0 auto;
+    }
     .preview-label {
       margin: 0 auto;
       display: block;

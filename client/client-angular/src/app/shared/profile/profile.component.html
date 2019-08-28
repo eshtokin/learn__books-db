@@ -7,7 +7,7 @@
       >edite</i>
     </div>
     <div class="content">
-      <img class="face" src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png"/>
+      <img class="face" [src]="this.user.image || 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'"/>
       <div class="name">{{user.name}}</div>
       <div class="email">{{user.email}}</div>
       <!-- <div class="social">

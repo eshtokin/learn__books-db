@@ -10,8 +10,6 @@
     [data]="dropdownAuthorsList"
     [(ngModel)]="selectedItemsAuthor"
     [settings]="dropdownSettings"
-    (onSelect)="onItemSelect($event)"
-    (onSelectAll)="onSelectAll($event)"
     >
     </ng-multiselect-dropdown>
   </div>
@@ -22,8 +20,6 @@
     [data]="dropdownCategoriesList"
     [(ngModel)]="selectedItemsCategories"
     [settings]="dropdownSettings"
-    (onSelect)="onItemSelect($event)"
-    (onSelectAll)="onSelectAll($event)"
     >
     </ng-multiselect-dropdown>
   </div>
@@ -44,6 +40,6 @@
     <img [src]="this.editeBookData.image" alt="image book" id="preview">
   </div>
   <hr>
-  <button class="btn" (click)="close()">Close</button>
-  <button class="btn btn-save-change" (click)="editeBook()">Edite</button>
+  <button class="btn green" (click)="close()">Close</button>
+  <button class="btn btn-save-change orange" (click)="editeBook()">Edite</button>
 </div>

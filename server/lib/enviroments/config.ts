@@ -19,6 +19,7 @@ export const dbInfo = {
 
 export const AuthConfig = {
     privateKey: fs.readFileSync("./lib/private.key", "utf-8"),
+    publicKey: fs.readFileSync("./lib/public.key", "utf-8")
     // signOptions: {
         //         issuer: paramConfig.issuer,
         //         subject: paramConfig.subject,

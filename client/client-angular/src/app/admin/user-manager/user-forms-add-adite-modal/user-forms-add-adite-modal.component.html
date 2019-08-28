@@ -1,4 +1,10 @@
 <form class="example-container" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- <div class="preview">
+    <label class="preview-label" for="image" class="active" [ngClass]="{alredy: this.editeBookData.image}">Click for change image</label>
+    <input type="file" name="image" id="image" (change)="uploadFile($event)">
+    <img [src]="this.userForEdite.hasOwnProperty('image') ? this.userForEdite.image: 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'" alt="image book" id="preview">
+  </div> -->
+
   <div class="input-field">
     <input type="text" id="name" 
     [(ngModel)]='userForEdite.name'
@@ -49,6 +55,5 @@
         >Ok
       </button>
       <button (click)="dialogRef.close()" class="btn blue-grey">Close</button>
-      <button (click)="onSubmit()">submit</button>
     </div>
 </form>

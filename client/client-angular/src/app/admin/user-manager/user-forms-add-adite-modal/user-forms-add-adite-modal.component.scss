@@ -5,9 +5,29 @@
   }
 }
 
-
 .my-input-field {
   select {
     display: block;
   }
+}
+
+.preview {
+  #image {
+    display: none;
+  }
+  #preview {
+    display: block;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+  .preview-label {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+  }
+
+  #preview {
+    margin: 0 auto;
+    display: block
+  }  
 }

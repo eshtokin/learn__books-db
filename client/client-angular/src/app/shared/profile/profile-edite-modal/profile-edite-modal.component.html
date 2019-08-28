@@ -1,4 +1,9 @@
 <div class="profile-edite-modal" [formGroup]="profileForm">
+   <div class="preview">
+    <label class="preview-label" for="image" class="active" [ngClass]="{alredy: this.image}">Click for change image</label>
+    <input type="file" name="image" id="image" (change)="uploadFile($event)">
+    <img [src]="this.data.user.image || 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'" alt="image book" id="preview">
+  </div>
   <div class="input-field">
     <input
     type="text" name="name"
@@ -45,7 +50,4 @@
   (click)="save()"
   [disabled]="profileForm.invalid  || !confPass"
   >Save</button>
-  <button
-  (click)=show()
-  >show user</button>
 </div>

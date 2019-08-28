@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserInfo } from './service/user-info.service';
+import { UserService } from './service/users.service';
+import { User } from './models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +10,8 @@ import { UserInfo } from './service/user-info.service';
 })
 
 export class AppComponent implements OnInit {
+  public user: User;
+
   constructor(
     private userInfo: UserInfo
   ) {}

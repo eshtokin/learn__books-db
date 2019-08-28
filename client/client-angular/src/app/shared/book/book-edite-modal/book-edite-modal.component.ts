@@ -59,14 +59,6 @@ export class BookEditeModalComponent implements OnInit {
     this.selectedItemsCategories = this.data.book.categories_list;
   }
 
-  public onItemSelect(item: any) {
-    console.log(item);
-  }
-
-  public onSelectAll(items: any) {
-    console.log(items);
-  }
-
   public editeBook(): void {
     this.editeBookData.authors = this.selectedItemsAuthor.map(author => author.name);
     this.editeBookData.categories = this.selectedItemsCategories.map(category => category.name);
@@ -79,5 +71,14 @@ export class BookEditeModalComponent implements OnInit {
 
   public close() {
     this.editeFormDialog.close();
+  }
+
+  public uploadFile(e, id: string): void {
+    const input = e.target;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.editeBookData.image = reader.result;
+    };
+    reader.readAsDataURL(input.files[0]);
   }
 }

@@ -48,11 +48,6 @@ export class UserFormAddEditeModalComponent {
     }
   ) {}
 
-  public onSubmit(): void {
-    console.log(this.form);
-    console.log(this.data);
-  }
-
   public checkName(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{3,16}$/)) {
       return {
@@ -117,4 +112,13 @@ export class UserFormAddEditeModalComponent {
   public onNoClick(): void {
     this.dialogRef.close();
   }
+
+  // public uploadFile(e, id: string): void {
+  //   const input = e.target;
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     this.userForEdite.image = reader.result;
+  //   };
+  //   reader.readAsDataURL(input.files[0]);
+  // }
 }

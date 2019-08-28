@@ -80,7 +80,12 @@ export class ProfileEditeModalComponent implements OnInit {
     });
   }
 
-  show() {
-    console.log(this.profileForm);
+  public uploadFile(e, id: string): void {
+    const input = e.target;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.data.user.image = reader.result;
+    };
+    reader.readAsDataURL(input.files[0]);
   }
 }
