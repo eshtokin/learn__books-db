@@ -5,6 +5,10 @@ import { AdminGuardService } from './guard/admin-guard.service';
 
 const routes: Routes = [
   {
+    path: '',
+    loadChildren: () => import('./shared/homepage/homepage.module').then(m => m.HomepageModule)
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth-form/auth-form.module').then(m => m.AuthModule)
   },
@@ -27,6 +31,10 @@ const routes: Routes = [
     path: 'user-manager' ,
     loadChildren: () => import('./admin/user-manager/user-manager.module').then(m => m.UserManagerModule),
     canActivate: [AdminGuardService]
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./shared/not-found/not-found.module').then(m => m.NotFoundModule)
   }
 ];
 

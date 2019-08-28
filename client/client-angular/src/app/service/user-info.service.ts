@@ -13,7 +13,7 @@ export class UserInfo {
     }
 
     getCurrentUser(): User {
-        return decode(localStorage.getItem('token'));
+        return localStorage.getItem('token') ? decode(localStorage.getItem('token')) : null;
     }
 
     // return true (admin) or false (user)

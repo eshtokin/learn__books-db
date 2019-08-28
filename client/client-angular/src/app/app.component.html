@@ -4,7 +4,7 @@
       <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="catalog">Search</a></li>
       <li *ngIf="this.userInfo.isUserAuth()"><a routerLink="gbooks">Books</a></li>
       <li *ngIf="(this.userInfo.isUserAuth() && this.userInfo.getStatus())"><a routerLink="user-manager">Users</a></li>
-      <li *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth/login">Log in</a></li>
+      <li *ngIf="!this.userInfo.isUserAuth()"><a routerLink="auth">Log in</a></li>
       <li class="dropdown"
       *ngIf="(this.userInfo.isUserAuth())"
       >
@@ -21,6 +21,4 @@
     </ul>
   </div>
 </nav>
-<!-- <button routerLink="/lazy">lazy</button>
-<button routerLink="">Home</button> -->
 <router-outlet></router-outlet> 

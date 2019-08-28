@@ -14,8 +14,7 @@
     <label for="email" [ngClass]="{active: userForEdite.email}">E-mail</label>
   </div>
   <div class="input-field">
-      <input type="password" id="password" 
-      [ngModel]="userForEdite.password"
+      <input type="password" id="password"
       formControlName='password'
       (ngModelChange)="checkPass()"
       >
@@ -23,7 +22,6 @@
   </div>
   <div class="input-field">
     <input type="password" id="confirmPassword"
-    [ngModel]="userForEdite.password"
     [(ngModel)]="confPassword"
     formControlName="confirmPassword"
     (ngModelChange)="checkPass()"
@@ -41,7 +39,7 @@
       <button type="button" class="btn waves-effect green"
         (click)="addAction()" 
         *ngIf="showAddBtn"
-        [disabled]="form.invalid"
+        [disabled]="form.invalid || !confPass"
         >Add
       </button>
       <button type="button" class="btn waves-effect green"

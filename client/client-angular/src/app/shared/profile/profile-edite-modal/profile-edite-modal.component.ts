@@ -70,7 +70,6 @@ export class ProfileEditeModalComponent implements OnInit {
   }
 
   public save() {
-    console.log(this.data.user);
     if (this.profileForm.value.password.length && this.data.user.password !== this.profileForm.value.password) {
       this.data.user.password = this.profileForm.value.password;
     }

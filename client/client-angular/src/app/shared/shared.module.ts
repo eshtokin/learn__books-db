@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { JwPaginationComponent } from 'jw-angular-pagination';
-
+import { HomepageComponent } from './homepage/homepage.component';
 
 @NgModule({
   declarations: [

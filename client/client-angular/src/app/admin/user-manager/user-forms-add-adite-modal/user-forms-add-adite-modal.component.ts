@@ -96,6 +96,9 @@ export class UserFormAddEditeModalComponent {
   }
 
   public okAction(): void {
+    if (this.form.value.password.length && this.data.user.password !== this.form.value.password) {
+      this.data.user.password = this.form.value.password;
+    }
     this.userService.edit(this.userForEdite._id, this.userForEdite)
     .then(() => {
       this.data.reloadPage();
