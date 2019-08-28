@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: 'catalog',
-    loadChildren: () => import('./shared/catalog/catalog.module').then(m => m.CatalogModule),
+    loadChildren: () => import('./admin/google-book/google-book.module').then(m => m.GoogleBooksModule),
     canActivate: [UserGuardService]
   },
   {

@@ -48,8 +48,18 @@ export class BookController {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
     }
+    
+    const regExp = new RegExp(`.*${req.query.title}*`);
 
-    const queryTitle =  req.query.title? {$text: {$search: req.query.title}} : {};
+    const queryTitle =  req.query.title
+    ? {
+      $or: [
+        {title: {$regex: regExp, $options: 'i'}}, 
+        {'authors_list.name': {$regex: regExp, $options: 'i'}},
+        {'categories_list.name': {$regex: regExp, $options: 'i'}}
+      ]
+    } 
+    : {};
     const queryCategories =  categoriesFilter.length > 0 ? {categories: {$in: categoriesFilter}} : {};
     const queryAuthors =  authorsFilter.length > 0 ?  {authors: {$in: authorsFilter}} : {};
 
@@ -61,25 +71,27 @@ export class BookController {
       ]
     };
 
-    const agreagateQuery = [{
-      $match: 
-        query
-    }, {
-      $lookup: {
+    const agreagateQuery = [
+      { 
+        $lookup: {
         from: "categories",
         localField: "categories",
         foreignField: "_id",
         as: "categories_list"
-      }
-    }, {
-      $lookup: {
+        }
+      }, 
+      {
+        $lookup: {
         from: "authors",
         localField: "authors",
         foreignField: "_id",
         as: "authors_list"
-      }
-    }];
-   
+        }
+      },
+      {
+        $match: query
+      }];
+
     mongoDbService.Aggreagate(Books, agreagateQuery)
     .then(list => {
       return res.json(list)

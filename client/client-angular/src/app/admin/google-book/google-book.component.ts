@@ -6,11 +6,11 @@ import { Book } from 'src/app/models/book.model';
 import { User } from 'src/app/models/user.model';
 
 @Component({
-  selector: 'app-catalog',
-  templateUrl: './catalog.component.html',
-  styleUrls: ['./catalog.component.scss']
+  selector: 'app-google-book',
+  templateUrl: './google-book.component.html',
+  styleUrls: ['./google-book.component.scss']
 })
-export class CatalogComponent implements OnInit {
+export class GoogleBookComponent implements OnInit {
 
   public searchString: string;
   public listOfBook: any = this.googleBooks.getPageInfo().currentItems;

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { AuthFormRegComponent } from './auth-form-reg/auth-form-reg.component';
-import { AuthFomrComponent } from './auth-fomr.component';
+import { AuthFormComponent } from './auth-form.component';
 import { AuthFormLoginComponent } from './auth-form-login/auth-form-login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
@@ -13,14 +13,14 @@ import { UserService } from '../service/users.service';
 
 @NgModule({
   declarations: [
-    AuthFomrComponent,
+    AuthFormComponent,
     AuthFormLoginComponent,
     AuthFormRegComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild([
-      { path: '', component: AuthFomrComponent },
+      { path: '', component: AuthFormComponent },
       { path: 'login', component: AuthFormLoginComponent },
       { path: 'registr', component: AuthFormRegComponent }
     ]),
