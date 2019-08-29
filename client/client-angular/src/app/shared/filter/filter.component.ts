@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { CategoryAuthor } from 'src/app/models/category-author.model';
-import { Book } from 'src/app/models/book.model';
 
 @Component({
   selector: 'app-filter',

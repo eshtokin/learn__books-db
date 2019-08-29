@@ -8,30 +8,8 @@ h3 {
   margin: 100px calc(50% - 180px);
 }
 
-.collection-item {
-  &:hover {
-    background: #80cbc4;
-    cursor: pointer;
-  }
-}
-
 #modal1 {
   display: block;
-}
-
-.collection .collection-item.avatar {
-  min-height: 84px;
-  padding-left: 125px;
-  position: relative;
-}
-.collection .collection-item.avatar:not(.circle-clipper)>.circle, .collection .collection-item.avatar :not(.circle-clipper)>.circle {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  left: 15px;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 i .material-icons:hover {
@@ -40,4 +18,26 @@ i .material-icons:hover {
 
 .favoritesText {
   font-size: 20px;
+}
+
+.book-card {
+  .book-element{
+    height: 150px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    .book-image {
+      display: inline-block;
+      height: 148px;
+      width: 148px;
+    }
+    .title {
+      display: inline-block;
+    }
+    .description {
+      display: inline-block;
+    }
+    .btn-section .btn {
+      width: 120px;
+    }
+  }
 }

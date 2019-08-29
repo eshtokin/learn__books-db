@@ -24,14 +24,20 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
+    public getSomeUsers(searchString: string): Promise<any> {
+        return Axios.get('/usersearch', {params: {searchString}})
+        .then(res => res.data)
+        .catch(err => console.log(err));
+    }
+
     public getUser(id: string): Promise<any> {
         return Axios.get(`/user/${id}`)
         .then(res => res.data)
         .catch(err => console.log(err));
     }
 
-    public getUserBooks(books: string[]): Promise<any> {
-        return Axios.get('/userbooks', {params: {books}})
+    public getUserBooks(books: string[], title?: string): Promise<any> {
+        return Axios.get('/userbooks', {params: {books, title}})
         .then(res => res.data)
         .catch(err => console.log(err));
     }

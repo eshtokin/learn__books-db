@@ -10,21 +10,26 @@ import { BookEditeModalComponent } from 'src/app/shared/book/book-edite-modal/bo
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RouterModule } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatPaginatorModule} from '@angular/material';
+import { FilteredBookComponent } from 'src/app/shared/filtered-book/filtered-book.component';
 
 @NgModule({
   declarations: [
     BooksManagerComponent,
     FilterComponent,
-    BookEditeModalComponent
+    BookEditeModalComponent,
+    FilteredBookComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     MatDialogModule,
+    MatPaginatorModule,
     NgMultiSelectDropDownModule.forRoot(),
     SharedModule,
     RouterModule.forChild([
-      {path: '', component: BooksManagerComponent}
+      {path: '', component: BooksManagerComponent},
+      {path: 'filter', component: FilteredBookComponent}
     ])
   ],
   entryComponents: [

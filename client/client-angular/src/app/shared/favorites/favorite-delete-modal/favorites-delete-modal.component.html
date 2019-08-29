@@ -1,0 +1,10 @@
+<h3>Delete book ?<br><b>"{{this.data.book.title}}"</b></h3>
+
+<div class="containter center">
+  <button class="btn green"
+  [mat-dialog-close]
+  >Cancel</button>
+  <button class="btn red"
+  (click)="deleteBook()"
+  >Delete</button>
+</div>

@@ -10,16 +10,19 @@ import { FavoritesModalComponent } from '../favorites/favorites-modal/favorites-
 import { BookService } from 'src/app/service/books.service';
 import { ProfileEditeModalComponent } from './profile-edite-modal/profile-edite-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FavoritesDeleteModalComponent } from '../favorites/favorite-delete-modal/favorites-delete-modal.component';
 
 @NgModule({
   declarations: [
     ProfileComponent,
     FavoritesComponent,
     FavoritesModalComponent,
+    FavoritesDeleteModalComponent,
     ProfileEditeModalComponent
   ],
   entryComponents: [
     FavoritesModalComponent,
+    FavoritesDeleteModalComponent,
     ProfileEditeModalComponent
   ],
   imports: [

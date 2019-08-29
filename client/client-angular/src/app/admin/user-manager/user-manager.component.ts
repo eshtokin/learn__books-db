@@ -12,8 +12,7 @@ import { User } from '../../models/user.model';
 })
 export class UserManagerComponent implements OnInit {
   public users: object[];
-  public userOnPage: object[];
-
+  public searchString: string;
   constructor(
     private userService: UserService,
     public dialog: MatDialog
@@ -22,10 +21,6 @@ export class UserManagerComponent implements OnInit {
   ngOnInit(): void {
     this.init();
   }
-
-  onChangePage(userOnPage: Array<any>) {
-    this.userOnPage = userOnPage;
-}
 
   public init(): void {
     this.userService.getAllUsers()
@@ -63,6 +58,13 @@ export class UserManagerComponent implements OnInit {
     });
 
     confirmDialog.afterClosed().subscribe(result => {
+    });
+  }
+
+  public userSearch() {
+    this.userService.getSomeUsers(this.searchString)
+    .then(users => {
+      this.users = users;
     });
   }
 }

@@ -1,9 +1,10 @@
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
-import { CategoryAuthor } from 'src/app/models/category-author.model';
-import { User } from 'src/app/models/user.model';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-books-manager',
@@ -14,17 +15,19 @@ export class BooksManagerComponent implements OnInit {
   public editeMode = false;
   public books: Book[]; // All items from db
   public pageOfItems: Book[]; // Items on the page
+  public pageSize = 3;
 
   constructor(
     private userInfo: UserInfo,
     private bookService: BookService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.init();
   }
 
-  onChangePage(pageOfItems: Array<any>) {
+  public onChangePage(pageOfItems: Array<any>): void {
     this.pageOfItems = pageOfItems;
   }
 
@@ -42,10 +45,16 @@ export class BooksManagerComponent implements OnInit {
         this.books = el;
       });
   }
-  public getFilteredBooks(data) {
-    this.bookService.getSomeBooks(data)
-        .then((list: Book[]) => {
-          this.books = list;
-        });
+  public getFilteredBooks(data): void {
+    // this.bookService.getSomeBooks(data)
+    //   .then((list: Book[]) => {
+        this.router.navigate(
+          ['/gbooks/filter'],
+          {
+            queryParams: data
+          }
+      );
+      //   this.books = list;
+      // });
   }
 }

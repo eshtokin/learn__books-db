@@ -1,6 +1,7 @@
 <nav class="col s12">
   <div class="nav-wrapper teal">
-    <ul id="nav-mobile" class="right ">
+    <a routerLink="/" class="brand-logo"> Logo</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li *ngIf="this.userInfo.isUserAuth()">
         <a 
         routerLink="catalog"
@@ -26,9 +27,9 @@
       <li class="dropdown"
       *ngIf="(this.userInfo.isUserAuth())"
       >
-          <a class="btn-floating btn-large  waves-effect waves-light teal">
-            <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png" alt="user avatar">
-          </a>
+        <a class="btn-floating btn-large  waves-effect waves-light teal">
+          <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png" alt="user avatar">
+        </a>
         <ul>
           <li>
             <a

@@ -1,21 +1,44 @@
 <h3 *ngIf="!books.length">Your list is empty</h3>
-<div class="container">
+<div
+class="container"
+*ngIf="books.length"
+>
+  <div class="input-field">
+      <input type="text" id="text" [(ngModel)]='searchField'>
+      <label for="text">Seaarch field</label>
+      <button class="btn"
+      (click)='searchFromFavorites()'
+      >OK</button>
+  </div>
   <p class="favoritesText">Favorites: </p>
-  <ul class="collection z-depth-4">
+  <ul class="book-card">
     <li
-      class="collection-item avatar"
-      mat-raised-button
-      (click)="openDialog(book)"
-      *ngFor="let book of pageOfItems"
+    class="row book-element"
+    *ngFor="let book of fromFavBooks || pageOfItems"
     >
-      <img src={{book.image}} alt="book image" class="circle">
-      <span class="title">{{book.title}}</span>
-      <p>
+      <img src={{book.image}} alt="book image" class="book-image col s3">
+      <p class="col s6">
+        <b>
+          {{book.title}}
+        </b>
+      </p>
+      <p class="description  col s6">
         <b>Categories:</b> <span *ngFor="let category of book.categories_list" class="chip">{{category.name}}</span><br>
         <b>Authors:</b> <span *ngFor="let author of book.authors_list" class="chip">{{author.name}}</span> 
       </p>
+      <div class="col s3 center btn-section">
+        <button class="btn green" (click)="openDialog(book)">
+          Details
+        </button>
+        <button class="btn red" (click)="deleteDialog(book)">
+          <i class="material-icons">
+            delete
+          </i>
+        </button>
+      </div>
     </li>
   </ul>
+  
 </div>
 <jw-pagination
 class="center"

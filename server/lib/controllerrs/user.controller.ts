@@ -11,14 +11,16 @@ const mongoDbService = new MongoDbService();
 export class UserController {
 
     public getAllUsers(req: Request, res: Response) {
-        const query = [{
-            $lookup: {
-                from: "books",
-                localField: "books",
-                foreignField: "_id",
-                as: "book_list"
+        const query = [
+            {
+                $lookup: {
+                    from: "books",
+                    localField: "books",
+                    foreignField: "_id",
+                    as: "book_list"
+                }
             }
-        }];
+        ];
 
         mongoDbService.Aggreagate(User, query)
         .then(result => {
@@ -29,6 +31,35 @@ export class UserController {
         })
     }
     
+    public getSomeUser(req: Request, res: Response) {
+        const query = [
+            {
+                $match: {
+                    email: {
+                        $regex: `.*${req.query.searchString? req.query.searchString : ' '}*`,
+                        $options: 'i'
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: "books",
+                    localField: "books",
+                    foreignField: "_id",
+                    as: "book_list"
+                }
+            }
+        ];
+
+        mongoDbService.Aggreagate(User, query)
+        .then(result => {
+            return res.send(result)
+        })
+        .catch(err => {
+            return res.send(err)
+        })
+    }
+
     public getUserById(req: Request, res: Response) {
         const query = {
             _id: req.params.userId

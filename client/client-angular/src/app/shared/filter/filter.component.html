@@ -7,7 +7,7 @@
     [ngClass]="{active: this.searchField}"      
     >Search Field</label>
   </div>
-  <div class="author-input" *ngFor="let category of categories">
+  <div class="category-input" *ngFor="let category of categories">
     <input type="checkbox" id={{category._id}} (click)="chooseCategory(category)"/>
     <label for={{category._id}}>{{category.name}}</label>
   </div>

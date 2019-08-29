@@ -31,6 +31,9 @@ export class Routes {
         app.route("/user")
         .get(this.userController.getAllUsers)
         
+        app.route("/usersearch")
+        .get(this.userController.getSomeUser)
+
         app.route("/user/:userId")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
         .put(this.userController.updateUser) // AuthMiddleware([UserRoles.admin, UserRoles.user]),

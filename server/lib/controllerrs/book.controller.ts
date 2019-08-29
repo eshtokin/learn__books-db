@@ -39,11 +39,14 @@ export class BookController {
     const categoriesFilter = [];
 
     if (req.query.authors) {
+      console.log('authors: ', req.query.authors);
+      
       req.query.authors.forEach(author => {
         authorsFilter.push(mongoose.Types.ObjectId(author))
       })
     }
     if (req.query.categories) {
+      console.log('categories: ', req.query.categories);
       req.query.categories.forEach(category => {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
@@ -104,11 +107,9 @@ export class BookController {
 
     const query = [{
       $match: {
-        _id: {
-          $in: objIdBooks
+          _id: {$in: objIdBooks}
         }
-      } 
-    }, {
+      }, {
       $lookup: {
         from: "categories",
         localField: "categories",
@@ -121,6 +122,13 @@ export class BookController {
         localField: "authors",
         foreignField: "_id",
         as: "authors_list"
+      }
+    }, {
+      $match: {
+        title: {
+          $regex: `.*${req.query.title? req.query.title: ' '}*`,
+          $options: 'i'
+        }, 
       }
     }];
 
