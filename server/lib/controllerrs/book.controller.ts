@@ -10,11 +10,21 @@ export const Books = mongoose.model('Books', BookSchema);
 const mongoDbService = new MongoDbService();
 
 export class BookController {
-  public count(req: Request, res: Response) {
-    mongoDbService.count(Books)
-    .then(count => res.json(count))
-    .catch(err => res.send(err))
-  }
+  public agreagationQuery = [{
+    $lookup: {
+      from: "categories",
+      localField: "categories",
+      foreignField: "_id",
+      as: "categories_list"
+    }
+  }, {
+    $lookup: {
+      from: "authors",
+      localField: "authors",
+      foreignField: "_id",
+      as: "authors_list"
+    }
+  }];
 
   public getAllBook(req: Request, res: Response) {
     const skip = {
@@ -24,8 +34,7 @@ export class BookController {
         $limit: (+req.query.pageSize)
     }
     let query = [
-      skip,
-      limit, {
+      {
       $lookup: {
         from: "categories",
         localField: "categories",
@@ -39,11 +48,25 @@ export class BookController {
         foreignField: "_id",
         as: "authors_list"
       }
-    }];
+    },
+      { 
+      $facet: {
+        books: [
+          skip, 
+          limit
+        ],
+        totalCount: [
+          {
+            $count: 'count'
+          }
+        ]
+      }
+    }
+  ];
 // there
     mongoDbService.Aggreagate(Books, query)
     .then(list => {
-      return res.json(list)
+      return res.json(list[0])
     })
     .catch(err => res.send(err))
   }
@@ -103,13 +126,24 @@ export class BookController {
         }
       },
       {
+        $group: {
+          _id: "$key",
+          count: {
+            $sum: 1
+          }
+        }
+      },
+      {
         $match: query
-      }];
+      },
+      {
+        $count: "count"
+      }
+      
+    ];
 
     mongoDbService.Aggreagate(Books, agreagateQuery)
-    .then(list => {
-      return res.json(list)
-    })
+    .then(list => res.json(list))
     .catch(err => res.send(err))
   }
 

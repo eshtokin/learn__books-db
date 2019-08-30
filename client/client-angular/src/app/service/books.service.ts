@@ -7,12 +7,6 @@ import { Pagination } from '../models/pagination.model';
 export class BookService {
   constructor() {}
 
-  public count() {
-    return Axios.get('/bookscount')
-    .then(res => res.data)
-    .catch(err => console.log(err));
-  }
-
   public getAllBooks(pagination?: Pagination): Promise<Book[]> {
     return Axios.get('/books', {params: pagination})
     .then(res => {

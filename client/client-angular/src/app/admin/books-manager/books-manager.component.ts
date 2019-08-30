@@ -3,7 +3,6 @@ import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material';
 import { Pagination } from 'src/app/models/pagination.model';
 
 @Component({
@@ -49,27 +48,18 @@ export class BooksManagerComponent implements OnInit {
   }
 
   public getBooks(): void {
-    this.bookService.count()
-    .then(count => {
-      this.paginationParams.length = count;
-    });
-
     this.bookService.getAllBooks(this.paginationParams)
-      .then((el: Book[]) => {
-        this.books = el;
-        // this.paginationParams.length = el.length;
+      .then((el: any) => {
+        this.books = el.books;
+        this.paginationParams.length = el.totalCount[0].count;
       });
   }
   public getFilteredBooks(data): void {
-    // this.bookService.getSomeBooks(data)
-    //   .then((list: Book[]) => {
-        this.router.navigate(
-          ['/gbooks/filter'],
-          {
-            queryParams: data
-          }
-      );
-      //   this.books = list;
-      // });
+    this.router.navigate(
+      ['/gbooks/filter'],
+      {
+        queryParams: data
+      }
+    );
   }
 }
