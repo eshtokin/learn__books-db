@@ -10,8 +10,22 @@ export const Books = mongoose.model('Books', BookSchema);
 const mongoDbService = new MongoDbService();
 
 export class BookController {
+  public count(req: Request, res: Response) {
+    mongoDbService.count(Books)
+    .then(count => res.json(count))
+    .catch(err => res.send(err))
+  }
+
   public getAllBook(req: Request, res: Response) {
-    const query = [{
+    const skip = {
+      $skip: (+req.query.pageIndex) * (+req.query.pageSize)
+    };
+    const limit = {
+        $limit: (+req.query.pageSize)
+    }
+    let query = [
+      skip,
+      limit, {
       $lookup: {
         from: "categories",
         localField: "categories",
@@ -26,7 +40,7 @@ export class BookController {
         as: "authors_list"
       }
     }];
-
+// there
     mongoDbService.Aggreagate(Books, query)
     .then(list => {
       return res.json(list)
@@ -39,14 +53,11 @@ export class BookController {
     const categoriesFilter = [];
 
     if (req.query.authors) {
-      console.log('authors: ', req.query.authors);
-      
       req.query.authors.forEach(author => {
         authorsFilter.push(mongoose.Types.ObjectId(author))
       })
     }
     if (req.query.categories) {
-      console.log('categories: ', req.query.categories);
       req.query.categories.forEach(category => {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })

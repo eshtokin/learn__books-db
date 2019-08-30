@@ -5,6 +5,7 @@ import { BookService } from 'src/app/service/books.service';
 import { User } from 'src/app/models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { BookEditeModalComponent } from './book-edite-modal/book-edite-modal.component';
+import { BookDeleteModalComponent } from './book-delete-modal/book-delete-modal.component';
 
 @Component({
   selector: 'app-book',
@@ -72,5 +73,18 @@ export class BookComponent implements OnInit {
 
   public checkEditAccess(): boolean {
     return this.userInfo.getStatus() && this.buttonStatus.editeBtn;
+  }
+
+  public deleteDialog(book: Book): void {
+    const dialogRef = this.dialog.open(BookDeleteModalComponent, {
+      data: {
+        book,
+        deleteBook: this.deleteBook.bind(this),
+        reloadPage: this.reloadPage
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }

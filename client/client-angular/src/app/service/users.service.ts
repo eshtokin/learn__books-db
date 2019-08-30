@@ -2,6 +2,12 @@ import { Axios } from '../interceptor/token.interseptor';
 import { User } from '../models/user.model';
 
 export class UserService {
+    public count() {
+        return Axios.get('/userscount')
+        .then(res => res.data)
+        .catch(err => console.log(err));
+      }
+
     public login(user: {email: string, password: string}): Promise<any> {
         return Axios.post('/login', user)
         .then(res => {
@@ -20,7 +26,9 @@ export class UserService {
 
     public getAllUsers(): Promise<any> {
         return Axios.get('/user')
-        .then(res => res.data)
+        .then(res => {
+            return res.data;
+        })
         .catch(err => console.log(err));
     }
 

@@ -1,15 +1,20 @@
-import { OnInit } from '@angular/core';
 import { Axios } from '../interceptor/token.interseptor';
 import { Book } from '../models/book.model';
 import { User } from '../models/user.model';
 import { BookFilter } from '../models/book-filter.model';
+import { Pagination } from '../models/pagination.model';
 
-export class BookService implements OnInit {
+export class BookService {
   constructor() {}
-  ngOnInit() {}
 
-  public getAllBooks(): Promise<Book[]> {
-    return Axios.get('/books')
+  public count() {
+    return Axios.get('/bookscount')
+    .then(res => res.data)
+    .catch(err => console.log(err));
+  }
+
+  public getAllBooks(pagination?: Pagination): Promise<Book[]> {
+    return Axios.get('/books', {params: pagination})
     .then(res => {
       return res.data;
     })
@@ -17,7 +22,6 @@ export class BookService implements OnInit {
   }
 
   public getSomeBooks(data: BookFilter) {
-    console.log(data);
     return Axios.get('/somebooks', {params: data})
     .then(res => {
       return res.data;

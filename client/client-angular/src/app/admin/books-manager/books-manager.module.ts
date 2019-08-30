@@ -1,6 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { GoogleBooks } from 'src/app/service/google-books.service';
 import { BooksManagerComponent } from './books-manager.component';
 import { FilterComponent } from 'src/app/shared/filter/filter.component';
@@ -10,21 +8,19 @@ import { BookEditeModalComponent } from 'src/app/shared/book/book-edite-modal/bo
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RouterModule } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatPaginatorModule} from '@angular/material';
 import { FilteredBookComponent } from 'src/app/shared/filtered-book/filtered-book.component';
+import { BookDeleteModalComponent } from 'src/app/shared/book/book-delete-modal/book-delete-modal.component';
 
 @NgModule({
   declarations: [
     BooksManagerComponent,
     FilterComponent,
+    BookDeleteModalComponent,
     BookEditeModalComponent,
     FilteredBookComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule,
     MatDialogModule,
-    MatPaginatorModule,
     NgMultiSelectDropDownModule.forRoot(),
     SharedModule,
     RouterModule.forChild([
@@ -33,6 +29,7 @@ import { FilteredBookComponent } from 'src/app/shared/filtered-book/filtered-boo
     ])
   ],
   entryComponents: [
+    BookDeleteModalComponent,
     BookEditeModalComponent
   ],
   providers: [

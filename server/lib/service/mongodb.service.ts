@@ -50,4 +50,8 @@ export class MongoDbService {
       return result
     })
   }
+
+  public count(collection) {
+    return collection.count()
+  }
 }

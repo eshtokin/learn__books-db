@@ -27,7 +27,6 @@ export class FilteredBookComponent implements OnInit {
     this.bookService.getSomeBooks(this.data)
     .then(books => {
       this.books = books;
-      console.log('response:', this.books);
     });
   }
 

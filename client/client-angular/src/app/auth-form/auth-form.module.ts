@@ -18,16 +18,12 @@ import { UserService } from '../service/users.service';
     AuthFormRegComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
     RouterModule.forChild([
       { path: '', component: AuthFormComponent },
       { path: 'login', component: AuthFormLoginComponent },
       { path: 'registr', component: AuthFormRegComponent }
-    ]),
-
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule
+    ])
   ],
   providers: [
     UserService

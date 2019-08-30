@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
-import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
-
+import { MatPaginator } from '@angular/material';
+import { Pagination } from 'src/app/models/pagination.model';
 
 @Component({
   selector: 'app-books-manager',
@@ -14,8 +14,19 @@ import { Router } from '@angular/router';
 export class BooksManagerComponent implements OnInit {
   public editeMode = false;
   public books: Book[]; // All items from db
-  public pageOfItems: Book[]; // Items on the page
-  public pageSize = 3;
+  public paginationParams: Pagination = {
+    pageIndex: 0,
+    pageSize: 5,
+    previousPageIndex: 0,
+    length: 0
+  };
+  public previousBtn;
+  public nextBtn;
+  public paginatorOption: {
+    length: number,
+    pageIndex: number,
+    pageSize: number
+  };
 
   constructor(
     private userInfo: UserInfo,
@@ -24,25 +35,29 @@ export class BooksManagerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.init();
+    this.getBooks();
   }
 
-  public onChangePage(pageOfItems: Array<any>): void {
-    this.pageOfItems = pageOfItems;
+  show(pageEvent) {
+    this.paginationParams = pageEvent;
+    this.getBooks();
+    return pageEvent;
   }
 
   public editeModeToggle(): void {
     this.editeMode = !this.editeMode;
   }
 
-  public init(): void {
-    this.getBooks();
-  }
-
   public getBooks(): void {
-    this.bookService.getAllBooks()
+    this.bookService.count()
+    .then(count => {
+      this.paginationParams.length = count;
+    });
+
+    this.bookService.getAllBooks(this.paginationParams)
       .then((el: Book[]) => {
         this.books = el;
+        // this.paginationParams.length = el.length;
       });
   }
   public getFilteredBooks(data): void {

@@ -9,6 +9,11 @@ export const User = mongoose.model('User', UserSchema);
 const mongoDbService = new MongoDbService();
 
 export class UserController {
+    public count(req: Request, res: Response) {
+        mongoDbService.count(User)
+        .then(count => res.json(count))
+        .catch(err => res.send(err))
+      }
 
     public getAllUsers(req: Request, res: Response) {
         const query = [

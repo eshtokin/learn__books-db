@@ -5,11 +5,9 @@ import { UserService } from 'src/app/service/users.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from '../shared.module';
 import { FavoritesComponent } from '../favorites/favorites.component';
-import { CommonModule } from '@angular/common';
 import { FavoritesModalComponent } from '../favorites/favorites-modal/favorites-modal.component';
 import { BookService } from 'src/app/service/books.service';
 import { ProfileEditeModalComponent } from './profile-edite-modal/profile-edite-modal.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FavoritesDeleteModalComponent } from '../favorites/favorite-delete-modal/favorites-delete-modal.component';
 
 @NgModule({
@@ -26,11 +24,8 @@ import { FavoritesDeleteModalComponent } from '../favorites/favorite-delete-moda
     ProfileEditeModalComponent
   ],
   imports: [
-    CommonModule,
-    MatDialogModule,
-    FormsModule,
-    ReactiveFormsModule,
     SharedModule,
+    MatDialogModule,
     RouterModule.forChild([
       {path: '' , component: ProfileComponent},
       {path: 'favorites', component: FavoritesComponent}

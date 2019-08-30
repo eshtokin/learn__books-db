@@ -13,9 +13,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     GoogleBookComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatDialogModule,
     SharedModule,
     RouterModule.forChild([

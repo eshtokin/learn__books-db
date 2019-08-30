@@ -14,7 +14,7 @@ class="container"
   <ul class="book-card">
     <li
     class="row book-element"
-    *ngFor="let book of fromFavBooks || pageOfItems"
+    *ngFor="let book of fromFavBooks || books"
     >
       <img src={{book.image}} alt="book image" class="book-image col s3">
       <p class="col s6">
@@ -40,8 +40,3 @@ class="container"
   </ul>
   
 </div>
-<jw-pagination
-class="center"
-[items]="books"
-(changePage)="onChangePage($event)"
-></jw-pagination>

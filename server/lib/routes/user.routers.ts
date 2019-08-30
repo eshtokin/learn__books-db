@@ -30,7 +30,10 @@ export class Routes {
 
         app.route("/user")
         .get(this.userController.getAllUsers)
-        
+
+        app.route("/userscount")
+        .get(this.userController.count)
+
         app.route("/usersearch")
         .get(this.userController.getSomeUser)
 
@@ -47,6 +50,9 @@ export class Routes {
         .post(this.bookController.addBook)
         .put(this.bookController.updateBook)
         .delete(this.bookController.deleteBook)
+
+        app.route("/bookscount")
+        .get(this.bookController.count)
 
         app.route("/somebooks")
         .get(this.bookController.getSomeBooks)
