@@ -235,7 +235,7 @@ export class BookController {
           });
           listCategoriesId.push(id)
         });
-        Category.insertMany(listCategories);
+        mongoDbService.insertMany(Category, listCategories);
       }
       
     })
@@ -271,7 +271,7 @@ export class BookController {
               }
             })
           })
-          Authors.insertMany(listAuthors);
+          mongoDbService.insertMany(Authors, listAuthors);
         }
       }
       if (authors.length === 0) {
@@ -284,7 +284,7 @@ export class BookController {
           });
           listAuthorsId.push(id)
         });
-        Authors.insertMany(listAuthors);
+        mongoDbService.insertMany(Authors, listAuthors);
       }
     })
     .catch(err => res.send(err))

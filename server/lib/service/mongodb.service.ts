@@ -6,7 +6,12 @@ export class MongoDbService {
     })
   }
 
-  public insertMany() {}
+  public insertMany(collection, data) {
+    return collection.insertMany(data, (err, result) => {
+      if (err) return err;
+      return result;
+    })
+  }
 
   public find(collection, query) {
     return  collection.find(query, (err, result) => {
