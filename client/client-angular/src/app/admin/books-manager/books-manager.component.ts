@@ -4,6 +4,8 @@ import { Book } from '../../models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
 import { Router } from '@angular/router';
 import { Pagination } from 'src/app/models/pagination.model';
+import { MatDialog } from '@angular/material';
+import { AddBookModalComponent } from '../../shared/book/add-book-modal/add-book-modal.component';
 
 @Component({
   selector: 'app-books-manager',
@@ -54,6 +56,7 @@ export class BooksManagerComponent implements OnInit {
         this.paginationParams.length = el.totalCount[0].count;
       });
   }
+
   public getFilteredBooks(data): void {
     this.router.navigate(
       ['/filtered'],

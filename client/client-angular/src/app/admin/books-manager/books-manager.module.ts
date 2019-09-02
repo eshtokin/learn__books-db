@@ -8,7 +8,6 @@ import { BookEditeModalComponent } from 'src/app/shared/book/book-edite-modal/bo
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RouterModule } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FilteredBookComponent } from 'src/app/shared/filtered-book/filtered-book.component';
 import { BookDeleteModalComponent } from 'src/app/shared/book/book-delete-modal/book-delete-modal.component';
 
 @NgModule({

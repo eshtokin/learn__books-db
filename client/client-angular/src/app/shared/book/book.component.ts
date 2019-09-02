@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { BookEditeModalComponent } from './book-edite-modal/book-edite-modal.component';
 import { BookDeleteModalComponent } from './book-delete-modal/book-delete-modal.component';
+import { AddBookModalComponent } from './add-book-modal/add-book-modal.component';
 
 @Component({
   selector: 'app-book',
@@ -38,6 +39,7 @@ export class BookComponent implements OnInit {
 
   public addBookToFavorite(book: Book) {
     this.bookService.addBookToDB(book,  this.userInfo.getCurrentUser());
+    this.confirmDialog();
   }
 
   public addBookToDB(book: Book, user: User) {
@@ -51,7 +53,10 @@ export class BookComponent implements OnInit {
       printType: book.printType, // .toLowerCase()
       industryIdentifiers: [...book.industryIdentifiers]
     };
-    this.bookService.addBookToDB(newBook, user);
+    this.bookService.addBookToDB(newBook, user)
+    .then(() => {
+      this.confirmDialog();
+    });
   }
 
   public deleteBook(book: Book): void {
@@ -87,4 +92,15 @@ export class BookComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
+  public confirmDialog(): void {
+    const confirmDialog = this.dialog.open(AddBookModalComponent, {
+      data: {
+      }
+    });
+
+    confirmDialog.afterClosed().subscribe(result => {
+    });
+  }
+
 }
