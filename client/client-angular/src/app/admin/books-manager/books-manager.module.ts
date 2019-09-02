@@ -16,16 +16,14 @@ import { BookDeleteModalComponent } from 'src/app/shared/book/book-delete-modal/
     BooksManagerComponent,
     FilterComponent,
     BookDeleteModalComponent,
-    BookEditeModalComponent,
-    FilteredBookComponent
+    BookEditeModalComponent
   ],
   imports: [
     MatDialogModule,
     NgMultiSelectDropDownModule.forRoot(),
     SharedModule,
     RouterModule.forChild([
-      {path: '', component: BooksManagerComponent},
-      {path: 'filter', component: FilteredBookComponent}
+      {path: '', component: BooksManagerComponent}
     ])
   ],
   entryComponents: [

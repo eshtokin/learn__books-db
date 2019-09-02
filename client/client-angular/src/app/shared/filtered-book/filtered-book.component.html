@@ -16,9 +16,9 @@
   [reloadPage]="this.ngOnInit.bind(this)">
   </app-book>
   <mat-paginator 
-    [length] = "100"
-    [pageSize] = "10"
-    [pageSizeOptions] = "[5, 10, 25, 100]"
-    (page) = "pageEvent = $event">
+    [length] = "data.pagination.length"
+    [pageSize] = "data.pagination.pageSize"
+    [pageSizeOptions] = "[3, 5, 10, 25, 100]"
+    (page) = "paginationHandler($event)">
   </mat-paginator>
 </div>

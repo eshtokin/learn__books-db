@@ -1,5 +1,6 @@
 import { Axios } from '../interceptor/token.interseptor';
 import { User } from '../models/user.model';
+import { Pagination } from '../models/pagination.model';
 
 export class UserService {
     public count() {
@@ -24,16 +25,16 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getAllUsers(): Promise<any> {
-        return Axios.get('/user')
+    public getAllUsers(pagination?: Pagination): Promise<any> {
+        return Axios.get('/user', {params: pagination})
         .then(res => {
             return res.data;
         })
         .catch(err => console.log(err));
     }
 
-    public getSomeUsers(searchString: string): Promise<any> {
-        return Axios.get('/usersearch', {params: {searchString}})
+    public getSomeUsers(searchString: string, pagination: Pagination): Promise<any> {
+        return Axios.get('/usersearch', {params: {searchString, pagination}})
         .then(res => res.data)
         .catch(err => console.log(err));
     }
@@ -44,8 +45,8 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getUserBooks(books: string[], title?: string): Promise<any> {
-        return Axios.get('/userbooks', {params: {books, title}})
+    public getUserBooks(books: string[], pagination: Pagination, title?: string, ): Promise<any> {
+        return Axios.get('/userbooks', {params: {books, pagination, title}})
         .then(res => res.data)
         .catch(err => console.log(err));
     }

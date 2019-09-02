@@ -56,7 +56,7 @@ export class BooksManagerComponent implements OnInit {
   }
   public getFilteredBooks(data): void {
     this.router.navigate(
-      ['/gbooks/filter'],
+      ['/filtered'],
       {
         queryParams: data
       }

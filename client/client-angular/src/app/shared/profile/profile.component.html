@@ -23,18 +23,15 @@
         <div class="title"><a href="#">Photos</a></div>
         <div class="title"><a href="#">Music</a></div>
         <div class="title"><a href="#">Videos</a></div>
-      </div>
-      <div class="thumb-wrapper">
-        <div class="thumb-unit"></div>
-        <div class="thumb-unit"></div>
-        <div class="thumb-unit"></div>
-        <div class="thumb-unit"></div>
-        <div class="thumb-unit"></div>
-        <div class="thumb-unit"></div>
       </div> -->
-      <div class="footer"><i class="fa fa-camera"></i><i class="fa fa-play"></i>
+      <div class="thumb-wrapper">
+        <img *ngFor="let book of books" 
+        src={{book.image}} alt="book image"
+        class="thumb-unit">
+      </div>
+      <!-- <div class="footer"><i class="fa fa-camera"></i><i class="fa fa-play"></i>
         <div class="face"></div>
         <i class="fa fa-globe"></i>
-      </div>
+      </div> -->
     </div>
   </div>

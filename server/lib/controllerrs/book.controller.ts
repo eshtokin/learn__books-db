@@ -10,21 +10,6 @@ export const Books = mongoose.model('Books', BookSchema);
 const mongoDbService = new MongoDbService();
 
 export class BookController {
-  public agreagationQuery = [{
-    $lookup: {
-      from: "categories",
-      localField: "categories",
-      foreignField: "_id",
-      as: "categories_list"
-    }
-  }, {
-    $lookup: {
-      from: "authors",
-      localField: "authors",
-      foreignField: "_id",
-      as: "authors_list"
-    }
-  }];
 
   public getAllBook(req: Request, res: Response) {
     const skip = {
@@ -33,8 +18,21 @@ export class BookController {
     const limit = {
         $limit: (+req.query.pageSize)
     }
-    let query = [
-      {
+    let query = {
+      $facet: {
+        books: [
+          skip, 
+          limit
+        ],
+        totalCount: [
+          {
+            $count: 'count'
+          }
+        ]
+      }
+    };
+
+    const agreagationQuery: object[] = [{
       $lookup: {
         from: "categories",
         localField: "categories",
@@ -48,23 +46,11 @@ export class BookController {
         foreignField: "_id",
         as: "authors_list"
       }
-    },
-      { 
-      $facet: {
-        books: [
-          skip, 
-          limit
-        ],
-        totalCount: [
-          {
-            $count: 'count'
-          }
-        ]
-      }
-    }
-  ];
-// there
-    mongoDbService.Aggreagate(Books, query)
+    }];
+    
+    agreagationQuery.push(query);
+    
+    mongoDbService.Aggreagate(Books, agreagationQuery)
     .then(list => {
       return res.json(list[0])
     })
@@ -85,7 +71,8 @@ export class BookController {
         categoriesFilter.push(mongoose.Types.ObjectId(category))
       })
     }
-    
+    const pagination = JSON.parse(req.query.pagination);
+
     const regExp = new RegExp(`.*${req.query.title? req.query.title: ' '}*`);
 
     const queryTitle =  req.query.title.length
@@ -99,7 +86,16 @@ export class BookController {
     : {};
     const queryCategories =  categoriesFilter.length > 0 ? {categories: {$in: categoriesFilter}} : {};
     const queryAuthors =  authorsFilter.length > 0 ?  {authors: {$in: authorsFilter}} : {};
-
+    const skip = {
+      $skip: pagination.pageIndex * pagination.pageSize
+    };
+    const limit = {
+        $limit: pagination.pageSize
+    };
+    console.log('pagination :', JSON.parse(req.query.pagination));
+    console.log('size :', req.query.pagination["pageSize"]);
+    console.log('index :', req.query.pagination.pageIndex);
+    
     const query = {
       $and: [
         {...queryTitle},
@@ -126,20 +122,21 @@ export class BookController {
         }
       },
       {
-        $group: {
-          _id: "$key",
-          count: {
-            $sum: 1
-          }
-        }
-      },
-      {
         $match: query
       },
-      {
-        $count: "count"
+      { 
+        $facet: {
+          books: [
+            skip, 
+            limit
+          ],
+          totalCount: [
+            {
+              $count: 'count'
+            }
+          ]
+        }
       }
-      
     ];
 
     mongoDbService.Aggreagate(Books, agreagateQuery)
@@ -149,8 +146,28 @@ export class BookController {
 
   public getUserBooks(req: Request, res: Response) {
     let objIdBooks = req.query.books.map(el => mongoose.Types.ObjectId(el));
-
-    const query = [{
+    const pagination = JSON.parse(req.query.pagination);
+        
+    const skip = {
+        $skip: (+pagination.pageIndex) * (+pagination.pageSize)
+    };
+    const limit = {
+        $limit: (+pagination.pageSize)
+    }
+    let query = {
+        $facet: {
+          books: [
+            skip, 
+            limit
+          ],
+          totalCount: [
+            {
+              $count: 'count'
+            }]
+        }
+    };
+    
+    const agreagateQuery = [{
       $match: {
           _id: {$in: objIdBooks}
         }
@@ -175,9 +192,11 @@ export class BookController {
           $options: 'i'
         }, 
       }
+    }, {
+      ...query
     }];
 
-    mongoDbService.Aggreagate(Books, query)
+    mongoDbService.Aggreagate(Books, agreagateQuery)
     .then(list => res.json(list))
     .catch(err => res.send(err))
   }

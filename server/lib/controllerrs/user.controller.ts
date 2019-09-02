@@ -11,7 +11,26 @@ const mongoDbService = new MongoDbService();
 export class UserController {
 
     public getAllUsers(req: Request, res: Response) {
-        const query = [
+        const skip = {
+            $skip: (+req.query.pageIndex) * (+req.query.pageSize)
+        };
+        const limit = {
+            $limit: (+req.query.pageSize)
+        }
+        let query = {
+            $facet: {
+              users: [
+                skip, 
+                limit
+              ],
+              totalCount: [
+                {
+                  $count: 'count'
+                }]
+            }
+        };
+
+        const agreagationQuery: object[] = [
             {
                 $lookup: {
                     from: "books",
@@ -19,10 +38,11 @@ export class UserController {
                     foreignField: "_id",
                     as: "book_list"
                 }
-            }
+            },
+            {...query}
         ];
 
-        mongoDbService.Aggreagate(User, query)
+        mongoDbService.Aggreagate(User, agreagationQuery)
         .then(result => {
             return res.send(result)
         })
@@ -32,7 +52,28 @@ export class UserController {
     }
     
     public getSomeUser(req: Request, res: Response) {
-        const query = [
+        const pagination = JSON.parse(req.query.pagination);
+        
+        const skip = {
+            $skip: (+pagination.pageIndex) * (+pagination.pageSize)
+        };
+        const limit = {
+            $limit: (+pagination.pageSize)
+        }
+        let query = {
+            $facet: {
+              users: [
+                skip, 
+                limit
+              ],
+              totalCount: [
+                {
+                  $count: 'count'
+                }]
+            }
+        };
+
+        const agreagationQuery: object[]= [
             {
                 $match: {
                     email: {
@@ -48,10 +89,11 @@ export class UserController {
                     foreignField: "_id",
                     as: "book_list"
                 }
-            }
+            },
+            {...query}
         ];
 
-        mongoDbService.Aggreagate(User, query)
+        mongoDbService.Aggreagate(User, agreagationQuery)
         .then(result => {
             return res.send(result)
         })

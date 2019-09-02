@@ -4,6 +4,7 @@ import { UserFormAddEditeModalComponent } from './user-forms-add-adite-modal/use
 import { MatDialog } from '@angular/material/dialog';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { User } from '../../models/user.model';
+import { Pagination } from 'src/app/models/pagination.model';
 
 @Component({
   selector: 'app-user-manager',
@@ -13,6 +14,13 @@ import { User } from '../../models/user.model';
 export class UserManagerComponent implements OnInit {
   public users: object[];
   public searchString: string;
+  public paginationParams: Pagination = {
+    pageIndex: 0,
+    pageSize: 5,
+    previousPageIndex: 0,
+    length: 0
+  };
+
   constructor(
     private userService: UserService,
     public dialog: MatDialog
@@ -23,9 +31,10 @@ export class UserManagerComponent implements OnInit {
   }
 
   public init(): void {
-    this.userService.getAllUsers()
-    .then(users => {
-      this.users = users;
+    this.userService.getAllUsers(this.paginationParams)
+    .then(data => {
+      this.users = data[0].users;
+      this.paginationParams.length = data[0].totalCount[0].count;
     });
   }
 
@@ -61,10 +70,22 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  public userSearch() {
-    this.userService.getSomeUsers(this.searchString)
-    .then(users => {
-      this.users = users;
+  public userSearch(pagination: Pagination = {pageSize: this.paginationParams.pageSize, pageIndex: 0, }) {
+    this.userService.getSomeUsers(this.searchString, pagination)
+    .then(data => {
+      console.log(data);
+      this.users = data[0].users;
+      this.paginationParams.length = data[0].totalCount[0].count;
     });
+  }
+
+ public paginationHandler(pageEvent) {
+    if (this.searchString && this.searchString.length) {
+      this.userSearch(pageEvent);
+      return pageEvent;
+    }
+    this.paginationParams = pageEvent;
+    this.init();
+    return pageEvent;
   }
 }

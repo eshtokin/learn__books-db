@@ -14,7 +14,7 @@ class="container"
   <ul class="book-card">
     <li
     class="row book-element"
-    *ngFor="let book of fromFavBooks || books"
+    *ngFor="let book of books"
     >
       <img src={{book.image}} alt="book image" class="book-image col s3">
       <p class="col s6">
@@ -22,11 +22,11 @@ class="container"
           {{book.title}}
         </b>
       </p>
-      <p class="description  col s6">
+      <p class="description  col s7">
         <b>Categories:</b> <span *ngFor="let category of book.categories_list" class="chip">{{category.name}}</span><br>
         <b>Authors:</b> <span *ngFor="let author of book.authors_list" class="chip">{{author.name}}</span> 
       </p>
-      <div class="col s3 center btn-section">
+      <div class="col s2 center btn-section">
         <button class="btn green" (click)="openDialog(book)">
           Details
         </button>
@@ -38,5 +38,10 @@ class="container"
       </div>
     </li>
   </ul>
-  
+  <mat-paginator 
+    [length] = "paginationParams.length"
+    [pageSize] = "paginationParams.pageSize"
+    [pageSizeOptions] = "[3, 5, 7, 10, 25, 50]"
+    (page) = "paginationHandler($event)">
+  </mat-paginator>
 </div>

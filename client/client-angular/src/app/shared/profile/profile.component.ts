@@ -27,9 +27,9 @@ export class ProfileComponent implements OnInit {
     .then((user: User) => {
       this.user = user;
       if (user.books.length > 0) {
-        this.userService.getUserBooks(user.books as string[])
-        .then((books: Book[]) => {
-          this.books = books;
+        this.userService.getUserBooks(user.books as string[], {pageIndex: 0, pageSize: 5})
+        .then((data) => {
+          this.books = data[0].books;
         });
       }
       if (user.books.length === 0) {

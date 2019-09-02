@@ -22,12 +22,28 @@ export class FilteredBookComponent implements OnInit {
     this.data = {
       'authors[]': linkParams.authors,
       'categories[]': linkParams.categories,
-      title: linkParams.title
+      title: linkParams.title,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 5,
+        length: 0,
+        previousPageIndex: 0
+      }
     };
+    this.getSomeBooks();
+  }
+
+  public getSomeBooks() {
     this.bookService.getSomeBooks(this.data)
-    .then(books => {
-      this.books = books;
+    .then(data => {
+      this.books = data[0].books;
+      this.data.pagination.length = data[0].totalCount[0].count;
     });
   }
 
+  public paginationHandler(pageEvent) {
+    this.data.pagination = pageEvent;
+    this.getSomeBooks();
+    return pageEvent;
+  }
 }

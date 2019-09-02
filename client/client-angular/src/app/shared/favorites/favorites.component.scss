@@ -22,7 +22,6 @@ i .material-icons:hover {
 
 .book-card {
   .book-element{
-    height: 150px;
     border: 1px solid #ccc;
     box-sizing: border-box;
     .book-image {
@@ -34,7 +33,7 @@ i .material-icons:hover {
       display: inline-block;
     }
     .description {
-      display: inline-block;
+      display: block;
     }
     .btn-section .btn {
       width: 120px;

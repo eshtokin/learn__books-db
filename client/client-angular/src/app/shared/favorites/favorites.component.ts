@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { FavoritesModalComponent } from './favorites-modal/favorites-modal.component';
 import { User } from 'src/app/models/user.model';
 import { FavoritesDeleteModalComponent } from './favorite-delete-modal/favorites-delete-modal.component';
+import { Pagination } from 'src/app/models/pagination.model';
 
 @Component({
   selector: 'app-favorites',
@@ -17,7 +18,12 @@ export class FavoritesComponent implements OnInit {
   public user: User;
   public pageOfItems: Book[]; // book on page
   public searchField: string;
-  public fromFavBooks: Book[];
+  public paginationParams: Pagination = {
+    pageIndex: 0,
+    pageSize: 5,
+    previousPageIndex: 0,
+    length: 0
+  };
 
   constructor(
     private userInfo: UserInfo,
@@ -33,9 +39,11 @@ export class FavoritesComponent implements OnInit {
     })
     .then((user: User) => {
       if (user.books.length > 0) {
-        this.userService.getUserBooks(user.books as string[])
-        .then(books => {
-          this.books = books;
+        this.userService.getUserBooks(user.books as string[], this.paginationParams)
+        .then(data => {
+          console.log(data);
+          this.books = data[0].books;
+          this.paginationParams.length = data[0].totalCount[0].count;
         });
       }
       if (user.books.length === 0) {
@@ -44,10 +52,16 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
-  onChangePage(pageOfItems: Array<any>) {
-    // update current page of items
-    this.pageOfItems = pageOfItems;
-}
+  public paginationHandler(pageEvent) {
+    this.paginationParams = pageEvent;
+    if (this.searchField && this.searchField.length) {
+      this.searchFromFavorites();
+      return pageEvent;
+    }
+    console.log(this.paginationParams);
+    this.ngOnInit();
+    return pageEvent;
+  }
 
   public openDialog(book: Book): void {
     const dialogRef = this.dialog.open(FavoritesModalComponent, {
@@ -79,7 +93,7 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
-  searchFromFavorites() {
+  public searchFromFavorites() {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
     .then((data) => {
       this.user = data;
@@ -87,9 +101,10 @@ export class FavoritesComponent implements OnInit {
     })
     .then((user: User) => {
       if (user.books.length > 0) {
-        this.userService.getUserBooks(user.books as string[], this.searchField)
+        this.userService.getUserBooks(user.books as string[], this.paginationParams, this.searchField)
         .then(books => {
-          this.fromFavBooks = books;
+          this.books = books[0].books;
+          this.paginationParams.length = books[0].totalCount[0].count;
         });
       }
       if (user.books.length === 0) {

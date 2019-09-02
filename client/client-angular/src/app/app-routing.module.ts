@@ -28,6 +28,11 @@ const routes: Routes = [
     canActivate: [UserGuardService]
   },
   {
+    path: 'filtered',
+    loadChildren: () => import('./shared/filtered-book/filtered-book.module').then(m => m.FilteredBookModule),
+    canActivate: [UserGuardService]
+  },
+  {
     path: 'user-manager' ,
     loadChildren: () => import('./admin/user-manager/user-manager.module').then(m => m.UserManagerModule),
     canActivate: [AdminGuardService]
