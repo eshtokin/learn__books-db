@@ -34,13 +34,22 @@
         <p><b>Pages: </b>{{book.pageCount}}</p>
       </div> 
       <div class="card-action">
+        
         <button
-          *ngIf="buttonStatus.addToFavoriteBtn"
-          class="btn add-to-pro-btn"
+          *ngIf="buttonStatus.addToFavoriteBtn  && !book.inFavorite"
+          class="btn green add-to-pro-btn"
           (click)="addBookToFavorite(book)"
         >
         add to 'My favorites'
         </button>
+        <button
+          *ngIf="buttonStatus.addToFavoriteBtn && book.inFavorite"
+          class="btn red add-to-pro-btn"
+          (click)="deleteFromFavorites(book)"
+        >
+        delete from 'My favorites'
+        </button>
+
         <button
           *ngIf="buttonStatus.addToDbBtn"
           class="btn add-to-pro-btn"

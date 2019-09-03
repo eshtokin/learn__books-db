@@ -39,8 +39,8 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getUser(id: string): Promise<any> {
-        return Axios.get(`/user/${id}`)
+    public async getUser(id: string): Promise<any> {
+        return await Axios.get(`/user/${id}`)
         .then(res => res.data)
         .catch(err => console.log(err));
     }

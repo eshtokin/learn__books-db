@@ -3,12 +3,11 @@ import { BookComponent } from './book/book.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material';
-import { AddBookModalComponent } from './book/add-book-modal/add-book-modal.component';
+import { FavoriteService } from '../service/favorite.service';
 
 @NgModule({
   declarations: [
-    BookComponent,
-    AddBookModalComponent
+    BookComponent
   ],
   imports: [
     CommonModule,
@@ -16,10 +15,9 @@ import { AddBookModalComponent } from './book/add-book-modal/add-book-modal.comp
     ReactiveFormsModule
   ],
   entryComponents: [
-    AddBookModalComponent
   ],
   providers: [
-
+    FavoriteService
   ],
   exports: [
     BookComponent,

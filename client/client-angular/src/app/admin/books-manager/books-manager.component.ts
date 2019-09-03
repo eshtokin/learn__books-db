@@ -5,7 +5,8 @@ import { UserInfo } from 'src/app/service/user-info.service';
 import { Router } from '@angular/router';
 import { Pagination } from 'src/app/models/pagination.model';
 import { MatDialog } from '@angular/material';
-import { AddBookModalComponent } from '../../shared/book/add-book-modal/add-book-modal.component';
+import { AddBookModalComponent } from '../../shared/book/book-add-modal/add-book-modal.component';
+import { FavoriteService } from 'src/app/service/favorite.service';
 
 @Component({
   selector: 'app-books-manager',
@@ -13,7 +14,6 @@ import { AddBookModalComponent } from '../../shared/book/add-book-modal/add-book
   styleUrls: ['./books-manager.component.scss']
 })
 export class BooksManagerComponent implements OnInit {
-  public editeMode = false;
   public books: Book[]; // All items from db
   public paginationParams: Pagination = {
     pageIndex: 0,
@@ -21,19 +21,16 @@ export class BooksManagerComponent implements OnInit {
     previousPageIndex: 0,
     length: 0
   };
-  public previousBtn;
-  public nextBtn;
-  public paginatorOption: {
-    length: number,
-    pageIndex: number,
-    pageSize: number
-  };
+  public favoritesId: string[];
 
   constructor(
     private userInfo: UserInfo,
+    public favoriteService: FavoriteService,
     private bookService: BookService,
     private router: Router
-  ) { }
+  ) {
+    this.favoriteService = new FavoriteService();
+   }
 
   ngOnInit() {
     this.getBooks();
@@ -45,14 +42,16 @@ export class BooksManagerComponent implements OnInit {
     return pageEvent;
   }
 
-  public editeModeToggle(): void {
-    this.editeMode = !this.editeMode;
-  }
-
   public getBooks(): void {
     this.bookService.getAllBooks(this.paginationParams)
       .then((el: any) => {
-        this.books = el.books;
+        this.favoritesId = this.favoriteService.favoritesBook;
+        this.books = el.books.map(book => {
+          return {
+            ...book,
+            inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
+          };
+        });
         this.paginationParams.length = el.totalCount[0].count;
       });
   }

@@ -6,7 +6,11 @@ import { User } from 'src/app/models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { BookEditeModalComponent } from './book-edite-modal/book-edite-modal.component';
 import { BookDeleteModalComponent } from './book-delete-modal/book-delete-modal.component';
-import { AddBookModalComponent } from './add-book-modal/add-book-modal.component';
+import { AddBookModalComponent } from './book-add-modal/add-book-modal.component';
+import { FavoriteService } from 'src/app/service/favorite.service';
+import { FavoritesDeleteModalComponent } from '../favorites/favorite-delete-modal/favorites-delete-modal.component';
+import { UserService } from 'src/app/service/users.service';
+import { BookDeleteFromFavModalComponent } from './book-delete-from-fav-modal/book-delete-from-fav-modal.component';
 
 @Component({
   selector: 'app-book',
@@ -24,10 +28,13 @@ export class BookComponent implements OnInit {
   @Input() reloadPage: () => void;
 
   public bookImage: string | ArrayBuffer;
+  public bookExistInFavorites: boolean;
 
   constructor(
     public userInfo: UserInfo,
     public bookService: BookService,
+    public favoriteService: FavoriteService,
+    public userService: UserService,
     public dialog: MatDialog
   ) {
     this.bookImage = '';
@@ -103,4 +110,14 @@ export class BookComponent implements OnInit {
     });
   }
 
+  public deleteFromFavorites() {
+    const deleteFromFavorites = this.dialog.open(BookDeleteFromFavModalComponent, {
+      data: {
+        book: this.book,
+        reloadPage: this.reloadPage
+      }
+    });
+
+    deleteFromFavorites.afterClosed().subscribe(() => {});
+  }
 }

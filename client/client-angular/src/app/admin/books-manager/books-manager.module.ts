@@ -9,13 +9,19 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RouterModule } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BookDeleteModalComponent } from 'src/app/shared/book/book-delete-modal/book-delete-modal.component';
+import { AddBookModalComponent } from 'src/app/shared/book/book-add-modal/add-book-modal.component';
+import { FavoriteService } from 'src/app/service/favorite.service';
+import { UserService } from 'src/app/service/users.service';
+import { BookDeleteFromFavModalComponent } from 'src/app/shared/book/book-delete-from-fav-modal/book-delete-from-fav-modal.component';
 
 @NgModule({
   declarations: [
     BooksManagerComponent,
     FilterComponent,
     BookDeleteModalComponent,
-    BookEditeModalComponent
+    BookEditeModalComponent,
+    AddBookModalComponent,
+    BookDeleteFromFavModalComponent
   ],
   imports: [
     MatDialogModule,
@@ -27,11 +33,15 @@ import { BookDeleteModalComponent } from 'src/app/shared/book/book-delete-modal/
   ],
   entryComponents: [
     BookDeleteModalComponent,
-    BookEditeModalComponent
+    BookEditeModalComponent,
+    AddBookModalComponent,
+    BookDeleteFromFavModalComponent
   ],
   providers: [
     GoogleBooks,
-    BookService
+    BookService,
+    FavoriteService,
+    UserService
   ],
   exports: []
 })
