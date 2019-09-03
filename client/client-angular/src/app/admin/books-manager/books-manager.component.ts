@@ -12,7 +12,7 @@ import { UserService } from 'src/app/service/users.service';
   styleUrls: ['./books-manager.component.scss']
 })
 export class BooksManagerComponent implements OnInit {
-  public books: Book[]; // All items from db
+  public books: Book[];
   public favoritesId: string[];
   public paginationParams: Pagination = {
     pageIndex: 0,
@@ -41,10 +41,8 @@ export class BooksManagerComponent implements OnInit {
   public getBooks(): void {
     this.bookService.getAllBooks(this.paginationParams)
     .then((el: any) => {
-
       this.userService.getUser(this.userInfo.getCurrentUser().id)
       .then(user => {
-        console.log(user);
         this.favoritesId = user.books;
       })
       .then(() => {

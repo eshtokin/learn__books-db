@@ -3,10 +3,20 @@ import { BookComponent } from './book/book.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material';
+import { AddBookModalComponent } from './book/book-add-modal/add-book-modal.component';
+import { BookDeleteFromFavModalComponent } from './book/book-delete-from-fav-modal/book-delete-from-fav-modal.component';
+import { BookDeleteModalComponent } from './book/book-delete-modal/book-delete-modal.component';
+import { BookEditeModalComponent } from './book/book-edite-modal/book-edite-modal.component';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
-    BookComponent
+    BookComponent,
+    AddBookModalComponent,
+    BookDeleteFromFavModalComponent,
+    BookDeleteModalComponent,
+    BookEditeModalComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
@@ -14,10 +24,20 @@ import { MatPaginatorModule } from '@angular/material';
     ReactiveFormsModule
   ],
   entryComponents: [
+    AddBookModalComponent,
+    BookDeleteFromFavModalComponent,
+    BookDeleteModalComponent,
+    BookEditeModalComponent
   ],
-  providers: [],
+  providers: [
+    AddBookModalComponent,
+    BookDeleteFromFavModalComponent,
+    BookDeleteModalComponent,
+    BookEditeModalComponent
+  ],
   exports: [
     BookComponent,
+    FilterComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

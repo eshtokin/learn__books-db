@@ -1,24 +1,25 @@
-<div class="container">
-  <a routerLink="/gbooks">
-    <button class="btn">
-      <i class="material-icons">arrow_back</i>
-    </button>
-  </a>
-  <app-book
-  *ngFor="let book of books"
-  [book]="book"
-  [buttonStatus]="{
-    editeBtn: true,
-    deleteBtn: true,
-    ddToDbBtn: false,
-    addToFavoriteBtn: true
-  }"
-  [reloadPage]="this.ngOnInit.bind(this)">
-  </app-book>
-  <mat-paginator 
-    [length] = "data.pagination.length"
-    [pageSize] = "data.pagination.pageSize"
-    [pageSizeOptions] = "[3, 5, 10, 25, 100]"
-    (page) = "paginationHandler($event)">
-  </mat-paginator>
+<div class="row">
+  <app-filter
+  [getAllBooks]="getSomeBooks.bind(this)"
+  [getFilteredBooks]="getFilteredBooks.bind(this)"
+  ></app-filter>
+  <div class="col s10">
+    <app-book
+    *ngFor="let book of books"
+    [book]="book"
+    [buttonStatus]="{
+      editeBtn: true,
+      deleteBtn: true,
+      ddToDbBtn: false,
+      addToFavoriteBtn: true
+    }"
+    [reloadPage]="this.getSomeBooks.bind(this)"
+    ></app-book>
+    <mat-paginator 
+      [length] = "this.data.pagination.length"
+      [pageSize] = "this.data.pagination.pageSize"
+      [pageSizeOptions] = "[3, 5, 7, 10, 25, 50]"
+      (page) = "show($event)">
+    </mat-paginator>
+  </div>
 </div>

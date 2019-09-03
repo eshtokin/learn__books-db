@@ -5,6 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { GoogleBooks } from 'src/app/service/google-books.service';
 import { BookService } from 'src/app/service/books.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { UserService } from 'src/app/service/users.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
   ],
   providers: [
     GoogleBooks,
-    BookService
+    BookService,
+    UserService
   ]
 })
 

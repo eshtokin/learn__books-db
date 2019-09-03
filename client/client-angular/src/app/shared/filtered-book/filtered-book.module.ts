@@ -5,6 +5,7 @@ import { SharedModule } from '../shared.module';
 import { RouterModule } from '@angular/router';
 import { BookService } from 'src/app/service/books.service';
 import { MatDialogModule } from '@angular/material';
+import { UserService } from 'src/app/service/users.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,10 @@ import { MatDialogModule } from '@angular/material';
     ])
   ],
   providers: [
-    BookService
+    BookService,
+    UserService
+  ],
+  entryComponents: [
   ]
 })
 export class FilteredBookModule {}

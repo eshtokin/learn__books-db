@@ -41,7 +41,6 @@ export class FavoritesComponent implements OnInit {
       if (user.books.length > 0) {
         this.userService.getUserBooks(user.books as string[], this.paginationParams)
         .then(data => {
-          console.log(data);
           this.books = data[0].books;
           this.paginationParams.length = data[0].totalCount[0].count;
         });
@@ -58,7 +57,6 @@ export class FavoritesComponent implements OnInit {
       this.searchFromFavorites();
       return pageEvent;
     }
-    console.log(this.paginationParams);
     this.ngOnInit();
     return pageEvent;
   }

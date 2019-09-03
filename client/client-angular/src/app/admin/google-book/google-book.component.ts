@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { GoogleBooks } from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { UserInfo } from '../../service/user-info.service';
-import { Book } from 'src/app/models/book.model';
-import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-google-book',
@@ -22,8 +20,7 @@ export class GoogleBookComponent implements OnInit {
     private userInfo: UserInfo // use in template
     ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}) {
     this.googleBooks.searchForBook(searchString, configForBookReq);

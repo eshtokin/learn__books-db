@@ -15,12 +15,7 @@ import { BookDeleteFromFavModalComponent } from 'src/app/shared/book/book-delete
 
 @NgModule({
   declarations: [
-    BooksManagerComponent,
-    FilterComponent,
-    BookDeleteModalComponent,
-    BookEditeModalComponent,
-    AddBookModalComponent,
-    BookDeleteFromFavModalComponent
+    BooksManagerComponent
   ],
   imports: [
     MatDialogModule,
@@ -31,10 +26,6 @@ import { BookDeleteFromFavModalComponent } from 'src/app/shared/book/book-delete
     ])
   ],
   entryComponents: [
-    BookDeleteModalComponent,
-    BookEditeModalComponent,
-    AddBookModalComponent,
-    BookDeleteFromFavModalComponent
   ],
   providers: [
     GoogleBooks,
