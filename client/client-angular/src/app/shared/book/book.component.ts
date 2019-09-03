@@ -7,8 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookEditeModalComponent } from './book-edite-modal/book-edite-modal.component';
 import { BookDeleteModalComponent } from './book-delete-modal/book-delete-modal.component';
 import { AddBookModalComponent } from './book-add-modal/add-book-modal.component';
-import { FavoriteService } from 'src/app/service/favorite.service';
-import { FavoritesDeleteModalComponent } from '../favorites/favorite-delete-modal/favorites-delete-modal.component';
 import { UserService } from 'src/app/service/users.service';
 import { BookDeleteFromFavModalComponent } from './book-delete-from-fav-modal/book-delete-from-fav-modal.component';
 
@@ -33,7 +31,6 @@ export class BookComponent implements OnInit {
   constructor(
     public userInfo: UserInfo,
     public bookService: BookService,
-    public favoriteService: FavoriteService,
     public userService: UserService,
     public dialog: MatDialog
   ) {

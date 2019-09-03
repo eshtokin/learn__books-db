@@ -4,9 +4,6 @@ import { Book } from '../../models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
 import { Router } from '@angular/router';
 import { Pagination } from 'src/app/models/pagination.model';
-import { MatDialog } from '@angular/material';
-import { AddBookModalComponent } from '../../shared/book/book-add-modal/add-book-modal.component';
-import { FavoriteService } from 'src/app/service/favorite.service';
 import { UserService } from 'src/app/service/users.service';
 
 @Component({
