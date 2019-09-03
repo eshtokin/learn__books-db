@@ -7,6 +7,7 @@ import { Pagination } from 'src/app/models/pagination.model';
 import { MatDialog } from '@angular/material';
 import { AddBookModalComponent } from '../../shared/book/book-add-modal/add-book-modal.component';
 import { FavoriteService } from 'src/app/service/favorite.service';
+import { UserService } from 'src/app/service/users.service';
 
 @Component({
   selector: 'app-books-manager',
@@ -15,22 +16,20 @@ import { FavoriteService } from 'src/app/service/favorite.service';
 })
 export class BooksManagerComponent implements OnInit {
   public books: Book[]; // All items from db
+  public favoritesId: string[];
   public paginationParams: Pagination = {
     pageIndex: 0,
     pageSize: 5,
     previousPageIndex: 0,
     length: 0
   };
-  public favoritesId: string[];
 
   constructor(
     private userInfo: UserInfo,
-    public favoriteService: FavoriteService,
+    private userService: UserService,
     private bookService: BookService,
     private router: Router
-  ) {
-    this.favoriteService = new FavoriteService();
-   }
+  ) {}
 
   ngOnInit() {
     this.getBooks();
@@ -44,8 +43,14 @@ export class BooksManagerComponent implements OnInit {
 
   public getBooks(): void {
     this.bookService.getAllBooks(this.paginationParams)
-      .then((el: any) => {
-        this.favoritesId = this.favoriteService.favoritesBook;
+    .then((el: any) => {
+
+      this.userService.getUser(this.userInfo.getCurrentUser().id)
+      .then(user => {
+        console.log(user);
+        this.favoritesId = user.books;
+      })
+      .then(() => {
         this.books = el.books.map(book => {
           return {
             ...book,
@@ -54,6 +59,7 @@ export class BooksManagerComponent implements OnInit {
         });
         this.paginationParams.length = el.totalCount[0].count;
       });
+    });
   }
 
   public getFilteredBooks(data): void {

@@ -103,6 +103,8 @@ export class BookComponent implements OnInit {
   public confirmDialog(): void {
     const confirmDialog = this.dialog.open(AddBookModalComponent, {
       data: {
+        book: this.book,
+        reloadPage: this.reloadPage
       }
     });
 

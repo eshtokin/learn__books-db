@@ -11,7 +11,7 @@ export class FavoriteService {
     this.init();
   }
 
-  public bookExistinFavorites(bookId: string) {
+  public bookExistInFavorites(bookId: string) {
     return this.favoritesBook.indexOf(bookId) === -1 ? false : true;
   }
 

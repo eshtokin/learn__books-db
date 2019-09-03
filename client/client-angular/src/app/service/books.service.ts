@@ -70,8 +70,4 @@ export class BookService {
     })
     .catch(err => console.log(err));
   }
-
-  // public filtering(data: BookFilter) {
-  //   return Axios.get('/books', {params: data});
-  // }
 }

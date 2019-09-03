@@ -13,7 +13,10 @@ export class AddBookModalComponent {
 
   constructor(
     public confirmDialog: MatDialogRef<AddBookModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      book: Book,
+      reloadPage: () => void
+    },
     public userInfo: UserInfo
   ) {}
 
@@ -22,12 +25,7 @@ export class AddBookModalComponent {
   }
 
   public closeDialog() {
-    this.confirmDialog.close();
-  }
-
-  public delete() {
-    this.data.deleteBook(this.book);
-    this.confirmDialog.close();
     this.data.reloadPage();
+    this.confirmDialog.close();
   }
 }
