@@ -5,7 +5,7 @@ export interface Book {
   categories_list?: object[];
   description: string;
   image: string | ArrayBuffer;
-  industryIdentifiers?: object[];
+  industryIdentifiers?: string;
   pageCount: number;
   printType: string;
   title: string;
@@ -13,4 +13,5 @@ export interface Book {
   imageLinks?: {
     thumbnail: string
   };
+  alreadyExistInBD?: boolean;
 }

@@ -5,14 +5,10 @@ const bodyParser = require("body-parser");
 const user_routers_1 = require("./routes/user.routers");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const config_1 = require("./enviroments/config");
 class App {
     constructor() {
         this.route = new user_routers_1.Routes();
-        // change "<password>"
-        this.password = "BestOppai24!";
-        this.collection = "book-db";
-        this.mongoUrl = `mongodb+srv://Eshtokin:${this.password}@book-db-lmley.mongodb.net/${this.collection}?retryWrites=true&w=majority`;
-        this.localMongoUrl = "mongodb://localhost/CRMdb";
         this.app = express();
         this.app.use(cors());
         this.config();
@@ -21,13 +17,13 @@ class App {
     }
     config() {
         // support application/json type post data
-        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.json({ limit: '50mb' }));
         //support application/x-www-form-urlencoded post data
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
     }
     mongoSetup() {
         mongoose.Promise = global.Promise;
-        mongoose.connect(this.localMongoUrl);
+        mongoose.connect(config_1.dbInfo.localMongoUrl);
     }
 }
 exports.default = new App().app;

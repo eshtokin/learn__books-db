@@ -6,7 +6,9 @@ exports.UserSchema = new Schema({
     email: String,
     password: String,
     name: String,
-    role: Number
+    books: Array,
+    role: Number,
+    image: String
 });
 var UserRoles;
 (function (UserRoles) {

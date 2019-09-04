@@ -53,6 +53,7 @@
         <button
           *ngIf="buttonStatus.addToDbBtn"
           class="btn add-to-pro-btn"
+          [disabled]="book.alreadyExistInBD"
           (click)="addBookToDB(book)"
         >
         add to DB

@@ -10,5 +10,5 @@ export const BookSchema = new Schema({
   image: String,
   pageCount: Number,
   printType: String,
-  industryIdentifiers: Array
+  industryIdentifiers: String
 });

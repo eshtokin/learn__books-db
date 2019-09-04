@@ -47,6 +47,8 @@ export class BookComponent implements OnInit {
   }
 
   public addBookToDB(book: Book, user: User) {
+    this.book.alreadyExistInBD = true;
+
     const newBook: Book = {
       title: book.title, // .toLowerCase()
       authors: book.authors, // .map(element => element.toLowerCase())
@@ -55,7 +57,7 @@ export class BookComponent implements OnInit {
       image: book.imageLinks.thumbnail || '',
       pageCount: book.pageCount,
       printType: book.printType, // .toLowerCase()
-      industryIdentifiers: [...book.industryIdentifiers]
+      industryIdentifiers: book.industryIdentifiers
     };
     this.bookService.addBookToDB(newBook, user)
     .then(() => {
@@ -77,7 +79,6 @@ export class BookComponent implements OnInit {
         reloadPage: this.reloadPage
       }
     });
-    editeFormDialog.afterClosed().subscribe(result => {});
   }
 
   public checkEditAccess(): boolean {

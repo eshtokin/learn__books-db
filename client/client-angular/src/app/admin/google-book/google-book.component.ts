@@ -22,43 +22,49 @@ export class GoogleBookComponent implements OnInit {
 
   ngOnInit() {}
 
-  public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}) {
+  public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}, event) {
     this.googleBooks.searchForBook(searchString, configForBookReq)
     .then((result: any) => {
+      console.log('result: ', result);
       const industryIdentifiersArray = [];
       result.data.items.forEach(book => {
-        industryIdentifiersArray.push(book.volumeInfo.industryIdentifiers);
+        let industryIdentifiers = '';
+
+        book.volumeInfo.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
+        industryIdentifiers += obj.type + obj.identifier;
+        });
+
+        industryIdentifiersArray.push(industryIdentifiers);
       });
-      console.log(industryIdentifiersArray);
 
       this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray)
-      .then(data => {
-        this.arrayBookInDB = data;
-        console.log(this.arrayBookInDB);
+      .then(bookInBd => {
+        const arrayIdBookInBd = [];
+        bookInBd.forEach(el => {
+          arrayIdBookInBd.push(el.industryIdentifiers);
+        });
 
         this.listOfBook = this.listOfBook.map(el => {
-          // console.log(industryIdentifiersArray.indexOf(
-          //   {0: {type: 'ISBN_13', identifier: '9781473211612'}, 1: {type: 'ISBN_10', identifier: '1473211611'}}
-          //   ));
+          let industryIdentifiers = '';
 
-          const newId = el.industryIdentifiers.map(ind => {
-            return `type${ind.type}identifier${ind.identifier}`;
+          el.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
+          industryIdentifiers += obj.type + obj.identifier;
           });
+
           return {
-            alreadyExistInBD: industryIdentifiersArray.indexOf(newId),
-            newId,
+            alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
             ...el,
           };
         });
-        console.log('list of book : ', this.listOfBook);
-
       });
+
+      this.listOfBook = this.googleBooks.getPageInfo().currentItems;
     });
     this.currentPage  = configForBookReq.startIndex;
   }
 
   public changePage(page: number) {
-    this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10});
+    this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10}, 2);
     this.currentPage = page;
   }
 }

@@ -10,6 +10,6 @@ exports.BookSchema = new Schema({
     image: String,
     pageCount: Number,
     printType: String,
-    id: {}
+    industryIdentifiers: String
 });
 //# sourceMappingURL=book.model.js.map

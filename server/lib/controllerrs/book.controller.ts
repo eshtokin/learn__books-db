@@ -285,13 +285,19 @@ export class BookController {
       }
     })
     .catch(err => res.send(err))
- 
+
+    let industryIdentifiers = '';
+    req.body.book.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
+      industryIdentifiers += obj.type + obj.identifier;
+    });
+  
     let queryForBook= {
       title: req.body.book.title,
-      industryIdentifiers: req.body.book.industryIdentifiers
+      industryIdentifiers //: req.body.book.industryIdentifiers
     };
     mongoDbService.findOne(Books, queryForBook)
     .then(book => {
+
       if (book && req.body.user) {
         const query = {
           _id: mongoose.Types.ObjectId(req.body.user.id)
@@ -317,12 +323,7 @@ export class BookController {
       }
 
       const bookId = mongoose.Types.ObjectId();
-      // let industryIdentifiers = '';
-      // book.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
-      //   industryIdentifiers += obj.type + obj.identifier;
-      // });
-      // console.log('industryIdentifiers: ', industryIdentifiers);
-      
+
       let query = {
         _id: bookId,
         title: req.body.book.title,
@@ -332,9 +333,9 @@ export class BookController {
         image: req.body.book.image,
         pageCount: req.body.book.pageCount,
         printType: req.body.book.printType,
-        industryIdentifiers: req.body.book.industryIdentifiers
+        industryIdentifiers
       };
-
+  
       mongoDbService.create(Books, query)
       .then(book => {
           return res.status(200).send({
@@ -406,15 +407,9 @@ export class BookController {
   }
 
   public getBookByIndustryIdentifiers(req: Request, res: Response) {
-    const arrayOfIndustryIdentifiers = [];
-
-    req.query.industryIdentifiers.forEach(string => {
-      arrayOfIndustryIdentifiers.push(JSON.parse(string));
-    })
-   
     const query = {
       industryIdentifiers: {
-        $in: arrayOfIndustryIdentifiers
+        $in: req.query.industryIdentifiers
       }
     };
     mongoDbService.find(Books, query)
