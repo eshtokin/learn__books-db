@@ -17,9 +17,14 @@ export class BookService {
 
   public getSomeBooks(data: BookFilter) {
     return Axios.get('/somebooks', {params: data})
-    .then(res => {
-      return res.data;
-    });
+    .then(res => res.data)
+    .catch(err => console.log(err));
+  }
+
+  public getBookByIndustryIdentifiers(industryIdentifiers) {
+    return Axios.get('/getbookbyindustryIdentifiers', {params: {industryIdentifiers}})
+    .then(res => res.data)
+    .catch(err => console.log(err));
   }
 
   public addBookToDB(book: Book, user: User) {

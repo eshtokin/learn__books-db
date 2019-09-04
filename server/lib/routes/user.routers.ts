@@ -34,6 +34,9 @@ export class Routes {
         app.route("/usersearch")
         .get(this.userController.getSomeUser)
 
+        app.route("/userfavorites")
+        .get(this.userController.getFavoriteBookFromUser)
+
         app.route("/user/:userId")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
         .put(this.userController.updateUser) // AuthMiddleware([UserRoles.admin, UserRoles.user]),
@@ -50,6 +53,9 @@ export class Routes {
 
         app.route("/somebooks")
         .get(this.bookController.getSomeBooks)
+
+        app.route("/getbookbyindustryIdentifiers")
+        .get(this.bookController.getBookByIndustryIdentifiers)
 
         app.route("/books/:bookId")
         .get(this.bookController.getBook)

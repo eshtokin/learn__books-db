@@ -13,7 +13,6 @@ import { UserService } from 'src/app/service/users.service';
 })
 export class BooksManagerComponent implements OnInit {
   public books: Book[];
-  public favoritesId: string[];
   public paginationParams: Pagination = {
     pageIndex: 0,
     pageSize: 5,
@@ -22,7 +21,6 @@ export class BooksManagerComponent implements OnInit {
   };
 
   constructor(
-    private userInfo: UserInfo,
     private userService: UserService,
     private bookService: BookService,
     private router: Router
@@ -41,15 +39,12 @@ export class BooksManagerComponent implements OnInit {
   public getBooks(): void {
     this.bookService.getAllBooks(this.paginationParams)
     .then((el: any) => {
-      this.userService.getUser(this.userInfo.getCurrentUser().id)
-      .then(user => {
-        this.favoritesId = user.books;
-      })
-      .then(() => {
+      this.userService.getUserFavoriteBooks()
+      .then(favoriteBooks => {
         this.books = el.books.map(book => {
           return {
             ...book,
-            inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
+            inFavorite: favoriteBooks.indexOf(book._id) === -1 ? false : true
           };
         });
         this.paginationParams.length = el.totalCount[0].count;

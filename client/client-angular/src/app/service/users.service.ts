@@ -39,14 +39,20 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public async getUser(id: string): Promise<any> {
-        return await Axios.get(`/user/${id}`)
+    public getUser(id: string): Promise<any> {
+        return Axios.get(`/user/${id}`)
         .then(res => res.data)
         .catch(err => console.log(err));
     }
 
     public getUserBooks(books: string[], pagination: Pagination, title?: string, ): Promise<any> {
         return Axios.get('/userbooks', {params: {books, pagination, title}})
+        .then(res => res.data)
+        .catch(err => console.log(err));
+    }
+
+    public getUserFavoriteBooks() {
+        return Axios.get('/userfavorites')
         .then(res => res.data)
         .catch(err => console.log(err));
     }

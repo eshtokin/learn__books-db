@@ -3,6 +3,7 @@ import { UserSchema } from "../models/user.model"
 import { Request, Response } from "express"
 import { MongoDbService } from "../service/mongodb.service";
 import * as crypt from "bcryptjs"
+import * as jwt from "jsonwebtoken"
 
 export const User = mongoose.model('User', UserSchema);
 
@@ -110,6 +111,21 @@ export class UserController {
         .then(value => {
             value.password = '';
             return res.json(value);
+        })
+        .catch(err => {
+            return res.send(err);
+        })
+    }
+
+    public getFavoriteBookFromUser(req: Request, res: Response) {
+        const user = jwt.decode(req.headers.authorization);
+        const query = {
+            _id: mongoose.Types.ObjectId(user.id)
+        };
+        
+        mongoDbService.find(User, query)
+        .then( result => {
+            return res.json(result[0].books)
         })
         .catch(err => {
             return res.send(err);

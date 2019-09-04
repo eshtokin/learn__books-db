@@ -92,9 +92,6 @@ export class BookController {
     const limit = {
         $limit: pagination.pageSize
     };
-    console.log('pagination :', JSON.parse(req.query.pagination));
-    console.log('size :', req.query.pagination["pageSize"]);
-    console.log('index :', req.query.pagination.pageIndex);
     
     const query = {
       $and: [
@@ -320,6 +317,12 @@ export class BookController {
       }
 
       const bookId = mongoose.Types.ObjectId();
+      // let industryIdentifiers = '';
+      // book.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
+      //   industryIdentifiers += obj.type + obj.identifier;
+      // });
+      // console.log('industryIdentifiers: ', industryIdentifiers);
+      
       let query = {
         _id: bookId,
         title: req.body.book.title,
@@ -334,22 +337,6 @@ export class BookController {
 
       mongoDbService.create(Books, query)
       .then(book => {
-        // if (book && req.body.user) {
-        //   query = {
-        //     _id: mongoose.Types.ObjectId(req.body.user.id)
-        //   };
-        //   const data = {
-        //     $addToSet: { books: book._id} 
-        //   }
-
-        //   mongoDbService.findOneAndUpdate(User, query, data)
-        //   .then(() => {
-        //     return res.status(200).send({
-        //       message: `added in bd and profile`
-        //     })
-        //   })
-        //   .catch(err => res.send(err))
-        // }
           return res.status(200).send({
           message: 'added in bd'
         })
@@ -415,6 +402,23 @@ export class BookController {
     .then(book => {
       return res.json(book)
     })
+    .catch(err => res.send(err))
+  }
+
+  public getBookByIndustryIdentifiers(req: Request, res: Response) {
+    const arrayOfIndustryIdentifiers = [];
+
+    req.query.industryIdentifiers.forEach(string => {
+      arrayOfIndustryIdentifiers.push(JSON.parse(string));
+    })
+   
+    const query = {
+      industryIdentifiers: {
+        $in: arrayOfIndustryIdentifiers
+      }
+    };
+    mongoDbService.find(Books, query)
+    .then(book => res.json(book))
     .catch(err => res.send(err))
   }
 }

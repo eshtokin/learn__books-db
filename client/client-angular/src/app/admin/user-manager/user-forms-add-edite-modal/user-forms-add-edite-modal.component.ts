@@ -11,9 +11,9 @@ export enum UserRole {
 }
 
 @Component({
-  selector: 'app-user-forms-add-adite-modal.component',
-  templateUrl: './user-forms-add-adite-modal.component.html',
-  styleUrls: ['./user-forms-add-adite-modal.component.scss']
+  selector: 'app-user-forms-add-edite-modal.component',
+  templateUrl: './user-forms-add-edite-modal.component.html',
+  styleUrls: ['./user-forms-add-edite-modal.component.scss']
 })
 export class UserFormAddEditeModalComponent {
   public confPass = true;

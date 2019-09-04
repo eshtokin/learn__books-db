@@ -30,10 +30,6 @@ import { FilterComponent } from './filter/filter.component';
     BookEditeModalComponent
   ],
   providers: [
-    AddBookModalComponent,
-    BookDeleteFromFavModalComponent,
-    BookDeleteModalComponent,
-    BookEditeModalComponent
   ],
   exports: [
     BookComponent,

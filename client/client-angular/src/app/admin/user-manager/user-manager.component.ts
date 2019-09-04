@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../../service/users.service';
-import { UserFormAddEditeModalComponent } from './user-forms-add-adite-modal/user-forms-add-adite-modal.component';
+import { UserFormAddEditeModalComponent } from './user-forms-add-edite-modal/user-forms-add-edite-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { User } from '../../models/user.model';
