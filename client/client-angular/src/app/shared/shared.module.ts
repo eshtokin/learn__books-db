@@ -8,6 +8,7 @@ import { BookDeleteFromFavModalComponent } from './book/book-delete-from-fav-mod
 import { BookDeleteModalComponent } from './book/book-delete-modal/book-delete-modal.component';
 import { BookEditeModalComponent } from './book/book-edite-modal/book-edite-modal.component';
 import { FilterComponent } from './filter/filter.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FilterComponent } from './filter/filter.component';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   entryComponents: [
     AddBookModalComponent,

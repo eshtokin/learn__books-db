@@ -19,7 +19,6 @@ import { BookDeleteFromFavModalComponent } from 'src/app/shared/book/book-delete
   ],
   imports: [
     MatDialogModule,
-    NgMultiSelectDropDownModule.forRoot(),
     SharedModule,
     RouterModule.forChild([
       {path: '', component: BooksManagerComponent}

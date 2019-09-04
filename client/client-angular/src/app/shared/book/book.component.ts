@@ -42,7 +42,8 @@ export class BookComponent implements OnInit {
   }
 
   public addBookToFavorite(book: Book) {
-    this.bookService.addBookToDB(book,  this.userInfo.getCurrentUser());
+    console.log(book);
+    this.userService.addBookToProfile(book);
     this.confirmDialog();
   }
 
@@ -59,10 +60,10 @@ export class BookComponent implements OnInit {
       printType: book.printType, // .toLowerCase()
       industryIdentifiers: book.industryIdentifiers
     };
-    this.bookService.addBookToDB(newBook, user)
-    .then(() => {
-      this.confirmDialog();
-    });
+    this.bookService.addBookToDB(newBook); // user
+    // .then(() => {
+    //   this.confirmDialog();
+    // });
   }
 
   public deleteBook(book: Book): void {

@@ -4,7 +4,6 @@ import { BookService } from 'src/app/service/books.service';
 import { Book } from 'src/app/models/book.model';
 import { UserService } from 'src/app/service/users.service';
 import { UserInfo } from 'src/app/service/user-info.service';
-import { Pagination } from 'src/app/models/pagination.model';
 
 @Component({
   selector: 'app-filtered-book',
@@ -91,6 +90,7 @@ export class FilteredBookComponent implements OnInit {
   }
 
   public getFilteredBooks(data): void {
+    console.log(data);
     this.router.navigate(
       ['/filtered'],
       {

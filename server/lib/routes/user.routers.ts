@@ -59,6 +59,7 @@ export class Routes {
 
         app.route("/books/:bookId")
         .get(this.bookController.getBook)
+        .post(this.userController.addBookToProfile)
 
         app.route("/category")
         .get(this.categoryController.getAllCategory)

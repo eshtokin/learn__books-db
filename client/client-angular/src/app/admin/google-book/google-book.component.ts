@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GoogleBooks } from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
-import { UserInfo } from '../../service/user-info.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-google-book',
@@ -10,19 +11,27 @@ import { UserInfo } from '../../service/user-info.service';
 })
 export class GoogleBookComponent implements OnInit {
 
-  public searchString: string;
+  public searchString: string = this.googleBooks.getPageInfo().serchResult;
   public listOfBook: any = this.googleBooks.getPageInfo().currentItems;
   public currentPage: number = this.googleBooks.getPageInfo().currentPage;
   public arrayBookInDB: any = [];
 
+  public searchStringUpdate = new Subject<string>();
+
   constructor(
     private googleBooks: GoogleBooks,
     private booksService: BookService
-    ) { }
+    ) {
+      this.searchStringUpdate.pipe(
+        debounceTime(500)
+      ).subscribe(value => {
+        this.searchForBook(value, {startIndex: 0, maxResults: 10});
+      });
+    }
 
   ngOnInit() {}
 
-  public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}, event) {
+  public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}) {
     this.googleBooks.searchForBook(searchString, configForBookReq)
     .then((result: any) => {
       console.log('result: ', result);
@@ -64,7 +73,7 @@ export class GoogleBookComponent implements OnInit {
   }
 
   public changePage(page: number) {
-    this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10}, 2);
+    this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10});
     this.currentPage = page;
   }
 }

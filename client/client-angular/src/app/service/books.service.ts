@@ -27,8 +27,8 @@ export class BookService {
     .catch(err => console.log(err));
   }
 
-  public addBookToDB(book: Book, user: User) {
-    return Axios.post('/books', {book, user})
+  public addBookToDB(book: Book) {
+    return Axios.post('/books', {book})
     .then(res => {
       return res;
     })

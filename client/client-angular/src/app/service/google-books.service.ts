@@ -4,6 +4,7 @@ export class GoogleBooks {
   constructor() {}
 
   pageInfo = {
+    serchResult: '',
     currentItems: [],
     availablePages: [],
     currentPage: 0
@@ -11,7 +12,7 @@ export class GoogleBooks {
 
   async searchForBook(searchString: string, params: {startIndex: number, maxResults: number}) {
     const url = `https://www.googleapis.com/books/v1/volumes?q=${searchString}`;
-
+    this.pageInfo.serchResult = searchString;
     this.pageInfo.currentItems.length = 0;
 
     return await Axios.get(url, {params})

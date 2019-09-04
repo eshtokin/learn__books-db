@@ -26,6 +26,6 @@ export class AddBookModalComponent {
 
   public closeDialog() {
     this.confirmDialog.close();
-    // this.data.reloadPage();
+    this.data.reloadPage();
   }
 }

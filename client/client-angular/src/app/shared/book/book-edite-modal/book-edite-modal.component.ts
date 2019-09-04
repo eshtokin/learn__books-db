@@ -22,11 +22,11 @@ export class BookEditeModalComponent implements OnInit {
     printType:  this.data.book.printType
   };
 
-  dropdownAuthorsList = [];
-  selectedItemsAuthor = [];
-  dropdownCategoriesList = [];
-  selectedItemsCategories = [];
-  dropdownSettings = {
+  public dropdownAuthorsList = [];
+  public selectedItemsAuthor = [];
+  public dropdownCategoriesList = [];
+  public selectedItemsCategories = [];
+  public dropdownSettings = {
     singleSelection: false,
     idField: '_id',
     textField: 'name',

@@ -298,24 +298,6 @@ export class BookController {
     mongoDbService.findOne(Books, queryForBook)
     .then(book => {
 
-      if (book && req.body.user) {
-        const query = {
-          _id: mongoose.Types.ObjectId(req.body.user.id)
-        };
-        const data = {
-          $addToSet: { books: book._id}
-        };
-
-        mongoDbService.findOneAndUpdate(User, query, data)
-        .then(() => {
-          return res.status(200).send({
-            message: `added in bd and profile`
-          })
-        })
-        .catch(err => res.send(err))
-        return;
-      }
-
       if (book) {
         return res.status(400).send({
           message: `book already exist`

@@ -174,4 +174,25 @@ export class UserController {
             return res.send(err)
         })
     }
+
+    public addBookToProfile(req: Request, res: Response) {
+        const user = jwt.decode(req.headers.authorization);
+        
+        const query = {
+            _id: mongoose.Types.ObjectId(user.id)
+          };
+          const data = {
+            $addToSet: { books: req.params.bookId}
+        };
+
+        mongoDbService.findOneAndUpdate(User, query, data)
+        .then(() => {
+            return res.send({
+                message: 'add in profile'
+            })
+        })
+        .catch(err => {
+            return res.send
+        })
+    }
 }

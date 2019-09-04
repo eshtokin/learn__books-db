@@ -1,6 +1,7 @@
 import { Axios } from '../interceptor/token.interseptor';
 import { User } from '../models/user.model';
 import { Pagination } from '../models/pagination.model';
+import { Book } from '../models/book.model';
 
 export class UserService {
     public count() {
@@ -47,6 +48,12 @@ export class UserService {
 
     public getUserBooks(books: string[], pagination: Pagination, title?: string, ): Promise<any> {
         return Axios.get('/userbooks', {params: {books, pagination, title}})
+        .then(res => res.data)
+        .catch(err => console.log(err));
+    }
+
+    public addBookToProfile(book: Book) {
+        return Axios.post(`/books/${book._id}`)
         .then(res => res.data)
         .catch(err => console.log(err));
     }
