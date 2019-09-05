@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { environment } from './../../environments/environment';
 
-axios.defaults.baseURL = 'http://localhost:3000/';
+axios.defaults.baseURL = environment.mongoUrl;
 
 axios.interceptors.request.use(config => {
   if (config.url.match('google')) {

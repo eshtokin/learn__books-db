@@ -2,6 +2,7 @@ import Axios from 'axios';
 import { BookService } from './books.service';
 import { Book } from '../models/book.model';
 import { PaginationEvent } from '../models/pagination-event';
+import { environment } from './../../environments/environment';
 
 export class GoogleBooks {
   constructor(
@@ -26,7 +27,7 @@ export class GoogleBooks {
   };
 
   async searchForBook(searchString: string): Promise<any> {
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${searchString}`;
+    const url = environment.googleBookDatebase + searchString;
     this.pageInfo.searchResult = searchString;
     const pagination = this.pageInfo.paginationParams;
     const params = {
