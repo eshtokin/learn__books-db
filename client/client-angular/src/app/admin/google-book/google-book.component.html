@@ -16,13 +16,10 @@
         addToDbBtn: true
     }"
     ></app-book>
-    <ul class="pagination center">
-        <li class="waves-effect"
-            *ngFor="let page of this.googleBooks.getPageInfo().availablePages"
-            [ngClass]="{active: (this.currentPage === page)}"
-            (click)="this.changePage(page)"
-            >
-            <a routeLink="catalog">{{page + 1}}</a>
-        </li>
-    </ul>
+    <mat-paginator 
+    [length] = "paginationParams.length"
+    [pageSize] = "paginationParams.pageSize"
+    [pageSizeOptions] = "[3, 5, 7, 10]"
+    (page) = "changePage($event)">
+    </mat-paginator>
 </div>

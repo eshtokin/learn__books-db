@@ -25,6 +25,8 @@ export class FilteredBookComponent implements OnInit {
 
   ngOnInit() {
     const linkParams = this.activeRoute.snapshot.queryParams;
+    console.log('linkParams', linkParams);
+
     this.data = {
       'authors[]': linkParams.authors,
       'categories[]': linkParams.categories,
@@ -45,8 +47,7 @@ export class FilteredBookComponent implements OnInit {
       this.userService.getUser(this.userInfo.getCurrentUser().id)
       .then(user => {
         this.favoritesId = user.books;
-      })
-      .then(() => {
+
         this.books = el[0].books.map(book => {
           return {
             ...book,

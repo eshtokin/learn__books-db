@@ -24,7 +24,7 @@ export class BooksManagerComponent implements OnInit {
     private userService: UserService,
     private bookService: BookService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getBooks();
@@ -38,18 +38,18 @@ export class BooksManagerComponent implements OnInit {
 
   public getBooks(): void {
     this.bookService.getAllBooks(this.paginationParams)
-    .then((el: any) => {
-      this.userService.getUserFavoriteBooks()
-      .then(favoriteBooks => {
-        this.books = el.books.map(book => {
-          return {
-            ...book,
-            inFavorite: favoriteBooks.indexOf(book._id) === -1 ? false : true
-          };
-        });
-        this.paginationParams.length = el.totalCount[0].count;
+      .then((el: any) => {
+        this.userService.getUserFavoriteBooks()
+          .then(favoriteBooks => {
+            this.books = el.books.map(book => {
+              return {
+                ...book,
+                inFavorite: favoriteBooks.indexOf(book._id) === -1 ? false : true
+              };
+            });
+            this.paginationParams.length = el.totalCount[0].count;
+          });
       });
-    });
   }
 
   public getFilteredBooks(data): void {

@@ -80,7 +80,7 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  public userSearch(pagination: Pagination = {pageSize: this.paginationParams.pageSize, pageIndex: 0, }) {
+  public userSearch(pagination: Pagination = {pageSize: this.paginationParams.pageSize, pageIndex: 0 }) {
     this.userService.getSomeUsers(this.searchString, pagination)
     .then(data => {
       console.log(data);

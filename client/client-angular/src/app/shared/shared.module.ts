@@ -9,6 +9,8 @@ import { BookDeleteModalComponent } from './book/book-delete-modal/book-delete-m
 import { BookEditeModalComponent } from './book/book-edite-modal/book-edite-modal.component';
 import { FilterComponent } from './filter/filter.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { HeaderComponent } from './header/header.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,10 +19,12 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     BookDeleteFromFavModalComponent,
     BookDeleteModalComponent,
     BookEditeModalComponent,
-    FilterComponent
+    FilterComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     NgMultiSelectDropDownModule.forRoot()
@@ -39,7 +43,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    HeaderComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

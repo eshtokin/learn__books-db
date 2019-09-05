@@ -15,7 +15,8 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./shared/profile/profile.module').then(m => m.ProfileModule),
-    canActivate: [UserGuardService]
+    canActivate: [UserGuardService],
+    //  data:
   },
   {
     path: 'catalog',

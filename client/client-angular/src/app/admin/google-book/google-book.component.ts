@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GoogleBooks } from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-google-book',
@@ -12,11 +12,10 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class GoogleBookComponent implements OnInit {
 
   public searchString: string = this.googleBooks.getPageInfo().serchResult;
-  public listOfBook: any = this.googleBooks.getPageInfo().currentItems;
-  public currentPage: number = this.googleBooks.getPageInfo().currentPage;
-  public arrayBookInDB: any = [];
-
   public searchStringUpdate = new Subject<string>();
+  public listOfBook: any = this.googleBooks.getPageInfo().currentItems;
+  public arrayBookInDB: any = [];
+  public paginationParams = this.googleBooks.getPageInfo().paginationParams;
 
   constructor(
     private googleBooks: GoogleBooks,
@@ -26,23 +25,25 @@ export class GoogleBookComponent implements OnInit {
         debounceTime(500)
       ).subscribe(value => {
         if (this.searchString.length > 0) {
-          this.searchForBook(value, {startIndex: 0, maxResults: 10});
+          this.searchForBook(value);
         }
       });
     }
 
   ngOnInit() {}
 
-  public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}) {
-    this.googleBooks.searchForBook(searchString, configForBookReq)
+  public searchForBook(searchString: string) {
+    this.googleBooks.searchForBook(searchString)
     .then((result: any) => {
       this.listOfBook = result;
     });
-    this.currentPage  = configForBookReq.startIndex;
   }
 
-  public changePage(page: number) {
-    this.searchForBook( this.searchString, {startIndex: page * 10, maxResults: 10});
-    this.currentPage = page;
+  public changePage(eventPage) {
+    this.googleBooks.getPageInfo().paginationParams = eventPage;
+
+    if (this.searchString.length > 0) {
+      this.searchForBook( this.searchString);
+    }
   }
 }

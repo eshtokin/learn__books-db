@@ -10,11 +10,7 @@ import { User } from './models/user.model';
 })
 
 export class AppComponent implements OnInit {
-  public user: User;
-
   constructor(
-    private userInfo: UserInfo,
-    // private favoriteService: FavoriteService
   ) {}
 
 
