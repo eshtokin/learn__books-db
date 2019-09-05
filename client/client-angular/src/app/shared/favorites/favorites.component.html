@@ -4,11 +4,8 @@ class="container"
 *ngIf="books.length"
 >
   <div class="input-field">
-      <input type="text" id="text" [(ngModel)]='searchField'>
+      <input type="text" id="text" [(ngModel)]='searchField' (ngModelChange)="this.onSearchFieldChange.next($event)">
       <label for="text">Seaarch field</label>
-      <button class="btn"
-      (click)='searchFromFavorites()'
-      >OK</button>
   </div>
   <p class="favoritesText">Favorites: </p>
   <ul class="book-card">

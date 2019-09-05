@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { CategoryAuthor } from 'src/app/models/category-author.model';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-filter',
@@ -20,7 +22,7 @@ export class FilterComponent implements OnInit {
     authors: new Set()
   };
   public searchField = '';
-
+  public searchStringUpdate = new Subject<string>();
   public linkParams;
 
   constructor(
@@ -28,26 +30,33 @@ export class FilterComponent implements OnInit {
     private activeRoute: ActivatedRoute,
   ) {
     this.bookService = new BookService();
+    this.searchStringUpdate
+      .pipe(debounceTime(500))
+      .subscribe(value => {
+        console.log(value);
+        this.filtering();
+      });
   }
 
   ngOnInit() {
     this.linkParams = this.activeRoute.snapshot.queryParams;
+    this.searchField = this.linkParams.title;
     this.getAuthors();
     this.getCategories();
   }
 
   public getAuthors(): void {
     this.bookService.getAllAuthors()
-      .then((author: CategoryAuthor[]) => {
-        this.authors = author.map(author =>{
+      .then((authors: CategoryAuthor[]) => {
+        this.authors = authors.map(author => {
           return {
             ...author,
             checked: this.linkParams.hasOwnProperty('authors') ?
               this.linkParams.authors.indexOf(author._id) === -1 ? false : true
               : false
-          }
+          };
         });
-      })
+      });
   }
 
   public getCategories(): void {
@@ -59,12 +68,15 @@ export class FilterComponent implements OnInit {
             checked: this.linkParams.hasOwnProperty('categories') ?
               this.linkParams.categories.indexOf(category._id) === -1 ? false : true
               : false
-          }
+          };
         });
       });
   }
 
-  public filtering(): void {
+  public filtering(catauth?: CategoryAuthor): void {
+    if (catauth !== undefined) {
+      catauth.checked = !catauth.checked;
+    }
     const data = {
       title: this.searchField,
       categories: [],
@@ -75,18 +87,14 @@ export class FilterComponent implements OnInit {
       return obj.checked;
     }).map(obj => {
       return obj._id;
-    })
+    });
 
     data.authors = this.authors.filter((obj) => {
       return obj.checked;
     }).map(obj => {
       return obj._id;
-    })
+    });
 
-    if (data.title.length === 0 && data.categories.length === 0 && data.authors.length === 0) {
-      this.getAllBooks();
-    } else {
-      this.getFilteredBooks(data);
-    }
+    this.getFilteredBooks(data);
   }
 }

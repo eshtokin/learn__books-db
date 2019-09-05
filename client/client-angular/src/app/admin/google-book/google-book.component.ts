@@ -34,7 +34,6 @@ export class GoogleBookComponent implements OnInit {
   public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}) {
     this.googleBooks.searchForBook(searchString, configForBookReq)
     .then((result: any) => {
-      console.log('result: ', result);
       const industryIdentifiersArray = [];
       result.data.items.forEach(book => {
         let industryIdentifiers = '';

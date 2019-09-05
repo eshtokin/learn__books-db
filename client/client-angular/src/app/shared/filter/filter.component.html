@@ -2,20 +2,20 @@
   <div class="input-field">
     <input type="text" id="searchField"
       [(ngModel)]="this.searchField"
+      (ngModelChange)="this.searchStringUpdate.next($event)"
     >
     <label for="searchField"
     [ngClass]="{active: this.searchField}"      
     >Search Field</label>
   </div>
   <div class="category-input" *ngFor="let category of categories">
-    <input type="checkbox" id={{category._id}} [checked]="category.checked" (change)="category.checked = !category.checked"/>
+    <input type="checkbox" id={{category._id}} [checked]="category.checked" (change)="filtering(category)"/>
     <label for={{category._id}}>{{category.name}}</label>
   </div>
   <hr>
   <div class="author-input" *ngFor="let author of authors">
-    <input type="checkbox" id={{author._id}} [(checked)]="author.checked" (change)="author.checked = !author.checked"/>
+    <input type="checkbox" id={{author._id}} [(checked)]="author.checked" (change)="filtering(author)"/>
     <label for={{author._id}}>{{author.name}}</label>
   </div>
   <hr>
-  <button class="btn" (click)="filtering()">OK</button>
 </div>

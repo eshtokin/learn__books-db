@@ -1,12 +1,8 @@
 <div class="container">
     <div class="input-field center">
-        <input type="text" name="searchField" [(ngModel)]="searchString">
+        <input type="text" name="searchField" [(ngModel)]="searchString" (ngModelChange)="this.onSearchStringChange.next($event)">
         <label for="searchField">Enter e-mail</label>
-        <button class="btn"
-        (click)="userSearch()"
-        >OK</button>
         <br>
-        <button class="btn orange center" (click)="openDialog()">Add new user</button>
     </div>
 </div>
 <div class="row">
@@ -41,6 +37,9 @@
             </div>
         </div>
     </div>
+</div>
+<div class="container center">
+    <button class="btn orange center" (click)="openDialog()">Add new user</button>
 </div>
 <mat-paginator 
     [length] = "paginationParams.length"

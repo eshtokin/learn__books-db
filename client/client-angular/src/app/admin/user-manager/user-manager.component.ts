@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { User } from '../../models/user.model';
 import { Pagination } from 'src/app/models/pagination.model';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-manager',
@@ -14,6 +16,7 @@ import { Pagination } from 'src/app/models/pagination.model';
 export class UserManagerComponent implements OnInit {
   public users: object[];
   public searchString: string;
+  public onSearchStringChange = new Subject<string>();
   public paginationParams: Pagination = {
     pageIndex: 0,
     pageSize: 5,
@@ -24,7 +27,14 @@ export class UserManagerComponent implements OnInit {
   constructor(
     private userService: UserService,
     public dialog: MatDialog
-  ) { }
+  ) {
+    this.onSearchStringChange
+      .pipe(debounceTime(500))
+      .subscribe(value => {
+        console.log(value);
+        this.userSearch();
+      });
+   }
 
   ngOnInit(): void {
     this.init();

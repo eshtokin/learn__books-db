@@ -75,7 +75,7 @@ export class BookController {
 
     const regExp = new RegExp(`.*${req.query.title? req.query.title: ' '}*`);
 
-    const queryTitle =  req.query.title.length
+    const queryTitle =  (req.query.title !== undefined && req.query.title.length > 0)
     ? {
       $or: [
         {title: {$regex: regExp, $options: 'i'}}, 

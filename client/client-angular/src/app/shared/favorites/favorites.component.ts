@@ -7,6 +7,8 @@ import { FavoritesModalComponent } from './favorites-modal/favorites-modal.compo
 import { User } from 'src/app/models/user.model';
 import { FavoritesDeleteModalComponent } from './favorite-delete-modal/favorites-delete-modal.component';
 import { Pagination } from 'src/app/models/pagination.model';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorites',
@@ -18,6 +20,7 @@ export class FavoritesComponent implements OnInit {
   public user: User;
   public pageOfItems: Book[]; // book on page
   public searchField: string;
+  public onSearchFieldChange = new Subject<string>();
   public paginationParams: Pagination = {
     pageIndex: 0,
     pageSize: 5,
@@ -29,7 +32,13 @@ export class FavoritesComponent implements OnInit {
     private userInfo: UserInfo,
     private userService: UserService,
     public dialog: MatDialog
-  ) { }
+  ) {
+    this.onSearchFieldChange
+      .pipe(debounceTime(500))
+      .subscribe(value => {
+        this.searchFromFavorites();
+      });
+  }
 
   ngOnInit() {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
