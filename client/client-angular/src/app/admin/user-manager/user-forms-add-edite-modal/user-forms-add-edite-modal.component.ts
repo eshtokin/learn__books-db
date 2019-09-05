@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../../service/users.service';
 import { FormControleResult } from '../../../models/form-controle-result.model';
 import { User } from '../../../models/user.model';
+import { ReactiveFormHelper } from 'src/app/service/reactive-form-helper';
 
 export enum UserRole {
   admin,
@@ -30,9 +31,9 @@ export class UserFormAddEditeModalComponent {
   public showAddBtn: boolean = this.data.user ? false : true;
 
   public form = new FormGroup({
-    name: new FormControl('', [Validators.required, this.checkName]),
-    email: new FormControl('', [Validators.required, this.checkEmail]),
-    role: new FormControl('', [Validators.required, this.checkRole]),
+    name: new FormControl('', [Validators.required, this.formHelper.checkName]),
+    email: new FormControl('', [Validators.required, this.formHelper.checkEmail]),
+    role: new FormControl('', [Validators.required, this.formHelper.checkRole]),
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required]) // this.checkPassword
   });
@@ -42,27 +43,12 @@ export class UserFormAddEditeModalComponent {
   constructor(
     public dialogRef: MatDialogRef<UserFormAddEditeModalComponent>,
     private userService: UserService,
+    private formHelper: ReactiveFormHelper,
     @Inject(MAT_DIALOG_DATA) public data: {
       user: User,
       reloadPage: () => void
     }
   ) {}
-
-  public checkName(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  public checkEmail(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}@[\w]{1,16}.[a-z]{1,}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
 
   public checkPassword(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{4,16}$/)) {
@@ -74,18 +60,9 @@ export class UserFormAddEditeModalComponent {
 
   public checkPass(): void {
     if (this.form.controls.password.value === this.form.controls.confirmPassword.value) {
-
       this.confPass =  true;
     } else {
       this.confPass =  false;
-    }
-  }
-
-  public checkRole(control: FormControl): FormControleResult {
-    if (control.value !== 1 && control.value !== 2) {
-      return {
-        result: true
-      };
     }
   }
 

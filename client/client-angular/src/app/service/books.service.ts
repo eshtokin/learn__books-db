@@ -9,7 +9,7 @@ import { CategoryAuthor } from '../models/category-author.model';
 export class BookService {
   constructor() {}
 
-  public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {// make {books: Book[], totalCount: {count: number}[]}
+  public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {
     return Axios.get('/books', {params: pagination})
     .then(res => {
       return res.data;
@@ -19,7 +19,7 @@ export class BookService {
 
   public getSomeBooks(data: BookFilter): Promise<ServerResponce> {
     return Axios.get('/somebooks', {params: data})
-    .then(res => res.data)// make {books: Book[], totalCount: {count: number}[]}
+    .then(res => res.data)
     .catch(err => console.log(err));
   }
 

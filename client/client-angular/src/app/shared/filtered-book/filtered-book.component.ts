@@ -73,24 +73,6 @@ export class FilteredBookComponent implements OnInit {
     return pageEvent;
   }
 
-  public getBooks(): void {
-    this.bookService.getAllBooks(this.data.pagination)
-    .then((el: ServerResponce) => {
-      this.userService.getUser(this.userInfo.getCurrentUser().id)
-      .then((user: User) => {
-        this.favoritesId = user.books as string[];
-
-        this.books = (el.listOfItem as Book[]).map((book: Book): Book => {
-          return {
-            ...book,
-            inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
-          };
-        });
-        this.data.pagination.length = el.totalCount[0].count;
-      });
-    });
-  }
-
   public getFilteredBooks(data): void {
     // for changing link
     this.router.navigate(

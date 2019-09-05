@@ -47,7 +47,7 @@ export class BookComponent implements OnInit {
   }
 
   public addBookToDB(book: Book): void {
-    this.book.alreadyExistInBD = true;
+    this.book.inFavorite = true;
 
     const newBook: Book = {
       title: book.title,

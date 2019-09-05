@@ -46,7 +46,7 @@ export class UserManagerComponent implements OnInit {
   public init(): void {
     this.userService.getAllUsers(this.paginationParams)
     .then(data => {
-      this.users = data[0].users;
+      this.users = data[0].listOfItem;
       this.paginationParams.length = data[0].totalCount[0].count;
     });
   }
@@ -80,7 +80,7 @@ export class UserManagerComponent implements OnInit {
   public userSearch(pagination: PaginationEvent = {pageSize: this.paginationParams.pageSize, pageIndex: 0 }): void {
     this.userService.getSomeUsers(this.searchString, pagination)
     .then(data => {
-      this.users = data[0].users;
+      this.users = data[0].listOfItem;
       this.paginationParams.length = data[0].totalCount[0].count;
     });
   }

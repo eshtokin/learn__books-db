@@ -33,7 +33,6 @@ export class FilterComponent implements OnInit {
     this.searchStringUpdate
       .pipe(debounceTime(500))
       .subscribe(value => {
-        console.log(value);
         this.filtering();
       });
   }

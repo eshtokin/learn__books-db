@@ -4,6 +4,7 @@ import { Book } from '../../models/book.model';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/users.service';
 import { PaginationEvent } from 'src/app/models/pagination-event';
+import { ServerResponce } from 'src/app/models/server-response';
 
 @Component({
   selector: 'app-books-manager',
@@ -39,10 +40,10 @@ export class BooksManagerComponent implements OnInit {
 
   public getBooks(): void {
     this.bookService.getAllBooks(this.paginationParams)
-      .then((el: any) => { // make {books: Book[], totalCount: {count: number}[]}
+      .then((el) => {
         this.userService.getUserFavoriteBooks()
           .then(favoriteBooks => {
-            this.books = el.listOfItem.map(book => {
+            this.books = (el.listOfItem as Book[]).map(book => {
               return {
                 ...book,
                 inFavorite: favoriteBooks.indexOf(book._id) === -1 ? false : true

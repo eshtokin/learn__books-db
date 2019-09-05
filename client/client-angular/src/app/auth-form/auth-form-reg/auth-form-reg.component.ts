@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormControleResult } from 'src/app/models/form-controle-result.model';
+import { ReactiveFormHelper } from 'src/app/service/reactive-form-helper';
 
 @Component({
   selector: 'app-auth-form-reg',
@@ -16,16 +17,17 @@ export class AuthFormRegComponent {
   public confirmPassword: string;
 
   public registrateForm = new FormGroup({
-    email: new FormControl('', [Validators.required, this.checkEmail]),
-    name: new FormControl('', [Validators.required, this.checkName]),
-    password: new FormControl('', [Validators.required, this.checkPassword]),
-    confirmPassword: new FormControl('', [Validators.required, this.checkPassword]),
+    email: new FormControl('', [Validators.required, this.formHelper.checkEmail]),
+    name: new FormControl('', [Validators.required, this.formHelper.checkName]),
+    password: new FormControl('', [Validators.required, this.formHelper.checkPassword]),
+    confirmPassword: new FormControl('', [Validators.required, this.formHelper.checkPassword]),
     role: new FormControl([Validators.required, this.checkRole])
   });
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private formHelper: ReactiveFormHelper
   ) {
     this.confPass = true;
     this.user = {
@@ -39,30 +41,6 @@ export class AuthFormRegComponent {
     };
   }
 
-  private checkName(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  private checkEmail(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}@[\w]{1,16}.[a-z]{1,}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  private checkPassword(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{4,16}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
   public checkPass(): void {
     if (this.registrateForm.controls.password.value === this.registrateForm.controls.confirmPassword.value) {
 
@@ -71,7 +49,7 @@ export class AuthFormRegComponent {
       this.confPass =  false;
     }
   }
-
+// move to helper
   public checkRole(control: FormControl): FormControleResult {
     return control.value === 1 ? {result: true} : control.value === 2 ? {result: true} : {result: false} ;
   }
