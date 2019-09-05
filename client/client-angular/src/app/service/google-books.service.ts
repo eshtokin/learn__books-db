@@ -1,7 +1,10 @@
 import Axios from 'axios';
+import { BookService } from './books.service';
 
 export class GoogleBooks {
-  constructor() {}
+  constructor(
+    private booksService: BookService
+  ) {}
 
   pageInfo = {
     serchResult: '',
@@ -33,7 +36,29 @@ export class GoogleBooks {
       }
 
       this.pageInfo.currentPage = params.startIndex / 10;
-      return res;
+      // new part
+      const industryIdentifiersArray = res.data.items.map(book => {
+        return book.volumeInfo.industryIdentifiers.map(el => el.type + el.identifier).join('');
+      });
+
+      return this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray)
+      .then(bookInBd => {
+        const arrayIdBookInBd = bookInBd.map(el => {
+          return el.industryIdentifiers;
+        });
+
+        this.pageInfo.currentItems = this.pageInfo.currentItems.map(el => {
+          const industryIdentifiers = el.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
+           return obj.type + obj.identifier;
+          }).join('');
+
+          return {
+            alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
+            ...el,
+          };
+        });
+        return this.pageInfo.currentItems;
+      });
     })
     .catch(err => console.log(err));
   }

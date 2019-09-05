@@ -25,7 +25,9 @@ export class GoogleBookComponent implements OnInit {
       this.searchStringUpdate.pipe(
         debounceTime(500)
       ).subscribe(value => {
-        this.searchForBook(value, {startIndex: 0, maxResults: 10});
+        if (this.searchString.length > 0) {
+          this.searchForBook(value, {startIndex: 0, maxResults: 10});
+        }
       });
     }
 
@@ -34,39 +36,7 @@ export class GoogleBookComponent implements OnInit {
   public searchForBook(searchString: string, configForBookReq: {startIndex: number, maxResults: number}) {
     this.googleBooks.searchForBook(searchString, configForBookReq)
     .then((result: any) => {
-      const industryIdentifiersArray = [];
-      result.data.items.forEach(book => {
-        let industryIdentifiers = '';
-
-        book.volumeInfo.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
-        industryIdentifiers += obj.type + obj.identifier;
-        });
-
-        industryIdentifiersArray.push(industryIdentifiers);
-      });
-
-      this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray)
-      .then(bookInBd => {
-        const arrayIdBookInBd = [];
-        bookInBd.forEach(el => {
-          arrayIdBookInBd.push(el.industryIdentifiers);
-        });
-
-        this.listOfBook = this.listOfBook.map(el => {
-          let industryIdentifiers = '';
-
-          el.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
-          industryIdentifiers += obj.type + obj.identifier;
-          });
-
-          return {
-            alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
-            ...el,
-          };
-        });
-      });
-
-      this.listOfBook = this.googleBooks.getPageInfo().currentItems;
+      this.listOfBook = result;
     });
     this.currentPage  = configForBookReq.startIndex;
   }
