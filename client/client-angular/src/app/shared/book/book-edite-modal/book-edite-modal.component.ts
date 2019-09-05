@@ -11,21 +11,11 @@ import { CategoryAuthor } from 'src/app/models/category-author.model';
   styleUrls: ['./book-edite-modal.component.scss']
 })
 export class BookEditeModalComponent implements OnInit {
-  public editeBookData: Book =  {
-    title: this.data.book.title,
-    authors: [],
-    categories: [],
-    pageCount:  this.data.book.pageCount,
-    description:  this.data.book.description,
-    industryIdentifiers:  this.data.book.industryIdentifiers,
-    image:  this.data.book.image,
-    printType:  this.data.book.printType
-  };
-
-  public dropdownAuthorsList = [];
-  public selectedItemsAuthor = [];
-  public dropdownCategoriesList = [];
-  public selectedItemsCategories = [];
+  public editeBookData: Book;
+  public dropdownAuthorsList: CategoryAuthor[];
+  public selectedItemsAuthor: CategoryAuthor[];
+  public dropdownCategoriesList: CategoryAuthor[];
+  public selectedItemsCategories: CategoryAuthor[];
   public dropdownSettings = {
     singleSelection: false,
     idField: '_id',
@@ -43,11 +33,22 @@ export class BookEditeModalComponent implements OnInit {
     },
     public editeFormDialog: MatDialogRef<BookEditeModalComponent>,
     public bookService: BookService
-  ) { }
+  ) {
+    this.editeBookData =  {
+      title: this.data.book.title,
+      authors: [],
+      categories: [],
+      pageCount:  this.data.book.pageCount,
+      description:  this.data.book.description,
+      industryIdentifiers:  this.data.book.industryIdentifiers,
+      image:  this.data.book.image,
+      printType:  this.data.book.printType
+    };
+  }
 
   ngOnInit() {
     this.bookService.getAllAuthors()
-    .then(authors => {
+    .then((authors: CategoryAuthor[]) => {
       this.dropdownAuthorsList = authors;
     });
     this.bookService.getAllCategories()
@@ -55,8 +56,8 @@ export class BookEditeModalComponent implements OnInit {
       this.dropdownCategoriesList = categories;
     });
 
-    this.selectedItemsAuthor = this.data.book.authors_list;
-    this.selectedItemsCategories = this.data.book.categories_list;
+    this.selectedItemsAuthor = this.data.book.authors_list as CategoryAuthor[];
+    this.selectedItemsCategories = this.data.book.categories_list as CategoryAuthor[];
   }
 
   public editeBook(): void {
@@ -69,11 +70,11 @@ export class BookEditeModalComponent implements OnInit {
     });
   }
 
-  public close() {
+  public close(): void {
     this.editeFormDialog.close();
   }
 
-  public uploadFile(e, id: string): void {
+  public uploadFile(e): void {
     const input = e.target;
     const reader = new FileReader();
     reader.onload = () => {

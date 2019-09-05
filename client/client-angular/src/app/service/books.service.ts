@@ -2,12 +2,14 @@ import { Axios } from '../interceptor/token.interseptor';
 import { Book } from '../models/book.model';
 import { User } from '../models/user.model';
 import { BookFilter } from '../models/book-filter.model';
-import { Pagination } from '../models/pagination.model';
+import { PaginationEvent } from '../models/pagination-event';
+import { ServerResponce } from '../models/server-response';
+import { CategoryAuthor } from '../models/category-author.model';
 
 export class BookService {
   constructor() {}
 
-  public getAllBooks(pagination?: Pagination): Promise<Book[]> {
+  public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {// make {books: Book[], totalCount: {count: number}[]}
     return Axios.get('/books', {params: pagination})
     .then(res => {
       return res.data;
@@ -15,19 +17,19 @@ export class BookService {
     .catch(err => console.log(err));
   }
 
-  public getSomeBooks(data: BookFilter) {
+  public getSomeBooks(data: BookFilter): Promise<ServerResponce> {
     return Axios.get('/somebooks', {params: data})
-    .then(res => res.data)
+    .then(res => res.data)// make {books: Book[], totalCount: {count: number}[]}
     .catch(err => console.log(err));
   }
 
-  public getBookByIndustryIdentifiers(industryIdentifiers) {
+  public getBookByIndustryIdentifiers(industryIdentifiers: string[]): Promise<any>  {
     return Axios.get('/getbookbyindustryIdentifiers', {params: {industryIdentifiers}})
     .then(res => res.data)
     .catch(err => console.log(err));
   }
 
-  public addBookToDB(book: Book) {
+  public addBookToDB(book: Book): Promise<any> {
     return Axios.post('/books', {book})
     .then(res => {
       return res;
@@ -35,7 +37,7 @@ export class BookService {
     .catch(err => console.log(err));
   }
 
-  public updateBook(data: Book) {
+  public updateBook(data: Book): Promise<any> {
     return Axios.put('/books', data)
     .then(res => {
       return res;
@@ -43,7 +45,7 @@ export class BookService {
     .catch(err => console.log(err));
   }
 
-  public changeImageInBook(data: {id: string, image: string | ArrayBuffer}) {
+  public changeImageInBook(data: {id: string, image: string | ArrayBuffer}): Promise<any> {
     return Axios.post('/book', data)
     .then(res => {
       return res;
@@ -51,7 +53,7 @@ export class BookService {
     .catch(err => console.log(err));
   }
 
-  public deleteBook(data: Book) {
+  public deleteBook(data: Book): Promise<any> {
     return Axios.delete('/books', {data})
     .then(res => {
       return res;
@@ -59,7 +61,7 @@ export class BookService {
     .catch(err => console.log(err));
   }
 
-  public getAllAuthors() {
+  public getAllAuthors(): Promise<CategoryAuthor[]> {
     return Axios.get('/author')
     .then(res => {
       return res.data;
@@ -68,7 +70,7 @@ export class BookService {
     );
   }
 
-  public getAllCategories() {
+  public getAllCategories(): Promise<CategoryAuthor[]> {
     return Axios.get('/category')
     .then(res => {
       return res.data;

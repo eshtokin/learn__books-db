@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserService } from '../../service/users.service';
 import { Router } from '@angular/router';
 
@@ -12,22 +12,22 @@ export class AuthFormLoginComponent {
   public user: {
     email: string,
     password: string
-  } = {
-    email: '',
-    password: ''
   };
 
   constructor(
     private userService: UserService,
     private route: Router
-  ) {}
+  ) {
+    this.user = {
+      email: '',
+      password: ''
+    };
+  }
 
-  public async login() {
-    const res: any = await this.userService.login(this.user)
+  public login(): void {
+   this.userService.login(this.user)
     .then(() => {
       this.route.navigate(['/profile']);
     });
-    // localStorage.clear();
-    // localStorage.setItem('token', res.data.token);
   }
 }

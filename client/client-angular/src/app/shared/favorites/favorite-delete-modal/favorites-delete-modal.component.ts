@@ -20,12 +20,8 @@ export class FavoritesDeleteModalComponent {
     }
   ) {}
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  public deleteBook() {
-    const restOfBook = [];
+  public deleteBook(): void {
+    const restOfBook: string[] = [];
     this.data.allBooks.forEach((book: Book) => {
       if (book._id !== this.data.book._id) {
         restOfBook.push(book._id);

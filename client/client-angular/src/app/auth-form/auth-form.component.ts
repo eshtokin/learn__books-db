@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./auth-form.component.scss']
 })
 
-export class AuthFormComponent {
-
-}
+export class AuthFormComponent {}

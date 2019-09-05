@@ -20,10 +20,6 @@ export class AddBookModalComponent {
     public userInfo: UserInfo
   ) {}
 
-  public onNoClick(): void {
-    this.confirmDialog.close();
-  }
-
   public closeDialog() {
     this.confirmDialog.close();
     this.data.reloadPage();

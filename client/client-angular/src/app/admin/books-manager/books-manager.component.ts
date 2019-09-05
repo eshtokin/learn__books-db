@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
-import { UserInfo } from 'src/app/service/user-info.service';
 import { Router } from '@angular/router';
-import { Pagination } from 'src/app/models/pagination.model';
 import { UserService } from 'src/app/service/users.service';
+import { PaginationEvent } from 'src/app/models/pagination-event';
 
 @Component({
   selector: 'app-books-manager',
@@ -13,24 +12,26 @@ import { UserService } from 'src/app/service/users.service';
 })
 export class BooksManagerComponent implements OnInit {
   public books: Book[];
-  public paginationParams: Pagination = {
-    pageIndex: 0,
-    pageSize: 5,
-    previousPageIndex: 0,
-    length: 0
-  };
+  public paginationParams: PaginationEvent;
 
   constructor(
     private userService: UserService,
     private bookService: BookService,
     private router: Router
-  ) { }
+  ) {
+    this.paginationParams = {
+      pageIndex: 0,
+      pageSize: 5,
+      previousPageIndex: 0,
+      length: 0
+    };
+  }
 
   ngOnInit() {
     this.getBooks();
   }
 
-  show(pageEvent) {
+  public paginationHandler(pageEvent: PaginationEvent): PaginationEvent {
     this.paginationParams = pageEvent;
     this.getBooks();
     return pageEvent;
@@ -38,10 +39,10 @@ export class BooksManagerComponent implements OnInit {
 
   public getBooks(): void {
     this.bookService.getAllBooks(this.paginationParams)
-      .then((el: any) => {
+      .then((el: any) => { // make {books: Book[], totalCount: {count: number}[]}
         this.userService.getUserFavoriteBooks()
           .then(favoriteBooks => {
-            this.books = el.books.map(book => {
+            this.books = el.listOfItem.map(book => {
               return {
                 ...book,
                 inFavorite: favoriteBooks.indexOf(book._id) === -1 ? false : true

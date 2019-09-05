@@ -1,15 +1,10 @@
 import { Axios } from '../interceptor/token.interseptor';
 import { User } from '../models/user.model';
-import { Pagination } from '../models/pagination.model';
 import { Book } from '../models/book.model';
+import { PaginationEvent } from '../models/pagination-event';
+import { ServerResponce } from '../models/server-response';
 
 export class UserService {
-    public count() {
-        return Axios.get('/userscount')
-        .then(res => res.data)
-        .catch(err => console.log(err));
-      }
-
     public login(user: {email: string, password: string}): Promise<any> {
         return Axios.post('/login', user)
         .then(res => {
@@ -26,7 +21,7 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getAllUsers(pagination?: Pagination): Promise<any> {
+    public getAllUsers(pagination?: PaginationEvent): Promise<User[]> {
         return Axios.get('/user', {params: pagination})
         .then(res => {
             return res.data;
@@ -34,31 +29,31 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getSomeUsers(searchString: string, pagination: Pagination): Promise<any> {
+    public getSomeUsers(searchString: string, pagination: PaginationEvent): Promise<User[]> {
         return Axios.get('/usersearch', {params: {searchString, pagination}})
         .then(res => res.data)
         .catch(err => console.log(err));
     }
 
-    public getUser(id: string): Promise<any> {
+    public getUser(id: string): Promise<User> {
         return Axios.get(`/user/${id}`)
         .then(res => res.data)
         .catch(err => console.log(err));
     }
 
-    public getUserBooks(books: string[], pagination: Pagination, title?: string, ): Promise<any> {
+    public getUserBooks(books: string[], pagination: PaginationEvent, title?: string, ): Promise<ServerResponce> {
         return Axios.get('/userbooks', {params: {books, pagination, title}})
         .then(res => res.data)
         .catch(err => console.log(err));
     }
 
-    public addBookToProfile(book: Book) {
+    public addBookToProfile(book: Book): Promise<any> {
         return Axios.post(`/books/${book._id}`)
         .then(res => res.data)
         .catch(err => console.log(err));
     }
 
-    public getUserFavoriteBooks() {
+    public getUserFavoriteBooks(): Promise<string[]> {
         return Axios.get('/userfavorites')
         .then(res => res.data)
         .catch(err => console.log(err));

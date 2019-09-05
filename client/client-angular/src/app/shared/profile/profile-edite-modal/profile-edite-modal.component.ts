@@ -49,14 +49,13 @@ export class ProfileEditeModalComponent implements OnInit {
 
   public checkPassword(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{4,16}$/)) {
-    // if (control.value) {
       return {
         result: true
       };
     }
   }
 
-  public checkPass() {
+  public checkPass(): void {
     if (this.profileForm.controls.password.value === this.profileForm.controls.confirmPassword.value) {
 
       this.confPass =  true;
@@ -65,11 +64,11 @@ export class ProfileEditeModalComponent implements OnInit {
     }
   }
 
-  public closeModal() {
+  public closeModal(): void {
     this.editeProfileModal.close();
   }
 
-  public save() {
+  public save(): void {
     if (this.profileForm.value.password.length && this.data.user.password !== this.profileForm.value.password) {
       this.data.user.password = this.profileForm.value.password;
     }

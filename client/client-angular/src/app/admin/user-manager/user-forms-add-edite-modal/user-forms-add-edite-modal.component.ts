@@ -66,7 +66,6 @@ export class UserFormAddEditeModalComponent {
 
   public checkPassword(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{4,16}$/)) {
-    // if (control.value) {
       return {
         result: true
       };
@@ -108,17 +107,4 @@ export class UserFormAddEditeModalComponent {
       this.dialogRef.close();
     });
   }
-
-  public onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  // public uploadFile(e, id: string): void {
-  //   const input = e.target;
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     this.userForEdite.image = reader.result;
-  //   };
-  //   reader.readAsDataURL(input.files[0]);
-  // }
 }

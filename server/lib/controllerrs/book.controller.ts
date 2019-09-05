@@ -3,7 +3,6 @@ import { BookSchema } from "../models/book.model"
 import {Response, Request} from 'express'
 import { Category } from './category.controller';
 import { Authors } from './author.controller';
-import { User } from './user.controller';
 import { MongoDbService } from '../service/mongodb.service';
 
 export const Books = mongoose.model('Books', BookSchema);
@@ -20,7 +19,7 @@ export class BookController {
     }
     let query = {
       $facet: {
-        books: [
+        listOfItem: [
           skip, 
           limit
         ],
@@ -123,7 +122,7 @@ export class BookController {
       },
       { 
         $facet: {
-          books: [
+          listOfItem: [
             skip, 
             limit
           ],
@@ -153,7 +152,7 @@ export class BookController {
     }
     let query = {
         $facet: {
-          books: [
+          listOfItem: [
             skip, 
             limit
           ],

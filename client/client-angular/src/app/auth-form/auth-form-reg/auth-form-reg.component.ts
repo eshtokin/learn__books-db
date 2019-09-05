@@ -11,16 +11,8 @@ import { FormControleResult } from 'src/app/models/form-controle-result.model';
   styleUrls: ['./auth-form-reg.component.scss']
 })
 export class AuthFormRegComponent {
-  public confPass = true;
-  public user: User = {
-    email: '',
-    password: '',
-    name: '',
-    role: 2,
-    books: [],
-    image: '',
-    _id: ''
-  };
+  public confPass: boolean;
+  public user: User;
   public confirmPassword: string;
 
   public registrateForm = new FormGroup({
@@ -34,8 +26,18 @@ export class AuthFormRegComponent {
   constructor(
     private userService: UserService,
     private router: Router
-  ) { }
-
+  ) {
+    this.confPass = true;
+    this.user = {
+      email: '',
+      password: '',
+      name: '',
+      role: 2,
+      books: [],
+      image: '',
+      _id: ''
+    };
+  }
 
   private checkName(control: FormControl): FormControleResult {
     if (control.value.search(/^[\w]{3,16}$/)) {

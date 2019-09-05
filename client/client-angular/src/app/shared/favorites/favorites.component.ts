@@ -6,9 +6,9 @@ import {MatDialog} from '@angular/material/dialog';
 import { FavoritesModalComponent } from './favorites-modal/favorites-modal.component';
 import { User } from 'src/app/models/user.model';
 import { FavoritesDeleteModalComponent } from './favorite-delete-modal/favorites-delete-modal.component';
-import { Pagination } from 'src/app/models/pagination.model';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { PaginationEvent } from 'src/app/models/pagination-event';
 
 @Component({
   selector: 'app-favorites',
@@ -16,12 +16,12 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit {
-  public books: Book[] = []; // all book from favorite
+  public books: Book[] = [];
   public user: User;
-  public pageOfItems: Book[]; // book on page
+  public pageOfItems: Book[];
   public searchField: string;
-  public onSearchFieldChange = new Subject<string>();
-  public paginationParams: Pagination = {
+  public onSearchFieldChange: Subject<string>;
+  public paginationParams: PaginationEvent = {
     pageIndex: 0,
     pageSize: 5,
     previousPageIndex: 0,
@@ -33,6 +33,7 @@ export class FavoritesComponent implements OnInit {
     private userService: UserService,
     public dialog: MatDialog
   ) {
+    this.onSearchFieldChange = new Subject<string>();
     this.onSearchFieldChange
       .pipe(debounceTime(500))
       .subscribe(value => {
@@ -42,15 +43,12 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
-    .then((data) => {
-      this.user = data;
-      return data;
-    })
     .then((user: User) => {
+      this.user = user;
       if (user.books.length > 0) {
         this.userService.getUserBooks(user.books as string[], this.paginationParams)
-        .then(data => {
-          this.books = data[0].books;
+        .then(data => { // make response type
+          this.books = data[0].listOfItem;
           this.paginationParams.length = data[0].totalCount[0].count;
         });
       }
@@ -60,7 +58,7 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
-  public paginationHandler(pageEvent) {
+  public paginationHandler(pageEvent: PaginationEvent): PaginationEvent {
     this.paginationParams = pageEvent;
     if (this.searchField && this.searchField.length) {
       this.searchFromFavorites();
@@ -71,17 +69,15 @@ export class FavoritesComponent implements OnInit {
   }
 
   public openDialog(book: Book): void {
-    const dialogRef = this.dialog.open(FavoritesModalComponent, {
+    this.dialog.open(FavoritesModalComponent, {
       data: {
         book
       }
     });
-
-    dialogRef.afterClosed().subscribe();
   }
 
   public deleteDialog(book: Book): void {
-    const dialogRef = this.dialog.open(FavoritesDeleteModalComponent, {
+   this.dialog.open(FavoritesDeleteModalComponent, {
       data: {
         book,
         allBooks: this.books,
@@ -89,28 +85,23 @@ export class FavoritesComponent implements OnInit {
         delete: this.deleteBookFromFavorite.bind(this)
       }
     });
-
-    dialogRef.afterClosed().subscribe();
   }
 
-  public deleteBookFromFavorite(user: User) {
+  public deleteBookFromFavorite(user: User): void {
     this.userService.edit(this.user._id, user)
     .then(() => {
       this.ngOnInit();
     });
   }
 
-  public searchFromFavorites() {
+  public searchFromFavorites(): void {
     this.userService.getUser(this.userInfo.getCurrentUser().id)
-    .then((data) => {
-      this.user = data;
-      return data;
-    })
     .then((user: User) => {
+      this.user = user;
       if (user.books.length > 0) {
         this.userService.getUserBooks(user.books as string[], this.paginationParams, this.searchField)
         .then(books => {
-          this.books = books[0].books;
+          this.books = books[0].listOfItem;
           this.paginationParams.length = books[0].totalCount[0].count;
         });
       }

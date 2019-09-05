@@ -20,7 +20,7 @@ export class UserController {
         }
         let query = {
             $facet: {
-              users: [
+              listOfItem: [
                 skip, 
                 limit
               ],
@@ -63,7 +63,7 @@ export class UserController {
         }
         let query = {
             $facet: {
-              users: [
+              listOfItem: [
                 skip, 
                 limit
               ],

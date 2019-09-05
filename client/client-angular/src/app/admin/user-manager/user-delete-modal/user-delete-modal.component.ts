@@ -29,8 +29,4 @@ export class UserDeleteModalComponent {
     }
     this.confirmDialog.close();
   }
-
-  public onNoClick(): void {
-    this.confirmDialog.close();
-  }
 }

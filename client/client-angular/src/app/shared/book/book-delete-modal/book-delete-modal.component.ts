@@ -21,10 +21,6 @@ export class BookDeleteModalComponent {
     public userInfo: UserInfo
   ) {}
 
-  public onNoClick(): void {
-    this.confirmDialog.close();
-  }
-
   public delete() {
     this.data.deleteBook(this.book);
     this.confirmDialog.close();

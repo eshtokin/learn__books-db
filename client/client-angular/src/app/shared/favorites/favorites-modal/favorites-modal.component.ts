@@ -17,8 +17,4 @@ export class FavoritesModalComponent {
       book: Book
     }
   ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }

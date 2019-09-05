@@ -28,13 +28,8 @@ export class BookDeleteFromFavModalComponent {
     });
   }
 
-  public onNoClick(): void {
-    this.confirmDialog.close();
-  }
-
   public delete() {
     const restOfBook = [];
-
     (this.user.books as string[]).forEach(book => {
       if (this.data.book._id !== book) {
         restOfBook.push(book);

@@ -5,19 +5,19 @@ export class UserInfo {
     constructor() { }
 
     // return true (if user have token) of false (if haven't token)
-    isUserAuth(): boolean {
+    public isUserAuth(): boolean {
         if ( localStorage.hasOwnProperty('token') ) {
             return true;
         }
         return false;
     }
 
-    getCurrentUser(): User {
+    public getCurrentUser(): User {
         return localStorage.getItem('token') ? decode(localStorage.getItem('token')) : null;
     }
 
     // return true (admin) or false (user)
-    getStatus(): boolean {
+    public getStatus(): boolean {
         const user = decode(localStorage.getItem('token'));
         if (1 === user.role) {
             return true;
@@ -25,7 +25,7 @@ export class UserInfo {
         return false;
     }
 
-    logout(): void {
+    public logout(): void {
         localStorage.removeItem('token');
     }
 }

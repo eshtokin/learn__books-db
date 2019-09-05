@@ -4,9 +4,9 @@ import { UserFormAddEditeModalComponent } from './user-forms-add-edite-modal/use
 import { MatDialog } from '@angular/material/dialog';
 import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.component';
 import { User } from '../../models/user.model';
-import { Pagination } from 'src/app/models/pagination.model';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { PaginationEvent } from 'src/app/models/pagination-event';
 
 @Component({
   selector: 'app-user-manager',
@@ -16,24 +16,27 @@ import { debounceTime } from 'rxjs/operators';
 export class UserManagerComponent implements OnInit {
   public users: object[];
   public searchString: string;
-  public onSearchStringChange = new Subject<string>();
-  public paginationParams: Pagination = {
-    pageIndex: 0,
-    pageSize: 5,
-    previousPageIndex: 0,
-    length: 0
-  };
+  public onSearchStringChange: Subject<string>;
+  public paginationParams: PaginationEvent;
 
   constructor(
     private userService: UserService,
     public dialog: MatDialog
   ) {
+    this.onSearchStringChange = new Subject<string>();
     this.onSearchStringChange
       .pipe(debounceTime(500))
       .subscribe(value => {
         console.log(value);
         this.userSearch();
       });
+
+    this.paginationParams = {
+        pageIndex: 0,
+        pageSize: 5,
+        previousPageIndex: 0,
+        length: 0
+      };
    }
 
   ngOnInit(): void {
@@ -50,7 +53,7 @@ export class UserManagerComponent implements OnInit {
 
   public deleteUser(id: string): void {
     this.userService.delete(id)
-    .then(res => {
+    .then(() => {
       this.init();
     });
   }
@@ -62,9 +65,6 @@ export class UserManagerComponent implements OnInit {
         reloadPage:  this.init.bind(this)
       }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
   }
 
   public confirmDialog(userId: string, userEmail: string): void {
@@ -75,21 +75,17 @@ export class UserManagerComponent implements OnInit {
         deleteFunc: this.deleteUser.bind(this)
       }
     });
-
-    confirmDialog.afterClosed().subscribe(result => {
-    });
   }
 
-  public userSearch(pagination: Pagination = {pageSize: this.paginationParams.pageSize, pageIndex: 0 }) {
+  public userSearch(pagination: PaginationEvent = {pageSize: this.paginationParams.pageSize, pageIndex: 0 }): void {
     this.userService.getSomeUsers(this.searchString, pagination)
     .then(data => {
-      console.log(data);
       this.users = data[0].users;
       this.paginationParams.length = data[0].totalCount[0].count;
     });
   }
 
- public paginationHandler(pageEvent) {
+ public paginationHandler(pageEvent: PaginationEvent): PaginationEvent {
     if (this.searchString && this.searchString.length) {
       this.userSearch(pageEvent);
       return pageEvent;

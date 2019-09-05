@@ -41,29 +41,25 @@ export class BookComponent implements OnInit {
     this.bookImage = this.book.imageLinks ? this.book.imageLinks.thumbnail : this.book.image;
   }
 
-  public addBookToFavorite(book: Book) {
-    console.log(book);
+  public addBookToFavorite(book: Book): void {
     this.userService.addBookToProfile(book);
     this.confirmDialog();
   }
 
-  public addBookToDB(book: Book, user: User) {
+  public addBookToDB(book: Book): void {
     this.book.alreadyExistInBD = true;
 
     const newBook: Book = {
-      title: book.title, // .toLowerCase()
-      authors: book.authors, // .map(element => element.toLowerCase())
-      categories: book.categories || [], // ? book.categories.map(element => element.toLowerCase()) :
+      title: book.title,
+      authors: book.authors,
+      categories: book.categories || [],
       description: book.description,
       image: book.imageLinks.thumbnail || '',
       pageCount: book.pageCount,
-      printType: book.printType, // .toLowerCase()
+      printType: book.printType,
       industryIdentifiers: book.industryIdentifiers
     };
-    this.bookService.addBookToDB(newBook); // user
-    // .then(() => {
-    //   this.confirmDialog();
-    // });
+    this.bookService.addBookToDB(newBook);
   }
 
   public deleteBook(book: Book): void {
@@ -73,8 +69,8 @@ export class BookComponent implements OnInit {
     });
   }
 
-  public chooseEditeBook(book) {
-    const editeFormDialog = this.dialog.open(BookEditeModalComponent, {
+  public chooseEditeBook(book): void {
+    this.dialog.open(BookEditeModalComponent, {
       data: {
         book,
         reloadPage: this.reloadPage
@@ -87,38 +83,30 @@ export class BookComponent implements OnInit {
   }
 
   public deleteDialog(book: Book): void {
-    const dialogRef = this.dialog.open(BookDeleteModalComponent, {
+    this.dialog.open(BookDeleteModalComponent, {
       data: {
         book,
         deleteBook: this.deleteBook.bind(this),
         reloadPage: this.reloadPage
       }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
   }
 
   public confirmDialog(): void {
-    const confirmDialog = this.dialog.open(AddBookModalComponent, {
+    this.dialog.open(AddBookModalComponent, {
       data: {
         book: this.book,
         reloadPage: this.reloadPage
       }
-    });
-
-    confirmDialog.afterClosed().subscribe(result => {
     });
   }
 
-  public deleteFromFavorites() {
-    const deleteFromFavorites = this.dialog.open(BookDeleteFromFavModalComponent, {
+  public deleteFromFavorites(): void {
+    this.dialog.open(BookDeleteFromFavModalComponent, {
       data: {
         book: this.book,
         reloadPage: this.reloadPage
       }
     });
-
-    deleteFromFavorites.afterClosed().subscribe(() => {});
   }
 }

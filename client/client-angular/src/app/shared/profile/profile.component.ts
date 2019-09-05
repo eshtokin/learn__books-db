@@ -14,7 +14,7 @@ import { ProfileEditeModalComponent } from './profile-edite-modal/profile-edite-
 export class ProfileComponent implements OnInit {
   public books: Book[];
   public booksId: string[];
-  public user: User = this.userInfo.getCurrentUser();
+  public user: User;
 
   constructor(
     private userInfo: UserInfo,
@@ -36,16 +36,16 @@ export class ProfileComponent implements OnInit {
         this.books = [];
       }
     });
+
+    this.user = this.userInfo.getCurrentUser();
   }
 
-  public editeProfile() {
-    const editeProfileModal = this.dialog.open(ProfileEditeModalComponent, {
+  public editeProfile(): void {
+    this.dialog.open(ProfileEditeModalComponent, {
       data: {
         user: this.user,
         refresh: this.ngOnInit.bind(this)
       }
     });
-
-    editeProfileModal.afterClosed().subscribe(result => {});
   }
 }

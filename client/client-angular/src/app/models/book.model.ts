@@ -13,5 +13,5 @@ export interface Book {
   imageLinks?: {
     thumbnail: string
   };
-  alreadyExistInBD?: boolean;
+  inFavorite?: boolean;
 }

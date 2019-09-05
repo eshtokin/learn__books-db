@@ -4,6 +4,9 @@ import { BookService } from 'src/app/service/books.service';
 import { Book } from 'src/app/models/book.model';
 import { UserService } from 'src/app/service/users.service';
 import { UserInfo } from 'src/app/service/user-info.service';
+import { PaginationEvent } from 'src/app/models/pagination-event';
+import { User } from 'src/app/models/user.model';
+import { ServerResponce } from 'src/app/models/server-response';
 
 @Component({
   selector: 'app-filtered-book',
@@ -11,7 +14,13 @@ import { UserInfo } from 'src/app/service/user-info.service';
   styleUrls: ['./filtered-book.component.scss']
 })
 export class FilteredBookComponent implements OnInit {
-  public data;
+  public data: {
+    'authors[]': string[],
+    'categories[]': string[],
+    title: string,
+    pagination: PaginationEvent
+
+  };
   public books: Book[];
   public favoritesId: string[];
 
@@ -25,7 +34,6 @@ export class FilteredBookComponent implements OnInit {
 
   ngOnInit() {
     const linkParams = this.activeRoute.snapshot.queryParams;
-    console.log('linkParams', linkParams);
 
     this.data = {
       'authors[]': linkParams.authors,
@@ -41,14 +49,14 @@ export class FilteredBookComponent implements OnInit {
     this.getSomeBooks();
   }
 
-  public getSomeBooks() {
+  public getSomeBooks(): void {
     this.bookService.getSomeBooks(this.data)
     .then((el: any) => {
       this.userService.getUser(this.userInfo.getCurrentUser().id)
-      .then(user => {
-        this.favoritesId = user.books;
+      .then((user: User) => {
+        this.favoritesId = user.books as string[];
 
-        this.books = el[0].books.map(book => {
+        this.books = el[0].listOfItem.map((book: Book) => {
           return {
             ...book,
             inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
@@ -59,13 +67,7 @@ export class FilteredBookComponent implements OnInit {
     });
   }
 
-  public paginationHandler(pageEvent) {
-    this.data.pagination = pageEvent;
-    this.getSomeBooks();
-    return pageEvent;
-  }
-
-  show(pageEvent) {
+  public paginationHandler(pageEvent: PaginationEvent): PaginationEvent {
     this.data.pagination = pageEvent;
     this.getSomeBooks();
     return pageEvent;
@@ -73,13 +75,12 @@ export class FilteredBookComponent implements OnInit {
 
   public getBooks(): void {
     this.bookService.getAllBooks(this.data.pagination)
-    .then((el: any) => {
+    .then((el: ServerResponce) => {
       this.userService.getUser(this.userInfo.getCurrentUser().id)
-      .then(user => {
-        this.favoritesId = user.books;
-      })
-      .then(() => {
-        this.books = el.books.map(book => {
+      .then((user: User) => {
+        this.favoritesId = user.books as string[];
+
+        this.books = (el.listOfItem as Book[]).map((book: Book): Book => {
           return {
             ...book,
             inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
@@ -91,7 +92,7 @@ export class FilteredBookComponent implements OnInit {
   }
 
   public getFilteredBooks(data): void {
-    console.log(data);
+    // for changing link
     this.router.navigate(
       ['/filtered'],
       {
