@@ -11,6 +11,7 @@ import { FilterComponent } from './filter/filter.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
+import { UserService } from '../service/users.service';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { RouterModule } from '@angular/router';
     BookEditeModalComponent
   ],
   providers: [
+    UserService
   ],
   exports: [
     BookComponent,

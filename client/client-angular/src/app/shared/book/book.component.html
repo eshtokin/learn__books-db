@@ -1,20 +1,19 @@
 <div class="z-depth-4">
   <div class="card horizontal">
     <div class="card-image">
-        <img alt="Book image" src="{{bookImage}}" class="book-image">
-
-      <div *ngIf="checkEditAccess()">
-        <button
-          (click)="chooseEditeBook(book)"
-          class="btn edite-btn rework-btn">
-          <i class="material-icons">edite</i>
-        </button>
-        <button 
-          (click)="deleteDialog(book)"
-          class="btn delete-btn rework-btn">
-          <i class="material-icons">delete</i>
-        </button>
-      </div>
+      <img alt="Book image" src="{{bookImage}}" class="book-image">
+      <button
+        (click)="chooseEditeBook(book)"
+        class="btn edite-btn rework-btn"
+        *ngIf="buttonStatus.editeBtn">
+        <i class="material-icons">edite</i>
+      </button>
+      <button 
+        (click)="deleteDialog(book)"
+        class="btn delete-btn rework-btn"
+        *ngIf="buttonStatus.editeBtn">
+        <i class="material-icons">delete</i>
+      </button>
     </div>
     <div class="card-stacked">
       <div class="card-content">

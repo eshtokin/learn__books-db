@@ -7,19 +7,18 @@ import { UserInfo } from 'src/app/service/user-info.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  public isUserAuth: boolean;
+  public isUserAuth;
   public userRole;
   constructor(
     private userInfo: UserInfo
     ) {
       // Return true if user have token from the server in another case return false
-      this.isUserAuth = this.userInfo.isUserAuth();
+      this.isUserAuth = this.userInfo.isUserAuth;
 
       // Return true if user have status Admin
-      this.userRole = this.userInfo.getStatus();
+      this.userRole = this.userInfo.getStatus;
     }
 
   ngOnInit() {
   }
-
 }

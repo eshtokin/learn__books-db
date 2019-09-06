@@ -1,68 +1,47 @@
 <nav class="col s12">
   <div class="nav-wrapper teal">
-    <a routerLink="/" class="brand-logo"> Logo</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li *ngIf="isUserAuth">
-        <a 
-        routerLink=""
-        routerLinkActive="active-link"
-        [routerLinkActiveOptions]="{exact: true}"
+    <a routerLink="/" class="brand-logo">Logo</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down"  *ngIf="isUserAuth()">
+      <li>
+        <a  routerLink="" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"
         >Home</a>
       </li>
-      <li *ngIf="isUserAuth">
-        <a 
-        routerLink="catalog"
-        routerLinkActive="active-link"
+      <li>
+        <a  routerLink="catalog" routerLinkActive="active-link"
         >GoogleBook</a>
       </li>
-      <li *ngIf="isUserAuth">
-        <a
-        routerLink="gbooks"
-        routerLinkActive="active-link"
+      <li>
+        <a routerLink="gbooks" routerLinkActive="active-link"
         >Books</a>
       </li>
-      <li *ngIf="(isUserAuth && userRole)">
-        <a routerLink="user-manager"
-        routerLinkActive="active-link"
+      <li *ngIf="userRole()">
+        <a routerLink="user-manager" routerLinkActive="active-link"
         >Users</a>
       </li>
-      <li *ngIf="!isUserAuth">
-        <a
-        routerLink="auth"
-        >Log in</a>
-      </li>
-      <li class="dropdown"
-      *ngIf="(isUserAuth)"
-      >
+      <li class="dropdown">
         <a class="btn-floating btn-large  waves-effect waves-light teal">
           <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png" alt="user avatar">
         </a>
         <ul>
           <li>
-            <a
-            routerLink="profile"
-            routerLinkActive="active-link"
-            [routerLinkActiveOptions]="{exact: true}"
+            <a routerLink="profile" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}"
             >My profile</a>
           </li>
           <li>
-            <a
-            routerLink="profile/favorites"
-            routerLinkActive="active-link"
-            >My favorites</a></li>
-          <li *ngIf="!isUserAuth">
-            <a
-            routerLink="auth/login"
-            routerLinkActive="active-link"
-            >Log in</a>
+            <a routerLink="profile/favorites" routerLinkActive="active-link"
+            >My favorites</a>
           </li>
-          <li *ngIf="isUserAuth" (click)="this.userInfo.logout()">
-            <a
-            routerLink="auth/login"
-            routerLinkActive="active-link"
+          <li (click)="this.userInfo.logout()">
+            <a routerLink="auth/login" routerLinkActive="active-link"
             >Log out</a>
           </li>
         </ul>
+      </li>
+    </ul>
+    <ul id="nav-mobile" class="right hide-on-med-and-down"  *ngIf="!isUserAuth()">
+      <li>
+        <a routerLink="auth" routerLinkActive="active-link"
+        >Log in</a>
       </li>
     </ul>
   </div>
