@@ -1,6 +1,5 @@
 import { Axios } from '../interceptor/token.interseptor';
 import { Book } from '../models/book.model';
-import { User } from '../models/user.model';
 import { BookFilter } from '../models/book-filter.model';
 import { PaginationEvent } from '../models/pagination-event';
 import { ServerResponce } from '../models/server-response';
@@ -11,9 +10,7 @@ export class BookService {
 
   public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {
     return Axios.get('/books', {params: pagination})
-    .then(res => {
-      return res.data;
-    })
+    .then(res => res.data)
     .catch(err => console.log(err));
   }
 

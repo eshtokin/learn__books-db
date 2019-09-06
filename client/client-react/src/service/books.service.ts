@@ -1,6 +1,4 @@
 import { Axios } from '../interceptor/token.interceptor';
-// import Axios from 'axios';
-
 import { Book } from '../models/book.model';
 import { User } from '../models/user.model';
 
