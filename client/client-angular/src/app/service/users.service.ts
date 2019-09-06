@@ -21,7 +21,7 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getAllUsers(pagination?: PaginationEvent): Promise<User[]> {
+    public getAllUsers(pagination?: PaginationEvent): Promise<any> {
         return Axios.get('/user', {params: pagination})
         .then(res => {
             return res.data;
@@ -29,7 +29,7 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getSomeUsers(searchString: string, pagination: PaginationEvent): Promise<User[]> {
+    public getSomeUsers(searchString: string, pagination: PaginationEvent): Promise<any> {
         return Axios.get('/usersearch', {params: {searchString, pagination}})
         .then(res => res.data)
         .catch(err => console.log(err));

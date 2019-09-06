@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Book } from 'src/app/models/book.model';
 import { UserInfo } from 'src/app/service/user-info.service';
 import { BookService } from 'src/app/service/books.service';
-import { User } from 'src/app/models/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { BookEditeModalComponent } from './book-edite-modal/book-edite-modal.component';
 import { BookDeleteModalComponent } from './book-delete-modal/book-delete-modal.component';
@@ -76,10 +75,6 @@ export class BookComponent implements OnInit {
         reloadPage: this.reloadPage
       }
     });
-  }
-
-  public checkEditAccess(): boolean {
-    return this.userInfo.getStatus() && this.buttonStatus.editeBtn;
   }
 
   public deleteDialog(book: Book): void {
