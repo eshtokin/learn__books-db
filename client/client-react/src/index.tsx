@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { store } from "./store/state/index";
+import { store } from "./store/store/index";
 import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
+      {console.log('Store: ', store.getState())}
       <App />
     </Provider>
   </BrowserRouter>

@@ -3,7 +3,7 @@ import { GoogleBooks } from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { PaginationEvent } from 'src/app/models/pagination-event';
+import { PaginationEvent } from 'src/app/models/pagination-event.model';
 import { Book } from 'src/app/models/book.model';
 
 @Component({

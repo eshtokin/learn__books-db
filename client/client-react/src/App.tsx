@@ -3,6 +3,9 @@ import './App.css';
 import 'materialize-css/dist/css/materialize.min.css';
 import Header from './shared/header/header'
 import { Switch, Route } from 'react-router-dom';
+import { AuthForm } from './AuthForm';
+import { GoogleBook } from './Admin/Google-Book';
+import { BookManager } from './Admin/BookManager';
 
 const App: React.FC = () => {
   return (
@@ -10,13 +13,12 @@ const App: React.FC = () => {
       <Header />
       <Switch>
         <Route exact path='/' component={() => <h3>home</h3>}/>
-        <Route path='/catalog' component={() => <h3>catalog</h3>}/>
-        <Route path='/gbooks' component={() => <h3>gbooks</h3>}/>
+        <Route path='/catalog' component={ GoogleBook }/>
+        <Route path='/book-manager' component={ BookManager }/>
         <Route path='/user-manager' component={() => <h3>user-manager</h3>}/>
         <Route path='/profile' component={() => <h3>profile</h3>}/>
         <Route path='/profile/favorites' component={() => <h3>favorites</h3>}/>
-        <Route path='/auth' component={() => <h3>auth</h3>}/>
-        <Route path='/auth/login' component={() => <h3>Login</h3>}/>
+        <Route path='/auth' component={AuthForm}/>
       </Switch>
     </div>
   );

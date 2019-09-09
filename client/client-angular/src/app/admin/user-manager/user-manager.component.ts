@@ -6,7 +6,7 @@ import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.
 import { User } from '../../models/user.model';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { PaginationEvent } from 'src/app/models/pagination-event';
+import { PaginationEvent } from 'src/app/models/pagination-event.model';
 
 @Component({
   selector: 'app-user-manager',

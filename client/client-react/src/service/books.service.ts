@@ -1,13 +1,11 @@
-import { Axios } from '../interceptor/token.interseptor';
+import { Axios } from './../interceptor/token.interceptor';
 import { Book } from '../models/book.model';
 import { BookFilter } from '../models/book-filter.model';
 import { PaginationEvent } from '../models/pagination-event.model';
-import { ServerResponce } from '../models/server-response.model';
+import { ServerResponce } from './../models/server-response.model';
 import { CategoryAuthor } from '../models/category-author.model';
 
 export class BookService {
-  constructor() {}
-
   public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {
     return Axios.get('/books', {params: pagination})
     .then(res => res.data)

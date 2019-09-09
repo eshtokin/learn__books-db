@@ -4,9 +4,9 @@ import { BookService } from 'src/app/service/books.service';
 import { Book } from 'src/app/models/book.model';
 import { UserService } from 'src/app/service/users.service';
 import { UserInfo } from 'src/app/service/user-info.service';
-import { PaginationEvent } from 'src/app/models/pagination-event';
+import { PaginationEvent } from 'src/app/models/pagination-event.model';
 import { User } from 'src/app/models/user.model';
-import { ServerResponce } from 'src/app/models/server-response';
+import { ServerResponce } from 'src/app/models/server-response.model';
 
 @Component({
   selector: 'app-filtered-book',

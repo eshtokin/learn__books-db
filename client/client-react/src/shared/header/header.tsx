@@ -20,7 +20,7 @@ class Header extends React.Component {
               <Link to="/catalog">GoogleBook</Link>
             </li>
             <li>
-              <Link to="/gbooks">Books</Link>
+              <Link to="/book-manager">Books</Link>
             </li>
             <li //*ngIf="userRole()">
             >

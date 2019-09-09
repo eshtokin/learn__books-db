@@ -3,8 +3,8 @@ import { BookService } from 'src/app/service/books.service';
 import { Book } from '../../models/book.model';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/users.service';
-import { PaginationEvent } from 'src/app/models/pagination-event';
-import { ServerResponce } from 'src/app/models/server-response';
+import { PaginationEvent } from 'src/app/models/pagination-event.model';
+import { ServerResponce } from 'src/app/models/server-response.model';
 
 @Component({
   selector: 'app-books-manager',

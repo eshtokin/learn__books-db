@@ -8,7 +8,7 @@ import { User } from 'src/app/models/user.model';
 import { FavoritesDeleteModalComponent } from './favorite-delete-modal/favorites-delete-modal.component';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { PaginationEvent } from 'src/app/models/pagination-event';
+import { PaginationEvent } from 'src/app/models/pagination-event.model';
 
 @Component({
   selector: 'app-favorites',

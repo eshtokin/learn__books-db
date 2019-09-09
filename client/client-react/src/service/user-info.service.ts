@@ -13,17 +13,17 @@ export class UserInfo {
         return false;
     }
 
-    public getCurrentUser(): User | null {
+    public getCurrentUser(): User | null | undefined {
         if ( localStorage.hasOwnProperty('token') ) {
-            return localStorage.getItem('token') ? decode(localStorage.getItem('token')) : null;
+            return localStorage.getItem('token') ? decode(localStorage.getItem('token') as  string) : null;
         }
     }
 
     // return true (admin) or false (user)
     public getStatus(): boolean {
-        let user;
+        let user: User;
         if (localStorage.hasOwnProperty('token')) {
-            user = decode(localStorage.getItem('token'));
+            user = decode(localStorage.getItem('token') as string);
             if (1 === user.role) {
                 return true;
             }
