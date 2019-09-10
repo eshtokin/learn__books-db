@@ -2,6 +2,8 @@ import React, { Props, ChangeEvent } from 'react';
 import GoogleBooks from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Book } from '../../models/book.model';
+import { BookComponent } from '../../shared/BookComponent';
+import { Pagination } from './../../shared/Pagination';
 // const Filter = React.lazy(() => import('../../shared/filter'))
 
 export class GoogleBook extends React.Component {
@@ -17,6 +19,7 @@ export class GoogleBook extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.paginationHandler = this.paginationHandler.bind(this)
   }
   public googleBooks: GoogleBooks;
 
@@ -39,6 +42,11 @@ export class GoogleBook extends React.Component {
     })
   }
 
+  public paginationHandler(event: any) {
+    console.log(event.target);
+    
+  }
+
   render() {
     return (
       <div className="container">
@@ -54,9 +62,30 @@ export class GoogleBook extends React.Component {
         </div>
         {(this.state as any).listOfBook.map((book: Book, index: number) => {
           return (
-            <p key={index}>{book.title}</p>
-          )
-        })}
+            <BookComponent
+              key={index}
+              book={book}
+              buttonStatus={{
+                editeBtn: false,
+                deleteBtn: false,
+                ddToDbBtn: false,
+                addToFavoriteBtn: true
+              }}
+            />
+            )
+          })}
+        <div onClick={(event) => this.paginationHandler(event)}>
+        
+        <Pagination
+          pageIndex={0}
+          pageSize={5}
+          length={5}
+          // [length] = "paginationParams.length"
+          // [pageSize] = "paginationParams.pageSize"
+          // [pageSizeOptions] = "[3, 5, 7, 10]"
+          // (page) = "paginationHandler($event)">
+        />
+        </div>
       </div>
     )
   }

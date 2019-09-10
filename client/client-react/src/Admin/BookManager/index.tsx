@@ -1,5 +1,5 @@
 import React, { Props } from 'react';
-import Filter from '../../shared/filter';
+import Filter from '../../shared/Filter';
 import { BookComponent } from '../../shared/BookComponent';
 import { BookService } from '../../service/books.service';
 import { Book } from './../../models/book.model';
@@ -29,25 +29,25 @@ export class BookManager extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="row">
         <Filter />
-        {
-          (this.state as any).books.length > 0 ?
-          (this.state as any).books.map((book: Book, index: number) => {
-            return <div key={index}>
-              <BookComponent
+        <div className="col s10">
+        {(this.state as any).books.length > 0 ?
+        (this.state as any).books.map((book: Book, index: number) => {
+          return (
+            <BookComponent
+              key={index}
               book={book}
               buttonStatus={{
-                editeBtn: true,
-                deleteBtn: true,
+                editeBtn: true, // true
+                deleteBtn: true, // true
                 ddToDbBtn: false,
                 addToFavoriteBtn: true
               }}
-              />
-            </div> 
+            />)
           })
-          : <h1>nothing</h1>
-        }
+          : <h1>nothing</h1>}
+        </div>
       </ div>
     )
   }

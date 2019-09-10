@@ -1,6 +1,7 @@
 import React, { Props } from 'react'
 import { BookService } from '../../service/books.service';
 import { CategoryAuthor } from '../../models/category-author.model';
+import './style.scss'
 
 export default class Filter extends React.Component {
   constructor(props: Props<any>) {
@@ -40,10 +41,10 @@ export default class Filter extends React.Component {
         {
           (this.state as any).categories.map((category: CategoryAuthor, index: number) => {
             return (
-              <div className="category-input" key={index}>
+              <label key={index}>
                 <input type="checkbox"/>
-                <label>{category.name}</label>
-              </div>
+                <span>{category.name}</span>
+              </label>
             )
           })
         }
@@ -51,10 +52,10 @@ export default class Filter extends React.Component {
         {
           (this.state as any).authors.map((author: CategoryAuthor, index: number) => {
             return (
-              <div className="author-input" key={index}>
+              <label key={index}>
                 <input type="checkbox" />
-                <label>{author.name}</label>
-              </div>
+                <span>{author.name}</span>
+              </label>
             )
           })
         }

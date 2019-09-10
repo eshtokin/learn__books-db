@@ -4,10 +4,7 @@ li {
   text-align: center;
 }
 
-img {
-  width: 100%;
-  height: 100%
-}
+
 .active-link {
   background: #00796b;
   border-radius: 10px;
@@ -16,20 +13,24 @@ img {
 .dropdown {
   position: relative;
   &:hover {
-      cursor: hover;
-      ul li {
-          display: block;
-          text-align: center;
-          background: #26a69a;
-          color: black;
-      }
+    cursor: hover;
+    ul li {
+      display: block;
+      text-align: center;
+      background: #26a69a;
+      color: black;
+    }
+  }
+  img {
+    width: 56px;
+    height: 56px;
   }
   ul {
-      position: absolute;
-      z-index: 1;
-      li {
-          display: none;
-          background: #26a69a;
-      }
+    position: absolute;
+    z-index: 1;
+    li {
+      display: none;
+      background: #26a69a;
+    }
   }
 }
