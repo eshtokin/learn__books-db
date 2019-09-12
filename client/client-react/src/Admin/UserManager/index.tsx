@@ -3,25 +3,18 @@ import { UserService } from './../../service/users.service'
 import { UserComponent } from './../../shared/UserComponent'
 import { User } from './../../models/user.model'
 import './style.scss';
+import { setUserAtPage } from '../../store/actions/userManagerAction';
+import { connect } from 'react-redux';
+import { store } from '../../store/store';
 
-export class UserManager extends React.Component {
+class UserManager extends React.Component<any, any> {
   constructor(props: Props<any>) {
     super(props);
     this.userService = new UserService();
 
-    this.state = {
-      title: 'book manager',
-      userList: []
-    }
-
     this.userService.getAllUsers({pageIndex: 0, pageSize: 5})
     .then(data => {
-      console.log(data[0].listOfItem);
-      this.setState({
-        ...this.state,
-        userList: data[0].listOfItem
-      })
-      return data.listOfItem;
+      this.props.setUsers(data[0].listOfItem)
     })
   }
 
@@ -36,7 +29,7 @@ export class UserManager extends React.Component {
           <label htmlFor="searchField">Enter e-mail</label>
           <br/>
         </div>
-      { (this.state as any).userList.map((user: User, index: number) => { 
+      { this.props.takeUsers().map((user: User, index: number) => { 
         return <UserComponent
         key={index}
         user={user}
@@ -58,3 +51,29 @@ export class UserManager extends React.Component {
     )
   }
 }
+
+interface MapStateToProps {
+  userManagerreducer: {
+    usersAtPage: User[]
+  }
+}
+
+interface MapDispatchToProps {
+  getUserList: () => User[];
+  setUser: (list: User[]) => User[];
+}
+
+const mapStateToProps = (state: any) => {
+  return {
+    ...state.userManagerReducer
+  }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUsers: (list: User[]): User[] => dispatch(setUserAtPage(list)),
+    takeUsers: () => store.getState().userManagerReducer.usersAtPage
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserManager)

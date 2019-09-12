@@ -16,11 +16,6 @@ export class FilterComponent implements OnInit {
 
   public authors: CategoryAuthor[];
   public categories: CategoryAuthor[];
-  public filterData = {
-    title: '',
-    categories: new Set(),
-    authors: new Set()
-  };
   public searchField = '';
   public searchStringUpdate = new Subject<string>();
   public linkParams;

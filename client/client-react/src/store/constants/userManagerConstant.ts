@@ -1,0 +1,1 @@
+export const SET_USER_AT_PAGE = 'SET_USER_AT_PAGE';

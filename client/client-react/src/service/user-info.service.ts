@@ -1,10 +1,7 @@
 import decode from 'jwt-decode';
 import { User } from '../models/user.model';
 
-export class UserInfo {
-    constructor() {
-    }
-
+export class UserInfoService {
     // return true (if user have token) of false (if haven't token)
     public isUserAuth(): boolean {
         if ( localStorage.hasOwnProperty('token') ) {

@@ -1,4 +1,4 @@
-import React, { Props } from 'react';
+import React from 'react';
 import './style.scss'
 
 interface props {
@@ -8,9 +8,6 @@ interface props {
 }
 
 export class UserDeleteModal extends React.Component<props> {
-  constructor(props: props) {
-    super(props);
-  }
 
   render() {
     if(!this.props.show) {

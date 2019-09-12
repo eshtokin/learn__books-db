@@ -1,0 +1,1 @@
+export const SET_BOOK_AT_PAGE = 'SET_BOOK_AT_PAGE';
