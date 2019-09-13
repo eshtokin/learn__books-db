@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css';
-import Header from './shared/Header/header'
+import Header from './shared/HeaderComponent/headerComponent'
 import { Switch, Route } from 'react-router-dom';
 import { AuthForm } from './AuthForm';
 import { GoogleBook } from './Admin/Google-Book';
-import  BookManager from './Admin/BookManager';
+import  BookManager from './Admin/BookManager/BookManager';
 import UserManager from './Admin/UserManager'
 import FilteredBook from './shared/FilteredBook';
 

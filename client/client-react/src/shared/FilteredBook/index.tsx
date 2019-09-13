@@ -1,39 +1,38 @@
 import React from 'react';
-import { Book } from '../../models/book.model';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
+import { User } from '../../models/user.model';
+import { Book } from '../../models/book.model';
 import { UserService } from '../../service/users.service';
 import { BookService } from '../../service/books.service';
 import { UserInfoService } from '../../service/user-info.service';
-import queryString from 'query-string';
-import { User } from '../../models/user.model';
-import { BookComponent } from '../BookComponent';
-import Filter from './../Filter';
+import { BookComponent } from '../BookComponent/BookComponent';
+import Filter from '../FilterComponent/FilterComponent';
 import { setBook } from '../../store/actions/filteredBookAction';
 
+
 class FilteredBook extends React.Component<any, any>{
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      books: []
-    }
-
-    this.userInfoService = new UserInfoService()
-    this.userService = new UserService();
-    this.bookService = new BookService();
-  }
-
   public userInfoService: UserInfoService;
   public userService: UserService;
   public bookService: BookService;
 
-  // componentDidMount() {
-  //   this.getSomeBooks()
-  // }
+  constructor(props: any) {
+    super(props);
+
+    this.userInfoService = new UserInfoService()
+    this.userService = new UserService();
+    this.bookService = new BookService();
+
+    this.addBookToFavorite = this.addBookToFavorite.bind(this);
+  }
+
+  componentDidMount() {
+    this.getSomeBooks()
+  }
 
 
   public getSomeBooks(): void {
-    const linkParams = queryString.parse(this.props.location.search);
+    const linkParams = queryString.parse(this.props.history.location.search);
     const data = {
       'authors[]': linkParams.authors as string[] || [],
       'categories[]': linkParams.categories as string[] || [],
@@ -63,6 +62,16 @@ class FilteredBook extends React.Component<any, any>{
       });
     });
   }
+  
+  public deleteBookFromDB(data: Book) {
+    this.bookService.deleteBook(data)
+    .then(console.log)
+  }
+
+  public addBookToFavorite(book: Book) {
+    console.log('add Book to favorites', book.title);
+    
+  }
 
   render() {
     return (
@@ -84,6 +93,8 @@ class FilteredBook extends React.Component<any, any>{
                     ddToDbBtn: false,
                     addToFavoriteBtn: true
                   }}
+                  deleteFromDB={this.deleteBookFromDB}
+                  addToFavorite={this.addBookToFavorite}
                 />)
             })
             : <h1>nothing</h1>}

@@ -50,8 +50,6 @@ export class GoogleBooks {
           });
 
           this.pageInfo.currentItems = res.data.items.map((el): Book => {
-            console.log(el);
-
             const industryIdentifiers = el.volumeInfo.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
             return obj.type + obj.identifier;
             }).join('');

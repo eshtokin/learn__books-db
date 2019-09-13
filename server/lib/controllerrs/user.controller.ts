@@ -134,6 +134,7 @@ export class UserController {
 
     public updateUser(req: Request, res: Response) {
         const data = req.body;
+        console.log('body: ', req.body)
         
         if (req.body.password[0] !== '$') {
             data.password = crypt.hashSync(req.body.password)

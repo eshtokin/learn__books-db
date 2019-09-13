@@ -1,9 +1,9 @@
 import { Book } from '../../models/book.model';
-import { SET_BOOK_AT_PAGE } from '../constants/bookManagerConstant';
+import { SET_BOOK_AT_PAGE, DELETE_BOOK, TOGGLE_FAVORITE_FLAG } from '../constants/bookManagerConstant';
 
 export interface BookReducerAction {
   type: string;
-  payload: Book[];
+  payload: Book[] | string;
 }
 
 export interface BookManagerStore {
@@ -16,6 +16,23 @@ export function bookManagerReducer(state: BookManagerStore = {bookAtPage: []}, a
     case SET_BOOK_AT_PAGE:
       return {
         bookAtPage: action.payload as Book[]
+      }
+    case DELETE_BOOK:
+      return {
+        bookAtPage: state.bookAtPage.filter((book) => {
+          return book._id !== action.payload;
+        })
+      }
+    case TOGGLE_FAVORITE_FLAG:
+      return {
+        bookAtPage: state.bookAtPage.map(book => {
+          return {
+            ...book,
+            inFavorite: book._id === action.payload
+            ? !book.inFavorite
+            : book.inFavorite
+          }
+        })
       }
     default:
       return state;

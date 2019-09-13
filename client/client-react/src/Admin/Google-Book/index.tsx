@@ -2,27 +2,35 @@ import React, { Props, ChangeEvent } from 'react';
 import GoogleBooks from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Book } from '../../models/book.model';
-import { BookComponent } from '../../shared/BookComponent';
+import { BookComponent } from '../../shared/BookComponent/BookComponent';
 import { Pagination } from './../../shared/Pagination';
 // const Filter = React.lazy(() => import('../../shared/filter'))
 
 export class GoogleBook extends React.Component {
+  public googleBooks: GoogleBooks;
+  private bookService: BookService;
+
   constructor(
     props: Props<any>
     ) {
     super(props);
     this.googleBooks = new GoogleBooks(new BookService());
+    this.bookService = new BookService();
     this.state = {
       searchString:  '',
       listOfBook: [],
       paginationParams: []
     };
+  
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.paginationHandler = this.paginationHandler.bind(this)
+    this.paginationHandler = this.paginationHandler.bind(this);
+    this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
   }
-  public googleBooks: GoogleBooks;
 
+  shouldComponentUpdate() {
+    return true;
+  }
 
   public handleChange(event: ChangeEvent<HTMLInputElement>): void {
     this.setState({
@@ -44,7 +52,15 @@ export class GoogleBook extends React.Component {
 
   public paginationHandler(event: any) {
     console.log(event.target);
-    
+  }
+
+  public deleteBookFromDB(data: Book) {
+    this.bookService.deleteBook(data)
+    .then((response) => {
+      if (response.status === 200) {
+        
+      }
+    })
   }
 
   render() {
@@ -71,6 +87,8 @@ export class GoogleBook extends React.Component {
                 ddToDbBtn: false,
                 addToFavoriteBtn: true
               }}
+              deleteFromDB={this.deleteBookFromDB}
+              addToFavorite={() => {}}
             />
             )
           })}

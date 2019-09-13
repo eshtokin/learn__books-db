@@ -1,12 +1,11 @@
 import React from 'react'
-import { BookService } from '../../service/books.service';
-import { CategoryAuthor } from '../../models/category-author.model';
-import './style.scss'
-import * as filterAction from '../../store/actions/filterAction';
 import { connect } from 'react-redux';
-import { FilterState } from '../../store/reducers/filterReducer';
-
 import queryString from 'query-string';
+import { CategoryAuthor } from '../../models/category-author.model';
+import { BookService } from '../../service/books.service';
+import { FilterState } from '../../store/reducers/filterReducer';
+import * as filterAction from '../../store/actions/filterAction';
+import './style.scss'
 
 
 interface Props{
