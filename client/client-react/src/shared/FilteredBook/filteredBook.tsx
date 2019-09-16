@@ -47,6 +47,7 @@ class FilteredBook extends React.Component<any, any>{
     let favoritesId: string | string[] = [];
     this.bookService.getSomeBooks(data)
     .then((el: any) => {
+
       this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
       .then((user: User) => {
         favoritesId = user.books as string[];
@@ -58,7 +59,10 @@ class FilteredBook extends React.Component<any, any>{
           })
 
         this.props.setBook(listOfBook)
-        data.pagination.length = el[0].totalCount[0].count;
+        
+        if (el[0].totalCount[0]) {
+          data.pagination.length = el[0].totalCount[0].count;
+        }
       });
     });
   }
@@ -69,8 +73,20 @@ class FilteredBook extends React.Component<any, any>{
   }
 
   public addBookToFavorite(book: Book) {
-    console.log('add Book to favorites', book.title);
-    
+    if (!book.inFavorite) {
+      this.userService.addBookToProfile(book)
+      .then(() => this.componentDidMount())
+    } else {
+      this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
+      .then(user => {
+        user.books = (user.books as string[]).filter(bookId => {
+          return bookId !== book._id;
+        })
+        this.userService.edit(user._id, user)
+        .then(() => this.componentDidMount())
+      })
+    }
+    book.inFavorite = !book.inFavorite;
   }
 
   render() {

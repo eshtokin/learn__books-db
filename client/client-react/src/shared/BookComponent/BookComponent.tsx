@@ -80,7 +80,7 @@ export class BookComponent extends React.Component<BookProps> {
     this.bookDeleteModal();
     this.props.deleteFromDB(this.props.book);
   }
-
+  // mark
   public addBooktoFavorite() {
     this.props.addToFavorite(this.props.book);
   }

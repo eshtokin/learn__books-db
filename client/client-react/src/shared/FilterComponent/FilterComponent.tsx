@@ -81,8 +81,7 @@ class Filter extends React.Component<Props, any> {
       });
     }
 
-    if (event) {
-      console.log((event as ChangeEvent<HTMLInputElement>).target.value);
+    if (event && event.target.value.length > 0) {
       data.title = event.target.value
     }
 
