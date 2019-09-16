@@ -1,7 +1,7 @@
 import React, { Props } from 'react';
-import { UserService } from './../../service/users.service'
-import { UserComponent } from './../../shared/UserComponent'
-import { User } from './../../models/user.model'
+import { UserService } from '../../service/users.service'
+import { UserComponent } from '../../shared/UserComponent'
+import { User } from '../../models/user.model'
 import './style.scss';
 import { setUserAtPage } from '../../store/actions/userManagerAction';
 import { connect } from 'react-redux';

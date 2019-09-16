@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { CategoryAuthor } from '../../models/category-author.model';
@@ -58,29 +58,34 @@ class Filter extends React.Component<Props, any> {
     });
   }
 
+  public filterHandler(obj: CategoryAuthor | null, event?: ChangeEvent<HTMLInputElement>) {
+    let data: {
+      title?: string,
+      categories?: CategoryAuthor[],
+      authors?: CategoryAuthor[]
+    } = {};
+    
+    if (obj && obj !== undefined) {
+      (obj as CategoryAuthor).checked = !(obj as CategoryAuthor).checked
 
-  public filterHandler(obj: CategoryAuthor) {
-    if (obj !== undefined) {
-      obj.checked = !obj.checked
+      data.categories = this.props.categories.filter((obj: any) => {
+        return obj.checked;
+      }).map((obj: any) => {
+        return obj._id;
+      });
+  
+      data.authors = this.props.authors.filter((obj: any) => {
+        return obj.checked;
+      }).map((obj: any) => {
+        return obj._id;
+      });
     }
 
-    const data = {
-      categories: [],
-      authors: []
-    };
+    if (event) {
+      console.log((event as ChangeEvent<HTMLInputElement>).target.value);
+      data.title = event.target.value
+    }
 
-    data.categories = this.props.categories.filter((obj: any) => {
-      return obj.checked;
-    }).map((obj: any) => {
-      return obj._id;
-    });
-
-    data.authors = this.props.authors.filter((obj: any) => {
-      return obj.checked;
-    }).map((obj: any) => {
-      return obj._id;
-    });
-    
     (this.props as any).push({
       pathname: '/filtered',
       search: queryString.stringify(data)
@@ -93,7 +98,9 @@ class Filter extends React.Component<Props, any> {
     return (
       <div className="col s2 filters">
         <div className="input-field">
-          <input type="text" id="searchField" />
+          <input type="text" id="searchField" 
+          onChange={(event) => this.filterHandler(null, event)}
+          />
           <label>Search Field</label>
         </div>
         {

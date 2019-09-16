@@ -3,7 +3,7 @@ import GoogleBooks from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
-import { Pagination } from './../../shared/Pagination';
+import { Pagination } from '../../shared/Pagination/pagination';
 // const Filter = React.lazy(() => import('../../shared/filter'))
 
 export class GoogleBook extends React.Component {

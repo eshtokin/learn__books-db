@@ -1,7 +1,7 @@
 import React from 'react';
 import { User } from "../../models/user.model";
 import { Book } from "../../models/book.model";
-import { UserDeleteModal } from './UserDeleteModal';
+import { UserDeleteModal } from './UserDeleteModal/userDeleteModal';
 import { scrollToggle } from './../../service/scroll.service'
 
 interface BookProps {
