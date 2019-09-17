@@ -1,37 +1,32 @@
 import React from 'react';
 import './style.scss'
+import { User } from '../../../models/user.model';
 
-interface props {
-  show: boolean;
-  onClose: () => void;
-  userEmail: string;
+interface Props {
+  user: User;
+  close: () => void;
+  deleteUser: (user: User) => void;
 }
 
-export class UserDeleteModal extends React.Component<props> {
-
-  render() {
-    if(!this.props.show) {
-      return null;
-    }
-
-    return (
-      <div className="mybackdrop">
-        <div className="mymodal">
-        <h3>Delete user?</h3>
-          <p>Delete user with e-mail: <b>{this.props.userEmail}</b></p>
-          
-          <div className="myfooter">
-            <button className="btn green"
-              onClick={(this.props as any).onClose}
-            >
-              Cancel
-            </button>
-            <button className="btn red">
-              Delete
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+export default function DeleteUserModal(props: Props) {
+  return (
+    <div className="container center">
+      <p>Delete user with email: {props.user.email} ?</p>
+      <br/>
+      <button
+      className="btn green"
+      onClick={props.close}
+      >Close
+      </button>
+      <button 
+        className="btn red"
+        onClick={() => {
+          props.close();
+          props.deleteUser(props.user)
+        }}
+        >
+        Delete
+      </button>
+    </div>
+  )
 }

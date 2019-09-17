@@ -4,6 +4,7 @@ import { Book } from "../../models/book.model";
 import { CategoryAuthor } from '../../models/category-author.model';
 import './style.scss';
 import { EditeModal } from "./editeModal/editeModal";
+import DeleteModal from "./deleteModal/deleteModal";
 
 const customStyles = {
   content : {
@@ -37,8 +38,6 @@ interface BookState {
   bookDeleteModal: boolean;
   bookEditeModal: boolean;
   options: any;
-  
-
 };
 
 export class BookComponent extends React.Component<BookProps, BookState> {
@@ -127,57 +126,15 @@ export class BookComponent extends React.Component<BookProps, BookState> {
     return (
       <div className="z-depth-4 bookComponent">
         <ReactModal
-        isOpen={(this.state as any).addBookToFavorite as boolean}
-        style={customStyles}
-        contentLabel="Add book to favorites"
-        >
-          <div className="container center">
-            <h3>Book successfully added</h3>
-            <button
-            className="btn green"
-            onClick={this.addBookToFavoriteModal}
-            >OK</button>
-          </div>
-        </ReactModal>
-
-        <ReactModal
         isOpen={(this.state as any).bookDeleteModal as boolean}
         style={customStyles}
         contentLabel="Delete book from DataBase"
         >
-           <div className="container center">
-            Delete book from DataBase ?
-            <br/>
-            <b>{this.props.book.title}</b>
-
-            <button className="btn green"
-            onClick={this.bookDeleteModal}>
-              Cancel
-            </button>
-            <button className="btn red"
-            onClick={this.deleteBookFromDB}
-            >
-              Delete
-            </button>
-          </div>
-        </ReactModal>
-        
-        <ReactModal
-        isOpen={(this.state as any).deleteFromFavorites as boolean}
-        style={customStyles}
-        contentLabel="Book delete from favorites">
-          <div className="container center">
-            Delete book from "My Favorites" ?
-            <br/>
-            <b>{this.props.book.title}</b>
-            <button className="btn green"
-            onClick={this.deleteFromFavorites}>
-              Cancel
-            </button>
-            <button className="btn red">
-              Delete
-            </button>
-          </div>
+          <DeleteModal 
+            book={this.props.book}
+            close={this.bookDeleteModal}
+            deleteFromDB={this.deleteBookFromDB}
+          />
         </ReactModal>
 
         <ReactModal
@@ -256,7 +213,6 @@ export class BookComponent extends React.Component<BookProps, BookState> {
               {this.props.buttonStatus.addToFavoriteBtn && this.props.book.inFavorite ?
               <button
               className="btn red add-to-pro-btn"
-              // onClick={this.deleteFromFavorites}
               onClick={this.addBooktoFavorite}
               >
               delete from 'My favorites'

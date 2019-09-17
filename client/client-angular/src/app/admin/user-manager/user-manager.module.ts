@@ -6,6 +6,7 @@ import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.
 import { RouterModule } from '@angular/router';
 import { UserService } from 'src/app/service/users.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormHelper } from 'src/app/service/reactive-form-helper';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     UserDeleteModalComponent
   ],
   providers: [
-    UserService
+    UserService,
+    ReactiveFormHelper
     // AdminGuardService
   ],
   exports: []

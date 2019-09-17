@@ -1,89 +1,101 @@
 import React from 'react';
 import { User } from "../../models/user.model";
-import { Book } from "../../models/book.model";
-import { UserDeleteModal } from './UserDeleteModal/userDeleteModal';
-import { scrollToggle } from './../../service/scroll.service'
+import ReactModal from 'react-modal';
+import { Book } from '../../models/book.model';
+import DeleteUserModal from './userDeleteModal/userDeleteModal';
+import UserEditeModal from './userEditeModal/userEditeModal';
 
-interface BookProps {
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+    minWidth              : '550px'
+  }
+};
+
+interface State {
   user: User;
-  // buttonStatus: {
-  //   editeBtn: boolean,
-  //   deleteBtn: boolean,
-  //   ddToDbBtn: boolean,
-  //   addToFavoriteBtn: boolean
-  // }
+  userDeleteModal: boolean;
+  userEditeModal: boolean;
+}
+interface Props {
+  user: User;
+  deleteUser: (user: User) => void;
+  editeUser: (user: User) => void;
+  addNewUser: (user: User) => void;
 }
 
-export class UserComponent extends React.Component<BookProps> {
-  constructor(props: BookProps) {
-    super(props as BookProps);
+export class UserComponent extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
     
     this.state = {
-      user: {},
-      // addBookToFavorite: false,
-      // deleteFromFavorites: false,
-      // bookDeleteModal: false,
-      userDeleteModal: false
+      user: this.props.user,
+      userDeleteModal: false,
+      userEditeModal: false
     };
 
-    // this.addBookToFavorite = this.addBookToFavorite.bind(this);
-    // this.deleteFromFavorites = this.deleteFromFavorites.bind(this);
-    // this.bookDeleteModal = this.bookDeleteModal.bind(this);
     this.userDeleteModal = this.userDeleteModal.bind(this);
+    this.userEditeModal = this.userEditeModal.bind(this);
   }
 
-  // public addBookToFavorite(): void {
-  //   this.setState({
-  //     addBookToFavorite: !(this.state as any).addBookToFavorite
-  //   })
-  // }
+  componentDidMount() {
+    ReactModal.setAppElement('.userComponent')
+  }
 
-  // public deleteFromFavorites(): void {
-  //   this.setState({
-  //     deleteFromFavorites: !(this.state as any).deleteFromFavorites
-  //   })
-  // }
-
-  // public bookDeleteModal(): void {
-  //   this.setState({
-  //     bookDeleteModal: !(this.state as any).bookDeleteModal
-  //   })
-  // }
-
-  public userDeleteModal(): void {
-    if (!(this.state as any).userDeleteModal) {
-      scrollToggle().hide()
-    } else {
-      scrollToggle().visible()
-    }
+  public userDeleteModal() {
     this.setState({
-      userDeleteModal: !(this.state as any).userDeleteModal
+      userDeleteModal: !this.state.userDeleteModal
     })
   }
 
+  public userEditeModal() {
+    this.setState({
+      userEditeModal: !this.state.userEditeModal
+    })
+  }
+  
   render() {
     return (
-      <div className="z-depth-4 bookComponent">
-        <UserDeleteModal 
-          show={(this.state as any).userDeleteModal as boolean}
-          userEmail={this.props.user.email}
-          onClose={this.userDeleteModal}
-        />
-        {/* <BookDeleteFromFavModal 
-          show={(this.state as any).deleteFromFavorites as boolean}
-          title={this.props.book.title}
-          onClose={this.deleteFromFavorites}
-        /> */}
+      <div className="z-depth-4 userComponent">
+        <ReactModal
+        isOpen={(this.state as any).userDeleteModal as boolean}
+        style={customStyles}
+        contentLabel="Delete book from DataBase"
+        >
+          <DeleteUserModal 
+            user={this.props.user}
+            close={this.userDeleteModal}
+            deleteUser={this.props.deleteUser}
+          />
+        </ReactModal>
+
+        <ReactModal
+        isOpen={(this.state as any).userEditeModal as boolean}
+        style={customStyles}
+        contentLabel="Delete book from DataBase"
+        >
+          <UserEditeModal 
+            user={this.props.user}
+            close={this.userEditeModal}
+            editeUser={this.props.editeUser}
+            addNewUser={this.props.addNewUser}
+          />
+        </ReactModal>
+
         <div className="card horizontal z-depth-4">
           <div className="card-image col s4">
           <img src={(this.state as any).user.image || 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'} className="user-image" alt="userImage" />
             <button 
-            // (click)="openDialog(user)"
-            className="btn edite-btn rework-btn">
+            className="btn edite-btn rework-btn"
+            onClick={this.userEditeModal}>
               <i className="material-icons">edite</i>
             </button>
             <button 
-            // (click)="confirmDialog(user._id, user.email)"
             className="btn delete-btn rework-btn"
             onClick={this.userDeleteModal}>
               <i className="material-icons">delete</i>
