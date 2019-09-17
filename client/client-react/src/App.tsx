@@ -8,6 +8,7 @@ import { GoogleBook } from './Admin/Google-Book/googleBook';
 import  BookManager from './Admin/BookManager/BookManager';
 import UserManager from './Admin/UserManager/userManager'
 import FilteredBook from './shared/FilteredBook/filteredBook';
+import TestPage from './Admin/testFile';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path='/profile' component={() => <h3>profile</h3>}/>
         <Route path='/profile/favorites' component={() => <h3>favorites</h3>}/>
         <Route path='/auth' component={AuthForm}/>
+        <Route path='/test' component={TestPage}/>
       </Switch>
     </div>
   );

@@ -1,8 +1,9 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import ReactModal from 'react-modal';
 import { Book } from "../../models/book.model";
 import { CategoryAuthor } from '../../models/category-author.model';
-import './style.scss'
+import './style.scss';
+import { EditeModal } from "./editeModal/editeModal";
 
 const customStyles = {
   content : {
@@ -34,6 +35,9 @@ interface BookState {
   deleteFromFavorites: boolean;
   bookDeleteModal: boolean;
   bookEditeModal: boolean;
+  options: any;
+  
+
 };
 
 export class BookComponent extends React.Component<BookProps, BookState> {
@@ -47,7 +51,9 @@ export class BookComponent extends React.Component<BookProps, BookState> {
       addBookToFavorite: false,
       deleteFromFavorites: false,
       bookDeleteModal: false,
-      bookEditeModal: false
+      bookEditeModal: false,
+
+      options: [{name: 'Srigar', id: 1},{name: 'Sam', id: 2}],
     };
 
     this.addBookToFavoriteModal = this.addBookToFavoriteModal.bind(this);
@@ -57,9 +63,6 @@ export class BookComponent extends React.Component<BookProps, BookState> {
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
 
     this.addBooktoFavorite = this.addBooktoFavorite.bind(this);
-    this.inputTitleHandler = this.inputTitleHandler.bind(this);
-    this.inputDescriptionHandler = this.inputDescriptionHandler.bind(this);
-    this.inputPageHandler = this.inputPageHandler.bind(this);
   }
 
   componentDidMount() {
@@ -99,30 +102,6 @@ export class BookComponent extends React.Component<BookProps, BookState> {
     this.props.addToFavorite(this.props.book);
   }
 
-  public inputTitleHandler(event: ChangeEvent<HTMLInputElement>) {
-    const book = {...this.state.book}
-    book.title = event.target.value;
-    this.setState({
-      book
-    });
-  }
-
-  public inputDescriptionHandler(event: ChangeEvent<HTMLTextAreaElement>) {
-    const book = {...this.state.book}
-    book.description = event.target.value;
-    this.setState({
-      book
-    });
-  }
-  
-  public inputPageHandler(event: ChangeEvent<HTMLInputElement>) {
-    const book = {...this.state.book}
-    book.pageCount = +event.target.value;
-    this.setState({
-      book
-    });
-  }
-
   render() {
     const image = this.props.book.image?
         this.props.book.image
@@ -143,7 +122,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
         : this.props.book.authors?
         this.props.book.authors
         : null;
-
+    
     return (
       <div className="z-depth-4 bookComponent">
         <ReactModal
@@ -203,45 +182,11 @@ export class BookComponent extends React.Component<BookProps, BookState> {
         <ReactModal
         isOpen={(this.state as any).bookEditeModal as boolean}
         style={customStyles}
-        contentLabel="Book delete from favorites">
-          
-          <div className="modal-window">
-            <div className="input-field">
-              <label htmlFor="title" className="active">title</label>
-              <input type="text" name="title" id="title"
-                value={(this.state as any).book.title}
-                onChange={this.inputTitleHandler}
-              />
-            </div>
-            <br/>
-            <div className="input-field">
-              <textarea className="input-field"
-                name="description"
-                value={this.props.book.description}
-                onChange={this.inputDescriptionHandler}
-              />
-              <label htmlFor="description" className="active">description</label>
-            </div>
-            <div className="input-field">
-              <label htmlFor="pageCount" className="active">pages</label>
-              <input type="number" name="pageCount" id="pageCount" min="0"
-                value={this.state.book.pageCount}
-                onChange={this.inputPageHandler}
-              />
-            </div>
-            <label className="preview-label" htmlFor="image"> 
-              <div className="preview">
-                Click for change image
-                <input type="file" name="image" id="image" />
-                <img alt="book" id="preview"/>
-              </div>
-            </label>
-            <hr/>
-            <button className="btn green"
-            onClick={this.bookEditeModal}
-            >Close</button>
-            <button className="btn btn-save-change orange">Edite</button>
-          </div>
+        contentLabel="Edite book modal">
+          <EditeModal 
+            book={this.props.book}
+            close={this.bookEditeModal}
+          />
         </ReactModal>
 
         <div className="card horizontal">
@@ -329,3 +274,4 @@ export class BookComponent extends React.Component<BookProps, BookState> {
     )
   }
 }
+
