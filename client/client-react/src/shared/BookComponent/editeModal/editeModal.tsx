@@ -8,7 +8,8 @@ import { CategoryAuthor } from '../../../models/category-author.model';
 
 interface EditeProps {
   book: Book;
-  close: () => void
+  close: () => void;
+  editeBook: (book: Book) => void;
 }
 
 interface EditeState {
@@ -27,12 +28,18 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
     this.state = {
       book: {
         ...this.props.book,
+        categories: (this.props.book.categories_list as CategoryAuthor[]).map(category => {
+          return category.name;
+        }),
         categories_list: (this.props.book.categories_list as CategoryAuthor[]).map(c => {
           return {
             ...c,
             label: c.name,
             value: c._id
           }
+        }),
+        authors: (this.props.book.authors_list as CategoryAuthor[]).map(author => {
+          return author.name;
         }),
         authors_list: (this.props.book.authors_list as CategoryAuthor[]).map(a => {
           return {
@@ -51,6 +58,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
     this.inputDescriptionHandler = this.inputDescriptionHandler.bind(this);
     this.inputPageHandler = this.inputPageHandler.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
+    this.editeBookFromModal = this.editeBookFromModal.bind(this);
   }
 
   public inputTitleHandler(event: ChangeEvent<HTMLInputElement>) {
@@ -93,12 +101,12 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
     reader.readAsDataURL((input as any).files[0]);
   }
 
-  handleChangeCategories = (selectedOption: any) => {
+  private handleChangeCategories = (selectedOption: any) => {
     const book = {
       ...this.state.book,
       categories: selectedOption?
       selectedOption.map((option: CategoryAuthor) => {
-        return option._id;
+        return option.name;
       })
       : undefined,
       categories_list: selectedOption? 
@@ -114,12 +122,12 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
     this.refCateg.select.setState({ value: selectedOption })
   };
   
-  handleChangeAuthors = (selectedOption: any) => {
+  private handleChangeAuthors = (selectedOption: any) => {
     const book = {
       ...this.state.book,
       authors: selectedOption
       ? selectedOption.map((option: CategoryAuthor) => {
-        return option._id;
+        return option.name;
       })
       : undefined,
       authors_list: selectedOption
@@ -135,7 +143,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
     this.refAuth.select.setState({ value: selectedOption })
   }
 
-  loadOptionsCategory = (inputValue: any, callback: any) => {
+  private loadOptionsCategory = (inputValue: any, callback: any) => {
     this.bookService.getAllCategories()
     .then(categories => {      
       categories = categories.map(category => {
@@ -152,7 +160,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
     })
   }
 
-  loadOptionsAuth = (inputValue: any, callback: any) => {
+  private loadOptionsAuth = (inputValue: any, callback: any) => {
     this.bookService.getAllAuthors()
     .then(authors => {
       authors = authors.map(author => {
@@ -167,6 +175,12 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
       })
       callback(this.state.authors);
     })
+  }
+
+  public editeBookFromModal() {
+    this.props.editeBook(this.state.book);
+    alert('Successfuly edited')
+    this.props.close();
   }
 
   render() {
@@ -226,7 +240,9 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
         <button className="btn green"
           onClick={this.props.close}
         >Close</button>
-        <button className="btn btn-save-change orange">Edite</button>
+        <button className="btn btn-save-change orange"
+          onClick={this.editeBookFromModal}
+        >Edite</button>
       </div>
     )
   }

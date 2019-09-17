@@ -81,6 +81,14 @@ class BookManager extends React.Component<any, any>{
     });
   }
 
+
+  public editeBookInDb(book: Book) {
+    this.bookService.updateBook(book)
+    .then(() => {
+      this.componentWillMount();
+    })
+  }
+
   render() {
     return (
       <div className="row">
@@ -103,6 +111,7 @@ class BookManager extends React.Component<any, any>{
               }}
               deleteFromDB={this.deleteBookFromDB}
               addToFavorite={this.addBookToFavorite}
+              editeBook={this.editeBookInDb} 
             />)
           })
           : <h1>nothing</h1>}

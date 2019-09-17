@@ -89,6 +89,7 @@ export class GoogleBook extends React.Component {
               }}
               deleteFromDB={this.deleteBookFromDB}
               addToFavorite={() => {}}
+              editeBook={() => {}}
             />
             )
           })}

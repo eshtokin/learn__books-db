@@ -27,6 +27,7 @@ interface BookProps {
   };
   deleteFromDB: (book: Book) => void;
   addToFavorite: (book: Book) => void;
+  editeBook: (book: Book) => void;
 }
 
 interface BookState {
@@ -186,6 +187,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
           <EditeModal 
             book={this.props.book}
             close={this.bookEditeModal}
+            editeBook={this.props.editeBook}
           />
         </ReactModal>
 

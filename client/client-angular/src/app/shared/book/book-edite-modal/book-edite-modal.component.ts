@@ -65,6 +65,7 @@ export class BookEditeModalComponent implements OnInit {
     this.editeBookData.categories = this.selectedItemsCategories.map(category => category.name);
     this.bookService.updateBook(this.editeBookData)
     .then(() => {
+      console.log(this.editeBookData);
       this.editeFormDialog.close();
       this.data.reloadPage();
     });

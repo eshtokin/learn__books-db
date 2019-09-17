@@ -25,6 +25,7 @@ class FilteredBook extends React.Component<any, any>{
 
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
+    this.editeBookInDb = this.editeBookInDb.bind(this);
   }
 
   componentDidMount() {
@@ -90,6 +91,13 @@ class FilteredBook extends React.Component<any, any>{
     book.inFavorite = !book.inFavorite;
   }
 
+  public editeBookInDb(book: Book) {
+    this.bookService.updateBook(book)
+    .then(() => {
+      this.componentDidMount();
+    })
+  }
+
   render() {
     return (
       <div className="row">
@@ -112,6 +120,7 @@ class FilteredBook extends React.Component<any, any>{
                   }}
                   deleteFromDB={this.deleteBookFromDB}
                   addToFavorite={this.addBookToFavorite}
+                  editeBook={this.editeBookInDb}
                 />)
             })
             : <h1>nothing</h1>}
