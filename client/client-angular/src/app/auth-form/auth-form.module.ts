@@ -8,6 +8,7 @@ import { AuthFormLoginComponent } from './auth-form-login/auth-form-login.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { UserService } from '../service/users.service';
+import { ReactiveFormHelper } from '../service/reactive-form-helper';
 
 
 
@@ -26,7 +27,8 @@ import { UserService } from '../service/users.service';
     ])
   ],
   providers: [
-    UserService
+    UserService,
+    ReactiveFormHelper
   ]
 })
 export class AuthModule { }

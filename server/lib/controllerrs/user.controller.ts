@@ -134,17 +134,17 @@ export class UserController {
 
     public updateUser(req: Request, res: Response) {
         const data = req.body;
-        console.log('body: ', req.body)
-        
-        if (req.body.password[0] !== '$') {
+
+        if (req.body.password === '' ) {
+            delete data.password
+        } else {
             data.password = crypt.hashSync(req.body.password)
         }
         
         if (req.body.books) {
-            const bookArray = req.body.books.map(book => {
+            data.books = req.body.books.map(book => {
                 return mongoose.Types.ObjectId(book)
             })
-            data.books = bookArray;
         }
   
         const query = {

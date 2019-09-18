@@ -178,7 +178,8 @@ export class BookComponent extends React.Component<BookProps, BookState> {
                 <b>{this.props.book.title}</b>
               </div>
                 <b>Categories: </b>
-                {(categories as string[]).map((category: string, index: number) => {
+                { categories ?
+                  (categories as string[]).map((category: string, index: number) => {
                   return (
                     <span
                     key={index}
@@ -186,17 +187,19 @@ export class BookComponent extends React.Component<BookProps, BookState> {
                     >{category}</span>
                     )
                   })
-                }
+                  : null }
               <br />
               <b>Author: </b>
-              {(authors as string[]).map((author: string, index: number) => {
-              return (
-                <span 
-                key={index}
-                className="chip"
-                >{author}</span>
-              )
-              })}
+              {authors ?
+                (authors as string[]).map((author: string, index: number) => {
+                return (
+                    <span 
+                    key={index}
+                    className="chip"
+                    >{author}</span>
+                  )
+                })
+              : null }
               <p className="book-description"><span>
               <b>Description</b>:</span> {this.props.book.description}</p>
               <p><b>Pages: </b>{this.props.book.pageCount}</p>

@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './style.scss'
+import { UserInfoService } from '../../service/user-info.service';
 // const Header: React.FC = () => {
 //   return (
 
 //   );
 // }
 
-const Header = () => {
+export default function Header() {
+  const userInfoService = new UserInfoService();
+
   return (
     <nav className="col s12">
       <div className="nav-wrapper teal">
@@ -36,8 +39,7 @@ const Header = () => {
               <li>
                 <Link to="/profile/favorites">My favorites</Link>
               </li>
-              <li // (click)="this.userInfo.logout()"
-              >
+              <li onClick={userInfoService.logout}>
                 <Link to="/auth/login">Log out</Link>
               </li>
             </ul>
@@ -53,5 +55,3 @@ const Header = () => {
     </nav>
   )
 }
-
-export default Header;

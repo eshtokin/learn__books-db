@@ -18,7 +18,6 @@ const customStyles = {
 };
 
 interface State {
-  user: User;
   userDeleteModal: boolean;
   userEditeModal: boolean;
 }
@@ -26,7 +25,6 @@ interface Props {
   user: User;
   deleteUser: (user: User) => void;
   editeUser: (user: User) => void;
-  addNewUser: (user: User) => void;
 }
 
 export class UserComponent extends React.Component<Props, State> {
@@ -34,7 +32,6 @@ export class UserComponent extends React.Component<Props, State> {
     super(props);
     
     this.state = {
-      user: this.props.user,
       userDeleteModal: false,
       userEditeModal: false
     };
@@ -63,9 +60,9 @@ export class UserComponent extends React.Component<Props, State> {
     return (
       <div className="z-depth-4 userComponent">
         <ReactModal
-        isOpen={(this.state as any).userDeleteModal as boolean}
+        isOpen={this.state.userDeleteModal as boolean}
         style={customStyles}
-        contentLabel="Delete book from DataBase"
+        contentLabel="User delete modal"
         >
           <DeleteUserModal 
             user={this.props.user}
@@ -75,21 +72,23 @@ export class UserComponent extends React.Component<Props, State> {
         </ReactModal>
 
         <ReactModal
-        isOpen={(this.state as any).userEditeModal as boolean}
+        isOpen={this.state.userEditeModal as boolean}
         style={customStyles}
-        contentLabel="Delete book from DataBase"
+        contentLabel="User edite modal"
         >
           <UserEditeModal 
             user={this.props.user}
+            addBtnStatus={false}
+            okBtnStatus={true}
             close={this.userEditeModal}
             editeUser={this.props.editeUser}
-            addNewUser={this.props.addNewUser}
+            addNewUser={() => {}}
           />
         </ReactModal>
 
         <div className="card horizontal z-depth-4">
           <div className="card-image col s4">
-          <img src={(this.state as any).user.image || 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'} className="user-image" alt="userImage" />
+          <img src={this.props.user.image as string || 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'} className="user-image" alt="userImage" />
             <button 
             className="btn edite-btn rework-btn"
             onClick={this.userEditeModal}>
@@ -111,8 +110,8 @@ export class UserComponent extends React.Component<Props, State> {
               <p><b>E-mail: </b>{this.props.user.email}</p>
               <ul> 
                 <span><b>List of books:</b></span>
-                {(this.props.user.book_list as Book[]).map(book => {
-                  return <li>
+                {(this.props.user.book_list as Book[]).map((book, index) => {
+                  return <li key={index}>
                     {book.title}
                   </li>
                 })}

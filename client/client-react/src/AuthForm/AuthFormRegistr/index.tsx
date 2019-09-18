@@ -1,15 +1,33 @@
 import React, { Props, ChangeEvent } from 'react';
+import { UserService } from '../../service/users.service';
+import { User } from '../../models/user.model';
 
-export class AuthFormRegistr extends React.Component {
+interface State {
+  user: User;
+  confirmpassword: string;
+  
+}
+
+export class AuthFormRegistr extends React.Component<any, State> {
+  public userService: UserService;
+
   constructor(props: Props<any>) {
     super(props);
     this.state = {
-      name: "",
-      email: "",
-      password: "",
+      user: {
+        email: '',
+        password: '',
+        name: '',
+        role: 2,
+        books: [],
+        image: '',
+        _id: ''
+      },
       confirmPassword: "",
       valid: false
     };
+
+    this.userService = new UserService();
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.checkPass = this.checkPass.bind(this);
@@ -20,27 +38,35 @@ export class AuthFormRegistr extends React.Component {
     switch(event.target.id) {
         case 'name':
             this.setState({
-                ...this.state,
+              user: {
+                ...this.state.user,
                 name: event.target.value
+              }
             });
             break;
         case 'email':
             this.setState({
-                ...this.state,
+              user: {
+                ...this.state.user,
                 email: event.target.value
+              }
             })
             break;
         case 'password':
             this.setState({
-                ...this.state,
+              user: {
+                ...this.state.user,
                 password: event.target.value
+              }
             });
             this.checkPass();
             break;
         case 'confirmPassword':
             this.setState({
-                ...this.state,
+              user: {
+                ...this.state.user,
                 confirmPassword: event.target.value
+              }
             })
             setTimeout(this.checkPass, 20)
             break;
@@ -49,24 +75,21 @@ export class AuthFormRegistr extends React.Component {
   }
 
   public checkPass() {
-    console.log(this.state);
     if ((this.state as any).password.length > 0 && (this.state as any).confirmPassword.length > 0) {
         if ((this.state as any).password === (this.state as any).confirmPassword) {
             this.setState({
-                ...this.state,
                 valid: true
             })
         } else {
             this.setState({
-                ...this.state,
-                valid: false
+              valid: false
             })
         }
     }
   }
 
   public registrate() {
-    console.log(this.state);
+    this.userService.registrate()
   }
 
   render() {
