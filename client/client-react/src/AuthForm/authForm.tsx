@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
-import { AuthFormLogin } from './AuthFormLogin';
-import { AuthFormRegistr } from './AuthFormRegistr';
+import { AuthFormLogin } from './AuthFormLogin/authFormLogin';
+import { AuthFormRegistr } from './AuthFormRegistr/authFormRegistr';
 
 export const AuthForm = () => {
   return (

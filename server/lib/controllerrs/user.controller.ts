@@ -137,10 +137,10 @@ export class UserController {
 
         if (req.body.password === '' ) {
             delete data.password
-        } else {
+        } else if (req.body.password[0] !== '$') {
             data.password = crypt.hashSync(req.body.password)
         }
-        
+
         if (req.body.books) {
             data.books = req.body.books.map(book => {
                 return mongoose.Types.ObjectId(book)
@@ -183,7 +183,7 @@ export class UserController {
             _id: mongoose.Types.ObjectId(user.id)
           };
           const data = {
-            $addToSet: { books: req.params.bookId}
+            $addToSet: { books: mongoose.Types.ObjectId(req.params.bookId)}
         };
 
         mongoDbService.findOneAndUpdate(User, query, data)

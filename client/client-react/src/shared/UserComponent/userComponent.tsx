@@ -4,6 +4,7 @@ import ReactModal from 'react-modal';
 import { Book } from '../../models/book.model';
 import DeleteUserModal from './userDeleteModal/userDeleteModal';
 import UserEditeModal from './userEditeModal/userEditeModal';
+import './style.scss';
 
 const customStyles = {
   content : {
@@ -108,14 +109,14 @@ export class UserComponent extends React.Component<Props, State> {
                 <span><small>({this.props.user.role === 1 ? 'admin' : 'user'})</small></span>
               </div>
               <p><b>E-mail: </b>{this.props.user.email}</p>
-              <ul> 
+              <ol className="listOfBook"> 
                 <span><b>List of books:</b></span>
                 {(this.props.user.book_list as Book[]).map((book, index) => {
                   return <li key={index}>
                     {book.title}
                   </li>
                 })}
-              </ul>
+              </ol>
             </div>
           </div>
         </div>

@@ -8,14 +8,33 @@ import Filter from '../../shared/FilterComponent/FilterComponent';
 import { setBookAtPage, deleteBookFromState, favoriteFlagToggle } from '../../store/actions/bookManagerAction';
 import { UserInfoService } from '../../service/user-info.service';
 import { User } from '../../models/user.model';
+import Pagination from 'rc-pagination';
+import { PaginationEvent } from '../../models/pagination-event.model';
 
-class BookManager extends React.Component<any, any>{
+interface State {
+  pagination: {
+    pageSize: number;
+    pageIndex: number;
+    length?: number;
+  }
+}
+
+class BookManager extends React.Component<any, State>{
   public userService: UserService;
   public bookService: BookService;
   public userInfoService: UserInfoService;
   
   constructor(props: any) {
     super(props);
+
+    this.state = {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+        length: 0
+      }
+    }
+
     this.userService = new UserService();
     this.bookService = new BookService();
     this.userInfoService = new UserInfoService();
@@ -25,11 +44,11 @@ class BookManager extends React.Component<any, any>{
   }
 
   componentWillMount() {
-    this.getBooks()
+    this.getBooks(this.state.pagination)
   }
 
-  public getBooks(): void {
-    this.bookService.getAllBooks({pageIndex: 0, pageSize: 5})
+  public getBooks(pagination: PaginationEvent): void {
+    this.bookService.getAllBooks(pagination)
     .then((el) => {
       this.userService.getUserFavoriteBooks()
         .then(favoriteBooks => {
@@ -39,6 +58,12 @@ class BookManager extends React.Component<any, any>{
               inFavorite: favoriteBooks.indexOf(book._id as string) === -1 ? false : true
             };
           }));
+          this.setState({
+            pagination: {
+              ...this.state.pagination,
+              length: el.totalCount[0].count as number
+            }
+          })
         });
     });
   }
@@ -58,9 +83,6 @@ class BookManager extends React.Component<any, any>{
     ? this.userService.addBookToProfile(book)
     : this.deleteBookFromFavorite(book._id as string)
    
-    // .then(() => {
-    //   this.props.favoriteFlagToggle(book._id)
-    // });
     this.props.favoriteFlagToggle(book._id)
   }
 
@@ -80,7 +102,6 @@ class BookManager extends React.Component<any, any>{
       })
     });
   }
-
 
   public editeBookInDb(book: Book) {
     this.bookService.updateBook(book)
@@ -115,6 +136,15 @@ class BookManager extends React.Component<any, any>{
             />)
           })
           : <h1>nothing</h1>}
+          <Pagination
+          showSizeChanger
+          pageSize={10}
+          defaultCurrent={1}
+          total={this.state.pagination.length}
+          onChange = {(current, pageSize) => {
+            this.getBooks({pageSize, pageIndex: current - 1})
+          }}
+          />
         </div>
       </ div>
     )

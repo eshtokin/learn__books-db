@@ -69,16 +69,9 @@ export default class EditeProfileModal extends React.Component<Props, State> {
   }
 
   public areEqual(value1: string, value2: string): void {
-    if (value1 === value2) {
-      this.setState({
-        validStatus: true
-        
-      })
-    } else {
-      this.setState({
-        validStatus: false
-      })
-    }
+    this.setState({
+      validStatus: value1 === value2
+    })
   }
 
   public uploadFile(event: ChangeEvent<HTMLInputElement>): void {
@@ -94,10 +87,11 @@ export default class EditeProfileModal extends React.Component<Props, State> {
     reader.readAsDataURL((input.files as FileList)[0]);
   }
 
-  public editeUser() {
+  public editeUser(): void {
     this.props.editeUser(this.state.user);
     this.props.close();
   }
+
   render() {
     return (
       <div className="center">
@@ -126,14 +120,14 @@ export default class EditeProfileModal extends React.Component<Props, State> {
           <label  htmlFor="last_name" className={this.state.user.email ? 'active' : ''}>Enter new e-mail</label>
         </div>
         <div className="input-field">
-          <input id="password" type="text" 
+          <input id="password" type="password"
           className="validate"
           onChange={event => this.userChangeHandler(event)}
           />
           <label  htmlFor="last_name">Enter new password</label>
         </div>
         <div className="input-field">
-          <input id="confirmPassword" type="text" 
+          <input id="confirmPassword" type="password" 
           className="validate"
           onChange={event => this.userChangeHandler(event)}
           />
@@ -147,6 +141,7 @@ export default class EditeProfileModal extends React.Component<Props, State> {
         </button>
         <button className="btn green"
         onClick={this.editeUser}
+        disabled={!this.state.validStatus}
         >
           Save
         </button>

@@ -76,7 +76,7 @@ export default class Profile extends React.Component<any, State> {
   }
 
   public editeUser(user: User) {
-    this.userService.edit((user.id as string), user)
+    this.userService.edit((user._id as string), user)
     .then(() => {
       this.componentWillMount()
     })

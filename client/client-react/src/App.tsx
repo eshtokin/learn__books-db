@@ -10,6 +10,7 @@ import UserManager from './Admin/UserManager/userManager'
 import FilteredBook from './shared/FilteredBook/filteredBook';
 import TestPage from './Admin/testFile';
 import Profile from './shared/Profile/profileComponent';
+import Favorites from './shared/Favorites/favorites';
 
 const App: React.FC = () => {
   return (
@@ -22,7 +23,7 @@ const App: React.FC = () => {
         <Route path='/filtered' component={ FilteredBook }/>
         <Route path='/user-manager' component={ UserManager }/>
         <Route exact path='/profile' component={ Profile }/>
-        <Route path='/profile/favorites' component={() => <h3>favorites</h3>}/>
+        <Route path='/profile/favorites' component={ Favorites }/>
         <Route path='/auth' component={AuthForm}/>
         <Route path='/test' component={TestPage}/>
       </Switch>

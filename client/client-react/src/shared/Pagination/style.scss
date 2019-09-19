@@ -1,6 +1,18 @@
-.pagination li {
-  width: 35px;
-  select {
-    display: block;
+.pagination {
+  height: 50px;
+  background: #ccc;
+
+  .range-actgion {
+
+    .pageNumbers li {
+      width: 20px;
+      display: inline-block;
+
+      &:hover {
+        cursor: pointer;
+        background: red;
+      }
+    }
   }
 }
+

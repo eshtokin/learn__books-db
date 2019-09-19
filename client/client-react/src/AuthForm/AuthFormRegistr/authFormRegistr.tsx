@@ -4,8 +4,8 @@ import { User } from '../../models/user.model';
 
 interface State {
   user: User;
-  confirmpassword: string;
-  
+  confirmPassword: string;
+  valid: boolean;
 }
 
 export class AuthFormRegistr extends React.Component<any, State> {
@@ -30,7 +30,7 @@ export class AuthFormRegistr extends React.Component<any, State> {
     this.userService = new UserService();
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.checkPass = this.checkPass.bind(this);
+    // this.checkPass = this.checkPass.bind(this);
     this.registrate = this.registrate.bind(this);
   }
 
@@ -59,37 +59,26 @@ export class AuthFormRegistr extends React.Component<any, State> {
                 password: event.target.value
               }
             });
-            this.checkPass();
+            this.areEqual(event.target.value, this.state.confirmPassword);
             break;
         case 'confirmPassword':
             this.setState({
-              user: {
-                ...this.state.user,
-                confirmPassword: event.target.value
-              }
+              confirmPassword: event.target.value
             })
-            setTimeout(this.checkPass, 20)
+            this.areEqual(event.target.value, this.state.user.password);            
             break;
         default: break;
     };
   }
 
-  public checkPass() {
-    if ((this.state as any).password.length > 0 && (this.state as any).confirmPassword.length > 0) {
-        if ((this.state as any).password === (this.state as any).confirmPassword) {
-            this.setState({
-                valid: true
-            })
-        } else {
-            this.setState({
-              valid: false
-            })
-        }
-    }
+  public areEqual(value1: string, value2: string): void {
+    this.setState({
+      valid: (value1 === value2 && value1.length > 3 && value2.length > 3)
+    })
   }
 
-  public registrate() {
-    this.userService.registrate()
+  public registrate(): void {
+    this.userService.registrate(this.state.user)
   }
 
   render() {
@@ -98,28 +87,26 @@ export class AuthFormRegistr extends React.Component<any, State> {
         <div className="col s4 offset-s4">
           <div className="input-field">
             <input type="text" id="name"
-            onChange={this.onChangeHandler}
+            onChange={event => this.onChangeHandler(event)}
             />
               <label>Name</label>
             </div>
             <div className="input-field">
               <input type="text" id="email"
               value={(this.state as any).email}
-              onChange={this.onChangeHandler}
+              onChange={event => this.onChangeHandler(event)}
               />
               <label>E-mail</label>
             </div>
             <div className="input-field">
               <input type="password" id="password"
-              onChange={this.onChangeHandler}
-              // (ngModelChange)="checkPass()"
+               onChange={event => this.onChangeHandler(event)}
               />
               <label>Password</label>
             </div>
             <div className="input-field">
-              <input 
-              // (ngModelChange)="checkPass()"
-              onChange={this.onChangeHandler}
+              <input
+              onChange={event => this.onChangeHandler(event)}
               type="password" id="confirmPassword"
               />
               <label >Confirm Password</label>
@@ -127,7 +114,7 @@ export class AuthFormRegistr extends React.Component<any, State> {
             <button type="button"
             className="btn waves-effect"
             onClick={this.registrate}
-            // disabled={!(this.state as any).valid}
+            disabled={!this.state.valid}
             >Registrate</button>
           </div>
         </div>

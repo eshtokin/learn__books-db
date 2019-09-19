@@ -1,13 +1,20 @@
-import React, { Props, ChangeEvent } from 'react';
-import { UserService } from './../../service/users.service';
+import React, { ChangeEvent } from 'react';
+import { UserService } from '../../service/users.service';
 
-export class AuthFormLogin extends React.Component {
-  constructor(props: Props<any>) {
+interface State {
+  email: string;
+  password: string;
+  valid: boolean;
+}
+
+export class AuthFormLogin extends React.Component<any, State> {
+  constructor(props: State) {
     super(props);
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      valid: false
     };
     this.userService = new UserService();
     this.handleChange = this.handleChange.bind(this);
@@ -15,23 +22,42 @@ export class AuthFormLogin extends React.Component {
   }
 
   public handleChange(event: ChangeEvent<HTMLInputElement>): void {
-    if (event.target.id === 'email') {
-      this.setState({
-        ...this.state,
-        email: event.target.value
-      })
-    }
-    if (event.target.id === 'password') {
-      this.setState({
-        ...this.state,
-        password: event.target.value
-      })
+    switch (event.target.id) {
+      case 'email':
+        this.setState({
+          ...this.state,
+          email: event.target.value
+        })
+        this.isValid();
+        break;
+      case 'password':
+        this.setState({
+          ...this.state,
+          password: event.target.value
+        })
+        this.isValid();
+        break;
+      default:
+        console.log('target: ', event.target, 'value: ', event.target.value);
+        break;
     }
   }
   
   public login(): void {
     this.userService.login((this.state as {email: string, password: string}))
     .then(console.log);
+  }
+
+  public isValid(): void {
+    if (this.state.email.length > 2 && this.state.password.length > 2) {
+      this.setState({
+        valid: true
+      })
+    } else {
+      this.setState({
+        valid: false
+      })
+    }
   }
 
   public userService: UserService;
@@ -54,6 +80,7 @@ export class AuthFormLogin extends React.Component {
           </div>
           <button type="button" className="btn waves-effect"
           onClick={this.login}
+          disabled={!this.state.valid}
           >Log in</button>
         </div>
       </div>

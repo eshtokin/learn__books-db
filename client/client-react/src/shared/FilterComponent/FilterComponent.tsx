@@ -5,8 +5,7 @@ import { CategoryAuthor } from '../../models/category-author.model';
 import { BookService } from '../../service/books.service';
 import { FilterState } from '../../store/reducers/filterReducer';
 import * as filterAction from '../../store/actions/filterAction';
-import './style.scss'
-
+import './style.scss';
 
 interface Props{
   history: any,

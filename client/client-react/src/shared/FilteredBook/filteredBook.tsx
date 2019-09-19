@@ -9,15 +9,29 @@ import { UserInfoService } from '../../service/user-info.service';
 import { BookComponent } from '../BookComponent/BookComponent';
 import Filter from '../FilterComponent/FilterComponent';
 import { setBook } from '../../store/actions/filteredBookAction';
+import Pagination from 'rc-pagination';
+import { PaginationEvent } from '../../models/pagination-event.model';
 
+interface State {
+  pagination: PaginationEvent;
+}
 
-class FilteredBook extends React.Component<any, any>{
+class FilteredBook extends React.Component<any, State>{
   public userInfoService: UserInfoService;
   public userService: UserService;
   public bookService: BookService;
 
   constructor(props: any) {
     super(props);
+
+    this.state = {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+        length: 0,
+        previousPageIndex: 0
+      }
+    }
 
     this.userInfoService = new UserInfoService()
     this.userService = new UserService();
@@ -32,6 +46,11 @@ class FilteredBook extends React.Component<any, any>{
     this.getSomeBooks()
   }
 
+  shouldComponentUpdate(nextProps: any, nextState: State , nextContent: any) {
+    return this.state.pagination.pageIndex !== nextState.pagination.pageIndex
+    ? true
+    : true;
+  }
 
   public getSomeBooks(): void {
     const linkParams = queryString.parse(this.props.history.location.search);
@@ -39,12 +58,7 @@ class FilteredBook extends React.Component<any, any>{
       'authors[]': linkParams.authors as string[] || [],
       'categories[]': linkParams.categories as string[] || [],
       title: linkParams.title as string || '',
-      pagination: {
-        pageIndex: 0,
-        pageSize: 5,
-        length: 5,
-        previousPageIndex: 0
-      }
+      pagination: this.state.pagination
     };
     let favoritesId: string | string[] = [];
     this.bookService.getSomeBooks(data)
@@ -63,7 +77,12 @@ class FilteredBook extends React.Component<any, any>{
         this.props.setBook(listOfBook)
         
         if (el[0].totalCount[0]) {
-          data.pagination.length = el[0].totalCount[0].count;
+          this.setState({
+            pagination: {
+              ...this.state.pagination,
+              length:  el[0].totalCount[0].count
+            }
+          })
         }
       });
     });
@@ -124,6 +143,22 @@ class FilteredBook extends React.Component<any, any>{
                 />)
             })
             : <h1>nothing</h1>}
+            <Pagination
+            showSizeChanger
+            pageSize={this.state.pagination.pageSize}
+            defaultCurrent={1}
+            total={this.state.pagination.length}
+            onChange = {(current, pageSize) => {
+              console.log(current, pageSize);
+              this.setState({
+                pagination: {
+                  ...this.state.pagination,
+                  pageIndex: current - 1,
+                  pageSize
+                }
+              }, this.getSomeBooks)
+            }}
+            />
         </div>
       </ div>
     )

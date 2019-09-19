@@ -93,12 +93,12 @@ export class BookComponent extends React.Component<BookProps, BookState> {
     })
   }
 
-  public deleteBookFromDB() {
+  public deleteBookFromDB(): void {
     this.bookDeleteModal();
     this.props.deleteFromDB(this.props.book);
   }
 
-  public addBooktoFavorite() {
+  public addBooktoFavorite(): void {
     this.props.addToFavorite(this.props.book);
   }
 

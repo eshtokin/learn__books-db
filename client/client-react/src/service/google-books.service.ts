@@ -39,7 +39,7 @@ export default class GoogleBooks {
 
     return await Axios.get(url, {params})
       .then(res => {
-        this.pageInfo.paginationParams.length = res.data.totalItems / 4;
+        this.pageInfo.paginationParams.length = Math.round(res.data.totalItems / 4);
 
         const industryIdentifiersArray: string[] = res.data.items.map((book: any): Book[] => { // change any type
           return book.volumeInfo.industryIdentifiers.map((el: {type: string, identifier: string}) => el.type + el.identifier).join('');

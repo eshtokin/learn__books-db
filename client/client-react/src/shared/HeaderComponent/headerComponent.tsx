@@ -12,7 +12,7 @@ export default function Header() {
   const userInfoService = new UserInfoService();
 
   return (
-    <nav className="col s12">
+    <nav className="col s12 myHeader">
       <div className="nav-wrapper teal">
         <Link className="brand-logo" to="/">Logo</Link>
         <ul id="nav-mobile" className="right hide-on-med-and-down" //*ngIf="isUserAuth()"

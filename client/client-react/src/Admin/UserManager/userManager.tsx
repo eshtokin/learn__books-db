@@ -28,6 +28,7 @@ class UserManager extends React.Component<any, any> {
 
   constructor(props: Props<any>) {
     super(props);
+    
     this.state = {
       userAddModal: false,
       searchField: ''
@@ -93,6 +94,8 @@ class UserManager extends React.Component<any, any> {
   }
 
   render() {
+    console.log('user manager' , this.props.editeUser);
+
     return (
       <div className="container">
         <ReactModal
@@ -105,7 +108,7 @@ class UserManager extends React.Component<any, any> {
             addBtnStatus={true}
             okBtnStatus={false}
             close={this.userAddModal}
-            editeUser={this.props.editeUser}
+            editeUser={this.editeUserInBD}
             addNewUser={this.addNewUser}
           />
         </ReactModal>

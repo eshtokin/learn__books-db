@@ -1,28 +1,38 @@
-import React, { Props } from 'react';
+import React from 'react';
 import GoogleBooks from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
-import { Pagination } from '../../shared/Pagination/pagination';
+// import { Pagination } from '../../shared/Pagination/pagination';
 // const Filter = React.lazy(() => import('../../shared/filter'))
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
+// import Select from 'rc-select';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
+// import 'rc-select/assets/index.less';
 
-export class GoogleBook extends React.Component {
+interface State {
+  listOfBook: Book[],
+  paginationParams: [];
+  searchField: string
+}
+
+export class GoogleBook extends React.Component<any, State> {
   public googleBooks: GoogleBooks;
   private bookService: BookService;
   public onSearchFieldChange: Subject<string>;
 
-  constructor(
-    props: Props<any>
-    ) {
+  constructor(props: any) {
     super(props);
     this.googleBooks = new GoogleBooks(new BookService());
     this.bookService = new BookService();
+
     this.state = {
       listOfBook: [],
-      paginationParams: []
+      paginationParams: [],
+      searchField: ''
     };
   
     this.onSearchFieldChange = new Subject<string>();
@@ -30,23 +40,18 @@ export class GoogleBook extends React.Component {
     .pipe(debounceTime(500))
     .subscribe((value: string) => {
       if (value.length > 0) {
-        this.googleBooks.searchForBook(value)
-        .then(() => {
-          this.setState({
-            ...this.state,
-            listOfBook: this.googleBooks.getPageInfo().currentItems
-          })
+        this.setState({
+          searchField: value
         })
+        this.getBookFromGoogle(value)
       }
     });
 
     this.paginationHandler = this.paginationHandler.bind(this);
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
+    this.getBookFromGoogle = this.getBookFromGoogle.bind(this)
   }
 
-  shouldComponentUpdate() {
-    return true;
-  }
 
   public paginationHandler(event: any) {
     console.log(event.target);
@@ -59,9 +64,26 @@ export class GoogleBook extends React.Component {
     })
   }
 
+  public getBookFromGoogle(value: string) {
+    this.googleBooks.searchForBook(value)
+    .then(() => {
+      console.log('Gbooks', this.googleBooks.getPageInfo());
+        
+      this.setState({
+        ...this.state,
+        listOfBook: this.googleBooks.getPageInfo().currentItems
+      })
+    })
+  }
+
+  onShowSizeChange = (current: number, pageSize: number) => {
+    console.log(current);
+    // this.setState({ pageSize });
+  }
+
   render() {
     return (
-      <div className="container">
+      <div className="container center">
         <div>
           <label> Search field
             <input id="search" type="text" className="validate"
@@ -77,8 +99,8 @@ export class GoogleBook extends React.Component {
               buttonStatus={{
                 editeBtn: false,
                 deleteBtn: false,
-                ddToDbBtn: false,
-                addToFavoriteBtn: true
+                ddToDbBtn: true,
+                addToFavoriteBtn: false
               }}
               deleteFromDB={this.deleteBookFromDB}
               addToFavorite={() => {}}
@@ -88,15 +110,16 @@ export class GoogleBook extends React.Component {
           })}
         
         <Pagination
-          pageIndex={0}
-          pageSize={5}
-          length={5}
-          // [length] = "paginationParams.length"
-          // [pageSize] = "paginationParams.pageSize"
-          // [pageSizeOptions] = "[3, 5, 7, 10]"
-          // (page) = "paginationHandler($event)">
+          showSizeChanger
+          pageSize={10}
+          defaultCurrent={1}
+          total={this.googleBooks.getPageInfo().paginationParams.length}
+          onChange = {(current, pageSize) => {
+            this.googleBooks.getPageInfo().paginationParams.pageIndex = current -1;
+            this.googleBooks.getPageInfo().paginationParams.pageSize = pageSize;
+            this.getBookFromGoogle(this.state.searchField)
+          }}
         />
-      
       </div>
     )
   }

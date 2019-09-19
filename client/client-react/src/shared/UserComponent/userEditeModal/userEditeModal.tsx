@@ -63,6 +63,14 @@ export default class UserEditeModal extends React.Component<Props, State> {
         });
         this.areEqual(event.target.value, this.state.user.password);
         break;
+      case 'role':
+        this.setState({
+          user: {
+            ...this.state.user,
+            role: +event.target.value
+          }
+        })
+        break;
       default:
         console.log('id: ', event.target.id, 'value: ', event.target.value);
         break;
@@ -70,17 +78,10 @@ export default class UserEditeModal extends React.Component<Props, State> {
   }
 
   public areEqual(value1: string, value2: string): void {
-    if (value1 === value2) {
-      this.setState({
-        validStatus: true,
-        addBtnDisabled: false
-      })
-    } else {
-      this.setState({
-        validStatus: false,
-        addBtnDisabled: true
-      })
-    }
+    this.setState({
+      validStatus: (value1 === value2),
+      addBtnDisabled: !(value1 === value2)
+    })
   }
 
   render() {
@@ -116,11 +117,12 @@ export default class UserEditeModal extends React.Component<Props, State> {
         <div className="my-input-field">
             <label htmlFor="roles">Role</label>
             <select name="roles"
+              id='role'
               defaultValue={'' + this.state.user.role}
               onChange={(event) => this.userChangeHandler(event)}
             >
-              <option value={+2}>User</option>
-              <option value={+1}>Admin</option>
+              <option value="2">User</option>
+              <option value="1">Admin</option>
             </select>
         </div>
         <div className="container center">

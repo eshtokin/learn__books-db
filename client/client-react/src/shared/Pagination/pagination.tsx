@@ -1,25 +1,28 @@
 import React from 'react';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import './style.scss';
+import pag from 'rc-pagination';
+// const pagin = require("rc-pagination");
 
 export function Pagination(props: PaginationEvent) {
   return (
-    <ul className="pagination">
-      {/* <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li> */}
-      <li className="active"><a href="#!">1</a></li>
-      <li className="waves-effect"><a href="#!">2</a></li>
-      <li className="waves-effect"><a href="#!">3</a></li>
-      <li className="waves-effect"><a href="#!">4</a></li>
-      <li className="waves-effect"><a href="#!">5</a></li>
-      {/* <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li> */}
-      <li className="waves-effect">
+    <div className="pagination row">
+      <div className="page-size-action offset-s6 col s2">
+        <label htmlFor="pageSize">Items per page</label>
         <select name="pageSize" id="pageSize">
           <option value="3">3</option>
           <option value="5">5</option>
           <option value="10">10</option>
-          <option value="20">20</option>
         </select>
-      </li>
-    </ul>
+      </div>
+      <div className="range-actgion col s4">
+        <ul className="pageNumbers">
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+        </ul>
+      </div>
+    </div>
   )
 }
