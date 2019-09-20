@@ -1,0 +1,42 @@
+.favoritesComponent {
+  text-align: left;
+}
+
+h3 {
+  display: inline-block;
+  width: 360px;
+  margin: 100px calc(50% - 180px);
+}
+
+#modal1 {
+  display: block;
+}
+
+i .material-icons:hover {
+  cursor: pointer;
+}
+
+.favoritesText {
+  font-size: 20px;
+}
+
+.book-card {
+  .book-element{
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    .book-image {
+      display: inline-block;
+      height: 148px;
+      width: 148px;
+    }
+    .title {
+      display: inline-block;
+    }
+    .description {
+      display: block;
+    }
+    .btn-section .btn {
+      width: 120px;
+    }
+  }
+}

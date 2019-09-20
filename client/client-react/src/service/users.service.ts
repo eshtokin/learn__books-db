@@ -42,7 +42,7 @@ export class UserService {
         .catch((err: any) => console.log(err));
     }
 
-    public getUserBooks(books: string[], pagination: PaginationEvent, title?: string, ): Promise<ServerResponce> {
+    public getUserBooks(books: string[], pagination: PaginationEvent, title?: string, ): Promise<ServerResponce[]> {
         return Axios.get('/userbooks', {params: {books, pagination, title}})
         .then((res: any) => res.data)
         .catch((err: any) => console.log(err));

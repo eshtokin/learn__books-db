@@ -1,9 +1,15 @@
 .myHeader {
+  .brand-logo {
+    position: initial;
+  }
   li {
     width: 130px;
     text-align: center;
   }
-  
+  .isActiveRoute {
+    background: #00796b;
+    border-radius: 10px;
+  }
 }
 
 

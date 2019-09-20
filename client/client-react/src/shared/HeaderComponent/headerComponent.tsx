@@ -1,12 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './style.scss'
-import { UserInfoService } from '../../service/user-info.service';
-// const Header: React.FC = () => {
-//   return (
-
-//   );
-// }
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
+import "./style.scss";
+import { UserInfoService } from "../../service/user-info.service";
 
 export default function Header() {
   const userInfoService = new UserInfoService();
@@ -14,44 +9,78 @@ export default function Header() {
   return (
     <nav className="col s12 myHeader">
       <div className="nav-wrapper teal">
-        <Link className="brand-logo" to="/">Logo</Link>
-        <ul id="nav-mobile" className="right hide-on-med-and-down" //*ngIf="isUserAuth()"
+        <Link className="brand-logo" to="/">
+          Logo
+        </Link>
+        <ul
+          id="nav-mobile"
+          className="right hide-on-med-and-down" //*ngIf="isUserAuth()"
         >
-          <li><Link to='/'>Home</Link></li>
           <li>
-            <Link to="/catalog">GoogleBook</Link>
+            <NavLink to="/" activeClassName="isActiveRoute" exact>
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to="/book-manager">Books</Link>
+            <NavLink to="/catalog" activeClassName="isActiveRoute" exact>
+              GoogleBook
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/book-manager" activeClassName="isActiveRoute" exact>
+              Books
+            </NavLink>
           </li>
           <li //*ngIf="userRole()">
           >
-            <Link to="/user-manager">Users</Link>
+            <NavLink to="/user-manager" activeClassName="isActiveRoute" exact>
+              Users
+            </NavLink>
           </li>
           <li className="dropdown">
-            <Link className="btn-floating btn-large  waves-effect waves-light teal" to="/profile">
-              <img src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png" alt="user avatar"></img>
-            </Link>
+            <NavLink
+              className="btn-floating btn-large  waves-effect waves-light teal"
+              to="/profile"
+            >
+              <img
+                src="https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png"
+                alt="user avatar"
+              ></img>
+            </NavLink>
             <ul>
               <li>
-                  <Link to="/profile">My profile</Link>
+                <NavLink to="/profile" activeClassName="isActiveRoute" exact>
+                  My profile
+                </NavLink>
               </li>
               <li>
-                <Link to="/profile/favorites">My favorites</Link>
+                <NavLink
+                  to="/profile/favorites"
+                  activeClassName="isActiveRoute"
+                  exact
+                >
+                  My favorites
+                </NavLink>
               </li>
               <li onClick={userInfoService.logout}>
-                <Link to="/auth/login">Log out</Link>
+                <NavLink to="/auth/login" activeClassName="isActiveRoute">
+                  Log out
+                </NavLink>
               </li>
             </ul>
           </li>
         </ul>
-        <ul id="nav-mobile" className="right hide-on-med-and-down"  // *ngIf="!isUserAuth()"
+        <ul
+          id="nav-mobile"
+          className="right hide-on-med-and-down" // *ngIf="!isUserAuth()"
         >
           <li>
-            <Link to="/auth">Log in</Link>
+            <NavLink to="/auth" activeClassName="isActiveRoute">
+              Log in
+            </NavLink>
           </li>
         </ul>
       </div>
     </nav>
-  )
+  );
 }

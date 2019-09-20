@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { CategoryAuthor } from '../../models/category-author.model';
@@ -6,6 +6,8 @@ import { BookService } from '../../service/books.service';
 import { FilterState } from '../../store/reducers/filterReducer';
 import * as filterAction from '../../store/actions/filterAction';
 import './style.scss';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 interface Props{
   history: any,
@@ -18,9 +20,16 @@ interface Props{
 
 class Filter extends React.Component<Props, any> {
   private bookService: BookService;
-
+  public onSearchStringChange: Subject<string>;
+  
   constructor(props: Props) {
     super(props);
+
+    this.onSearchStringChange = new Subject();
+    this.onSearchStringChange.pipe(debounceTime(500))
+    .subscribe(value => {
+      this.filterHandler(null, value);  
+    })
 
     this.bookService = new BookService();
     this.filterHandler = this.filterHandler.bind(this);
@@ -57,7 +66,7 @@ class Filter extends React.Component<Props, any> {
     });
   }
 
-  public filterHandler(obj: CategoryAuthor | null, event?: ChangeEvent<HTMLInputElement>) {
+  public filterHandler(obj: CategoryAuthor | null, value?: string) {
     let data: {
       title?: string,
       categories?: CategoryAuthor[],
@@ -80,8 +89,8 @@ class Filter extends React.Component<Props, any> {
       });
     }
 
-    if (event && event.target.value.length > 0) {
-      data.title = event.target.value
+    if (value && value.length > 0) {
+      data.title = value
     }
 
     (this.props as any).push({
@@ -97,7 +106,8 @@ class Filter extends React.Component<Props, any> {
       <div className="col s2 filters">
         <div className="input-field">
           <input type="text" id="searchField" 
-          onChange={(event) => this.filterHandler(null, event)}
+          // onChange={(event) => this.filterHandler(null, event)}
+          onChange={event => this.onSearchStringChange.next(event.target.value)}
           />
           <label>Search Field</label>
         </div>

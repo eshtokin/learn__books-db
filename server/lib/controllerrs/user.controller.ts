@@ -120,7 +120,7 @@ export class UserController {
     public getFavoriteBookFromUser(req: Request, res: Response) {
         const user = jwt.decode(req.headers.authorization);
         const query = {
-            _id: mongoose.Types.ObjectId(user.id)
+            _id: mongoose.Types.ObjectId(user._id)
         };
         
         mongoDbService.find(User, query)
