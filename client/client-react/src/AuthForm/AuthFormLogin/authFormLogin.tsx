@@ -1,7 +1,9 @@
 import React, { ChangeEvent } from 'react';
 import { UserService } from '../../service/users.service';
-import {setUserStatus} from './../../store/actions/authentificatedInfoAction';
+import {setUserStatus, setUserRole} from './../../store/actions/authentificatedInfoAction';
 import { connect } from 'react-redux';
+import { UserInfoService } from '../../service/user-info.service';
+import { User } from '../../models/user.model';
 
 interface State {
   email: string;
@@ -11,7 +13,7 @@ interface State {
 
 class AuthFormLogin extends React.Component<any, State> {
   public userService: UserService;
-
+  public userInfoService: UserInfoService;
   constructor(props: any) {
     super(props);
 
@@ -21,6 +23,8 @@ class AuthFormLogin extends React.Component<any, State> {
       valid: false
     };
     this.userService = new UserService();
+    this.userInfoService = new UserInfoService();
+
     this.handleChange = this.handleChange.bind(this);
     this.login = this.login.bind(this);
   }
@@ -52,6 +56,7 @@ class AuthFormLogin extends React.Component<any, State> {
     .then((res) => {
       if (res) {
         this.props.setUserStatus(true);
+        this.props.setUserRole((this.userInfoService.getCurrentUser() as User).role);
         this.props.history.push({
           pathname: '/profile'
         });
@@ -105,7 +110,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserStatus: (status: boolean) => dispatch(setUserStatus(status))
+    setUserStatus: (status: boolean) => dispatch(setUserStatus(status)),
+    setUserRole: (role: number) => dispatch(setUserRole(role))
   }
 };
 

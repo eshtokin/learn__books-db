@@ -81,7 +81,7 @@ class GoogleBook extends React.Component<any, any> {
               buttonStatus={{
                 editeBtn: false,
                 deleteBtn: false,
-                ddToDbBtn: true,
+                ddToDbBtn: this.props.role === 1,
                 addToFavoriteBtn: false
               }}
               deleteFromDB={this.deleteBookFromDB}
@@ -109,7 +109,8 @@ class GoogleBook extends React.Component<any, any> {
 
 const mapStateToProps = (state: any) => {
   return {
-    ...state.googleBookReducer
+    ...state.googleBookReducer,
+    ...state.authentificatedInfoReducer
   }
 }
 

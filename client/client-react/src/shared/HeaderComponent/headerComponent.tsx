@@ -23,6 +23,10 @@ class Header extends React.Component<any, State> {
     this.userInfoService.logout();
   }
 
+  componentDidMount() {
+    console.log(this.props.role);
+  }
+
   render() {
     return (
       <nav className="col s12 myHeader">

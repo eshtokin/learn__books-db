@@ -12,7 +12,7 @@ export const setUserStatus = (status: boolean) => {
   }
 }
 
-export const setuserRole = (role: Role) => {
+export const setUserRole = (role: Role) => {
   return {
     type: authConstant.SET_ROLE,
     payload: role

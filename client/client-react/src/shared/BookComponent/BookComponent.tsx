@@ -224,6 +224,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
               {this.props.buttonStatus.ddToDbBtn ?
               <button
                 className="btn add-to-pro-btn"
+                disabled={this.props.book.alreadyExistInBD}
               >
               add to DB
               </button>
