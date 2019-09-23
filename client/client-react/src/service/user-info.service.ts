@@ -2,12 +2,16 @@ import decode from 'jwt-decode';
 import { User } from '../models/user.model';
 
 export class UserInfoService {
+    public isAuth: boolean = false;
+
     // return true (if user have token) of false (if haven't token)
     public isUserAuth(): boolean {
         if ( localStorage.hasOwnProperty('token') ) {
-            return true;
+            this.isAuth = true;
+            return this.isAuth;
         }
-        return false;
+        this.isAuth = false
+        return this.isAuth;
     }
 
     public getCurrentUser(): User | null | undefined {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
-import { AuthFormLogin } from './AuthFormLogin/authFormLogin';
+import { Link, Route, Switch } from 'react-router-dom';
+import AuthFormLogin from './AuthFormLogin/authFormLogin';
 import { AuthFormRegistr } from './AuthFormRegistr/authFormRegistr';
 
 export const AuthForm = () => {
@@ -14,8 +14,11 @@ export const AuthForm = () => {
             <Link to="/auth/registr">Registration</Link>
         </li>
       </ul>
-      <Route path="/auth/login" component={ AuthFormLogin } />
-      <Route path="/auth/registr" component={ AuthFormRegistr } />
+      <Switch>
+        <Route path="/auth/login" component={ AuthFormLogin } />
+        <Route path="/auth/registr" component={ AuthFormRegistr } />
+        <Route path="/auth/*" component={ () => <h3>Not found</h3> } />
+      </Switch>
     </div>
   )
 }

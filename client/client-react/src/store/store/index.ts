@@ -3,15 +3,25 @@ import { bookManagerReducer, BookManagerStore } from './../reducers/bookManagerR
 import { userManagerReducer, UserManagerStore } from './../reducers/userManagerReducer';
 import { filterReducer, FilterState} from './../reducers/filterReducer';
 import { filteredBookReducer, FilteredBooksState} from './../reducers/filteredBooksReducer';
+import { authentificatedInfoReducer, AuthentificationState } from './../reducers/authentificationInfoReducer';
+import { googleBookReducer, GoogleBookState } from './../reducers/googleBookReducer';
 
-
-const initialState = combineReducers({bookManagerReducer, userManagerReducer, filteredBookReducer, filterReducer})
+const initialState = combineReducers({
+  bookManagerReducer,
+  userManagerReducer,
+  filteredBookReducer,
+  filterReducer,
+  authentificatedInfoReducer,
+  googleBookReducer
+})
 
 export interface Store {
   bookManagerReducer: BookManagerStore;
   userManagerReducer: UserManagerStore;
   filteredBookReducer: FilteredBooksState;
   filterReducer: FilterState;
+  authentificatedInfoReducer: AuthentificationState;
+  googleBookReducer: GoogleBookState;
 }
 
 export const store = createStore(initialState);

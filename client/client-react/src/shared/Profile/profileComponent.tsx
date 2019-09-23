@@ -50,7 +50,8 @@ export default class Profile extends React.Component<any, State> {
     this.editeUser = this.editeUser.bind(this);
   }
   
-  componentWillMount() {
+  componentDidMount() {
+    ReactModal.setAppElement('.profileComponent')
     this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
     .then((user: User) => {
       if (user && (user.books as string[]).length > 0) {
@@ -65,10 +66,6 @@ export default class Profile extends React.Component<any, State> {
     })
   }
 
-  componentDidMount() {
-    ReactModal.setAppElement('.profileComponent')
-  };
-
   public editeProfileModal(): void {
     this.setState({
       editeProfileModal: !this.state.editeProfileModal
@@ -78,13 +75,11 @@ export default class Profile extends React.Component<any, State> {
   public editeUser(user: User) {
     this.userService.edit((user._id as string), user)
     .then(() => {
-      this.componentWillMount()
+      this.componentDidMount()
     })
   }
 
   render() {
-    console.log(this.state);
-    
     return (
       <div className="container profileComponent">
         <ReactModal

@@ -3,15 +3,13 @@ import GoogleBooks from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
-// import { Pagination } from '../../shared/Pagination/pagination';
 // const Filter = React.lazy(() => import('../../shared/filter'))
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-
-// import Select from 'rc-select';
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
-// import 'rc-select/assets/index.less';
+import { connect } from 'react-redux';
+import { setListOfBook } from '../../store/actions/googleBookAction';
 
 interface State {
   listOfBook: Book[],
@@ -19,7 +17,7 @@ interface State {
   searchField: string
 }
 
-export class GoogleBook extends React.Component<any, State> {
+class GoogleBook extends React.Component<any, any> {
   public googleBooks: GoogleBooks;
   private bookService: BookService;
   public onSearchFieldChange: Subject<string>;
@@ -30,7 +28,6 @@ export class GoogleBook extends React.Component<any, State> {
     this.bookService = new BookService();
 
     this.state = {
-      listOfBook: [],
       paginationParams: [],
       searchField: ''
     };
@@ -47,32 +44,18 @@ export class GoogleBook extends React.Component<any, State> {
       }
     });
 
-    this.paginationHandler = this.paginationHandler.bind(this);
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
     this.getBookFromGoogle = this.getBookFromGoogle.bind(this)
   }
 
-
-  public paginationHandler(event: any) {
-    console.log(event.target);
-  }
-
   public deleteBookFromDB(data: Book) {
     this.bookService.deleteBook(data)
-    .then((response) => {
-      console.log(response)
-    })
   }
 
   public getBookFromGoogle(value: string) {
     this.googleBooks.searchForBook(value)
-    .then(() => {
-      console.log('Gbooks', this.googleBooks.getPageInfo());
-        
-      this.setState({
-        ...this.state,
-        listOfBook: this.googleBooks.getPageInfo().currentItems
-      })
+    .then((res) => {
+      this.props.setListOfBook(res)
     })
   }
 
@@ -91,7 +74,7 @@ export class GoogleBook extends React.Component<any, State> {
             />
           </label>
         </div>
-        {(this.state as any).listOfBook.map((book: Book, index: number) => {
+        {this.props.listOfBook.map((book: Book, index: number) => {
           return (
             <BookComponent
               key={index}
@@ -124,3 +107,17 @@ export class GoogleBook extends React.Component<any, State> {
     )
   }
 }
+
+const mapStateToProps = (state: any) => {
+  return {
+    ...state.googleBookReducer
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setListOfBook: (list: Book[]) => dispatch(setListOfBook(list)) 
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleBook)

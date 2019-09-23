@@ -43,7 +43,7 @@ class BookManager extends React.Component<any, State>{
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getBooks(this.state.pagination)
   }
 
@@ -55,7 +55,9 @@ class BookManager extends React.Component<any, State>{
           this.props.setBook( (el.listOfItem as Book[]).map(book => {
             return {
               ...book,
-              inFavorite: favoriteBooks.indexOf(book._id as string) === -1 ? false : true
+              inFavorite: favoriteBooks.length
+              ? favoriteBooks.indexOf(book._id as string) === -1 ? false : true
+              : null
             };
           }));
           this.setState({
@@ -106,7 +108,7 @@ class BookManager extends React.Component<any, State>{
   public editeBookInDb(book: Book) {
     this.bookService.updateBook(book)
     .then(() => {
-      this.componentWillMount();
+      this.componentDidMount();
     })
   }
 

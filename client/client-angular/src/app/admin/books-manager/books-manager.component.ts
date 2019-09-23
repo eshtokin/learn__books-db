@@ -45,7 +45,9 @@ export class BooksManagerComponent implements OnInit {
             this.books = (el.listOfItem as Book[]).map(book => {
               return {
                 ...book,
-                inFavorite: favoriteBooks.indexOf(book._id) === -1 ? false : true
+                inFavorite: favoriteBooks.length
+                ? favoriteBooks.indexOf(book._id) === -1 ? false : true
+                : null
               };
             });
             this.paginationParams.length = el.totalCount[0].count;

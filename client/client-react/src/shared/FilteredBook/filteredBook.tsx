@@ -149,7 +149,6 @@ class FilteredBook extends React.Component<any, State>{
             defaultCurrent={1}
             total={this.state.pagination.length}
             onChange = {(current, pageSize) => {
-              console.log(current, pageSize);
               this.setState({
                 pagination: {
                   ...this.state.pagination,

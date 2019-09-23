@@ -87,7 +87,6 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
 
   public uploadFile(event: ChangeEvent<HTMLInputElement>) {
     const book = { ...this.state.book };
-    console.log('book 1 : ', book);
 
     const input = event.target;
     const reader = new FileReader();
@@ -96,7 +95,6 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
       this.setState({
         book
       });
-      console.log('book 2 : ', book);
     };
     reader.readAsDataURL((input as any).files[0]);
   }

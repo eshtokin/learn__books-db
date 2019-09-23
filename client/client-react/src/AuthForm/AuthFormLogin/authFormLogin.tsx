@@ -1,5 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { UserService } from '../../service/users.service';
+import {setUserStatus} from './../../store/actions/authentificatedInfoAction';
+import { connect } from 'react-redux';
 
 interface State {
   email: string;
@@ -7,8 +9,10 @@ interface State {
   valid: boolean;
 }
 
-export class AuthFormLogin extends React.Component<any, State> {
-  constructor(props: State) {
+class AuthFormLogin extends React.Component<any, State> {
+  public userService: UserService;
+
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -45,7 +49,14 @@ export class AuthFormLogin extends React.Component<any, State> {
   
   public login(): void {
     this.userService.login((this.state as {email: string, password: string}))
-    .then(console.log);
+    .then((res) => {
+      if (res) {
+        this.props.setUserStatus(true);
+        this.props.history.push({
+          pathname: '/profile'
+        });
+      }
+    })
   }
 
   public isValid(): void {
@@ -59,8 +70,6 @@ export class AuthFormLogin extends React.Component<any, State> {
       })
     }
   }
-
-  public userService: UserService;
 
   render() {
     return (
@@ -87,3 +96,17 @@ export class AuthFormLogin extends React.Component<any, State> {
     )
   }
 }
+
+const mapStateToProps = (state: any) => {
+  return {
+    ...state.authentificatedInfoReducer
+  }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUserStatus: (status: boolean) => dispatch(setUserStatus(status))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthFormLogin)

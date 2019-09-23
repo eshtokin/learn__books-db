@@ -94,8 +94,6 @@ class UserManager extends React.Component<any, any> {
   }
 
   render() {
-    console.log('user manager' , this.props.editeUser);
-
     return (
       <div className="container">
         <ReactModal
