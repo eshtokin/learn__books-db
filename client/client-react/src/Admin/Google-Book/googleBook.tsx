@@ -3,7 +3,6 @@ import GoogleBooks from '../../service/google-books.service';
 import { BookService } from '../../service/books.service';
 import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
-// const Filter = React.lazy(() => import('../../shared/filter'))
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import Pagination from 'rc-pagination';

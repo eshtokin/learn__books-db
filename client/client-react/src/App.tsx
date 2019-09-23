@@ -1,24 +1,25 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './App.scss';
 import 'materialize-css/dist/css/materialize.min.css';
 import Header from './shared/HeaderComponent/headerComponent'
 import { Switch, Route } from 'react-router-dom';
-import { AuthForm } from './AuthForm/authForm';
-import GoogleBook from './Admin/Google-Book/googleBook';
-import BookManager from './Admin/BookManager/BookManager';
-import UserManager from './Admin/UserManager/userManager'
-import FilteredBook from './shared/FilteredBook/filteredBook';
-import TestPage from './Admin/testFile';
-import Profile from './shared/Profile/profileComponent';
-import Favorites from './shared/Favorites/favorites';
-
 import ProtectedUserRoute from './guard/protectedUserRoute';
 import ProtectedAdminRotue from './guard/protectedAdminRoute';
+
+const GoogleBook = React.lazy(() => import('./Admin/Google-Book/googleBook'));
+const BookManager = React.lazy(() => import('./Admin/BookManager/BookManager'));
+const UserManager = React.lazy(() => import('./Admin/UserManager/userManager'));
+const FilteredBook = React.lazy(() => import('./shared/FilteredBook/filteredBook'));
+const Profile = React.lazy(() => import('./shared/Profile/profileComponent'));
+const Favorites = React.lazy(() => import('./shared/Favorites/favorites'));
+const AuthForm = React.lazy(() => import('./AuthForm/authForm'));
+const TestPage = React.lazy(() => import('./Admin/testFile'));
 
 const App: React.FC = () => {
   return (
     <div className="App">
       <Header />
+      <Suspense fallback={<h3>Loading...</h3>}>
       <Switch>
         <Route exact path='/' component={HomePage} />
         <ProtectedUserRoute path='/catalog' component={GoogleBook} />
@@ -31,6 +32,7 @@ const App: React.FC = () => {
         <ProtectedUserRoute path='/test' component={TestPage} />
         <Route path="*" component={() => <h3>404 Page not found</h3>}/>
       </Switch>
+      </Suspense>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import AuthFormLogin from './AuthFormLogin/authFormLogin';
 import { AuthFormRegistr } from './AuthFormRegistr/authFormRegistr';
 
-export const AuthForm = () => {
+export default function AuthForm() {
   return (
     <div className="row">
       <ul className="col s4 offset-s4 row">
