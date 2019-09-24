@@ -10,8 +10,8 @@ import { CategoryAuthor } from '../../models/category-author.model';
 import './style.scss';
 import ReactModal from 'react-modal';
 import FavoritesDetailsModal from './favoritesDetailsModal/favoritesDetailsModal';
-import Pagination from 'rc-pagination';
 import FavoritesDeleteModal from './favoritesDeleteModal/favoritesDeleteModal';
+import PaginationComponent from '../PaginationComponent/pagination';
 
 const customStyles = {
   content : {
@@ -105,11 +105,13 @@ export default class Favorites extends React.Component<any, State> {
       if ((user.books as string[]).length > 0) {
         this.userService.getUserBooks(user.books as string[], this.state.pagination, searchTitle)
         .then(books => {
-          this.setState({
+          this.setState({            
             books: books[0].listOfItem as Book[],
             pagination: {
               ...this.state.pagination,
-              length: books[0].totalCount[0].count
+              length:  books[0].totalCount[0]
+              ? books[0].totalCount[0].count
+              : 0
             }
           });
         });
@@ -169,8 +171,7 @@ export default class Favorites extends React.Component<any, State> {
         <ReactModal
         isOpen={this.state.favoritesDetails as boolean}
         style={customStyles}
-        contentLabel="Book's details"
-        >
+        contentLabel="Book's details">
           <FavoritesDetailsModal
             book={this.state.books.filter(book => {
               return book._id === this.state.favoritesDetailsId;
@@ -182,21 +183,18 @@ export default class Favorites extends React.Component<any, State> {
         <ReactModal
         isOpen={this.state.favoritesDeleteModal as boolean}
         style={customStyles}
-        contentLabel="Delete book modal"
-        >
+        contentLabel="Delete book modal">
           <FavoritesDeleteModal
             book={this.state.books.filter(book => {
               return book._id === this.state.favoritesDeleteId;
             })}
             delete={this.deleteBookFromFavorites}
-            close={this.favoritesDeleteModal}
-          />
+            close={this.favoritesDeleteModal}/>
         </ReactModal>
 
         <div className="input-field">
             <input type="text" id="text" 
-            onChange={event => this.onSearchFieldChange.next(event.target.value)}
-            />
+            onChange={event => this.onSearchFieldChange.next(event.target.value)}/>
             <label htmlFor="text">Seaarch field</label>
         </div>
         <p className="favoritesText">Favorites: </p>
@@ -237,8 +235,7 @@ export default class Favorites extends React.Component<any, State> {
                   Details
                 </button>
                 <button className="btn red"
-                  onClick={() => {this.favoritesDeleteModal(book._id as string)}}
-                >
+                  onClick={() => {this.favoritesDeleteModal(book._id as string)}}>
                   <i className="material-icons">
                     delete
                   </i>
@@ -248,22 +245,30 @@ export default class Favorites extends React.Component<any, State> {
             )
           })
           : <h3>Your list is empty</h3> }
-          {this.state.pagination.length as number > 0
-          ? <Pagination
-          pageSize={this.state.pagination.pageSize}
-          total={this.state.pagination.length}
-          onChange = {(current, pageSize) => {
-            this.setState({
-              pagination: {
-                ...this.state.pagination,
-                pageIndex: current - 1,
-                pageSize
-              }
-            }, this.componentDidMount)
-          }}
+        </ul>
+        {this.state.pagination.length as number > 0
+          ? <PaginationComponent
+            pagination={this.state.pagination}
+            onPageSizeChange={(pageSize: number) => {
+              this.setState({
+                pagination: {
+                  ...this.state.pagination,
+                  pageSize
+                }
+              }, this.componentDidMount)
+            }}
+            callback={(current, pageSize) => {
+              this.setState({
+                pagination: {
+                  ...this.state.pagination,
+                  pageIndex: current - 1,
+                  pageSize
+                }
+              }, this.componentDidMount)
+            }}
           />
           : null}
-        </ul>
+       
       </div>
     )
   }

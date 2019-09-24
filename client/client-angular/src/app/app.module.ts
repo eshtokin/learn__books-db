@@ -25,9 +25,7 @@ import { SharedModule } from './shared/shared.module';
   providers: [
     UserInfo,
     AdminGuardService,
-    UserGuardService,
-    // FavoriteService,
-    // UserService
+    UserGuardService
   ],
   exports: [],
   bootstrap: [AppComponent]

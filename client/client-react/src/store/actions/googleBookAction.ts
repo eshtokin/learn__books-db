@@ -7,3 +7,10 @@ export const setListOfBook = (listOfBook: Book[]) => {
     payload: listOfBook
   }
 }
+
+export const toggleFlagExistInDB = (bookId: string) => {
+  return {
+    type: googleBookConstant.TOGGLE_FLAG_EXIST_IN_DB,
+    payload: bookId
+  }
+}

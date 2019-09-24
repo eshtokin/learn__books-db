@@ -9,8 +9,8 @@ import { UserInfoService } from '../../service/user-info.service';
 import { BookComponent } from '../BookComponent/BookComponent';
 import Filter from '../FilterComponent/FilterComponent';
 import { setBook } from '../../store/actions/filteredBookAction';
-import Pagination from 'rc-pagination';
 import { PaginationEvent } from '../../models/pagination-event.model';
+import PaginationComponent from '../PaginationComponent/pagination';
 
 interface State {
   pagination: PaginationEvent;
@@ -140,23 +140,29 @@ class FilteredBook extends React.Component<any, State>{
                   deleteFromDB={this.deleteBookFromDB}
                   addToFavorite={this.addBookToFavorite}
                   editeBook={this.editeBookInDb}
+                  addBookToDB={() => {}}
                 />)
             })
-            : <h1>nothing</h1>}
-            <Pagination
-            showSizeChanger
-            pageSize={this.state.pagination.pageSize}
-            defaultCurrent={1}
-            total={this.state.pagination.length}
-            onChange = {(current, pageSize) => {
-              this.setState({
-                pagination: {
-                  ...this.state.pagination,
-                  pageIndex: current - 1,
-                  pageSize
-                }
-              }, this.getSomeBooks)
-            }}
+            : <h1>No overlap...</h1>}
+            <PaginationComponent
+              pagination={this.state.pagination}
+              onPageSizeChange={(pageSize: number) => {
+                this.setState({
+                  pagination: {
+                    ...this.state.pagination,
+                    pageSize
+                  }
+                }, this.componentDidMount)
+              }}
+              callback={(current, pageSize) => {
+                this.setState({
+                  pagination: {
+                    ...this.state.pagination,
+                    pageIndex: current - 1,
+                    pageSize
+                  }
+                }, this.getSomeBooks)
+              }}
             />
         </div>
       </ div>

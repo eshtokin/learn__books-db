@@ -8,8 +8,8 @@ import Filter from '../../shared/FilterComponent/FilterComponent';
 import { setBookAtPage, deleteBookFromState, favoriteFlagToggle } from '../../store/actions/bookManagerAction';
 import { UserInfoService } from '../../service/user-info.service';
 import { User } from '../../models/user.model';
-import Pagination from 'rc-pagination';
 import { PaginationEvent } from '../../models/pagination-event.model';
+import PaginationComponent from '../../shared/PaginationComponent/pagination';
 
 interface State {
   pagination: {
@@ -52,6 +52,7 @@ class BookManager extends React.Component<any, State>{
     .then((el) => {
       this.userService.getUserFavoriteBooks()
         .then(favoriteBooks => {
+          
           this.props.setBook( (el.listOfItem as Book[]).map(book => {
             return {
               ...book,
@@ -134,18 +135,30 @@ class BookManager extends React.Component<any, State>{
               }}
               deleteFromDB={this.deleteBookFromDB}
               addToFavorite={this.addBookToFavorite}
-              editeBook={this.editeBookInDb} 
+              editeBook={this.editeBookInDb}
+              addBookToDB={() => {}}
             />)
           })
-          : <h1>nothing</h1>}
-          <Pagination
-          showSizeChanger
-          pageSize={10}
-          defaultCurrent={1}
-          total={this.state.pagination.length}
-          onChange = {(current, pageSize) => {
-            this.getBooks({pageSize, pageIndex: current - 1})
-          }}
+          : <h1>Loading ...</h1>}
+          <PaginationComponent
+            pagination={this.state.pagination}
+            onPageSizeChange={(pageSize: number) => {
+              this.setState({
+                pagination: {
+                  ...this.state.pagination,
+                  pageSize
+                }
+              }, this.componentDidMount)
+            }}
+            callback={(current, pageSize) => {
+              this.setState({
+                pagination: {
+                  ...this.state.pagination,
+                  pageIndex: current - 1,
+                  pageSize
+                }
+              }, this.componentDidMount)
+            }}
           />
         </div>
       </ div>

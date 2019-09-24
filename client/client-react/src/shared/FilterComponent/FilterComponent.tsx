@@ -106,9 +106,7 @@ class Filter extends React.Component<Props, any> {
       <div className="col s2 filters">
         <div className="input-field">
           <input type="text" id="searchField" 
-          // onChange={(event) => this.filterHandler(null, event)}
-          onChange={event => this.onSearchStringChange.next(event.target.value)}
-          />
+          onChange={event => this.onSearchStringChange.next(event.target.value)}/>
           <label>Search Field</label>
         </div>
         {
@@ -117,8 +115,7 @@ class Filter extends React.Component<Props, any> {
               <label key={index}>
                 <input type="checkbox"
                 defaultChecked={category.checked}
-                onClick={(event) => this.filterHandler(category)}
-                />
+                onClick={(event) => this.filterHandler(category)}/>
                 <span>{category.name}</span>
               </label>
             )
@@ -131,8 +128,7 @@ class Filter extends React.Component<Props, any> {
               <label key={index}>
                 <input type="checkbox"
                 defaultChecked={author.checked}
-                onClick={(event) => this.filterHandler(author)}
-                />
+                onClick={(event) => this.filterHandler(author)}/>
                 <span>{author.name}</span>
               </label>
             )

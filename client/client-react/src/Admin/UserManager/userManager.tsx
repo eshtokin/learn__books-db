@@ -9,6 +9,8 @@ import ReactModal from 'react-modal';
 import UserEditeModal from '../../shared/UserComponent/userEditeModal/userEditeModal';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { PaginationEvent } from '../../models/pagination-event.model';
+import PaginationComponent from '../../shared/PaginationComponent/pagination';
 
 const customStyles = {
   content : {
@@ -22,7 +24,13 @@ const customStyles = {
   }
 };
 
-class UserManager extends React.Component<any, any> {
+interface State {
+  userAddModal: boolean,
+  searchField: string;
+  pagination: PaginationEvent;
+}
+
+class UserManager extends React.Component<any, State> {
   public userService: UserService;
   public changesField: Subject<string>;
 
@@ -31,17 +39,20 @@ class UserManager extends React.Component<any, any> {
     
     this.state = {
       userAddModal: false,
-      searchField: ''
+      searchField: '',
+      pagination: {
+        pageIndex: 0,
+        pageSize: 5,
+        length: 0,
+        previousPageIndex: 0
+      }
     }
 
     this.changesField = new Subject<string>()
     this.changesField
       .pipe(debounceTime(500))
       .subscribe((value: any) => {
-        this.userService.getSomeUsers(value, {
-          pageSize: 5,
-          pageIndex: 0
-        })
+        this.userService.getSomeUsers(value, this.state.pagination)
         .then((response: any) => {
           this.props.setUsers(response[0].listOfItem as User[])
         })
@@ -57,9 +68,15 @@ class UserManager extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    this.userService.getAllUsers({pageIndex: 0, pageSize: 5})
+    this.userService.getAllUsers(this.state.pagination)
     .then(data => {
-      this.props.setUsers(data[0].listOfItem)
+      this.props.setUsers(data[0].listOfItem);
+      this.setState({
+        pagination: {
+          ...this.state.pagination,
+          length: data[0].totalCount[0].count
+        }
+      })
     })
   }
 
@@ -97,7 +114,7 @@ class UserManager extends React.Component<any, any> {
     return (
       <div className="container">
         <ReactModal
-        isOpen={(this.state as any).userAddModal as boolean}
+        isOpen={this.state.userAddModal as boolean}
         style={customStyles}
         contentLabel="User add modal"
         >
@@ -116,6 +133,12 @@ class UserManager extends React.Component<any, any> {
           />
           <label htmlFor="searchField">Enter e-mail</label>
           <br/>
+          <div className="container center">
+            <button
+            className="btn orange center"
+            onClick={this.userAddModal}
+            >Add new user</button>
+          </div>
         </div>
       { this.props.usersAtPage ?
         this.props.usersAtPage.map((user: User, index: number) => { 
@@ -128,18 +151,26 @@ class UserManager extends React.Component<any, any> {
         })
         : null
       }
-       <div className="container center">
-          <button
-          className="btn orange center"
-          onClick={this.userAddModal}
-          >Add new user</button>
-        </div>
-        {/* // <mat-paginator 
-        //     [length] = "paginationParams.length"
-        //     [pageSize] = "paginationParams.pageSize"
-        //     [pageSizeOptions] = "[3, 5, 7, 10, 25, 50]"
-        //     (page) = "paginationHandler($event)">
-        // </mat-paginator> */}
+      <PaginationComponent
+        pagination={this.state.pagination}
+        onPageSizeChange={(pageSize: number) => {
+          this.setState({
+            pagination: {
+              ...this.state.pagination,
+              pageSize
+            }
+          }, this.componentDidMount)
+        }}
+        callback={(current, pageSize) => {
+          this.setState({
+            pagination: {
+              ...this.state.pagination,
+              pageIndex: current - 1,
+              pageSize
+            }
+          }, this.componentDidMount)
+        }}
+      />
       </div>
     )
   }

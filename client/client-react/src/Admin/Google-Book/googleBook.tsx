@@ -5,18 +5,15 @@ import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import Pagination from 'rc-pagination';
-import 'rc-pagination/assets/index.css';
 import { connect } from 'react-redux';
-import { setListOfBook } from '../../store/actions/googleBookAction';
+import { setListOfBook, toggleFlagExistInDB } from '../../store/actions/googleBookAction';
+import PaginationComponent from '../../shared/PaginationComponent/pagination';
 
 interface State {
-  listOfBook: Book[],
-  paginationParams: [];
   searchField: string
 }
 
-class GoogleBook extends React.Component<any, any> {
+class GoogleBook extends React.Component<any, State> {
   public googleBooks: GoogleBooks;
   private bookService: BookService;
   public onSearchFieldChange: Subject<string>;
@@ -27,7 +24,6 @@ class GoogleBook extends React.Component<any, any> {
     this.bookService = new BookService();
 
     this.state = {
-      paginationParams: [],
       searchField: ''
     };
   
@@ -44,23 +40,36 @@ class GoogleBook extends React.Component<any, any> {
     });
 
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
-    this.getBookFromGoogle = this.getBookFromGoogle.bind(this)
+    this.getBookFromGoogle = this.getBookFromGoogle.bind(this);
+    this.addBookToDB = this.addBookToDB.bind(this);
   }
 
   public deleteBookFromDB(data: Book) {
     this.bookService.deleteBook(data)
   }
+  
+  public addBookToDB(book: Book) {
+    const newBook: Book = {
+      title: book.title,
+      authors: book.authors,
+      categories: book.categories || [],
+      description: book.description,
+      image: (book.imageLinks as any).thumbnail || '',
+      pageCount: book.pageCount,
+      printType: book.printType,
+      industryIdentifiers: book.industryIdentifiers
+    };
+    
+    this.props.toggleFlagExistInDB(book._id);
+    this.bookService.addBookToDB(newBook)
+  }
+
 
   public getBookFromGoogle(value: string) {
     this.googleBooks.searchForBook(value)
     .then((res) => {
       this.props.setListOfBook(res)
     })
-  }
-
-  onShowSizeChange = (current: number, pageSize: number) => {
-    console.log(current);
-    // this.setState({ pageSize });
   }
 
   render() {
@@ -87,16 +96,17 @@ class GoogleBook extends React.Component<any, any> {
               deleteFromDB={this.deleteBookFromDB}
               addToFavorite={() => {}}
               editeBook={() => {}}
+              addBookToDB={this.addBookToDB}
             />
             )
           })}
-        
-        <Pagination
-          showSizeChanger
-          pageSize={10}
-          defaultCurrent={1}
-          total={this.googleBooks.getPageInfo().paginationParams.length}
-          onChange = {(current, pageSize) => {
+        <PaginationComponent
+          pagination={this.googleBooks.getPageInfo().paginationParams}
+          onPageSizeChange={(pageSize: number) => {
+            this.googleBooks.getPageInfo().paginationParams.pageSize = pageSize;
+            this.getBookFromGoogle(this.state.searchField)
+          }}
+          callback={(current, pageSize) => {
             this.googleBooks.getPageInfo().paginationParams.pageIndex = current -1;
             this.googleBooks.getPageInfo().paginationParams.pageSize = pageSize;
             this.getBookFromGoogle(this.state.searchField)
@@ -116,7 +126,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setListOfBook: (list: Book[]) => dispatch(setListOfBook(list)) 
+    setListOfBook: (list: Book[]) => dispatch(setListOfBook(list)),
+    toggleFlagExistInDB: (bookId: string) => dispatch(toggleFlagExistInDB(bookId))
   }
 };
 

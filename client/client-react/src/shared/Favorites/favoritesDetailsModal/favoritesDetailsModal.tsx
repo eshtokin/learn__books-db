@@ -20,9 +20,10 @@ export default function FavoritesDetailsModal(props: Props) {
         }}
         deleteFromDB={() => {}}
         addToFavorite={() => {}}
-        editeBook={() => {}} 
+        editeBook={() => {}}
+        addBookToDB={() => {}}
       />
-      <button className="btn grey darken-2" 
+      <button className="btn green darken-2" 
       onClick={() => props.close('')}
       >
         Close

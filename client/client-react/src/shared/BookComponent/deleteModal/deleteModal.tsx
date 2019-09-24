@@ -13,14 +13,13 @@ export default function DeleteModal(props: Props) {
       Delete book from DataBase ?
       <br/>
       <b>{props.book.title}</b>
-
+      <br/>
       <button className="btn green"
       onClick={props.close}>
         Cancel
       </button>
       <button className="btn red"
-      onClick={props.deleteFromDB}
-      >
+      onClick={props.deleteFromDB}>
         Delete
       </button>
     </div>

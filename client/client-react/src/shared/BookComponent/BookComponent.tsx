@@ -29,6 +29,7 @@ interface BookProps {
   deleteFromDB: (book: Book) => void;
   addToFavorite: (book: Book) => void;
   editeBook: (book: Book) => void;
+  addBookToDB: (book: Book) => void;
 }
 
 interface BookState {
@@ -61,7 +62,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
     this.bookDeleteModal = this.bookDeleteModal.bind(this);
     this.bookEditeModal = this.bookEditeModal.bind(this);
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
-
+    this.addBookToDB = this.addBookToDB.bind(this);
     this.addBooktoFavorite = this.addBooktoFavorite.bind(this);
   }
 
@@ -96,6 +97,10 @@ export class BookComponent extends React.Component<BookProps, BookState> {
   public deleteBookFromDB(): void {
     this.bookDeleteModal();
     this.props.deleteFromDB(this.props.book);
+  }
+
+  public addBookToDB(): void {
+    this.props.addBookToDB(this.props.book)
   }
 
   public addBooktoFavorite(): void {
@@ -224,6 +229,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
               {this.props.buttonStatus.ddToDbBtn ?
               <button
                 className="btn add-to-pro-btn"
+                onClick={this.addBookToDB}
                 disabled={this.props.book.alreadyExistInBD}
               >
               add to DB

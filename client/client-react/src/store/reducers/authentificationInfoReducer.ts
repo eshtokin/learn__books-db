@@ -1,5 +1,6 @@
 import * as authConstant from './../constants/authentificatedInfoConstant';
 import { UserInfoService } from '../../service/user-info.service';
+import { User } from '../../models/user.model';
 
 const UserInfo = new UserInfoService();
 
@@ -15,7 +16,9 @@ export interface AuthentificationAction {
 
 export function authentificatedInfoReducer(state: AuthentificationState = {
   isLogined: UserInfo.getCurrentUser() ? true : false,
-  role: 2
+  role: localStorage.hasOwnProperty('token')
+  ? (UserInfo.getCurrentUser() as User).role
+  : 0
 } , action: AuthentificationAction): AuthentificationState {
   switch(action.type) {
     case authConstant.SET_STATUS:

@@ -58,6 +58,7 @@ export default class GoogleBooks {
 
             return {
               alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
+              _id: industryIdentifiers, // this is change
               ...el.volumeInfo
             };
           });
