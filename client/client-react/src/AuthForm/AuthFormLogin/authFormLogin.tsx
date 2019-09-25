@@ -4,11 +4,25 @@ import {setUserStatus, setUserRole} from './../../store/actions/authentificatedI
 import { connect } from 'react-redux';
 import { UserInfoService } from '../../service/user-info.service';
 import { User } from '../../models/user.model';
+import ReactModal from 'react-modal';
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+    minWidth              : '550px'
+  }
+};
 
 interface State {
   email: string;
   password: string;
   valid: boolean;
+  authFailedModal: boolean;
 }
 
 class AuthFormLogin extends React.Component<any, State> {
@@ -20,14 +34,21 @@ class AuthFormLogin extends React.Component<any, State> {
     this.state = {
       email: '',
       password: '',
-      valid: false
+      valid: false,
+      authFailedModal: false
     };
+
     this.userService = new UserService();
     this.userInfoService = new UserInfoService();
 
     this.handleChange = this.handleChange.bind(this);
     this.login = this.login.bind(this);
+    this.authFailedModalToggle = this.authFailedModalToggle.bind(this);
   }
+
+  componentDidMount() {
+    ReactModal.setAppElement('.authLoginComponent')
+  };
 
   public handleChange(event: ChangeEvent<HTMLInputElement>): void {
     switch (event.target.id) {
@@ -60,8 +81,14 @@ class AuthFormLogin extends React.Component<any, State> {
         this.props.history.push({
           pathname: '/profile'
         });
+      } else {
+        this.authFailedModalToggle()
       }
     })
+  }
+
+  public authFailedModalToggle(): void {
+    this.setState({authFailedModal: !this.state.authFailedModal}) 
   }
 
   public isValid(): void {
@@ -78,7 +105,20 @@ class AuthFormLogin extends React.Component<any, State> {
 
   render() {
     return (
-      <div className="row">
+      <div className="row authLoginComponent">
+        <ReactModal
+        isOpen={this.state.authFailedModal}
+        style={customStyles}
+        contentLabel="Authorization failed modal"
+        >
+          <p>Authorization failed.</p>
+          <p>Please check your e-mail, password or keyboard language.</p>
+          <button
+            className="btn green darken-2"
+            onClick={this.authFailedModalToggle}
+          >Ok</button>
+        </ReactModal>
+
         <div className="col s4 offset-s4">
           <div className="input-field ">
             <input type="text" id="email" 
