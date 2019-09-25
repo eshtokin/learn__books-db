@@ -65,7 +65,6 @@ export default class GoogleBooks {
           return this.pageInfo.currentItems;
         });
       })
-      .catch(err => console.log(err));
   }
 
   public getPageInfo() {

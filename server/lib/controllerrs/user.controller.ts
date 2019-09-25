@@ -121,11 +121,11 @@ export class UserController {
         const user = jwt.decode(req.headers.authorization);
         
         const query = {
-            id: user._id
+            _id: user.id
         };
         
         mongoDbService.find(User, query)
-        .then( result => {
+        .then( result => {            
             return res.json(result[0].books)
         })
         .catch(err => {

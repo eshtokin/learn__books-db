@@ -29,17 +29,17 @@ export class Routes {
         .post(this.authentController.registration)
 
         app.route("/user")
-        .get(this.userController.getAllUsers)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getAllUsers)
 
         app.route("/usersearch")
-        .get(this.userController.getSomeUser)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getSomeUser)
 
         app.route("/userfavorites")
-        .get(this.userController.getFavoriteBookFromUser)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getFavoriteBookFromUser)
 
         app.route("/user/:userId")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
-        .put(this.userController.updateUser) // AuthMiddleware([UserRoles.admin, UserRoles.user]),
+        .put(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.updateUser)
         .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.deleteUser)
 
         app.route("/userbooks")
@@ -47,31 +47,31 @@ export class Routes {
 
         app.route("/books")
         .get(this.bookController.getAllBook)
-        .post(this.bookController.addBook)
-        .put(this.bookController.updateBook)
-        .delete(this.bookController.deleteBook)
+        .post(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.addBook)
+        .put(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.updateBook)
+        .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.deleteBook)
 
         app.route("/somebooks")
-        .get(this.bookController.getSomeBooks)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.getSomeBooks)
 
         app.route("/getbookbyindustryIdentifiers")
-        .get(this.bookController.getBookByIndustryIdentifiers)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.getBookByIndustryIdentifiers)
 
         app.route("/books/:bookId")
-        .get(this.bookController.getBook)
-        .post(this.userController.addBookToProfile)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.getBook)
+        .post(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.addBookToProfile)
 
         app.route("/category")
-        .get(this.categoryController.getAllCategory)
-        .post(this.categoryController.addCategory)
-        .delete(this.categoryController.deleteCategory)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.categoryController.getAllCategory)
+        .post(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.categoryController.addCategory)
+        .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.categoryController.deleteCategory)
 
         app.route("/author")
-        .get(this.authorController.getAllAuthor)
-        .post(this.authorController.addAuthor)
-        .delete(this.authorController.deleteAuthor)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.getAllAuthor)
+        .post(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.addAuthor)
+        .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.deleteAuthor)
 
         app.route("/author/:authorId")
-        .get(this.authorController.getAuthor)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.getAuthor)
     }
 }

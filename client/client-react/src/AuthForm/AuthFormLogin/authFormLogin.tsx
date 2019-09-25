@@ -81,9 +81,10 @@ class AuthFormLogin extends React.Component<any, State> {
         this.props.history.push({
           pathname: '/profile'
         });
-      } else {
-        this.authFailedModalToggle()
       }
+    })
+    .catch(err => {
+      this.authFailedModalToggle()
     })
   }
 

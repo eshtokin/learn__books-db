@@ -51,14 +51,11 @@ class BookManager extends React.Component<any, State>{
     this.bookService.getAllBooks(pagination)
     .then((el) => {
       this.userService.getUserFavoriteBooks()
-        .then(favoriteBooks => {
-          
+        .then(favoriteBooks => {          
           this.props.setBook( (el.listOfItem as Book[]).map(book => {
             return {
               ...book,
-              inFavorite: favoriteBooks.length
-              ? favoriteBooks.indexOf(book._id as string) === -1 ? false : true
-              : null
+              inFavorite: favoriteBooks.indexOf(book._id as string) === -1 ? false : true
             };
           }));
           this.setState({

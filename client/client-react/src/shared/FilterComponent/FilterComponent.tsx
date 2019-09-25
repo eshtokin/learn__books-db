@@ -58,13 +58,11 @@ class Filter extends React.Component<Props, State> {
 
   componentDidMount() {
     const query = queryString.parse((this.props as any).location.search);
-    
+     
     this.bookService.getAllAuthors()
     .then((authors: CategoryAuthor[]) => {
-      
       this.bookService.getAllCategories()
       .then((categories: CategoryAuthor[]) => {
-        
         this.props.setFilter({
           authors: authors.map(author => {
             return {

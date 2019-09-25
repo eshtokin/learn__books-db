@@ -2,9 +2,9 @@ import React from 'react';
 import { User } from "../../models/user.model";
 import ReactModal from 'react-modal';
 import { Book } from '../../models/book.model';
-import DeleteUserModal from './userDeleteModal/userDeleteModal';
 import UserEditeModal from './userEditeModal/userEditeModal';
 import './style.scss';
+import DeleteUserModal from './UserDeleteModal/userDeleteModal';
 
 const customStyles = {
   content : {

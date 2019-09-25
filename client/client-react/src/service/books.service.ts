@@ -1,27 +1,24 @@
-import { Axios } from './../interceptor/token.interceptor';
 import { Book } from '../models/book.model';
 import { BookFilter } from '../models/book-filter.model';
 import { PaginationEvent } from '../models/pagination-event.model';
 import { ServerResponce } from './../models/server-response.model';
 import { CategoryAuthor } from '../models/category-author.model';
+import { Axios } from '../interceptor/token.interceptor';
 
 export class BookService {
   public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {
     return Axios.get('/books', {params: pagination})
     .then(res => res.data)
-    .catch(err => console.log(err));
   }
 
   public getSomeBooks(data: BookFilter): Promise<ServerResponce> {
     return Axios.get('/somebooks', {params: data})
     .then(res => res.data)
-    .catch(err => console.log(err));
   }
 
   public getBookByIndustryIdentifiers(industryIdentifiers: string[]): Promise<any>  {
     return Axios.get('/getbookbyindustryIdentifiers', {params: {industryIdentifiers}})
     .then(res => res.data)
-    .catch(err => console.log(err));
   }
 
   public addBookToDB(book: Book): Promise<any> {
@@ -29,7 +26,6 @@ export class BookService {
     .then(res => {
       return res;
     })
-    .catch(err => console.log(err));
   }
 
   public updateBook(data: Book): Promise<any> {
@@ -37,7 +33,6 @@ export class BookService {
     .then(res => {
       return res;
     })
-    .catch(err => console.log(err));
   }
 
   public changeImageInBook(data: {id: string, image: string | ArrayBuffer}): Promise<any> {
@@ -45,7 +40,6 @@ export class BookService {
     .then(res => {
       return res;
     })
-    .catch(err => console.log(err));
   }
 
   public deleteBook(data: Book): Promise<any> {
@@ -53,7 +47,6 @@ export class BookService {
     .then(res => {
       return res;
     })
-    .catch(err => console.log(err));
   }
 
   public getAllAuthors(): Promise<CategoryAuthor[]> {
@@ -61,8 +54,6 @@ export class BookService {
     .then(res => {
       return res.data;
     })
-    .catch(err => console.log(err)
-    );
   }
 
   public getAllCategories(): Promise<CategoryAuthor[]> {
@@ -70,6 +61,5 @@ export class BookService {
     .then(res => {
       return res.data;
     })
-    .catch(err => console.log(err));
   }
 }

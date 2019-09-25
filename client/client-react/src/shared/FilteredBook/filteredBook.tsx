@@ -46,12 +46,6 @@ class FilteredBook extends React.Component<any, State>{
     this.getSomeBooks()
   }
 
-  shouldComponentUpdate(nextProps: any, nextState: State , nextContent: any) {
-    return this.state.pagination.pageIndex !== nextState.pagination.pageIndex
-    ? true
-    : true;
-  }
-
   public getSomeBooks(): void {
     const linkParams = queryString.parse(this.props.history.location.search);
     const data = {
