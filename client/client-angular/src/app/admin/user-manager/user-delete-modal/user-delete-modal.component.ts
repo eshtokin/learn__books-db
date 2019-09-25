@@ -27,6 +27,6 @@ export class UserDeleteModalComponent {
     if (this.data.userId !== this.userInfo.getCurrentUser().id) {
       this.data.deleteFunc(this.data.userId);
     }
-    this.confirmDialog.close();
+    this.cancel();
   }
 }

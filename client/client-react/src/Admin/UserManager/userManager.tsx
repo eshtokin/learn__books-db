@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import PaginationComponent from '../../shared/PaginationComponent/pagination';
+import { UserInfoService } from '../../service/user-info.service';
 
 const customStyles = {
   content : {
@@ -31,6 +32,7 @@ interface State {
 }
 
 class UserManager extends React.Component<any, State> {
+  public userInfoService: UserInfoService;
   public userService: UserService;
   public changesField: Subject<string>;
 
@@ -50,14 +52,15 @@ class UserManager extends React.Component<any, State> {
 
     this.changesField = new Subject<string>()
     this.changesField
-      .pipe(debounceTime(500))
-      .subscribe((value: any) => {
-        this.userService.getSomeUsers(value, this.state.pagination)
-        .then((response: any) => {
-          this.props.setUsers(response[0].listOfItem as User[])
-        })
-      });
+    .pipe(debounceTime(500))
+    .subscribe((value: any) => {
+      this.userService.getSomeUsers(value, this.state.pagination)
+      .then((response: any) => {
+        this.props.setUsers(response[0].listOfItem as User[])
+      })
+    });
     
+    this.userInfoService = new UserInfoService();
     this.userService = new UserService();
 
     this.deleteUserFromDB = this.deleteUserFromDB.bind(this);
@@ -81,11 +84,14 @@ class UserManager extends React.Component<any, State> {
   }
 
   public deleteUserFromDB(user: User) {
-    this.userService.delete(user._id)
-    .then(() => {
-      alert('successfuly deleted');
-      this.componentDidMount();
-    })
+    if ((this.userInfoService.getCurrentUser() as User).id !== user._id ) {
+      this.userService.delete(user._id)
+      .then(() => {
+        alert('successfuly deleted');
+        this.componentDidMount();
+      })
+    }
+    
   }
 
   public editeUserInBD(user: User) {

@@ -18,17 +18,38 @@ interface Props{
   getSomeBooks: () => void
 }
 
-class Filter extends React.Component<Props, any> {
+interface State {
+  data: {
+    title: string,
+    categories: CategoryAuthor[],
+    authors: CategoryAuthor[]
+  }
+}
+
+class Filter extends React.Component<Props, State> {
   private bookService: BookService;
   public onSearchStringChange: Subject<string>;
   
   constructor(props: Props) {
     super(props);
 
+    this.state = {
+      data: {
+        title: '',
+        categories: [],
+        authors: []
+      }
+    }
+
     this.onSearchStringChange = new Subject();
     this.onSearchStringChange.pipe(debounceTime(500))
     .subscribe(value => {
-      this.filterHandler(null, value);  
+      this.setState({
+        data: {
+          ...this.state.data,
+          title: value
+        }
+      }, () => this.filterHandler(null))
     })
 
     this.bookService = new BookService();
@@ -74,24 +95,22 @@ class Filter extends React.Component<Props, any> {
     } = {};
     
     if (obj && obj !== undefined) {
-      (obj as CategoryAuthor).checked = !(obj as CategoryAuthor).checked
-
-      data.categories = this.props.categories.filter((obj: any) => {
-        return obj.checked;
-      }).map((obj: any) => {
-        return obj._id;
-      });
-  
-      data.authors = this.props.authors.filter((obj: any) => {
-        return obj.checked;
-      }).map((obj: any) => {
-        return obj._id;
-      });
+      (obj as CategoryAuthor).checked = !(obj as CategoryAuthor).checked;
     }
 
-    if (value && value.length > 0) {
-      data.title = value
-    }
+    data.title = this.state.data.title
+
+    data.categories = this.props.categories.filter((obj: any) => {
+      return obj.checked;
+    }).map((obj: any) => {
+      return obj._id;
+    });
+
+    data.authors = this.props.authors.filter((obj: any) => {
+      return obj.checked;
+    }).map((obj: any) => {
+      return obj._id;
+    });
 
     (this.props as any).push({
       pathname: '/filtered',
@@ -115,7 +134,7 @@ class Filter extends React.Component<Props, any> {
               <label key={index}>
                 <input type="checkbox"
                 defaultChecked={category.checked}
-                onClick={(event) => this.filterHandler(category)}/>
+                onClick={() => this.filterHandler(category)}/>
                 <span>{category.name}</span>
               </label>
             )
