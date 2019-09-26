@@ -35,3 +35,10 @@ export function refreshFilterData() {
     payload: ''
   }
 }
+
+export function setAllFlag(flag: boolean) {
+  return {
+    type: filterConstant.SET_ALL_FLAG,
+    payload: flag
+  }
+}

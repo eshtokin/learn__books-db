@@ -17,6 +17,7 @@ interface Props{
   setFilter:( data: any)=> void;
   getSomeBooks: () => void;
   refreshFilter: () => void;
+  setAllFlag: (flag: boolean) => void;
 }
 
 interface State {
@@ -55,8 +56,13 @@ class Filter extends React.Component<Props, State> {
 
     this.bookService = new BookService();
     this.filterHandler = this.filterHandler.bind(this);
-    this.refreshFilter = this.refreshFilter.bind(this);
     this.loadFilterData = this.loadFilterData.bind(this);
+  }
+
+  UNSAFE_componentWillMount() {
+    if ((this.props as any).location.pathname === '/book-manager') {
+      this.props.setAllFlag(false);
+    }
   }
 
   componentDidMount() {
@@ -139,49 +145,7 @@ class Filter extends React.Component<Props, State> {
     this.props.getSomeBooks();
   }
 
-  public refreshFilter() {
-    console.log('this.props.', this.props);
-
-    (this.props as any).push({
-      pathname: '/filtered',
-      search: ''
-    });
-    // this.componentDidMount()
-    // this.bookService.getAllAuthors()
-    // .then((authors: CategoryAuthor[]) => {
-    //   authors = authors.map(author => {
-    //     return {
-    //       ...author,
-    //       checked: false
-    //     }
-    //   })
-    //   this.bookService.getAllCategories()
-    //   .then((categories: CategoryAuthor[]) => {
-    //     categories = categories.map((category: CategoryAuthor) => {
-    //       return {
-    //         ...category,
-    //         checked: false
-    //       }
-    //     });
-    //     this.props.setFilter({
-    //       authors,
-    //       categories,
-    //       title: ''
-    //     });
-    //   });
-    // });
-  }
-
   render() {
-    if ((this.props as any).location.pathname === '/book-manager') {
-      this.props.categories.forEach((category: CategoryAuthor) => {
-        category.checked = false;
-      });
-      this.props.authors.forEach((author: CategoryAuthor) => {
-        author.checked = false;
-      });
-    }
-    
     return (
       <div className="col s2 filters">
         <div className="input-field">
@@ -197,8 +161,8 @@ class Filter extends React.Component<Props, State> {
             return (
               <label key={index}>
                 <input type="checkbox"
-                defaultChecked={category.checked}
-                onClick={() => this.filterHandler(category)}/>
+                checked={category.checked}
+                onChange={() => this.filterHandler(category)}/>
                 <span>{category.name}</span>
               </label>
             )
@@ -210,8 +174,8 @@ class Filter extends React.Component<Props, State> {
             return (
               <label key={index}>
                 <input type="checkbox"
-                defaultChecked={author.checked}
-                onClick={() => this.filterHandler(author)}/>
+                checked={author.checked}
+                onChange={() => this.filterHandler(author)}/>
                 <span>{author.name}</span>
               </label>
             )
@@ -235,7 +199,9 @@ const mapDispatchToProps = (dispatch: any) => {
     setTitle: (title: string) => dispatch(filterAction.setTitle(title)),
     setCategories: (categories: CategoryAuthor[]) => dispatch(filterAction.setCategories(categories)),
     setAuthor: (authors: CategoryAuthor[]) => dispatch(filterAction.setAuthor(authors)),
-    setFilter: (data: FilterState) => dispatch(filterAction.setFilter(data))
+    setFilter: (data: FilterState) => dispatch(filterAction.setFilter(data)),
+
+    setAllFlag: (flag: boolean) => dispatch(filterAction.setAllFlag(flag))
   }
 }
 

@@ -84,7 +84,6 @@ class UserManager extends React.Component<any, State> {
   }
 
   public deleteUserFromDB(user: User) {
-
     if (this.userInfoService.getCurrentUser() && (this.userInfoService.getCurrentUser() as User).id !== user._id ) {
       this.userService.delete(user._id)
       .then(() => {

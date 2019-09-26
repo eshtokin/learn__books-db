@@ -114,7 +114,6 @@ class BookManager extends React.Component<any, State>{
     return (
       <div className="row">
         <Filter
-        key={1}
         {...this.props.history}
         getSomeBooks={()=> {}}
         />

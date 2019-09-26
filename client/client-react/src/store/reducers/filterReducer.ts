@@ -34,6 +34,24 @@ export function filterReducer(state: FilterState = initialState, action: FilterA
       }
     case filterConstant.SET_FILTER:
       return action.payload as FilterState
+
+    case filterConstant.SET_ALL_FLAG:
+      const newState = {
+        authors: (state.authors as CategoryAuthor[]).map(author => {
+          return {
+            ...author,
+            checked: action.payload as boolean
+          }
+        }),
+        categories: (state.categories as CategoryAuthor[]).map(category => {
+          return {
+            ...category,
+            checked: action.payload as boolean
+          }
+        }),
+        title: state.title
+      }
+      return newState;
     default:
       return state;
   }
