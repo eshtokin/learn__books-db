@@ -56,44 +56,54 @@ class Filter extends React.Component<Props, State> {
     this.bookService = new BookService();
     this.filterHandler = this.filterHandler.bind(this);
     this.refreshFilter = this.refreshFilter.bind(this);
-    this.setFilterInitialState = this.setFilterInitialState.bind(this);
+    this.loadFilterData = this.loadFilterData.bind(this);
   }
 
-  UNSAFE_componentWillMount() {
-    this.setFilterInitialState();
+  componentDidMount() {
+    this.loadFilterData();
   }
 
-  public setFilterInitialState() {
+  public checkQuery(object: CategoryAuthor): boolean {
     if ((this.props as any).location.search) {
-      console.log((this.props as any).location.search);
-      
       const query = queryString.parse((this.props as any).location.search);
+      const arrayFlag = [false, false];
+
       if (query.categories) {
-        this.props.categories.forEach((category: CategoryAuthor) => {
-          category.checked = (query.categories as string[]).indexOf(category._id) !== -1  ? true: false
-        })
+        arrayFlag[0] = (query.categories.indexOf(object._id) !== -1); 
       }
       if (query.authors) {
-        this.props.authors.forEach((author: CategoryAuthor) => {
-          author.checked = (query.categories as string[]).indexOf(author._id) !== -1  ? true: false
-        })
+        arrayFlag[1] = (query.authors.indexOf(object._id) !== -1);
       }
-      if (query.title) {
-        this.setState({
-          data: {
-            ...this.state.data,
-            title: query.title as string
-          }
-        })
-      }
-    } else {
-      this.props.categories.forEach((category: CategoryAuthor) => {
-        category.checked = false;
-      });
-      this.props.authors.forEach((author: CategoryAuthor) => {
-        author.checked = false;
-      });
+      return  arrayFlag[0] || arrayFlag[1];
     }
+    return false;
+  }
+
+  public loadFilterData() {
+    this.bookService.getAllCategories()
+    .then(categories => {
+      this.bookService.getAllAuthors()
+      .then(authors => {
+        categories = categories.map(category => {
+          return {
+            ...category,
+            checked: this.checkQuery(category)
+          }
+        });
+        authors = authors.map(author => {
+          return {
+            ...author,
+            checked: this.checkQuery(author)
+          }
+        });
+
+        this.props.setFilter({
+          authors,
+          categories,
+          title: ''
+        })
+      })
+    })
   }
 
   public filterHandler(obj: CategoryAuthor | null, value?: string) {
@@ -163,6 +173,15 @@ class Filter extends React.Component<Props, State> {
   }
 
   render() {
+    if ((this.props as any).location.pathname === '/book-manager') {
+      this.props.categories.forEach((category: CategoryAuthor) => {
+        category.checked = false;
+      });
+      this.props.authors.forEach((author: CategoryAuthor) => {
+        author.checked = false;
+      });
+    }
+    
     return (
       <div className="col s2 filters">
         <div className="input-field">
@@ -200,10 +219,6 @@ class Filter extends React.Component<Props, State> {
         }
         <hr/>
         <br/>
-        {/* <button
-          className="btn green darken-2"
-          onClick={this.refreshFilter}
-        >refresh filter</button> */}
       </div>
     )
   }
@@ -220,8 +235,7 @@ const mapDispatchToProps = (dispatch: any) => {
     setTitle: (title: string) => dispatch(filterAction.setTitle(title)),
     setCategories: (categories: CategoryAuthor[]) => dispatch(filterAction.setCategories(categories)),
     setAuthor: (authors: CategoryAuthor[]) => dispatch(filterAction.setAuthor(authors)),
-    setFilter: (data: FilterState) => dispatch(filterAction.setFilter(data)),
-    refreshFilter: () => dispatch(filterAction.refreshFilterData())
+    setFilter: (data: FilterState) => dispatch(filterAction.setFilter(data))
   }
 }
 

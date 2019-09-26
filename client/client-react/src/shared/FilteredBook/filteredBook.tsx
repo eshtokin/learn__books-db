@@ -46,7 +46,7 @@ class FilteredBook extends React.Component<any, State>{
   componentDidMount() {
     this.getSomeBooks()
   }
-
+  
   public getSomeBooks(): void {
     const linkParams = queryString.parse(this.props.history.location.search);
     const data = {
@@ -116,6 +116,7 @@ class FilteredBook extends React.Component<any, State>{
     return (
       <div className="row">
         <Filter
+          key={2}
           {...this.props.history}
           getSomeBooks={this.getSomeBooks.bind(this)}
         />
