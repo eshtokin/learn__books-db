@@ -14,12 +14,14 @@ export interface AuthentificationAction {
   payload: boolean | number;
 }
 
-export function authentificatedInfoReducer(state: AuthentificationState = {
+export const initialAuthState = {
   isLogined: UserInfo.getCurrentUser() ? true : false,
   role: localStorage.hasOwnProperty('token')
   ? (UserInfo.getCurrentUser() as User).role
   : 0
-} , action: AuthentificationAction): AuthentificationState {
+}
+
+export function authentificatedInfoReducer(state: AuthentificationState =  initialAuthState, action: AuthentificationAction): AuthentificationState {
   switch(action.type) {
     case authConstant.SET_STATUS:
       return {

@@ -6,9 +6,9 @@ import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
 
-store.subscribe(() => {
-  console.log(store.getState())
-})
+// store.subscribe(() => {
+//   console.log(store.getState())
+// })
 
 ReactDOM.render(
   <BrowserRouter>

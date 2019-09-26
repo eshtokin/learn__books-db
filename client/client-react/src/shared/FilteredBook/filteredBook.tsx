@@ -11,6 +11,7 @@ import Filter from '../FilterComponent/FilterComponent';
 import { setBook } from '../../store/actions/filteredBookAction';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import PaginationComponent from '../PaginationComponent/pagination';
+import './style.scss';
 
 interface State {
   pagination: PaginationEvent;
@@ -118,7 +119,7 @@ class FilteredBook extends React.Component<any, State>{
           {...this.props.history}
           getSomeBooks={this.getSomeBooks.bind(this)}
         />
-        <div className="col s10">
+        <div className="col s8 filteredBookContent">
           {this.props.books.length > 0 ?
             this.props.books.map((book: Book, index: number) => {
               return (

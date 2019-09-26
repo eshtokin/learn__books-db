@@ -10,17 +10,18 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 interface Props{
-  history: any,
-  authors : any,
-  categories:any,
-  search: string,
-  setFilter:( data: any)=> void,
-  getSomeBooks: () => void
+  history: any;
+  authors : any;
+  categories:any;
+  search: string;
+  setFilter:( data: any)=> void;
+  getSomeBooks: () => void;
+  refreshFilter: () => void;
 }
 
 interface State {
   data: {
-    title: string,
+    title: string | undefined,
     categories: CategoryAuthor[],
     authors: CategoryAuthor[]
   }
@@ -35,7 +36,7 @@ class Filter extends React.Component<Props, State> {
 
     this.state = {
       data: {
-        title: '',
+        title: undefined,
         categories: [],
         authors: []
       }
@@ -54,35 +55,45 @@ class Filter extends React.Component<Props, State> {
 
     this.bookService = new BookService();
     this.filterHandler = this.filterHandler.bind(this);
+    this.refreshFilter = this.refreshFilter.bind(this);
+    this.setFilterInitialState = this.setFilterInitialState.bind(this);
   }
 
-  componentDidMount() {
-    const query = queryString.parse((this.props as any).location.search);
-     
-    this.bookService.getAllAuthors()
-    .then((authors: CategoryAuthor[]) => {
-      this.bookService.getAllCategories()
-      .then((categories: CategoryAuthor[]) => {
-        this.props.setFilter({
-          authors: authors.map(author => {
-            return {
-              ...author,
-              checked: query.authors === undefined
-              ? false
-              : (query.authors as string[]).indexOf(author._id) === -1 ? false : true
-            }
-          }),
-          categories: categories.map((category: CategoryAuthor) => {
-            return {
-              ...category,
-              checked: query.categories === undefined
-              ? false
-              : (query.categories as string[]).indexOf(category._id) === -1 ? false : true
-            }
-          })
+  UNSAFE_componentWillMount() {
+    this.setFilterInitialState();
+  }
+
+  public setFilterInitialState() {
+    if ((this.props as any).location.search) {
+      console.log((this.props as any).location.search);
+      
+      const query = queryString.parse((this.props as any).location.search);
+      if (query.categories) {
+        this.props.categories.forEach((category: CategoryAuthor) => {
+          category.checked = (query.categories as string[]).indexOf(category._id) !== -1  ? true: false
         })
+      }
+      if (query.authors) {
+        this.props.authors.forEach((author: CategoryAuthor) => {
+          author.checked = (query.categories as string[]).indexOf(author._id) !== -1  ? true: false
+        })
+      }
+      if (query.title) {
+        this.setState({
+          data: {
+            ...this.state.data,
+            title: query.title as string
+          }
+        })
+      }
+    } else {
+      this.props.categories.forEach((category: CategoryAuthor) => {
+        category.checked = false;
       });
-    });
+      this.props.authors.forEach((author: CategoryAuthor) => {
+        author.checked = false;
+      });
+    }
   }
 
   public filterHandler(obj: CategoryAuthor | null, value?: string) {
@@ -91,7 +102,7 @@ class Filter extends React.Component<Props, State> {
       categories?: CategoryAuthor[],
       authors?: CategoryAuthor[]
     } = {};
-    
+
     if (obj && obj !== undefined) {
       (obj as CategoryAuthor).checked = !(obj as CategoryAuthor).checked;
     }
@@ -118,13 +129,49 @@ class Filter extends React.Component<Props, State> {
     this.props.getSomeBooks();
   }
 
+  public refreshFilter() {
+    console.log('this.props.', this.props);
+
+    (this.props as any).push({
+      pathname: '/filtered',
+      search: ''
+    });
+    // this.componentDidMount()
+    // this.bookService.getAllAuthors()
+    // .then((authors: CategoryAuthor[]) => {
+    //   authors = authors.map(author => {
+    //     return {
+    //       ...author,
+    //       checked: false
+    //     }
+    //   })
+    //   this.bookService.getAllCategories()
+    //   .then((categories: CategoryAuthor[]) => {
+    //     categories = categories.map((category: CategoryAuthor) => {
+    //       return {
+    //         ...category,
+    //         checked: false
+    //       }
+    //     });
+    //     this.props.setFilter({
+    //       authors,
+    //       categories,
+    //       title: ''
+    //     });
+    //   });
+    // });
+  }
+
   render() {
     return (
       <div className="col s2 filters">
         <div className="input-field">
           <input type="text" id="searchField" 
-          onChange={event => this.onSearchStringChange.next(event.target.value)}/>
-          <label>Search Field</label>
+          onChange={event => this.onSearchStringChange.next(event.target.value)}
+          defaultValue={this.state.data.title}/>
+          <label
+          className={this.state.data.title ? 'active' : ''}
+          >Search Field</label>
         </div>
         {
           this.props.categories.map((category: CategoryAuthor, index: number) => {
@@ -145,13 +192,18 @@ class Filter extends React.Component<Props, State> {
               <label key={index}>
                 <input type="checkbox"
                 defaultChecked={author.checked}
-                onClick={(event) => this.filterHandler(author)}/>
+                onClick={() => this.filterHandler(author)}/>
                 <span>{author.name}</span>
               </label>
             )
           })
         }
         <hr/>
+        <br/>
+        {/* <button
+          className="btn green darken-2"
+          onClick={this.refreshFilter}
+        >refresh filter</button> */}
       </div>
     )
   }
@@ -169,6 +221,7 @@ const mapDispatchToProps = (dispatch: any) => {
     setCategories: (categories: CategoryAuthor[]) => dispatch(filterAction.setCategories(categories)),
     setAuthor: (authors: CategoryAuthor[]) => dispatch(filterAction.setAuthor(authors)),
     setFilter: (data: FilterState) => dispatch(filterAction.setFilter(data)),
+    refreshFilter: () => dispatch(filterAction.refreshFilterData())
   }
 }
 
