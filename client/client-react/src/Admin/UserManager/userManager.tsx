@@ -3,7 +3,7 @@ import { UserService } from '../../service/users.service'
 import { UserComponent } from '../../shared/UserComponent/userComponent'
 import { User } from '../../models/user.model'
 import './style.scss';
-import { setUserAtPage } from '../../store/actions/userManagerAction';
+import { setUserAtPage, addUser, deleteUser, searchUserByEmail } from '../../store/actions/userManagerAction';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
 import UserEditeModal from '../../shared/UserComponent/userEditeModal/userEditeModal';
@@ -54,10 +54,13 @@ class UserManager extends React.Component<any, State> {
     this.changesField
     .pipe(debounceTime(500))
     .subscribe((value: any) => {
-      this.userService.getSomeUsers(value, this.state.pagination)
-      .then((response: any) => {
-        this.props.setUsers(response[0].listOfItem as User[])
-      })
+      this.props.searchUserByEmail(value, this.state.pagination)
+      // this.userService.getSomeUsers(value, this.state.pagination)
+      // .then((response: any) => {
+      //   console.log(response);
+        
+      //   this.props.setUsers(response[0].listOfItem as User[])
+      // })
     });
     
     this.userInfoService = new UserInfoService();
@@ -85,11 +88,12 @@ class UserManager extends React.Component<any, State> {
 
   public deleteUserFromDB(user: User) {
     if (this.userInfoService.getCurrentUser() && (this.userInfoService.getCurrentUser() as User).id !== user._id ) {
-      this.userService.delete(user._id)
-      .then(() => {
-        alert('successfuly deleted');
-        this.componentDidMount();
-      })
+      // this.userService.delete(user._id)
+      // .then(() => {
+      //   alert('successfuly deleted');
+      //   this.componentDidMount();
+      // })
+      this.props.deleteUser(user._id)
     }
     
   }
@@ -103,11 +107,12 @@ class UserManager extends React.Component<any, State> {
   }
 
   public addNewUser(user: User) {
-    this.userService.registrate(user)
-    .then(() => {
-      alert('New user added')
-      this.componentDidMount()
-    })
+    // this.userService.registrate(user)
+    // .then(() => {
+    //   alert('New user added')
+    //   this.componentDidMount()
+    // })
+    this.props.addUser(user)
   }
 
   public userAddModal() {
@@ -190,7 +195,11 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUsers: (list: User[]): User[] => dispatch(setUserAtPage(list))
+    setUsers: (list: User[]): User[] => dispatch(setUserAtPage(list)),
+
+    addUser: (user: User) => dispatch(addUser(user)),
+    deleteUser: (userId: string) => dispatch(deleteUser(userId)),
+    searchUserByEmail: (value: string, pagination: PaginationEvent) => dispatch(searchUserByEmail(value, pagination))
   }
 };
 
