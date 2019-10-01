@@ -48,10 +48,3 @@ export const addBookToDb = (book: Book) => {
     })
   }
 }
-
-// export const deleteBookFromDb = (book: Book) => {
-//   return async (dispatch: any) => {
-//     await bookService.deleteBook(book)
-//     .then(console.log)
-//   }
-// }

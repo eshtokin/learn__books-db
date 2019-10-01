@@ -1,9 +1,8 @@
 import React, { ChangeEvent } from 'react';
 import { UserService } from '../../service/users.service';
-import {setUserStatus, setUserRole} from './../../store/actions/authentificatedInfoAction';
+import * as actions from './../../store/actions/authentificatedInfoAction';
 import { connect } from 'react-redux';
 import { UserInfoService } from '../../service/user-info.service';
-import { User } from '../../models/user.model';
 import ReactModal from 'react-modal';
 
 const customStyles = {
@@ -73,23 +72,11 @@ class AuthFormLogin extends React.Component<any, State> {
   }
   
   public login(): void {
-    this.userService.login((this.state as {email: string, password: string}))
-    .then((res) => {
-      if (res) {
-        this.props.setUserStatus(true);
-        this.props.setUserRole((this.userInfoService.getCurrentUser() as User).role);
-        this.props.history.push({
-          pathname: '/profile'
-        });
-      }
-    })
-    .catch(err => {
-      this.authFailedModalToggle()
-    })
+    this.props.login({email: this.state.email, password: this.state.password}, this.props)
   }
 
   public authFailedModalToggle(): void {
-    this.setState({authFailedModal: !this.state.authFailedModal}) 
+    this.props.toggleModalStatus(false)
   }
 
   public isValid(): void {
@@ -108,7 +95,7 @@ class AuthFormLogin extends React.Component<any, State> {
     return (
       <div className="row authLoginComponent">
         <ReactModal
-        isOpen={this.state.authFailedModal}
+        isOpen={this.props.modalStatus}
         style={customStyles}
         contentLabel="Authorization failed modal"
         >
@@ -151,8 +138,12 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserStatus: (status: boolean) => dispatch(setUserStatus(status)),
-    setUserRole: (role: number) => dispatch(setUserRole(role))
+    toggleModalStatus: (flag: boolean) => {
+      dispatch(actions.toggleModalStatus(flag))
+    },
+    login: (user: {email: string, password: string}, props: any) => {
+      dispatch(actions.login(user, props))
+    }
   }
 };
 
