@@ -70,3 +70,5 @@ export default class GoogleBooks {
     return this.pageInfo;
   }
 }
+
+export const NewGBS = new GoogleBooks(new BookService())

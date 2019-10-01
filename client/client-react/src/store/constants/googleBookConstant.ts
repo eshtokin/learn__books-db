@@ -1,3 +1,3 @@
-export const  SET_LIST_OF_BOOK = 'SET_LIST_OF_BOOK';
+export const  SET_BOOKS_AT_PAGE = 'SET_BOOKS_AT_PAGE';
 
 export const TOGGLE_FLAG_EXIST_IN_DB = 'TOGGLE_FLAG_EXIST_IN_DB';

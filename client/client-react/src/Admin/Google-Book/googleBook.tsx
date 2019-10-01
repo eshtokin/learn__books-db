@@ -6,7 +6,7 @@ import { BookComponent } from '../../shared/BookComponent/BookComponent';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { connect } from 'react-redux';
-import { setListOfBook, toggleFlagExistInDB } from '../../store/actions/googleBookAction';
+import * as actions from '../../store/actions/googleBookAction';
 import PaginationComponent from '../../shared/PaginationComponent/pagination';
 
 interface State {
@@ -39,37 +39,17 @@ class GoogleBook extends React.Component<any, State> {
       }
     });
 
-    this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
     this.getBookFromGoogle = this.getBookFromGoogle.bind(this);
     this.addBookToDB = this.addBookToDB.bind(this);
   }
-
-  public deleteBookFromDB(data: Book) {
-    this.bookService.deleteBook(data)
-  }
   
   public addBookToDB(book: Book) {
-    const newBook: Book = {
-      title: book.title,
-      authors: book.authors,
-      categories: book.categories || [],
-      description: book.description,
-      image: (book.imageLinks as any).thumbnail || '',
-      pageCount: book.pageCount,
-      printType: book.printType,
-      industryIdentifiers: book.industryIdentifiers
-    };
-    
-    this.props.toggleFlagExistInDB(book._id);
-    this.bookService.addBookToDB(newBook)
+    this.props.addBookToDb(book);
   }
 
 
   public getBookFromGoogle(value: string) {
-    this.googleBooks.searchForBook(value)
-    .then((res) => {
-      this.props.setListOfBook(res)
-    })
+    this.props.getBooksByValue(value)
   }
 
   render() {
@@ -93,7 +73,7 @@ class GoogleBook extends React.Component<any, State> {
                 ddToDbBtn: this.props.role === 1,
                 addToFavoriteBtn: false
               }}
-              deleteFromDB={this.deleteBookFromDB}
+              deleteFromDB={() => {}}
               addToFavorite={() => {}}
               editeBook={() => {}}
               addBookToDB={this.addBookToDB}
@@ -126,8 +106,14 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setListOfBook: (list: Book[]) => dispatch(setListOfBook(list)),
-    toggleFlagExistInDB: (bookId: string) => dispatch(toggleFlagExistInDB(bookId))
+    getBooksByValue: (value: string) =>
+      dispatch(actions.getBookByValue(value)),
+    addBookToDb: (book: Book) =>
+      dispatch(actions.addBookToDb(book)),
+    // deleteBookFromDb: (book: Book) =>
+    //   dispatch(actions.deleteBookFromDb(book)),
+    toggleFlagExistInDB: (bookId: string) =>
+      dispatch(actions.toggleFlagExistInDB(bookId))
   }
 };
 

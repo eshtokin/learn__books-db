@@ -12,7 +12,7 @@ export interface GoogleBookAction {
 
 export function googleBook(state: GoogleBookState = { listOfBook: []}, action: GoogleBookAction): GoogleBookState {
   switch(action.type) {
-    case googleBookConstant.SET_LIST_OF_BOOK:
+    case googleBookConstant.SET_BOOKS_AT_PAGE:
       return {
         listOfBook: action.payload as Book[]
       }
