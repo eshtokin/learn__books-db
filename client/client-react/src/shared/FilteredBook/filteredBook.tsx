@@ -29,8 +29,7 @@ class FilteredBook extends React.Component<any, State>{
       pagination: {
         pageIndex: 0,
         pageSize: 10,
-        length: 0,
-        previousPageIndex: 0
+        length: 0
       }
     }
 
@@ -167,7 +166,7 @@ class FilteredBook extends React.Component<any, State>{
 
 const mapStateToProps = (state: any) => {
   return {
-    ...state.filteredBookReducer
+    ...state.filteredBook
   }
 };
 

@@ -56,10 +56,10 @@ export class UserController {
         const pagination = JSON.parse(req.query.pagination);
         
         const skip = {
-            $skip: (+pagination.pageIndex) * (+pagination.pageSize)
+            $skip: (pagination.pageIndex) * (pagination.pageSize)
         };
         const limit = {
-            $limit: (+pagination.pageSize)
+            $limit: (pagination.pageSize)
         }
         let query = {
             $facet: {

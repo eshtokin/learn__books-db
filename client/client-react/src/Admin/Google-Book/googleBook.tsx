@@ -119,8 +119,8 @@ class GoogleBook extends React.Component<any, State> {
 
 const mapStateToProps = (state: any) => {
   return {
-    ...state.googleBookReducer,
-    ...state.authentificatedInfoReducer
+    ...state.googleBook,
+    ...state.authentificatedInfo
   }
 }
 

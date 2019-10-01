@@ -10,7 +10,7 @@ export interface FilteredBooksState {
   books: Book[];
 }
 
-export function filteredBookReducer(state: FilteredBooksState = {books: []} , action: FilteredBooksAction): FilteredBooksState {
+export function filteredBook(state: FilteredBooksState = {books: []} , action: FilteredBooksAction): FilteredBooksState {
   switch(action.type) {
     case SET_BOOK:
       return {

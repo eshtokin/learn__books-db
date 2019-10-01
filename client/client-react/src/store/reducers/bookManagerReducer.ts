@@ -11,7 +11,7 @@ export interface BookManagerStore {
 }
 
 
-export function bookManagerReducer(state: BookManagerStore = {bookAtPage: []}, action: BookReducerAction): BookManagerStore {
+export function bookManager(state: BookManagerStore = {bookAtPage: []}, action: BookReducerAction): BookManagerStore {
   switch(action.type) {
     case SET_BOOK_AT_PAGE:
       return {

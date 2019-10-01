@@ -15,7 +15,7 @@ interface State {
   pagination: {
     pageSize: number;
     pageIndex: number;
-    length?: number;
+    length: number;
   }
 }
 
@@ -165,7 +165,7 @@ class BookManager extends React.Component<any, State>{
 
 const mapStateToProps = (state: any) => {
   return {
-    ...state.bookManagerReducer
+    ...state.bookManager
   }
 };
 

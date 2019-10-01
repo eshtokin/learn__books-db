@@ -18,7 +18,7 @@ const initialState: FilterState = {
   title: ''
 };
 
-export function filterReducer(state: FilterState = initialState, action: FilterAction ): FilterState {  
+export function filter(state: FilterState = initialState, action: FilterAction ): FilterState {  
   switch(action.type) {
     case filterConstant.SET_TITLE:
       return {

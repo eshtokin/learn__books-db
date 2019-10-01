@@ -15,8 +15,7 @@ export default class GoogleBooks {
       paginationParams: {
         pageIndex: 0,
         pageSize: 10,
-        length: 0,
-        previousPageIndex: 0
+        length: 0
       }
     };
   }

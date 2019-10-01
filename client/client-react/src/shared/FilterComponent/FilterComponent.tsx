@@ -190,7 +190,7 @@ class Filter extends React.Component<Props, State> {
 
 const mapStateToProps = (state: any) => {
   return {
-    ...state.filterReducer
+    ...state.filter
   }
 };
 

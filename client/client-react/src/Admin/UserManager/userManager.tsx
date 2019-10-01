@@ -3,7 +3,7 @@ import { UserService } from '../../service/users.service'
 import { UserComponent } from '../../shared/UserComponent/userComponent'
 import { User } from '../../models/user.model'
 import './style.scss';
-import { setUserAtPage, addUser, deleteUser, searchUserByEmail } from '../../store/actions/userManagerAction';
+import * as action from '../../store/actions/userManagerAction';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
 import UserEditeModal from '../../shared/UserComponent/userEditeModal/userEditeModal';
@@ -26,7 +26,7 @@ const customStyles = {
 };
 
 interface State {
-  userAddModal: boolean,
+  userAddModal: boolean;
   searchField: string;
   pagination: PaginationEvent;
 }
@@ -45,23 +45,11 @@ class UserManager extends React.Component<any, State> {
       pagination: {
         pageIndex: 0,
         pageSize: 5,
-        length: 0,
-        previousPageIndex: 0
+        length: 0
       }
     }
 
     this.changesField = new Subject<string>()
-    this.changesField
-    .pipe(debounceTime(500))
-    .subscribe((value: any) => {
-      this.props.searchUserByEmail(value, this.state.pagination)
-      // this.userService.getSomeUsers(value, this.state.pagination)
-      // .then((response: any) => {
-      //   console.log(response);
-        
-      //   this.props.setUsers(response[0].listOfItem as User[])
-      // })
-    });
     
     this.userInfoService = new UserInfoService();
     this.userService = new UserService();
@@ -73,46 +61,31 @@ class UserManager extends React.Component<any, State> {
     this.userAddModal = this.userAddModal.bind(this);
   }
 
-  componentDidMount() {
-    this.userService.getAllUsers(this.state.pagination)
-    .then(data => {
-      this.props.setUsers(data[0].listOfItem);
-      this.setState({
-        pagination: {
-          ...this.state.pagination,
-          length: data[0].totalCount[0].count
-        }
-      })
-    })
+  UNSAFE_componentWillMount () {
+    this.changesField
+    .pipe(debounceTime(500))
+    .subscribe((value: any) => {
+      this.props.searchUserByEmail(value, this.state.pagination)
+    });
   }
 
-  public deleteUserFromDB(user: User) {
+  componentDidMount() {
+    this.props.getAllUsers(this.state.pagination)
+  }
+
+  public async deleteUserFromDB(user: User) {
     if (this.userInfoService.getCurrentUser() && (this.userInfoService.getCurrentUser() as User).id !== user._id ) {
-      // this.userService.delete(user._id)
-      // .then(() => {
-      //   alert('successfuly deleted');
-      //   this.componentDidMount();
-      // })
-      this.props.deleteUser(user._id)
+      await this.props.deleteUser(user._id)
+      this.componentDidMount();
     }
-    
   }
 
   public editeUserInBD(user: User) {
-    this.userService.edit(user._id, user)
-    .then(() => {
-      alert('Changed');
-      this.componentDidMount();
-    })
+    this.props.editeUser(user._id, user)
   }
 
   public addNewUser(user: User) {
-    // this.userService.registrate(user)
-    // .then(() => {
-    //   alert('New user added')
-    //   this.componentDidMount()
-    // })
-    this.props.addUser(user)
+    this.props.addUser(user, this.state.pagination)
   }
 
   public userAddModal() {
@@ -189,17 +162,29 @@ class UserManager extends React.Component<any, State> {
 
 const mapStateToProps = (state: any) => {
   return {
-    ...state.userManagerReducer
+    ...state.userManager
   }
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUsers: (list: User[]): User[] => dispatch(setUserAtPage(list)),
-
-    addUser: (user: User) => dispatch(addUser(user)),
-    deleteUser: (userId: string) => dispatch(deleteUser(userId)),
-    searchUserByEmail: (value: string, pagination: PaginationEvent) => dispatch(searchUserByEmail(value, pagination))
+    addUser: async (user: User, pagination: PaginationEvent) => {
+      await dispatch(action.addUser(user))
+      await dispatch(action.getAllUsers(pagination))
+    },
+    editeUser: async (userId: string, user: User, pagination: PaginationEvent) => {
+      await dispatch(action.editeUser(userId, user));
+      await dispatch(action.getAllUsers(pagination));
+    },
+    deleteUser: async (userId: string, pagination: PaginationEvent) => {
+      await dispatch(action.deleteUser(userId));
+      await dispatch(action.getAllUsers(pagination));
+    },
+    searchUserByEmail: async (value: string, pagination: PaginationEvent) => {
+      await dispatch(action.searchUserByEmail(value, pagination));
+    },
+    getAllUsers: (pagination: PaginationEvent) =>
+      dispatch(action.getAllUsers(pagination))
   }
 };
 

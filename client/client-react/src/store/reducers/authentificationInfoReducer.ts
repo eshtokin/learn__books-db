@@ -21,7 +21,7 @@ export const initialAuthState = {
   : 0
 }
 
-export function authentificatedInfoReducer(state: AuthentificationState =  initialAuthState, action: AuthentificationAction): AuthentificationState {
+export function authentificatedInfo(state: AuthentificationState =  initialAuthState, action: AuthentificationAction): AuthentificationState {
   switch(action.type) {
     case authConstant.SET_STATUS:
       return {

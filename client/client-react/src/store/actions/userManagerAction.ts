@@ -1,35 +1,73 @@
 import { User } from "../../models/user.model";
 import * as userManagerConstant from "../constants/userManagerConstant";
 import { PaginationEvent } from "../../models/pagination-event.model";
+import { UserService } from "../../service/users.service";
 
-export const setUserAtPage = (listOfUser: User[]) => {
+const userService = new UserService();
+
+export const setUserAtPage = (listOfUser: User[], totalCount: number) => {
   return {
     type: userManagerConstant.SET_USER_AT_PAGE,
-    payload: listOfUser
+    payload: {
+      listOfUser,
+      totalCount
+    }
   }
 }
 
 export const addUser = (user: User) => {
-  return {
-    type: userManagerConstant.ADD_USER,
-    payload: user
+  return async () => {
+    await userService.registrate(user)
+    .then(response => {
+      if (response.status === 200) {
+        alert('User was added')
+      }
+    })
   }
 }
+
+export const getAllUsers = (pagination: PaginationEvent) => {
+  return async (dispatch: any) => {
+    await userService.getAllUsers(pagination)
+    .then(response => {
+      pagination.length = response[0].totalCount[0].count
+      dispatch(setUserAtPage(response[0].listOfItem, response[0].totalCount[0].count))
+    })
+  }
+}
+
+export const editeUser = (userId: string, user: User) => {
+  return async () => {
+    await userService.edit(userId, user)
+    .then(response => {
+      if (response.status === 200) {
+        
+      }
+    })
+  }
+}
+
 export const deleteUser = (userId: string) => {
-  return {
-    type: userManagerConstant.DELETE_USER,
-    payload: userId
+  return async () => {
+    await userService.delete(userId)
+    .then(response => {
+      if (response.status === 200) {
+        alert('successfuly deleted');
+      }
+    });
   }
 }
-export const searchUserByEmail = (userEmail: string, pagination: PaginationEvent) => {
-  return {
-    type: userManagerConstant.SEARCH_USER_BY_EMAIL,
-    payload: userEmail
-  }
-}
-export const getAllUser = () => {
-  return {
-    type: userManagerConstant.GET_ALL_USERS,
-    payload: null
+
+export function searchUserByEmail (userEmail: string, pagination: PaginationEvent) {
+  return async (dispatch: any) => {
+    await userService.getSomeUsers(userEmail, pagination)
+    .then((response: any) => {
+      if (response[0].listOfItem.length) {
+        pagination.length = response[0].totalCount[0].count;
+        dispatch(setUserAtPage(response[0].listOfItem, response[0].totalCount[0].count))
+      } else {
+        alert('User not found')
+      }
+    })
   }
 }

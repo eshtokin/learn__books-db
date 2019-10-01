@@ -10,7 +10,7 @@ export interface GoogleBookAction {
   payload: Book[] | string;
 }
 
-export function googleBookReducer(state: GoogleBookState = { listOfBook: []}, action: GoogleBookAction): GoogleBookState {
+export function googleBook(state: GoogleBookState = { listOfBook: []}, action: GoogleBookAction): GoogleBookState {
   switch(action.type) {
     case googleBookConstant.SET_LIST_OF_BOOK:
       return {

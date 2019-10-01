@@ -55,7 +55,7 @@ export default class Profile extends React.Component<any, State> {
     this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
     .then((user: User) => {
       if (user && (user.books as string[]).length > 0) {
-        this.userService.getUserBooks(user.books as string[], {pageIndex: 0, pageSize: 6})
+        this.userService.getUserBooks(user.books as string[], {pageIndex: 0, pageSize: 6, length: 0})
         .then((data: any) => {
           this.setState({
             books: data[0].listOfItem

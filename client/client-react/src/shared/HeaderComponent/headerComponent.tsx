@@ -106,7 +106,7 @@ class Header extends React.Component<any, State> {
 
 const mapStateToProps = (state: any) => {
   return {
-    ...state.authentificatedInfoReducer
+    ...state.authentificatedInfo
   }
 };
 
