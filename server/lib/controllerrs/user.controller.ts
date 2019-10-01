@@ -189,8 +189,8 @@ export class UserController {
 
         mongoDbService.findOneAndUpdate(User, query, data)
         .then(() => {
-            return res.send({
-                message: 'add in profile'
+            return res.status(200).send({
+                message: 'added to profile'
             })
         })
         .catch(err => {

@@ -27,7 +27,7 @@ class App {
 
     private mongoSetup() {
         mongoose.Promise = global.Promise;
-        mongoose.connect(dbInfo.localMongoUrl);
+        mongoose.connect(dbInfo.localMongoUrl, {useFindAndModify: false});
     }
 
 }

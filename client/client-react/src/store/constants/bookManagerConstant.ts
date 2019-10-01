@@ -1,5 +1,3 @@
 export const SET_BOOK_AT_PAGE = 'SET_BOOK_AT_PAGE';
 
-export const DELETE_BOOK = 'DELETE_BOOK'
-
 export const TOGGLE_FAVORITE_FLAG = 'TOGGLE_FAVORITE_FLAG';

@@ -177,7 +177,6 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
 
   public editeBookFromModal() {
     this.props.editeBook(this.state.book);
-    alert('Successfuly edited')
     this.props.close();
   }
 

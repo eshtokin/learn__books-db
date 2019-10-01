@@ -5,18 +5,13 @@ import { BookComponent } from '../../shared/BookComponent/BookComponent';
 import { BookService } from '../../service/books.service';
 import { UserService } from '../../service/users.service';
 import Filter from '../../shared/FilterComponent/FilterComponent';
-import { setBookAtPage, deleteBookFromState, favoriteFlagToggle } from '../../store/actions/bookManagerAction';
+import * as actions from '../../store/actions/bookManagerAction';
 import { UserInfoService } from '../../service/user-info.service';
-import { User } from '../../models/user.model';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import PaginationComponent from '../../shared/PaginationComponent/pagination';
 
 interface State {
-  pagination: {
-    pageSize: number;
-    pageIndex: number;
-    length: number;
-  }
+  pagination: PaginationEvent;
 }
 
 class BookManager extends React.Component<any, State>{
@@ -41,73 +36,23 @@ class BookManager extends React.Component<any, State>{
 
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
+    this.editeBookInDb = this.editeBookInDb.bind(this);
   }
 
   componentDidMount() {
-    this.getBooks(this.state.pagination)
-  }
-
-  public getBooks(pagination: PaginationEvent): void {
-    this.bookService.getAllBooks(pagination)
-    .then((el) => {
-      this.userService.getUserFavoriteBooks()
-        .then(favoriteBooks => {          
-          this.props.setBook( (el.listOfItem as Book[]).map(book => {
-            return {
-              ...book,
-              inFavorite: favoriteBooks.indexOf(book._id as string) === -1 ? false : true
-            };
-          }));
-          this.setState({
-            pagination: {
-              ...this.state.pagination,
-              length: el.totalCount[0].count as number
-            }
-          })
-        });
-    });
+    this.props.getAllBooks(this.state.pagination);
   }
   
   public deleteBookFromDB(book: Book) {
-    this.bookService.deleteBook(book)
-    .then(response => {
-      response.status === 200
-      ? this.props.deleteBookFromState(book._id)
-      : console.log("Book don't deleted. ")
-    })
+    this.props.deleteBookFromDB(book, this.state.pagination);
   }
-
 
   public addBookToFavorite(book: Book) {
-    !book.inFavorite
-    ? this.userService.addBookToProfile(book)
-    : this.deleteBookFromFavorite(book._id as string)
-   
-    this.props.favoriteFlagToggle(book._id)
+    this.props.bookToFromFavorite(book);
   }
 
-  public deleteBookFromFavorite(bookId: string) {
-    let restOfBook: string[] = [];
-    this.userService.getUserFavoriteBooks()
-    .then(list => {
-      restOfBook = list.filter((id: string) => {
-        return id !== bookId
-      })
-    
-      this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
-      .then(user => {
-        user.books = restOfBook
-        this.userService.edit(user._id, user)
-        .then(console.log)
-      })
-    });
-  }
-
-  public editeBookInDb(book: Book) {
-    this.bookService.updateBook(book)
-    .then(() => {
-      this.componentDidMount();
-    })
+  public async editeBookInDb(book: Book) {
+    await this.props.editeBook(book, this.state.pagination);
   }
 
   render() {
@@ -169,11 +114,29 @@ const mapStateToProps = (state: any) => {
   }
 };
 
+interface Props {
+  getAllBooks: (pagination: PaginationEvent) => void;
+  deleteBookFromDB: (book: Book, pagination: PaginationEvent) => void;
+  bookToFromFavorite: (book: Book) => void;
+  editeBook: (book: Book, pagination: PaginationEvent) => void;
+}
+
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setBook: (list: Book[]) => dispatch(setBookAtPage(list)),
-    deleteBookFromState: (bookId: string) => dispatch(deleteBookFromState(bookId)),
-    favoriteFlagToggle: (bookId: string) => dispatch(favoriteFlagToggle(bookId))
+    getAllBooks: (pagination: PaginationEvent) => {
+      dispatch(actions.getAllBooks(pagination))
+    },
+    deleteBookFromDB: (book: Book, pagination: PaginationEvent) => {
+      dispatch(actions.deleteBookFromDb(book));
+      dispatch(actions.getAllBooks(pagination));
+    },
+    bookToFromFavorite: (book: Book) => {
+      dispatch(actions.addDelBookFromFavorite(book))
+    },
+    editeBook: (book: Book, pagination: PaginationEvent) => {
+      dispatch(actions.editeBook(book));
+      dispatch(actions.getAllBooks(pagination))
+    }
   }
 };
 

@@ -1,5 +1,5 @@
 import { Book } from '../../models/book.model';
-import { SET_BOOK_AT_PAGE, DELETE_BOOK, TOGGLE_FAVORITE_FLAG } from '../constants/bookManagerConstant';
+import { SET_BOOK_AT_PAGE, TOGGLE_FAVORITE_FLAG } from '../constants/bookManagerConstant';
 
 export interface BookReducerAction {
   type: string;
@@ -16,12 +16,6 @@ export function bookManager(state: BookManagerStore = {bookAtPage: []}, action: 
     case SET_BOOK_AT_PAGE:
       return {
         bookAtPage: action.payload as Book[]
-      }
-    case DELETE_BOOK:
-      return {
-        bookAtPage: state.bookAtPage.filter((book) => {
-          return book._id !== action.payload;
-        })
       }
     case TOGGLE_FAVORITE_FLAG:
       return {

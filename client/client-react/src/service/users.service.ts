@@ -44,7 +44,6 @@ export class UserService {
 
     public addBookToProfile(book: Book): Promise<any> {
         return Axios.post(`/books/${book._id}`)
-        .then((res: any) => res.data)
     }
 
     public getUserFavoriteBooks(): Promise<string[]> {
