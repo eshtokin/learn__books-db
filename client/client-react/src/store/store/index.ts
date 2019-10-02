@@ -1,16 +1,25 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import { bookManager } from './../reducers/bookManagerReducer';
-import { userManager } from './../reducers/userManagerReducer';
-import { filter } from './../reducers/filterReducer';
-import { filteredBook } from './../reducers/filteredBooksReducer';
-import { authentificatedInfo } from './../reducers/authentificationInfoReducer';
-import { googleBook } from './../reducers/googleBookReducer';
+import { bookManager, BookManagerStore } from './../reducers/bookManagerReducer';
+import { userManager, UserManagerStore } from './../reducers/userManagerReducer';
+import { filter, FilterState } from './../reducers/filterReducer';
+import { filteredBook, FilteredBooksState } from './../reducers/filteredBooksReducer';
+import { authentificatedInfo, AuthentificationState } from './../reducers/authentificationInfoReducer';
+import { googleBook, GoogleBookState } from './../reducers/googleBookReducer';
 
 import thunk from 'redux-thunk';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const initialState = combineReducers({
+export interface Store {
+  bookManager: BookManagerStore;
+  userManager: UserManagerStore;
+  filteredBook: FilteredBooksState;
+  filter: FilterState;
+  authentificatedInfo: AuthentificationState;
+  googleBook: GoogleBookState;
+};
+
+const initialState = combineReducers<Store>({
   bookManager,
   userManager,
   filteredBook,

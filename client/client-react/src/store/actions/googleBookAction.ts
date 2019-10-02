@@ -1,9 +1,10 @@
 import * as googleBookConstant from './../constants/googleBookConstant';
 import { Book } from '../../models/book.model';
-import {NewGBS} from '../../service/google-books.service';
-import { BookService } from '../../service/books.service';
+import BookService from '../../service/books.service';
+import GoogleBookService from '../../service/google-books.service';
 
-const bookService = new BookService();
+const bookService = BookService;
+const googleBookService = GoogleBookService;
 
 export const setBooksAtPage = (listOfBook: Book[]) => {
   return {
@@ -21,8 +22,10 @@ export const toggleFlagExistInDB = (bookId: string) => {
 
 export const getBookByValue = (value: string) => {
   return async (dispatch: any) => {
-    await NewGBS.searchForBook(value)
-    .then(response => dispatch(setBooksAtPage(response)))
+    await googleBookService.searchForBook(value)
+    .then(response => {
+      dispatch(setBooksAtPage(response));
+    })
   }
 }
 
@@ -33,7 +36,7 @@ export const addBookToDb = (book: Book) => {
       authors: book.authors,
       categories: book.categories || [],
       description: book.description,
-      image: (book.imageLinks as any).thumbnail || '',
+      image: (book.imageLinks as {thumbnail: string}).thumbnail || '',
       pageCount: book.pageCount,
       printType: book.printType,
       industryIdentifiers: book.industryIdentifiers
@@ -41,7 +44,7 @@ export const addBookToDb = (book: Book) => {
     
     bookService.addBookToDB(newBook)
     .then(response => {
-      if (response.statuss === 200) {
+      if (response.status === 200) {
         alert('Book was added to DB');
         dispatch(toggleFlagExistInDB(book._id as string));
       }

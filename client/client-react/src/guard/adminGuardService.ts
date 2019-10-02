@@ -1,10 +1,10 @@
-import { UserInfoService } from "../service/user-info.service";
+import UserInfoService, { UserInfo } from "../service/user-info.service";
 
 class AdminGuardService {
-  private userInfo: UserInfoService;
+  private userInfo: UserInfo;
 
   constructor() {
-    this.userInfo = new UserInfoService();
+    this.userInfo = UserInfoService;
   }
 
   public canActivate(): boolean {

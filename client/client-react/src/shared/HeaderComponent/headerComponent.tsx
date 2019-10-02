@@ -1,20 +1,27 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./style.scss";
-import { UserInfoService } from "../../service/user-info.service";
+import UserInfoService, { UserInfo } from "../../service/user-info.service";
 import { connect } from "react-redux";
 import { setUserStatus } from "../../store/actions/authentificatedInfoAction";
+import { Store } from "../../store/store";
+import { AuthentificationState } from "../../store/reducers/authentificationInfoReducer";
+
+interface Props {
+  store: AuthentificationState
+  setUserStatus: (status: boolean) => void;
+}
 
 interface State {
   isUserAuth: boolean;
 }
 
-class Header extends React.Component<any, State> {
-  private userInfoService: UserInfoService;
+class Header extends React.Component<Props, State> {
+  private userInfoService: UserInfo;
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
-    this.userInfoService = new UserInfoService();
+    this.userInfoService = UserInfoService;
     this.logOut = this.logOut.bind(this);
   }
 
@@ -30,7 +37,7 @@ class Header extends React.Component<any, State> {
           <Link className="brand-logo" to="/">
             Logo
           </Link>
-          {this.props.isLogined
+          {this.props.store.isLogined
           ? <ul
               id="nav-mobile"
               className="right hide-on-med-and-down">
@@ -49,7 +56,7 @@ class Header extends React.Component<any, State> {
                   Books
                 </NavLink>
               </li>
-              {this.props.role === 1 
+              {this.props.store.role === 1 
               ? <li>
                   <NavLink to="/user-manager" activeClassName="isActiveRoute" exact>
                     Users
@@ -104,9 +111,9 @@ class Header extends React.Component<any, State> {
 }
 
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Store) => {
   return {
-    ...state.authentificatedInfo
+    store: {...state.authentificatedInfo}
   }
 };
 

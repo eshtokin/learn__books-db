@@ -3,7 +3,7 @@ import { Book } from '../../../models/book.model';
 
 import AsyncSelect from 'react-select/async';
 
-import { BookService } from '../../../service/books.service';
+import BookService, { BookServiceClass } from '../../../service/books.service';
 import { CategoryAuthor } from '../../../models/category-author.model';
 
 interface EditeProps {
@@ -19,7 +19,7 @@ interface EditeState {
 }
 
 export class EditeModal extends React.Component<EditeProps, EditeState> {
-  public bookService: BookService;
+  public bookService: BookServiceClass;
   private refCateg:any;
   private refAuth: any;
 
@@ -52,7 +52,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
       authors: [],
       categories: []
     }
-    this.bookService = new BookService();
+    this.bookService = BookService;
 
     this.inputTitleHandler = this.inputTitleHandler.bind(this);
     this.inputDescriptionHandler = this.inputDescriptionHandler.bind(this);

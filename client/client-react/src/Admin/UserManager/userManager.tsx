@@ -1,5 +1,5 @@
-import React, { Props } from 'react';
-import { UserService } from '../../service/users.service'
+import React from 'react';
+import UserService, { UserServiceClass } from '../../service/users.service'
 import { UserComponent } from '../../shared/UserComponent/userComponent'
 import { User } from '../../models/user.model'
 import './style.scss';
@@ -11,7 +11,9 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import PaginationComponent from '../../shared/PaginationComponent/pagination';
-import { UserInfoService } from '../../service/user-info.service';
+import UserInfoService, { UserInfo } from '../../service/user-info.service';
+import { Store } from '../../store/store';
+import { UserManagerStore } from '../../store/reducers/userManagerReducer';
 
 const customStyles = {
   content : {
@@ -25,18 +27,29 @@ const customStyles = {
   }
 };
 
+
+interface Props {
+  store: UserManagerStore;
+  user: User;
+  addUser: (user: User, pagination: PaginationEvent) => void;
+  editeUser: (userId: string, user: User, pagination: PaginationEvent) => void;
+  deleteUser: (userId: string, pagination: PaginationEvent) => void;
+  searchUserByEmail: (value: string, pagination: PaginationEvent) => void;
+  getAllUsers: (pagination: PaginationEvent) => void;
+}
+
 interface State {
   userAddModal: boolean;
   searchField: string;
   pagination: PaginationEvent;
 }
 
-class UserManager extends React.Component<any, State> {
-  public userInfoService: UserInfoService;
-  public userService: UserService;
+class UserManager extends React.Component<Props, State> {
+  public userInfoService: UserInfo;
+  public userService: UserServiceClass;
   public changesField: Subject<string>;
 
-  constructor(props: Props<any>) {
+  constructor(props: Props) {
     super(props);
     
     this.state = {
@@ -51,8 +64,8 @@ class UserManager extends React.Component<any, State> {
 
     this.changesField = new Subject<string>()
     
-    this.userInfoService = new UserInfoService();
-    this.userService = new UserService();
+    this.userInfoService = UserInfoService;
+    this.userService = UserService;
 
     this.deleteUserFromDB = this.deleteUserFromDB.bind(this);
     this.editeUserInBD = this.editeUserInBD.bind(this);
@@ -64,7 +77,7 @@ class UserManager extends React.Component<any, State> {
   UNSAFE_componentWillMount () {
     this.changesField
     .pipe(debounceTime(500))
-    .subscribe((value: any) => {
+    .subscribe((value: string) => {
       this.props.searchUserByEmail(value, this.state.pagination)
     });
   }
@@ -75,13 +88,13 @@ class UserManager extends React.Component<any, State> {
 
   public async deleteUserFromDB(user: User) {
     if (this.userInfoService.getCurrentUser() && (this.userInfoService.getCurrentUser() as User).id !== user._id ) {
-      await this.props.deleteUser(user._id)
+      await this.props.deleteUser(user._id, this.state.pagination)
       this.componentDidMount();
     }
   }
 
   public editeUserInBD(user: User) {
-    this.props.editeUser(user._id, user)
+    this.props.editeUser(user._id, user, this.state.pagination)
   }
 
   public addNewUser(user: User) {
@@ -124,8 +137,8 @@ class UserManager extends React.Component<any, State> {
             >Add new user</button>
           </div>
         </div>
-      { this.props.usersAtPage ?
-        this.props.usersAtPage.map((user: User, index: number) => { 
+      { this.props.store.usersAtPage ?
+        this.props.store.usersAtPage.map((user: User, index: number) => { 
           return <UserComponent
           key={index}
           user={user}
@@ -160,28 +173,28 @@ class UserManager extends React.Component<any, State> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Store) => {
   return {
-    ...state.userManager
+    store: {...state.userManager}
   }
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addUser: async (user: User, pagination: PaginationEvent) => {
-      await dispatch(action.addUser(user))
-      await dispatch(action.getAllUsers(pagination))
+    addUser: (user: User, pagination: PaginationEvent) => {
+      dispatch(action.addUser(user))
+      dispatch(action.getAllUsers(pagination))
     },
-    editeUser: async (userId: string, user: User, pagination: PaginationEvent) => {
-      await dispatch(action.editeUser(userId, user));
-      await dispatch(action.getAllUsers(pagination));
+    editeUser: (userId: string, user: User, pagination: PaginationEvent) => {
+      dispatch(action.editeUser(userId, user));
+      dispatch(action.getAllUsers(pagination));
     },
-    deleteUser: async (userId: string, pagination: PaginationEvent) => {
-      await dispatch(action.deleteUser(userId));
-      await dispatch(action.getAllUsers(pagination));
+    deleteUser: (userId: string, pagination: PaginationEvent) => {
+      dispatch(action.deleteUser(userId));
+      dispatch(action.getAllUsers(pagination));
     },
-    searchUserByEmail: async (value: string, pagination: PaginationEvent) => {
-      await dispatch(action.searchUserByEmail(value, pagination));
+    searchUserByEmail: (value: string, pagination: PaginationEvent) => {
+      dispatch(action.searchUserByEmail(value, pagination));
     },
     getAllUsers: (pagination: PaginationEvent) =>
       dispatch(action.getAllUsers(pagination))

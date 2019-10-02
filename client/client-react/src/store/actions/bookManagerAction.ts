@@ -1,14 +1,14 @@
 import { SET_BOOK_AT_PAGE, TOGGLE_FAVORITE_FLAG } from "../constants/bookManagerConstant"
 import { Book } from "../../models/book.model"
 import { PaginationEvent } from "../../models/pagination-event.model"
-import { UserService } from "../../service/users.service"
-import { BookService } from "../../service/books.service";
-import { UserInfoService } from "../../service/user-info.service";
+import UserService from "../../service/users.service"
+import BookService from "../../service/books.service";
+import UserInfoService from "../../service/user-info.service";
 import { User } from "../../models/user.model";
 
-const userService = new UserService();
-const bookService = new BookService();
-const userInfoService = new UserInfoService();
+const userService = UserService;
+const bookService = BookService;
+const userInfoService = UserInfoService;
 
 export const setBookAtPage = (listOfBook: Book[]) => {
   return {
@@ -49,7 +49,7 @@ export const getAllBooks = (pagination: PaginationEvent) => {
 }
 
 export const deleteBookFromDb = (book: Book) => {
-  return async (dispatch: any) => {
+  return async () => {
     await bookService.deleteBook(book)
     .then(response => {
       if (response.status === 200) {
@@ -92,7 +92,7 @@ export const addDelBookFromFavorite = (book: Book) => {
 }
 
 export const editeBook = (book: Book) => {
-  return async (dispatch: any) => {
+  return async () => {
     await bookService.updateBook(book)
   }
 }

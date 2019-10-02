@@ -2,21 +2,20 @@ import React from 'react'
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import { CategoryAuthor } from '../../models/category-author.model';
-import { BookService } from '../../service/books.service';
+import BookService, { BookServiceClass } from '../../service/books.service';
 import { FilterState } from '../../store/reducers/filterReducer';
 import * as filterAction from '../../store/actions/filterAction';
 import './style.scss';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { Store } from '../../store/store';
+import { History } from 'history';
 
 interface Props{
-  history: any;
-  authors : any;
-  categories:any;
-  search: string;
-  setFilter:( data: any)=> void;
+  history: History;
+  store: FilterState;
+  setFilter:( data: FilterState) => void;
   getSomeBooks: () => void;
-  refreshFilter: () => void;
   setAllFlag: (flag: boolean) => void;
 }
 
@@ -29,7 +28,7 @@ interface State {
 }
 
 class Filter extends React.Component<Props, State> {
-  private bookService: BookService;
+  private bookService: BookServiceClass;
   public onSearchStringChange: Subject<string>;
   
   constructor(props: Props) {
@@ -54,13 +53,13 @@ class Filter extends React.Component<Props, State> {
       }, () => this.filterHandler(null))
     })
 
-    this.bookService = new BookService();
+    this.bookService = BookService;
     this.filterHandler = this.filterHandler.bind(this);
     this.loadFilterData = this.loadFilterData.bind(this);
   }
 
   UNSAFE_componentWillMount() {
-    if ((this.props as any).location.pathname === '/book-manager') {
+    if (this.props.history.location.pathname === '/book-manager') {
       this.props.setAllFlag(false);
     }
   }
@@ -70,8 +69,8 @@ class Filter extends React.Component<Props, State> {
   }
 
   public checkQuery(object: CategoryAuthor): boolean {
-    if ((this.props as any).location.search) {
-      const query = queryString.parse((this.props as any).location.search);
+    if (this.props.history.location.search) {
+      const query = queryString.parse(this.props.history.location.search);
       const arrayFlag = [false, false];
 
       if (query.categories) {
@@ -115,29 +114,35 @@ class Filter extends React.Component<Props, State> {
   public filterHandler(obj: CategoryAuthor | null, value?: string) {
     let data: {
       title?: string,
-      categories?: CategoryAuthor[],
-      authors?: CategoryAuthor[]
-    } = {};
+      categories?: string[],
+      authors?: string[]
+    } = {
+      title: '',
+      categories: [],
+      authors: []
+    };
 
     if (obj && obj !== undefined) {
       (obj as CategoryAuthor).checked = !(obj as CategoryAuthor).checked;
     }
 
-    data.title = this.state.data.title
+    data.title = this.state.data.title;
 
-    data.categories = this.props.categories.filter((obj: any) => {
-      return obj.checked;
-    }).map((obj: any) => {
-      return obj._id;
-    });
+    this.props.store.categories.reduce((prevValue: CategoryAuthor, currentValue: CategoryAuthor) => {
+      if (currentValue.checked) {
+        (data['categories'] as string[]).push(currentValue._id);
+      }
+      return prevValue;
+    }, {name: '', _id: '', checked: false})
 
-    data.authors = this.props.authors.filter((obj: any) => {
-      return obj.checked;
-    }).map((obj: any) => {
-      return obj._id;
-    });
+    this.props.store.authors.reduce((prevValue: CategoryAuthor, currentValue: CategoryAuthor) => {
+      if (currentValue.checked) {
+        (data.authors as string[]).push(currentValue._id);
+      }
+      return prevValue;
+    }, {name: '', _id: '', checked: false})
 
-    (this.props as any).push({
+    this.props.history.push({
       pathname: '/filtered',
       search: queryString.stringify(data)
     });
@@ -157,7 +162,7 @@ class Filter extends React.Component<Props, State> {
           >Search Field</label>
         </div>
         {
-          this.props.categories.map((category: CategoryAuthor, index: number) => {
+          (this.props.store.categories as CategoryAuthor[]).map((category: CategoryAuthor, index: number) => {
             return (
               <label key={index}>
                 <input type="checkbox"
@@ -170,7 +175,7 @@ class Filter extends React.Component<Props, State> {
         }
         <hr/>
         {
-          this.props.authors.map((author: CategoryAuthor, index: number) => {
+          (this.props.store.authors as CategoryAuthor[]).map((author: CategoryAuthor, index: number) => {
             return (
               <label key={index}>
                 <input type="checkbox"
@@ -188,9 +193,9 @@ class Filter extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Store) => {
   return {
-    ...state.filter
+    store: {...state.filter}
   }
 };
 
@@ -200,7 +205,6 @@ const mapDispatchToProps = (dispatch: any) => {
     setCategories: (categories: CategoryAuthor[]) => dispatch(filterAction.setCategories(categories)),
     setAuthor: (authors: CategoryAuthor[]) => dispatch(filterAction.setAuthor(authors)),
     setFilter: (data: FilterState) => dispatch(filterAction.setFilter(data)),
-
     setAllFlag: (flag: boolean) => dispatch(filterAction.setAllFlag(flag))
   }
 }

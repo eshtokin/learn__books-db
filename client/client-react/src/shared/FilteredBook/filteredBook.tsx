@@ -1,27 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Book } from '../../models/book.model';
-import { UserService } from '../../service/users.service';
-import { BookService } from '../../service/books.service';
-import { UserInfoService } from '../../service/user-info.service';
+import UserService, { UserServiceClass } from '../../service/users.service';
+import BookService, { BookServiceClass } from '../../service/books.service';
+import UserInfoService, { UserInfo } from '../../service/user-info.service';
 import { BookComponent } from '../BookComponent/BookComponent';
 import Filter from '../FilterComponent/FilterComponent';
 import * as actions from '../../store/actions/filteredBookAction';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import PaginationComponent from '../PaginationComponent/pagination';
 import './style.scss';
+import { History } from 'history';
+import { Store } from '../../store/store';
+import { FilteredBooksState } from '../../store/reducers/filteredBooksReducer';
+
+interface Props {
+  history: History;
+  store: FilteredBooksState;
+  editeBook: (book: Book) => void;
+  deleteBook: (book: Book) => void;
+  bookToFromFavorites: (book: Book) => void;
+  getSomeBooks: (searchString: string, pagination: PaginationEvent) => void;
+}
 
 interface State {
   pagination: PaginationEvent;
   searchQuery: string;
 }
 
-class FilteredBook extends React.Component<any, State>{
-  public userInfoService: UserInfoService;
-  public userService: UserService;
-  public bookService: BookService;
+class FilteredBook extends React.Component<Props, State>{
+  public userInfoService: UserInfo;
+  public userService: UserServiceClass;
+  public bookService: BookServiceClass;
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -33,9 +45,9 @@ class FilteredBook extends React.Component<any, State>{
       searchQuery: ''
     }
 
-    this.userInfoService = new UserInfoService()
-    this.userService = new UserService();
-    this.bookService = new BookService();
+    this.userInfoService = UserInfoService;
+    this.userService = UserService;
+    this.bookService = BookService;
 
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
@@ -46,41 +58,38 @@ class FilteredBook extends React.Component<any, State>{
     this.getSomeBooks()
   }
   
-  public async getSomeBooks(): Promise<any> {
+  public async getSomeBooks(): Promise<void> {
     const searchQuery = this.props.history.location.search;
     await this.setState({
       searchQuery
     });
-    console.log(this.state.searchQuery);
-    
-    await this.props.getSomeBooks(searchQuery, this.state.pagination)
+    await this.props.getSomeBooks(searchQuery, this.state.pagination);
   }
   
-  public deleteBookFromDB(book: Book) {
+  public deleteBookFromDB(book: Book): void {
     this.props.deleteBook(book)
-    this.getSomeBooks()
+    this.getSomeBooks();
   }
 
-  public addBookToFavorite(book: Book) {
+  public addBookToFavorite(book: Book): void {
     this.props.bookToFromFavorites(book);
   }
 
-  public async editeBook(book: Book) {
-    debugger
-    await this.props.editeBook(book, this.state.searchQuery, this.state.pagination)
-    await this.props.getSomeBooks(this.props.history.location.search, this.state.pagination)
+  public async editeBook(book: Book): Promise<void>{
+    await this.props.editeBook(book);
+    await this.props.getSomeBooks(this.props.history.location.search, this.state.pagination);
   }
 
   render() {
     return (
       <div className="row">
         <Filter
-          {...this.props.history}
+          history={this.props.history}
           getSomeBooks={this.getSomeBooks.bind(this)}
         />
         <div className="col s10 filteredBookContent">
-          {this.props.books.length > 0 ?
-            this.props.books.map((book: Book, index: number) => {
+          {this.props.store.books.length > 0 ?
+            this.props.store.books.map((book: Book, index: number) => {
               return (
                 <BookComponent
                   key={index}
@@ -124,17 +133,16 @@ class FilteredBook extends React.Component<any, State>{
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Store) => {
   return {
-    ...state.filteredBook
+    store: {...state.filteredBook}
   }
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    editeBook: (book: Book, searchString: string, pagination: PaginationEvent) => {
+    editeBook: (book: Book) => {
       dispatch(actions.editeBook(book));
-      // dispatch(actions.getSomeBooks(searchString, getSomeBooks))
     },
     deleteBook: (book: Book) => {
       dispatch(actions.deleteBook(book))

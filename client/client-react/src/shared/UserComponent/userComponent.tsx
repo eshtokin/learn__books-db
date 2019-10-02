@@ -45,13 +45,13 @@ export class UserComponent extends React.Component<Props, State> {
     ReactModal.setAppElement('.userComponent')
   }
 
-  public userDeleteModal() {
+  public userDeleteModal(): void {
     this.setState({
       userDeleteModal: !this.state.userDeleteModal
     })
   }
 
-  public userEditeModal() {
+  public userEditeModal(): void {
     this.setState({
       userEditeModal: !this.state.userEditeModal
     })

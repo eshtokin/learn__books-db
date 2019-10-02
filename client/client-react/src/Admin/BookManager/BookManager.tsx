@@ -2,24 +2,35 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
-import { BookService } from '../../service/books.service';
-import { UserService } from '../../service/users.service';
+import BookService, { BookServiceClass } from '../../service/books.service';
+import UserInfoService, { UserInfo } from '../../service/user-info.service';
+import UserService, { UserServiceClass } from '../../service/users.service';
 import Filter from '../../shared/FilterComponent/FilterComponent';
 import * as actions from '../../store/actions/bookManagerAction';
-import { UserInfoService } from '../../service/user-info.service';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import PaginationComponent from '../../shared/PaginationComponent/pagination';
+import { Store } from '../../store/store';
+import { History } from 'history';
+
+interface Props {
+  bookAtPage: Book[];
+  history: History;
+  getAllBooks: (pagination: PaginationEvent) => void;
+  deleteBookFromDB: (book: Book, pagination: PaginationEvent) => void;
+  bookToFromFavorite: (book: Book) => void;
+  editeBook: (book: Book, pagination: PaginationEvent) => void;
+}
 
 interface State {
   pagination: PaginationEvent;
 }
 
-class BookManager extends React.Component<any, State>{
-  public userService: UserService;
-  public bookService: BookService;
-  public userInfoService: UserInfoService;
+class BookManager extends React.Component<Props, State>{
+  public userService: UserServiceClass;
+  public bookService: BookServiceClass;
+  public userInfoService: UserInfo;
   
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -30,9 +41,9 @@ class BookManager extends React.Component<any, State>{
       }
     }
 
-    this.userService = new UserService();
-    this.bookService = new BookService();
-    this.userInfoService = new UserInfoService();
+    this.userService = UserService;
+    this.bookService = BookService;
+    this.userInfoService = UserInfoService;
 
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
@@ -59,7 +70,7 @@ class BookManager extends React.Component<any, State>{
     return (
       <div className="row">
         <Filter
-        {...this.props.history}
+        history={this.props.history}
         getSomeBooks={()=> {}}
         />
         <div className="col s10">
@@ -108,18 +119,11 @@ class BookManager extends React.Component<any, State>{
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Store) => {
   return {
     ...state.bookManager
   }
 };
-
-interface Props {
-  getAllBooks: (pagination: PaginationEvent) => void;
-  deleteBookFromDB: (book: Book, pagination: PaginationEvent) => void;
-  bookToFromFavorite: (book: Book) => void;
-  editeBook: (book: Book, pagination: PaginationEvent) => void;
-}
 
 const mapDispatchToProps = (dispatch: any) => {
   return {

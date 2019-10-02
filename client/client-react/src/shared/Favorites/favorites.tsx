@@ -1,6 +1,6 @@
 import React from 'react';
-import { UserService } from '../../service/users.service';
-import { UserInfoService } from '../../service/user-info.service';
+import UserService, { UserServiceClass } from '../../service/users.service';
+import UserInfoService, { UserInfo } from '../../service/user-info.service';
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { User } from '../../models/user.model';
@@ -36,8 +36,8 @@ interface State {
 }
 
 export default class Favorites extends React.Component<any, State> {
-  public userInfoService: UserInfoService;
-  public userService: UserService;
+  public userInfoService: UserInfo;
+  public userService: UserServiceClass;
   public onSearchFieldChange: Subject<string>;
 
   constructor(props: any) {
@@ -70,8 +70,8 @@ export default class Favorites extends React.Component<any, State> {
       this.searchFromFavorites(value)
     });
 
-    this.userService = new UserService();
-    this.userInfoService = new UserInfoService();
+    this.userService = UserService;
+    this.userInfoService = UserInfoService;
 
     this.searchFromFavorites = this.searchFromFavorites.bind(this);
     this.openBookDetails = this.openBookDetails.bind(this);
@@ -99,7 +99,7 @@ export default class Favorites extends React.Component<any, State> {
     ReactModal.setAppElement('.favoritesComponent');
   }
 
-  public searchFromFavorites(searchTitle: string) {
+  public searchFromFavorites(searchTitle: string): void {
     this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
     .then((user: User) => {
       if ((user.books as string[]).length > 0) {
@@ -119,7 +119,7 @@ export default class Favorites extends React.Component<any, State> {
     });
   }
 
-  public deleteBookFromFavorites(bookId: string) {
+  public deleteBookFromFavorites(bookId: string): void {
     const user = {...this.state.user} ; 
     user.books = (user.books as string[]).filter(book => {
       return bookId !== book;
@@ -152,7 +152,7 @@ export default class Favorites extends React.Component<any, State> {
     }
   }
 
-  public favoritesDeleteModal(bookId: string) {
+  public favoritesDeleteModal(bookId: string): void {
     if (bookId.length > 0) {
       this.setState({
         favoritesDeleteModal: !this.state.favoritesDeleteModal,
@@ -267,8 +267,8 @@ export default class Favorites extends React.Component<any, State> {
               }, this.componentDidMount)
             }}
           />
-          : null}
-       
+          : null
+        }
       </div>
     )
   }

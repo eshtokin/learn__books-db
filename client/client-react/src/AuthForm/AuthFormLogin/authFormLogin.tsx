@@ -1,9 +1,12 @@
 import React, { ChangeEvent } from 'react';
-import { UserService } from '../../service/users.service';
+import UserService, { UserServiceClass } from '../../service/users.service';
 import * as actions from './../../store/actions/authentificatedInfoAction';
 import { connect } from 'react-redux';
-import { UserInfoService } from '../../service/user-info.service';
+import UserInfoService, { UserInfo } from '../../service/user-info.service';
 import ReactModal from 'react-modal';
+import { AuthentificationState } from '../../store/reducers/authentificationInfoReducer';
+import { Store } from '../../store/store';
+import { History } from 'history';
 
 const customStyles = {
   content : {
@@ -17,6 +20,13 @@ const customStyles = {
   }
 };
 
+export interface Props {
+  history: History;
+  store: AuthentificationState;
+  toggleModalStatus: (flag: boolean) => void;
+  login: (user: {email: string, password: string}, props: Props) => void;
+}
+
 interface State {
   email: string;
   password: string;
@@ -24,10 +34,11 @@ interface State {
   authFailedModal: boolean;
 }
 
-class AuthFormLogin extends React.Component<any, State> {
-  public userService: UserService;
-  public userInfoService: UserInfoService;
-  constructor(props: any) {
+class AuthFormLogin extends React.Component<Props, State> {
+  public userService: UserServiceClass;
+  public userInfoService: UserInfo;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -37,8 +48,8 @@ class AuthFormLogin extends React.Component<any, State> {
       authFailedModal: false
     };
 
-    this.userService = new UserService();
-    this.userInfoService = new UserInfoService();
+    this.userService = UserService;
+    this.userInfoService = UserInfoService;
 
     this.handleChange = this.handleChange.bind(this);
     this.login = this.login.bind(this);
@@ -95,7 +106,7 @@ class AuthFormLogin extends React.Component<any, State> {
     return (
       <div className="row authLoginComponent">
         <ReactModal
-        isOpen={this.props.modalStatus}
+        isOpen={this.props.store.modalStatus}
         style={customStyles}
         contentLabel="Authorization failed modal"
         >
@@ -130,9 +141,9 @@ class AuthFormLogin extends React.Component<any, State> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Store) => {
   return {
-    ...state.authentificatedInfo
+    store: {...state.authentificatedInfo}
   }
 };
 
@@ -141,7 +152,7 @@ const mapDispatchToProps = (dispatch: any) => {
     toggleModalStatus: (flag: boolean) => {
       dispatch(actions.toggleModalStatus(flag))
     },
-    login: (user: {email: string, password: string}, props: any) => {
+    login: (user: {email: string, password: string}, props: Props) => {
       dispatch(actions.login(user, props))
     }
   }

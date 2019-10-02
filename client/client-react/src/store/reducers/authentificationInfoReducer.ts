@@ -1,8 +1,8 @@
 import * as authConstant from './../constants/authentificatedInfoConstant';
-import { UserInfoService } from '../../service/user-info.service';
+import UserInfoService from '../../service/user-info.service';
 import { User } from '../../models/user.model';
 
-const UserInfo = new UserInfoService();
+const UserInfo = UserInfoService;
 
 export interface AuthentificationState {
   isLogined: boolean;

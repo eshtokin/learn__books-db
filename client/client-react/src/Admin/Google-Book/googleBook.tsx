@@ -1,6 +1,6 @@
 import React from 'react';
-import GoogleBooks from '../../service/google-books.service';
-import { BookService } from '../../service/books.service';
+import {GoogleBooks} from '../../service/google-books.service';
+import GoogleBookService from '../../service/google-books.service';
 import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
 import { debounceTime } from 'rxjs/operators';
@@ -8,20 +8,30 @@ import { Subject } from 'rxjs';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/googleBookAction';
 import PaginationComponent from '../../shared/PaginationComponent/pagination';
+import { GoogleBookState } from '../../store/reducers/googleBookReducer';
+import { AuthentificationState } from '../../store/reducers/authentificationInfoReducer';
+import { Store } from '../../store/store';
+
+interface Props {
+  store: GoogleBookState;
+  authInfo: AuthentificationState;
+  getBooksByValue: (value: string) => void;
+  addBookToDb: (book: Book) => void;
+  toggleFlagExistInDB: (bookId: string) => void;
+}
 
 interface State {
   searchField: string
 }
 
-class GoogleBook extends React.Component<any, State> {
+class GoogleBook extends React.Component<Props, State> {
   public googleBooks: GoogleBooks;
-  private bookService: BookService;
   public onSearchFieldChange: Subject<string>;
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
-    this.googleBooks = new GoogleBooks(new BookService());
-    this.bookService = new BookService();
+    // this.googleBooks = new GoogleBooks(new BookService());
+    this.googleBooks = GoogleBookService;
 
     this.state = {
       searchField: ''
@@ -62,7 +72,7 @@ class GoogleBook extends React.Component<any, State> {
             />
           </label>
         </div>
-        {this.props.listOfBook.map((book: Book, index: number) => {
+        {this.props.store.listOfBook.map((book: Book, index: number) => {
           return (
             <BookComponent
               key={index}
@@ -70,7 +80,7 @@ class GoogleBook extends React.Component<any, State> {
               buttonStatus={{
                 editeBtn: false,
                 deleteBtn: false,
-                ddToDbBtn: this.props.role === 1,
+                ddToDbBtn: this.props.authInfo.role === 1,
                 addToFavoriteBtn: false
               }}
               deleteFromDB={() => {}}
@@ -97,10 +107,10 @@ class GoogleBook extends React.Component<any, State> {
   }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: Store) => {
   return {
-    ...state.googleBook,
-    ...state.authentificatedInfo
+    store: {...state.googleBook},
+    authInfo: {...state.authentificatedInfo}
   }
 }
 
@@ -110,8 +120,6 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(actions.getBookByValue(value)),
     addBookToDb: (book: Book) =>
       dispatch(actions.addBookToDb(book)),
-    // deleteBookFromDb: (book: Book) =>
-    //   dispatch(actions.deleteBookFromDb(book)),
     toggleFlagExistInDB: (bookId: string) =>
       dispatch(actions.toggleFlagExistInDB(bookId))
   }

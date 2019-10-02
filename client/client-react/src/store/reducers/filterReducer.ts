@@ -2,14 +2,15 @@ import { CategoryAuthor } from "../../models/category-author.model";
 import * as filterConstant from "../constants/filterConstant"
 
 export interface FilterState {
-  categories?: CategoryAuthor[];
-  authors?: CategoryAuthor[];
-  title?: string;
+  categories: CategoryAuthor[];
+  authors: CategoryAuthor[];
+  title: string;
 }
 
 export interface FilterAction {
   type: string;
   payload: string | CategoryAuthor | CategoryAuthor[] | FilterState;
+  flag: boolean;
 }
 
 const initialState: FilterState = {
@@ -22,14 +23,17 @@ export function filter(state: FilterState = initialState, action: FilterAction )
   switch(action.type) {
     case filterConstant.SET_TITLE:
       return {
+        ...state,
         title: action.payload as string
       };
     case filterConstant.SET_CATEGORY:
       return {
+        ...state,
         categories: action.payload as CategoryAuthor[]
       }
     case filterConstant.SET_AUTHOR:
       return {
+        ...state,
         authors: action.payload as CategoryAuthor[]
       }
     case filterConstant.SET_FILTER:
@@ -40,13 +44,13 @@ export function filter(state: FilterState = initialState, action: FilterAction )
         authors: (state.authors as CategoryAuthor[]).map(author => {
           return {
             ...author,
-            checked: action.payload as boolean
+            checked: action.flag
           }
         }),
         categories: (state.categories as CategoryAuthor[]).map(category => {
           return {
             ...category,
-            checked: action.payload as boolean
+            checked: action.flag
           }
         }),
         title: state.title

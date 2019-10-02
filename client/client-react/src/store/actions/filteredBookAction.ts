@@ -1,15 +1,15 @@
 import { Book } from "../../models/book.model";
 import { SET_BOOK, TOGGLE_FAVORITE_FLAG } from "../constants/filteredBookConstant";
-import { BookService } from "../../service/books.service";
-import { UserService } from "../../service/users.service";
-import { UserInfoService } from "../../service/user-info.service";
+import BookService from "../../service/books.service";
+import UserService from "../../service/users.service";
+import UserInfoService from "../../service/user-info.service";
 import { User } from "../../models/user.model";
 import { PaginationEvent } from "../../models/pagination-event.model";
 import queryString from 'query-string';
 
-const bookService = new BookService();
-const userService = new UserService();
-const userInfoService = new UserInfoService();
+const bookService = BookService;
+const userService = UserService;
+const userInfoService = UserInfoService;
 
 export function setBook(listOfBook: Book[]) {
   return {
@@ -26,7 +26,7 @@ export const favoriteFlagToggle = (bookId: string) => {
 }
 
 export const editeBook = (book: Book) => {
-  return async (dispatch: any) => {
+  return async () => {
     await bookService.updateBook(book)
       .then(async(response) => {
         if (response.status === 200) {
@@ -37,7 +37,7 @@ export const editeBook = (book: Book) => {
 }
 
 export const deleteBook = (book: Book) => {
-  return async (dispatch: any) => {
+  return async () => {
     await bookService.deleteBook(book)
       .then(response => {
         if (response.status === 200) {
@@ -79,10 +79,8 @@ export const addDelBookFromFavorite = (book: Book) => {
 }
 
 export const getSomeBooks = (searchString: string, pagination: PaginationEvent) => {
-
   return async (dispatch: any) => {
     const linkParams = queryString.parse(searchString);
-
     const data = {
       'authors[]': linkParams.authors as string[] || [],
       'categories[]': linkParams.categories as string[] || [],
@@ -92,20 +90,17 @@ export const getSomeBooks = (searchString: string, pagination: PaginationEvent) 
     await userService.getUser((userInfoService.getCurrentUser() as User).id as string)
     .then(async (user: User) => {
       await bookService.getSomeBooks(data)
-      .then(async (el: any) => {
+      .then(async (el) => {
         let favoritesId = user.books as string[];
-        const listOfBook = el[0].listOfItem.map((book: Book) => {
+        pagination.length = el[0].totalCount[0].count;
+
+        const listOfBook = (el[0].listOfItem as Book[]).map((book: Book) => {
           return {
             ...book,
             inFavorite: (favoritesId as string[]).indexOf(book._id as string) === -1 ? false : true
           };
         })
-
-        dispatch(setBook(listOfBook))
-
-        if (el[0].totalCount[0]) {
-          pagination.length = el[0].totalCount[0].count
-        }
+        dispatch(setBook(listOfBook));
       });
     });
   }

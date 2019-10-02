@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-interface BookProps {
+interface Props {
   book: Book;
   buttonStatus: {
     editeBtn: boolean,
@@ -32,18 +32,18 @@ interface BookProps {
   addBookToDB: (book: Book) => void;
 }
 
-interface BookState {
+interface State {
   book: Book;
   addBookToFavorite: boolean;
   deleteFromFavorites: boolean;
   bookDeleteModal: boolean;
   bookEditeModal: boolean;
-  options: any;
+  options: [];
 };
 
-export class BookComponent extends React.Component<BookProps, BookState> {
-  constructor(props: BookProps) {
-    super(props as BookProps);
+export class BookComponent extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
     this.state = {
       book: {
@@ -54,7 +54,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
       bookDeleteModal: false,
       bookEditeModal: false,
 
-      options: [{name: 'Srigar', id: 1},{name: 'Sam', id: 2}],
+      options: [],
     };
 
     this.addBookToFavoriteModal = this.addBookToFavoriteModal.bind(this);
@@ -72,25 +72,25 @@ export class BookComponent extends React.Component<BookProps, BookState> {
   
   public addBookToFavoriteModal(): void {
     this.setState({
-      addBookToFavorite: !(this.state as any).addBookToFavorite
+      addBookToFavorite: !this.state.addBookToFavorite
     })
   }
 
   public deleteFromFavorites(): void {
     this.setState({
-      deleteFromFavorites: !(this.state as any).deleteFromFavorites
+      deleteFromFavorites: !this.state.deleteFromFavorites
     })
   }
 
   public bookDeleteModal(): void {
     this.setState({
-      bookDeleteModal: !(this.state as any).bookDeleteModal
+      bookDeleteModal: !this.state.bookDeleteModal
     })
   }
 
   public bookEditeModal(): void {
     this.setState({
-      bookEditeModal: !(this.state as any).bookEditeModal
+      bookEditeModal: !this.state.bookEditeModal
     })
   }
 
@@ -131,7 +131,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
     return (
       <div className="z-depth-4 bookComponent">
         <ReactModal
-        isOpen={(this.state as any).bookDeleteModal as boolean}
+        isOpen={this.state.bookDeleteModal}
         style={customStyles}
         contentLabel="Delete book from DataBase"
         >
@@ -143,7 +143,7 @@ export class BookComponent extends React.Component<BookProps, BookState> {
         </ReactModal>
 
         <ReactModal
-        isOpen={(this.state as any).bookEditeModal as boolean}
+        isOpen={this.state.bookEditeModal}
         style={customStyles}
         contentLabel="Edite book modal">
           <EditeModal 

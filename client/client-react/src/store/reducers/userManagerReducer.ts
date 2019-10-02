@@ -17,9 +17,7 @@ export function userManager(state: UserManagerStore = {usersAtPage: []}, action:
       return {
         usersAtPage: action.payload.listOfUser
       }
-
     case userManagerConstant.ADD_USER:
-      
       return state;
     case userManagerConstant.DELETE_USER:
       return state;

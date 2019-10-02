@@ -1,5 +1,5 @@
-import React, { Props, ChangeEvent } from 'react';
-import { UserService } from '../../service/users.service';
+import React, { ChangeEvent } from 'react';
+import UserService, { UserServiceClass } from '../../service/users.service';
 import { User } from '../../models/user.model';
 
 interface State {
@@ -9,10 +9,10 @@ interface State {
 }
 
 export class AuthFormRegistr extends React.Component<any, State> {
-  public userService: UserService;
+  public userService: UserServiceClass;
 
-  constructor(props: Props<any>) {
-    super(props);
+  constructor(props: any) {
+    super(props)
     this.state = {
       user: {
         email: '',
@@ -27,10 +27,9 @@ export class AuthFormRegistr extends React.Component<any, State> {
       valid: false
     };
 
-    this.userService = new UserService();
+    this.userService = UserService;
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
-    // this.checkPass = this.checkPass.bind(this);
     this.registrate = this.registrate.bind(this);
   }
 
@@ -93,7 +92,7 @@ export class AuthFormRegistr extends React.Component<any, State> {
             </div>
             <div className="input-field">
               <input type="text" id="email"
-              value={(this.state as any).email}
+              value={this.state.user.email}
               onChange={event => this.onChangeHandler(event)}
               />
               <label>E-mail</label>
@@ -119,6 +118,5 @@ export class AuthFormRegistr extends React.Component<any, State> {
           </div>
         </div>
     )
-  }
-  
+  } 
 }

@@ -1,15 +1,16 @@
 import * as authConstant from './../constants/authentificatedInfoConstant';
-import { UserService } from '../../service/users.service';
-import { UserInfoService } from '../../service/user-info.service';
+import UserService from '../../service/users.service';
+import UserInfoService from '../../service/user-info.service';
 import { User } from '../../models/user.model';
+import { Props } from '../../AuthForm/AuthFormLogin/authFormLogin';
 
 enum Role {
   Admin = 1,
   User
 }
 
-const userService = new UserService();
-const userInfoService = new UserInfoService();
+const userService = UserService;
+const userInfoService = UserInfoService;
 
 export const setUserStatus = (status: boolean) => {
   return {
@@ -25,7 +26,7 @@ export const setUserRole = (role: Role) => {
   }
 }
 
-export const login = (user: {email: string, password: string}, props: any) => {
+export const login = (user: {email: string, password: string}, props: Props) => {
   return async (dispatch: any) => {
     userService.login(user)
     .then((response) => {

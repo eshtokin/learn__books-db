@@ -1,6 +1,6 @@
 import React from 'react';
-import { UserService } from '../../service/users.service';
-import { UserInfoService } from '../../service/user-info.service';
+import UserService, { UserServiceClass } from '../../service/users.service';
+import UserInfoService, { UserInfo } from '../../service/user-info.service';
 import { User } from '../../models/user.model';
 import './style.scss';
 import { Book } from '../../models/book.model';
@@ -26,8 +26,8 @@ interface State {
 }
 
 export default class Profile extends React.Component<any, State> {
-  public userService: UserService;
-  public userInfoService: UserInfoService;
+  public userService: UserServiceClass;
+  public userInfoService: UserInfo;
   
   constructor(props: any) {
     super(props);
@@ -43,8 +43,8 @@ export default class Profile extends React.Component<any, State> {
       books: [],
       editeProfileModal: false
     }
-    this.userService = new UserService();
-    this.userInfoService = new UserInfoService();
+    this.userService = UserService;
+    this.userInfoService = UserInfoService;
 
     this.editeProfileModal = this.editeProfileModal.bind(this);
     this.editeUser = this.editeUser.bind(this);
@@ -56,9 +56,9 @@ export default class Profile extends React.Component<any, State> {
     .then((user: User) => {
       if (user && (user.books as string[]).length > 0) {
         this.userService.getUserBooks(user.books as string[], {pageIndex: 0, pageSize: 6, length: 0})
-        .then((data: any) => {
+        .then(data => {
           this.setState({
-            books: data[0].listOfItem
+            books: data[0].listOfItem as Book[]
           })
         });
       }

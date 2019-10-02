@@ -39,6 +39,6 @@ export function refreshFilterData() {
 export function setAllFlag(flag: boolean) {
   return {
     type: filterConstant.SET_ALL_FLAG,
-    payload: flag
+    flag
   }
 }

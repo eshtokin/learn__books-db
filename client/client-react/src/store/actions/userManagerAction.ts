@@ -1,9 +1,9 @@
 import { User } from "../../models/user.model";
 import * as userManagerConstant from "../constants/userManagerConstant";
 import { PaginationEvent } from "../../models/pagination-event.model";
-import { UserService } from "../../service/users.service";
+import UserService from "../../service/users.service";
 
-const userService = new UserService();
+const userService = UserService;
 
 export const setUserAtPage = (listOfUser: User[], totalCount: number) => {
   return {
@@ -31,7 +31,7 @@ export const getAllUsers = (pagination: PaginationEvent) => {
     await userService.getAllUsers(pagination)
     .then(response => {
       pagination.length = response[0].totalCount[0].count
-      dispatch(setUserAtPage(response[0].listOfItem, response[0].totalCount[0].count))
+      dispatch(setUserAtPage(response[0].listOfItem as User[], response[0].totalCount[0].count))
     })
   }
 }
@@ -61,10 +61,10 @@ export const deleteUser = (userId: string) => {
 export function searchUserByEmail (userEmail: string, pagination: PaginationEvent) {
   return async (dispatch: any) => {
     await userService.getSomeUsers(userEmail, pagination)
-    .then((response: any) => {
+    .then((response) => {
       if (response[0].listOfItem.length) {
         pagination.length = response[0].totalCount[0].count;
-        dispatch(setUserAtPage(response[0].listOfItem, response[0].totalCount[0].count))
+        dispatch(setUserAtPage(response[0].listOfItem as User[], response[0].totalCount[0].count))
       } else {
         alert('User not found')
       }
