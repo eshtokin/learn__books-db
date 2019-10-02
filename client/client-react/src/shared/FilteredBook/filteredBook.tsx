@@ -1,20 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import queryString from 'query-string';
-import { User } from '../../models/user.model';
 import { Book } from '../../models/book.model';
 import { UserService } from '../../service/users.service';
 import { BookService } from '../../service/books.service';
 import { UserInfoService } from '../../service/user-info.service';
 import { BookComponent } from '../BookComponent/BookComponent';
 import Filter from '../FilterComponent/FilterComponent';
-import { setBook } from '../../store/actions/filteredBookAction';
+import * as actions from '../../store/actions/filteredBookAction';
 import { PaginationEvent } from '../../models/pagination-event.model';
 import PaginationComponent from '../PaginationComponent/pagination';
 import './style.scss';
 
 interface State {
   pagination: PaginationEvent;
+  searchQuery: string;
 }
 
 class FilteredBook extends React.Component<any, State>{
@@ -30,7 +29,8 @@ class FilteredBook extends React.Component<any, State>{
         pageIndex: 0,
         pageSize: 10,
         length: 0
-      }
+      },
+      searchQuery: ''
     }
 
     this.userInfoService = new UserInfoService()
@@ -39,76 +39,36 @@ class FilteredBook extends React.Component<any, State>{
 
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
-    this.editeBookInDb = this.editeBookInDb.bind(this);
+    this.editeBook = this.editeBook.bind(this);
   }
 
   componentDidMount() {
     this.getSomeBooks()
   }
   
-  public getSomeBooks(): void {
-    const linkParams = queryString.parse(this.props.history.location.search);
-    const data = {
-      'authors[]': linkParams.authors as string[] || [],
-      'categories[]': linkParams.categories as string[] || [],
-      title: linkParams.title as string || '',
-      pagination: this.state.pagination
-    };
-    let favoritesId: string | string[] = [];
-    this.bookService.getSomeBooks(data)
-    .then((el: any) => {
-
-      this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
-      .then((user: User) => {
-        favoritesId = user.books as string[];
-        const listOfBook = el[0].listOfItem.map((book: Book) => {
-            return {
-              ...book,
-              inFavorite: (favoritesId as string[]).indexOf(book._id as string) === -1 ? false : true
-            };
-          })
-
-        this.props.setBook(listOfBook)
-        
-        if (el[0].totalCount[0]) {
-          this.setState({
-            pagination: {
-              ...this.state.pagination,
-              length:  el[0].totalCount[0].count
-            }
-          })
-        }
-      });
+  public async getSomeBooks(): Promise<any> {
+    const searchQuery = this.props.history.location.search;
+    await this.setState({
+      searchQuery
     });
+    console.log(this.state.searchQuery);
+    
+    await this.props.getSomeBooks(searchQuery, this.state.pagination)
   }
   
   public deleteBookFromDB(book: Book) {
-    this.bookService.deleteBook(book)
-    .then(() => this.componentDidMount())
+    this.props.deleteBook(book)
+    this.getSomeBooks()
   }
 
   public addBookToFavorite(book: Book) {
-    if (!book.inFavorite) {
-      this.userService.addBookToProfile(book)
-      .then(() => this.componentDidMount())
-    } else {
-      this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
-      .then(user => {
-        user.books = (user.books as string[]).filter(bookId => {
-          return bookId !== book._id;
-        })
-        this.userService.edit(user._id, user)
-        .then(() => this.componentDidMount())
-      })
-    }
-    book.inFavorite = !book.inFavorite;
+    this.props.bookToFromFavorites(book);
   }
 
-  public editeBookInDb(book: Book) {
-    this.bookService.updateBook(book)
-    .then(() => {
-      this.componentDidMount();
-    })
+  public async editeBook(book: Book) {
+    debugger
+    await this.props.editeBook(book, this.state.searchQuery, this.state.pagination)
+    await this.props.getSomeBooks(this.props.history.location.search, this.state.pagination)
   }
 
   render() {
@@ -118,7 +78,7 @@ class FilteredBook extends React.Component<any, State>{
           {...this.props.history}
           getSomeBooks={this.getSomeBooks.bind(this)}
         />
-        <div className="col s8 filteredBookContent">
+        <div className="col s10 filteredBookContent">
           {this.props.books.length > 0 ?
             this.props.books.map((book: Book, index: number) => {
               return (
@@ -133,7 +93,7 @@ class FilteredBook extends React.Component<any, State>{
                   }}
                   deleteFromDB={this.deleteBookFromDB}
                   addToFavorite={this.addBookToFavorite}
-                  editeBook={this.editeBookInDb}
+                  editeBook={this.editeBook}
                   addBookToDB={() => {}}
                 />)
             })
@@ -172,7 +132,19 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setBook: (list: Book[]) => dispatch(setBook(list))
+    editeBook: (book: Book, searchString: string, pagination: PaginationEvent) => {
+      dispatch(actions.editeBook(book));
+      // dispatch(actions.getSomeBooks(searchString, getSomeBooks))
+    },
+    deleteBook: (book: Book) => {
+      dispatch(actions.deleteBook(book))
+    },
+    bookToFromFavorites: (book: Book) => {
+      dispatch(actions.addDelBookFromFavorite(book))
+    },
+    getSomeBooks: (searchString: string, pagination: PaginationEvent) => {
+      dispatch(actions.getSomeBooks(searchString, pagination))
+    }
   }
 };
 

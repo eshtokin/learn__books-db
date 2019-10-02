@@ -1,1 +1,3 @@
 export const SET_BOOK = 'SET_BOOK';
+
+export const TOGGLE_FAVORITE_FLAG = 'TOGGLE_FAVORITE_FLAG';

@@ -62,7 +62,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
   }
 
   public inputTitleHandler(event: ChangeEvent<HTMLInputElement>) {
-    const book = { ...this.state.book }
+    const book = this.state.book;
     book.title = event.target.value;
     this.setState({
       book
@@ -70,7 +70,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
   }
 
   public inputDescriptionHandler(event: ChangeEvent<HTMLTextAreaElement>) {
-    const book = { ...this.state.book }
+    const book = this.state.book;
     book.description = event.target.value;
     this.setState({
       book
@@ -78,7 +78,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
   }
 
   public inputPageHandler(event: ChangeEvent<HTMLInputElement>) {
-    const book = { ...this.state.book }
+    const book = this.state.book
     book.pageCount = +event.target.value;
     this.setState({
       book
@@ -86,7 +86,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
   }
 
   public uploadFile(event: ChangeEvent<HTMLInputElement>) {
-    const book = { ...this.state.book };
+    const book = this.state.book;
 
     const input = event.target;
     const reader = new FileReader();
