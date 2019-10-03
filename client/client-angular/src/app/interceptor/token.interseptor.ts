@@ -11,9 +11,9 @@ axios.interceptors.request.use(config => {
     config.headers.Authorization = localStorage.getItem('token');
     return config;
   }
-  if ( !config.url.match('/login') && !config.url.match('/registr')) {
-    window.location.href = '/';
-  }
+  // if ( !config.url.match('/login') && !config.url.match('/registr')) {
+  //   window.location.href = '/';
+  // }
   return config;
 }, err => {
   return Promise.reject(err);

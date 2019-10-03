@@ -31,16 +31,14 @@ export const getAllBooks = (pagination: PaginationEvent) => {
       if (el.listOfItem.length) {
         userService.getUserFavoriteBooks()
         .then((favoriteBooks) => {
-          if (favoriteBooks.length) {
-            dispatch(setBookAtPage(
-              (el.listOfItem as Book[]).map(book => {
-                return {
-                  ...book,
-                  inFavorite: favoriteBooks.indexOf(book._id as string) === -1 ? false : true
-                }
-              })
-            ))
-          }
+          dispatch(setBookAtPage(
+            (el.listOfItem as Book[]).map(book => {
+              return {
+                ...book,
+                inFavorite: favoriteBooks.indexOf(book._id as string) === -1 ? false : true
+              }
+            })
+          ))
         })
         pagination.length = el.totalCount[0].count;
       }

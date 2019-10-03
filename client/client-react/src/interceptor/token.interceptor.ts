@@ -10,11 +10,10 @@ axios.interceptors.request.use(config => {
   }
   if (localStorage.hasOwnProperty('token')) {
     config.headers.Authorization = localStorage.getItem('token');
-  } else {
-    window.location.href = '/'
   }
   return config;
 }, err => {
+  window.location.href = '/'
   return Promise.reject(err)
 });
 
