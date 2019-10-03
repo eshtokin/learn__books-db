@@ -4,11 +4,20 @@ import { environment } from './../../environments/environment';
 axios.defaults.baseURL = environment.mongoUrl;
 
 axios.interceptors.request.use(config => {
-  if (config.url.match('google')) {
+  if ((config.url as string).match('google')) {
     return config;
   }
-  config.headers.Authorization = localStorage.getItem('token');
+  if (localStorage.hasOwnProperty('token')) {
+    config.headers.Authorization = localStorage.getItem('token');
+    return config;
+  }
+  if ( !config.url.match('/login') && !config.url.match('/registr')) {
+    window.location.href = '/';
+  }
   return config;
-}, err => Promise.reject(err));
+}, err => {
+  return Promise.reject(err);
+});
+
 
 export const Axios = axios;

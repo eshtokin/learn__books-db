@@ -9,7 +9,7 @@ export default function ProtectedAdminRotue({component: Component, ...rest}: any
         if (adminGuardService.canActivate()) {
           return <Component {...props} />
         } else {
-          return <Redirect to={{pathname: '/home', state: {from: props.location}}} />
+          return <Redirect to={{pathname: '/', state: {from: props.location}}} />
         }
       }
     } />

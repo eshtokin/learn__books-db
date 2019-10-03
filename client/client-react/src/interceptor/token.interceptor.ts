@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { store } from '../store/store';
+import { setUserStatus } from '../store/actions/authentificatedInfoAction';
 
 axios.defaults.baseURL = `http://localhost:3000/`;
 
@@ -8,16 +10,19 @@ axios.interceptors.request.use(config => {
   }
   if (localStorage.hasOwnProperty('token')) {
     config.headers.Authorization = localStorage.getItem('token');
+  } else {
+    window.location.href = '/'
   }
   return config;
-}, err => Promise.reject(err));
+}, err => {
+  return Promise.reject(err)
+});
 
 axios.interceptors.response.use(response => {
-
-  console.log('Axios interceptor response', response);
   return response;
 }, error => {
-  console.log('Axios interceptor error', error)
+  store.dispatch(setUserStatus(false));
+  return error;
 });
 
 export const Axios = axios;

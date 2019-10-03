@@ -11,7 +11,7 @@ export class UserService {
             localStorage.clear();
             localStorage.setItem('token', res.data.token);
             return res;
-        })
+        });
     }
 
     public registrate(user: User): Promise<any> {

@@ -30,8 +30,14 @@ export const getAllUsers = (pagination: PaginationEvent) => {
   return async (dispatch: any) => {
     await userService.getAllUsers(pagination)
     .then(response => {
-      pagination.length = response[0].totalCount[0].count
-      dispatch(setUserAtPage(response[0].listOfItem as User[], response[0].totalCount[0].count))
+      if (response) {
+        pagination.length = response[0].totalCount[0].count;
+        dispatch(setUserAtPage(response[0].listOfItem as User[], response[0].totalCount[0].count));
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      
     })
   }
 }

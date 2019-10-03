@@ -65,6 +65,9 @@ export const addDelBookFromFavorite = (book: Book) => {
       let restOfBook: string[] = [];
       await userService.getUserFavoriteBooks()
       .then(list => {
+        if (!list) {
+          return list;
+        }
         restOfBook = list.filter((id: string) => {
           return id !== book._id
         })

@@ -6,6 +6,7 @@ import './style.scss';
 import { Book } from '../../models/book.model';
 import ReactModal from 'react-modal';
 import EditeProfileModal from './editeProfileModal/editeProfileModal';
+import { History } from 'history';
 
 const customStyles = {
   content : {
@@ -19,17 +20,21 @@ const customStyles = {
   }
 };
 
+interface Props {
+  history: History;
+}
+
 interface State {
   user: User;
   books: Book[];
   editeProfileModal: boolean;
 }
 
-export default class Profile extends React.Component<any, State> {
+export default class Profile extends React.Component<Props, State> {
   public userService: UserServiceClass;
   public userInfoService: UserInfo;
   
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       user: {
@@ -51,8 +56,9 @@ export default class Profile extends React.Component<any, State> {
   }
   
   componentDidMount() {
-    ReactModal.setAppElement('.profileComponent')
-    this.userService.getUser((this.userInfoService.getCurrentUser() as User).id as string)
+    ReactModal.setAppElement('.profileComponent');
+    const user = this.userInfoService.getCurrentUser() as User;
+    this.userService.getUser(user ? user.id as string : '')
     .then((user: User) => {
       if (user && (user.books as string[]).length > 0) {
         this.userService.getUserBooks(user.books as string[], {pageIndex: 0, pageSize: 6, length: 0})
@@ -61,8 +67,12 @@ export default class Profile extends React.Component<any, State> {
             books: data[0].listOfItem as Book[]
           })
         });
+        this.setState({user});
+      } else {
+        this.props.history.push({
+          pathname: '/'
+        })
       }
-      this.setState({user});
     })
   }
 
