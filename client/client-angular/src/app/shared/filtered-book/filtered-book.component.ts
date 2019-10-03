@@ -62,8 +62,10 @@ export class FilteredBookComponent implements OnInit {
             inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
           };
         });
-        this.data.pagination.length = el[0].totalCount[0].count;
       });
+      if (el[0].totalCount[0]) {
+        this.data.pagination.length = el[0].totalCount[0].count;
+      }
     });
   }
 

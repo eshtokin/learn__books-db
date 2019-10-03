@@ -92,7 +92,9 @@ export const getSomeBooks = (searchString: string, pagination: PaginationEvent) 
       await bookService.getSomeBooks(data)
       .then(async (el) => {
         let favoritesId = user.books as string[];
-        pagination.length = el[0].totalCount[0].count;
+        if (el[0].totalCount[0]) {
+          pagination.length = el[0].totalCount[0].count;
+        }
 
         const listOfBook = (el[0].listOfItem as Book[]).map((book: Book) => {
           return {

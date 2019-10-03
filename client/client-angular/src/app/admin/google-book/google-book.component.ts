@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { PaginationEvent } from 'src/app/models/pagination-event.model';
 import { Book } from 'src/app/models/book.model';
+import { UserInfo } from 'src/app/service/user-info.service';
 
 @Component({
   selector: 'app-google-book',
@@ -19,7 +20,8 @@ export class GoogleBookComponent implements OnInit {
   public paginationParams: PaginationEvent;
 
   constructor(
-    private googleBooks: GoogleBooks
+    private googleBooks: GoogleBooks,
+    public userInfo: UserInfo
     ) {
       this.searchStringUpdate = new Subject<string>();
       this.searchString = this.googleBooks.getPageInfo().searchResult;

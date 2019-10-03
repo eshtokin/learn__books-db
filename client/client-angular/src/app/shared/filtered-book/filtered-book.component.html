@@ -4,6 +4,9 @@
   [getFilteredBooks]="getFilteredBooks.bind(this)"
   ></app-filter>
   <div class="col s10">
+    <h3 class="center"
+    *ngIf="books === undefined || books.length === 0"
+    >No overlap</h3>
     <app-book
     *ngFor="let book of books"
     [book]="book"
