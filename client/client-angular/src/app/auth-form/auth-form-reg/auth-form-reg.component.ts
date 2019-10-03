@@ -56,10 +56,11 @@ export class AuthFormRegComponent {
 
   public async registrate(): Promise<any> {
     const res: any = await this.userService.registrate(this.user);
-    if (res.status !== 200) {
-      return;
+    if (res.status === 200) {
+      alert('reg success');
+      this.router.navigate(['/auth/login']);
+    } else {
+      alert('Failed. Try again.');
     }
-    alert('reg success');
-    this.router.navigate(['/auth/login']);
   }
 }

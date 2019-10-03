@@ -12,7 +12,6 @@ export class UserService {
             localStorage.setItem('token', res.data.token);
             return res;
         })
-        .catch(err => console.log(err));
     }
 
     public registrate(user: User): Promise<any> {

@@ -27,7 +27,6 @@ export class UserManagerComponent implements OnInit {
     this.onSearchStringChange
       .pipe(debounceTime(500))
       .subscribe(value => {
-        console.log(value);
         this.userSearch();
       });
 
@@ -80,8 +79,12 @@ export class UserManagerComponent implements OnInit {
   public userSearch(pagination: PaginationEvent = {pageSize: this.paginationParams.pageSize, pageIndex: 0 }): void {
     this.userService.getSomeUsers(this.searchString, pagination)
     .then(data => {
-      this.users = data[0].listOfItem;
-      this.paginationParams.length = data[0].totalCount[0].count;
+      if (data[0].listOfItem.length) {
+        this.users = data[0].listOfItem;
+        this.paginationParams.length = data[0].totalCount[0].count;
+      } else {
+        alert('User not found');
+      }
     });
   }
 

@@ -105,15 +105,19 @@ export default class Favorites extends React.Component<any, State> {
       if ((user.books as string[]).length > 0) {
         this.userService.getUserBooks(user.books as string[], this.state.pagination, searchTitle)
         .then(books => {
-          this.setState({            
-            books: books[0].listOfItem as Book[],
-            pagination: {
-              ...this.state.pagination,
-              length:  books[0].totalCount[0]
-              ? books[0].totalCount[0].count
-              : 0
-            }
-          });
+          if (books[0].listOfItem.length) {
+            this.setState({            
+              books: books[0].listOfItem as Book[],
+              pagination: {
+                ...this.state.pagination,
+                length:  books[0].totalCount[0]
+                ? books[0].totalCount[0].count
+                : 0
+              }
+            });
+          } else {
+            alert('Book not found')
+          }
         });
       }
     });

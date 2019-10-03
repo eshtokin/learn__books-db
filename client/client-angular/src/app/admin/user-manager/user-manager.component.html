@@ -1,7 +1,9 @@
 <div class="container">
     <div class="input-field center">
         <input type="text" name="searchField" [(ngModel)]="searchString" (ngModelChange)="this.onSearchStringChange.next($event)">
-        <label for="searchField">Enter e-mail</label>
+        <label for="searchField"
+        [ngClass]="{active: searchString}"
+        >Enter e-mail</label>
         <br>
     </div>
 </div>

@@ -2,11 +2,11 @@
     <div class="col s4 offset-s4">
         <div class="input-field ">
             <input type="text" id="email" [(ngModel)]='user.email'>
-            <label for="email">E-mail</label>
+            <label for="email" [ngClass]="{active: user.email}">E-mail</label>
         </div>
         <div class="input-field">
             <input type="password" id="password" [(ngModel)]='user.password'>
-            <label for="password">Password</label>
+            <label for="password" [ngClass]="{active: user.password}">Password</label>
         </div>
         <button type="button" class="btn waves-effect" (click)="login()">Log in</button>
     </div>

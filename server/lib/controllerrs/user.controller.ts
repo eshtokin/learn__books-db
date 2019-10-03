@@ -45,7 +45,7 @@ export class UserController {
 
         mongoDbService.Aggreagate(User, agreagationQuery)
         .then(result => {
-            return res.send(result)
+            return res.status(200).send(result)
         })
         .catch(err => {
             return res.send(err)
@@ -96,7 +96,7 @@ export class UserController {
 
         mongoDbService.Aggreagate(User, agreagationQuery)
         .then(result => {
-            return res.send(result)
+            return res.status(200).send(result)
         })
         .catch(err => {
             return res.send(err)
