@@ -28,7 +28,6 @@ import { ReactiveFormHelper } from 'src/app/service/reactive-form-helper';
   providers: [
     UserService,
     ReactiveFormHelper
-    // AdminGuardService
   ],
   exports: []
 })
