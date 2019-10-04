@@ -9,7 +9,6 @@ import { BookDeleteModalComponent } from './book/book-delete-modal/book-delete-m
 import { BookEditeModalComponent } from './book/book-edite-modal/book-edite-modal.component';
 import { FilterComponent } from './filter/filter.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../service/users.service';
 
@@ -21,7 +20,6 @@ import { UserService } from '../service/users.service';
     BookDeleteModalComponent,
     BookEditeModalComponent,
     FilterComponent,
-    HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +44,6 @@ import { UserService } from '../service/users.service';
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule,
-    HeaderComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
