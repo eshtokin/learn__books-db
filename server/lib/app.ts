@@ -6,7 +6,6 @@ import * as cors from "cors"
 import { dbInfo } from './enviroments/config'
 
 class App {
-
     public app: express.Application;
     public route: Routes = new Routes();
 
@@ -19,17 +18,28 @@ class App {
     }
 
     private config(): void{
-        // support application/json type post data
         this.app.use(bodyParser.json({limit: '50mb'}));
-        //support application/x-www-form-urlencoded post data
         this.app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit:50000}));
+        // this.app.use(logger);
+        this.app.use(errorHandler);
     }
 
     private mongoSetup() {
         mongoose.Promise = global.Promise;
         mongoose.connect(dbInfo.localMongoUrl, {useFindAndModify: false});
     }
+}
 
+function errorHandler(err, req, res, next) {
+    console.log('SOME REQUEST');
+    console.log('req', req);
+    console.log('res', res);
+    console.log('err', err);
+    console.log('next', next);
+}
+
+function logger() {
+    console.log('LOGGER')
 }
 
 export default new App().app;

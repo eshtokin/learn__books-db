@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
-const author_model_1 = require("../models/author.model");
-const mongodb_service_1 = require("../service/mongodb.service");
+const author_model_1 = require("../entities/author.model");
+const author_repository_1 = require("repositories/author.repository");
 exports.Authors = mongoose.model('Author', author_model_1.AuthorSchema);
-const mongoDbService = new mongodb_service_1.MongoDbService();
+const RAuthor = new author_repository_1.default(exports.Authors, 'authors');
 class AuthorController {
     getAllAuthor(req, res) {
         const query = {};
-        mongoDbService.find(exports.Authors, query)
+        RAuthor.find(query)
             .then(value => {
             res.send(value);
         })
@@ -16,14 +16,14 @@ class AuthorController {
     }
     getAuthor(req, res) {
         const query = req.params.authorId;
-        mongoDbService.findById(exports.Authors, query)
+        RAuthor.findById(query)
             .then(value => {
             res.send(value);
         })
             .catch(err => res.send(err));
     }
     addAuthor(req, res) {
-        mongoDbService.findOne(exports.Authors, { name: req.body.name })
+        RAuthor.findOne({ name: req.body.name })
             .then(value => {
             return res.status(400).send({
                 meessage: 'author already exist'
@@ -37,7 +37,7 @@ class AuthorController {
         const data = {
             name: req.body.name
         };
-        mongoDbService.create(exports.Authors, data)
+        RAuthor.create(data)
             .then(res.status(200).send({
             message: 'successful'
         }))
@@ -47,7 +47,7 @@ class AuthorController {
     }
     deleteAuthor(req, res) {
         const query = { name: req.body.name };
-        mongoDbService.findOneAndDelete(exports.Authors, query)
+        RAuthor.findOneAndDelete(query)
             .then(value => {
             return res.send({ message: "successfuly deleted" });
         })

@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { UserController } from "../controllerrs/user.controller"
 import { AuthorizationController } from "../controllerrs/authorization.controller"
-import { UserRoles } from "../models/user.model";
+import { UserRoles } from "../entities/user.model";
 import { AuthMiddleware } from '../middleware/auth.middleware';
 import { BookController } from '../controllerrs/book.controller';
 import { CategoryController } from '../controllerrs/category.controller';

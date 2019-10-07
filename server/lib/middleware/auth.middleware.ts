@@ -1,12 +1,12 @@
 import * as jwt from "jsonwebtoken"
-import { UserRoles } from "../models/user.model";
+import { UserRoles } from "../entities/user.model";
 import { NextFunction } from "connect";
 import { AuthConfig } from "../enviroments/config";
 
 export const AuthMiddleware = (roles: UserRoles[]) => {
     return (req, res, next: NextFunction) => {
         let token = req.headers["authorization"];
-        
+
         if (!token) {
             return res.status(401).send({
                 authorization: false,

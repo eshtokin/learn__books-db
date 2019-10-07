@@ -1,16 +1,14 @@
 import * as mongoose from 'mongoose'
-import { CategorySchema } from '../models/category.model'
+import { Category } from './../entities/category.model'
 import { Request, Response } from 'express'
-import {MongoDbService} from '../service/mongodb.service'
+import CategoryRepository from './../repositories/category.repository';
 
-export const Category = mongoose.model('Category', CategorySchema);
-
-const mongoDbService = new MongoDbService();
+export const RCategory = new CategoryRepository(Category);
 
 export class CategoryController {
   public getAllCategory(req: Request, res: Response) {
     const query = {};
-    mongoDbService.find(Category, query)
+    RCategory.find(query)
     .then(value => {
       res.send(value)
     })
@@ -23,14 +21,14 @@ export class CategoryController {
     const query = {
       name: req.body.name
     };
-    mongoDbService.findOne(Category, query)
+    RCategory.findOne(query)
     .then(value => {
       if (value) {
         return res.status(400).send({
           message: 'category already exist'
         })
       }
-      mongoDbService.create(Category, query)
+      RCategory.create(query)
       .then(() => {
         return res.status(200).send({
           message: 'successful'
@@ -49,7 +47,7 @@ export class CategoryController {
       name: req.body.name
     };
 
-    mongoDbService.findOneAndDelete(Category, query)
+    RCategory.findOneAndDelete(query)
     .then(() => {
       return res.status(200).send({
         message: 'successfuly deleted'

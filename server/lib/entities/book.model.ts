@@ -12,3 +12,5 @@ export const BookSchema = new Schema({
   printType: String,
   industryIdentifiers: String
 });
+
+export const Books = mongoose.model('Books', BookSchema);

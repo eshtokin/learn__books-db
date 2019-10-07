@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_controller_1 = require("../controllerrs/user.controller");
 const authorization_controller_1 = require("../controllerrs/authorization.controller");
-const user_model_1 = require("../models/user.model");
+const user_model_1 = require("../entities/user.model");
 const auth_middleware_1 = require("../middleware/auth.middleware");
 const book_controller_1 = require("../controllerrs/book.controller");
 const category_controller_1 = require("../controllerrs/category.controller");
@@ -27,38 +27,39 @@ class Routes {
         app.route("/registration")
             .post(this.authentController.registration);
         app.route("/user")
-            .get(this.userController.getAllUsers);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.getAllUsers);
         app.route("/usersearch")
-            .get(this.userController.getSomeUser);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.getSomeUser);
         app.route("/userfavorites")
-            .get(this.userController.getFavoriteBookFromUser);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.getFavoriteBookFromUser);
         app.route("/user/:userId")
             .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.getUserById)
-            .put(this.userController.updateUser) // AuthMiddleware([UserRoles.admin, UserRoles.user]),
+            .put(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.updateUser)
             .delete(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.deleteUser);
         app.route("/userbooks")
             .get(this.bookController.getUserBooks);
         app.route("/books")
             .get(this.bookController.getAllBook)
-            .post(this.bookController.addBook)
-            .put(this.bookController.updateBook)
-            .delete(this.bookController.deleteBook);
+            .post(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.bookController.addBook)
+            .put(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.bookController.updateBook)
+            .delete(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.bookController.deleteBook);
         app.route("/somebooks")
-            .get(this.bookController.getSomeBooks);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.bookController.getSomeBooks);
         app.route("/getbookbyindustryIdentifiers")
-            .get(this.bookController.getBookByIndustryIdentifiers);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.bookController.getBookByIndustryIdentifiers);
         app.route("/books/:bookId")
-            .get(this.bookController.getBook);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.bookController.getBook)
+            .post(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.userController.addBookToProfile);
         app.route("/category")
-            .get(this.categoryController.getAllCategory)
-            .post(this.categoryController.addCategory)
-            .delete(this.categoryController.deleteCategory);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.categoryController.getAllCategory)
+            .post(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.categoryController.addCategory)
+            .delete(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.categoryController.deleteCategory);
         app.route("/author")
-            .get(this.authorController.getAllAuthor)
-            .post(this.authorController.addAuthor)
-            .delete(this.authorController.deleteAuthor);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.authorController.getAllAuthor)
+            .post(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.authorController.addAuthor)
+            .delete(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.authorController.deleteAuthor);
         app.route("/author/:authorId")
-            .get(this.authorController.getAuthor);
+            .get(auth_middleware_1.AuthMiddleware([user_model_1.UserRoles.admin, user_model_1.UserRoles.user]), this.authorController.getAuthor);
     }
 }
 exports.Routes = Routes;

@@ -4,14 +4,12 @@ const jwt = require("jsonwebtoken");
 const user_controller_1 = require("../controllerrs/user.controller");
 const crypt = require("bcryptjs");
 const config_1 = require("../enviroments/config");
-const mongodb_service_1 = require("../service/mongodb.service");
-const mongoDbService = new mongodb_service_1.MongoDbService();
 class AuthorizationController {
     login(req, res) {
         const query = {
             email: req.body.email
         };
-        mongoDbService.findOne(user_controller_1.User, query)
+        user_controller_1.RUser.findOne(query)
             .then(user => {
             if (!user) {
                 return res.status(400).send({

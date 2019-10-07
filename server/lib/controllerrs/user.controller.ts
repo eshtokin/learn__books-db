@@ -1,49 +1,10 @@
-import * as mongoose from "mongoose"
-import { UserSchema } from "../models/user.model"
 import { Request, Response } from "express"
-import { MongoDbService } from "../service/mongodb.service";
-import * as crypt from "bcryptjs"
-import * as jwt from "jsonwebtoken"
-
-export const User = mongoose.model('User', UserSchema);
-
-const mongoDbService = new MongoDbService();
+import UserService from "./../services/user.service"
+const userService =  new UserService();
 
 export class UserController {
-
     public getAllUsers(req: Request, res: Response) {
-        const skip = {
-            $skip: (+req.query.pageIndex) * (+req.query.pageSize)
-        };
-        const limit = {
-            $limit: (+req.query.pageSize)
-        }
-        let query = {
-            $facet: {
-              listOfItem: [
-                skip, 
-                limit
-              ],
-              totalCount: [
-                {
-                  $count: 'count'
-                }]
-            }
-        };
-
-        const agreagationQuery: object[] = [
-            {
-                $lookup: {
-                    from: "books",
-                    localField: "books",
-                    foreignField: "_id",
-                    as: "book_list"
-                }
-            },
-            {...query}
-        ];
-
-        mongoDbService.Aggreagate(User, agreagationQuery)
+        userService.getAllUsers(req)
         .then(result => {
             return res.status(200).send(result)
         })
@@ -53,48 +14,7 @@ export class UserController {
     }
     
     public getSomeUser(req: Request, res: Response) {
-        const pagination = JSON.parse(req.query.pagination);
-        
-        const skip = {
-            $skip: (pagination.pageIndex) * (pagination.pageSize)
-        };
-        const limit = {
-            $limit: (pagination.pageSize)
-        }
-        let query = {
-            $facet: {
-              listOfItem: [
-                skip, 
-                limit
-              ],
-              totalCount: [
-                {
-                  $count: 'count'
-                }]
-            }
-        };
-
-        const agreagationQuery: object[]= [
-            {
-                $match: {
-                    email: {
-                        $regex: `.*${req.query.searchString? req.query.searchString : ' '}*`,
-                        $options: 'i'
-                    }
-                }
-            },
-            {
-                $lookup: {
-                    from: "books",
-                    localField: "books",
-                    foreignField: "_id",
-                    as: "book_list"
-                }
-            },
-            {...query}
-        ];
-
-        mongoDbService.Aggreagate(User, agreagationQuery)
+        userService.getSomeUser(req)
         .then(result => {
             return res.status(200).send(result)
         })
@@ -104,12 +24,8 @@ export class UserController {
     }
 
     public getUserById(req: Request, res: Response) {
-        const query = {
-            _id: req.params.userId
-        }
-        mongoDbService.findById(User, query)
+        userService.getUserById(req)
         .then(value => {
-            value.password = '';
             return res.json(value);
         })
         .catch(err => {
@@ -118,13 +34,7 @@ export class UserController {
     }
 
     public getFavoriteBookFromUser(req: Request, res: Response) {
-        const user = jwt.decode(req.headers.authorization);
-        
-        const query = {
-            _id: user.id
-        };
-        
-        mongoDbService.find(User, query)
+        userService.getFavoriteBookFromUser(req)
         .then( result => {            
             return res.json(result[0].books)
         })
@@ -134,25 +44,7 @@ export class UserController {
     }
 
     public updateUser(req: Request, res: Response) {
-        const data = req.body;
-
-        if (req.body.password === '' ) {
-            delete data.password
-        } else if (req.body.password[0] !== '$') {
-            data.password = crypt.hashSync(req.body.password)
-        }
-
-        if (req.body.books) {
-            data.books = req.body.books.map(book => {
-                return mongoose.Types.ObjectId(book)
-            })
-        }
-  
-        const query = {
-            _id: req.body._id
-        };
-       
-        mongoDbService.findOneAndUpdate(User, query, data)
+       userService.updateUser(req)
         .then(value => {
             return res.json(value)
         })
@@ -162,11 +54,7 @@ export class UserController {
     }
 
     public deleteUser(req: Request, res: Response) {
-        const query = {
-            _id: req.params.userId
-        };
-
-        mongoDbService.findOneAndDelete(User, query)
+        userService.deleteUser(req)
         .then(() => {
             return res.send({
                 message: 'User successfully deleted!'
@@ -178,23 +66,16 @@ export class UserController {
     }
 
     public addBookToProfile(req: Request, res: Response) {
-        const user = jwt.decode(req.headers.authorization);
-        
-        const query = {
-            _id: mongoose.Types.ObjectId(user.id)
-          };
-          const data = {
-            $addToSet: { books: mongoose.Types.ObjectId(req.params.bookId)}
-        };
-
-        mongoDbService.findOneAndUpdate(User, query, data)
+        userService.addBookToProfile(req)
         .then(() => {
             return res.status(200).send({
                 message: 'added to profile'
             })
         })
         .catch(err => {
-            return res.send
+            return res.status(500).send({
+                message: 'server error'
+            })
         })
     }
 }

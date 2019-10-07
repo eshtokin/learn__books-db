@@ -23,7 +23,7 @@ class App {
     }
     mongoSetup() {
         mongoose.Promise = global.Promise;
-        mongoose.connect(config_1.dbInfo.localMongoUrl);
+        mongoose.connect(config_1.dbInfo.localMongoUrl, { useFindAndModify: false });
     }
 }
 exports.default = new App().app;

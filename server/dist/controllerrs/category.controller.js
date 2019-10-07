@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
-const category_model_1 = require("../models/category.model");
-const mongodb_service_1 = require("../service/mongodb.service");
+const category_model_1 = require("../entities/category.model");
+const category_repository_1 = require("repositories/category.repository");
 exports.Category = mongoose.model('Category', category_model_1.CategorySchema);
-const mongoDbService = new mongodb_service_1.MongoDbService();
+const RCategory = new category_repository_1.default(exports.Category, 'categories');
 class CategoryController {
     getAllCategory(req, res) {
         const query = {};
-        mongoDbService.find(exports.Category, query)
+        RCategory.find(query)
             .then(value => {
             res.send(value);
         })
@@ -20,14 +20,14 @@ class CategoryController {
         const query = {
             name: req.body.name
         };
-        mongoDbService.findOne(exports.Category, query)
+        RCategory.findOne(query)
             .then(value => {
             if (value) {
                 return res.status(400).send({
                     message: 'category already exist'
                 });
             }
-            mongoDbService.create(exports.Category, query)
+            RCategory.create(query)
                 .then(() => {
                 return res.status(200).send({
                     message: 'successful'
@@ -44,7 +44,7 @@ class CategoryController {
         const query = {
             name: req.body.name
         };
-        mongoDbService.findOneAndDelete(exports.Category, query)
+        RCategory.findOneAndDelete(query)
             .then(() => {
             return res.status(200).send({
                 message: 'successfuly deleted'

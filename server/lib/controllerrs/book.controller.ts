@@ -1,12 +1,13 @@
 import * as mongoose from 'mongoose'
-import { BookSchema } from "../models/book.model"
+import { Books } from "../entities/book.model"
 import {Response, Request} from 'express'
-import { Category } from './category.controller';
-import { Authors } from './author.controller';
-import { MongoDbService } from '../service/mongodb.service';
+import { RCategory } from './category.controller';
+import { authorRepository } from './author.controller';
+import BookRepository from './../repositories/book.repository';
+import { Authors } from './../entities/author.model'
+import { Category } from './../entities/category.model';
 
-export const Books = mongoose.model('Books', BookSchema);
-const mongoDbService = new MongoDbService();
+export const RBook = new BookRepository(Books);
 
 export class BookController {
 
@@ -49,7 +50,7 @@ export class BookController {
     
     agreagationQuery.push(query);
     
-    mongoDbService.Aggreagate(Books, agreagationQuery)
+    RBook.Aggreagate(agreagationQuery)
     .then(list => {
       return res.json(list[0])
     })
@@ -135,7 +136,7 @@ export class BookController {
       }
     ];
 
-    mongoDbService.Aggreagate(Books, agreagateQuery)
+    RBook.Aggreagate(agreagateQuery)
     .then(list => res.json(list))
     .catch(err => res.send(err))
   }
@@ -192,7 +193,7 @@ export class BookController {
       ...query
     }];
 
-    mongoDbService.Aggreagate(Books, agreagateQuery)
+    RBook.Aggreagate(agreagateQuery)
     .then(list => res.json(list))
     .catch(err => res.send(err))
   }
@@ -213,7 +214,7 @@ export class BookController {
       $in: req.body.book.categories
     }};
 
-    mongoDbService.find(Category, queryForCategory)
+    RBook.find(queryForCategory)
     .then(category => {
       if (category.length > 0) {
         category.forEach(el => {
@@ -231,7 +232,7 @@ export class BookController {
           });
           listCategoriesId.push(id)
         });
-        mongoDbService.insertMany(Category, listCategories);
+        RCategory.insertMany(listCategories);
       }
       
     })
@@ -247,7 +248,7 @@ export class BookController {
       $in: req.body.book.authors
     }};
   
-    mongoDbService.find(Authors, queryForAuthor)
+    RBook.find(queryForAuthor)
     .then(authors => {
       if (authors.length > 0) {
         authors.forEach(author => {
@@ -267,7 +268,7 @@ export class BookController {
               }
             })
           })
-          mongoDbService.insertMany(Authors, listAuthors);
+          authorRepository.insertMany(listAuthors);
         }
       }
       if (authors.length === 0) {
@@ -280,7 +281,7 @@ export class BookController {
           });
           listAuthorsId.push(id)
         });
-        mongoDbService.insertMany(Authors, listAuthors);
+        authorRepository.insertMany(listAuthors);
       }
     })
     .catch(err => res.send(err))
@@ -292,9 +293,9 @@ export class BookController {
   
     let queryForBook= {
       title: req.body.book.title,
-      industryIdentifiers //: req.body.book.industryIdentifiers
+      industryIdentifiers
     };
-    mongoDbService.findOne(Books, queryForBook)
+    RBook.findOne(queryForBook)
     .then(book => {
 
       if (book) {
@@ -317,7 +318,7 @@ export class BookController {
         industryIdentifiers
       };
   
-      mongoDbService.create(Books, query)
+      RBook.create(query)
       .then(book => {
           return res.status(200).send({
           message: 'added in bd'
@@ -367,7 +368,7 @@ export class BookController {
       industryIdentifiers: req.body.industryIdentifiers
     };
 
-    mongoDbService.findOneAndDelete(Books, query)
+    RBook.findOneAndDelete(query)
     .then(() => {
       return res.status(200).send({
         message: 'successfuly deleted'
@@ -380,7 +381,7 @@ export class BookController {
     const query = {
       _id: req.params.bookId
     };
-    mongoDbService.findById(Books, query)
+    RBook.findById(query)
     .then(book => {
       return res.json(book)
     })
@@ -393,7 +394,7 @@ export class BookController {
         $in: req.query.industryIdentifiers
       }
     };
-    mongoDbService.find(Books, query)
+    RBook.find(query)
     .then(book => res.json(book))
     .catch(err => res.send(err))
   }

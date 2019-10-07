@@ -22,7 +22,7 @@ export class UserService {
 
 
     public getAllUsers(pagination?: PaginationEvent): Promise<any> {
-        return Axios.get('/user', {params: pagination})
+        return Axios.get('/user', {params: {pagination}})
         .then(res => {
             return res.data;
         })

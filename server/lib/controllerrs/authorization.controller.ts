@@ -1,18 +1,16 @@
 import { Request, Response } from "express"
 import * as jwt from "jsonwebtoken"
-import {User} from "../controllerrs/user.controller"
+import {User} from "./../entities/user.model"
 import * as crypt from "bcryptjs"
 import { AuthConfig } from "../enviroments/config"
-import { MongoDbService } from "../service/mongodb.service";
-
-const mongoDbService = new MongoDbService();
+import { userRepository } from "./../services/user.service"
 
 export class AuthorizationController {
     public login(req: Request, res: Response) {
         const query = {
             email: req.body.email
         };
-        mongoDbService.findOne(User, query)
+        userRepository.findOne(query)
         .then(user => {
             if (!user) {
                 return res.status(400).send({
