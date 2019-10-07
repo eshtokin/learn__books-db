@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import UserService from "./../services/user.service"
+
 const userService =  new UserService();
 
 export class UserController {
