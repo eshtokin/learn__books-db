@@ -7,23 +7,19 @@ export const authorRepository = new AuthorRepository(Authors);
 const serviceAuthor =  new AuthorService();
 
 export class AuthorController {
-  public getAllAuthor(req: Request, res: Response) {
+  public getAllAuthor(req: Request, res: Response): void {
     serviceAuthor.getAllAuthor()
     .then(value => {
       res.send(value);
     });
   }
 
-  public getAuthor(req: Request, res: Response) {
+  public getAuthor(req: Request, res: Response): void {
     serviceAuthor.getAuthor(req)
     .then(value => res.send(value));
   }
 
-  public addAuthor(req: Request, res: Response) {    
+  public addAuthor(req: Request, res: Response): void {    
     serviceAuthor.addAuthor(req, res)
-  }
-
-  public deleteAuthor(req: Request, res: Response) {
-    serviceAuthor.deleteAuthor(req, res);
   }
 }

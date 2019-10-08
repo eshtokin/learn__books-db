@@ -3,6 +3,9 @@ import BookRepository from './../repositories/book.repository';
 import { Books } from './../entities/book.model';
 import { authorRepository } from './../services/author.service';
 import { categoryRepository } from './../services/category.service';
+import AuthorAndCategory from 'models/author-and-category.model';
+import { AgreagationBookResponse } from 'models/agreagation-response.model';
+import Book from 'models/book.model';
 
 const listOfTable = {
   categories: 'categories',
@@ -100,7 +103,7 @@ export default class BookService {
     }
   }
 
-  public async getAllBook(req, res) {
+  public async getAllBook(req): Promise<AgreagationBookResponse> {
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryFor(listOfTable.categories),
       this.makeAgreagationQueryFor(listOfTable.authors),
@@ -109,7 +112,7 @@ export default class BookService {
     return await bookRepository.aggreagate(agreagationQuery)
   }
 
-  public async deleteBook(req) {
+  public async deleteBook(req): Promise<Book> {
     const query = {
       industryIdentifiers: req.body.industryIdentifiers
     };
@@ -117,7 +120,7 @@ export default class BookService {
     return await bookRepository.findOneAndDelete(query)
   }
 
-  public async getBook(req) {
+  public async getBook(req): Promise<Book> {
     const query = {
       _id: req.params.bookId
     };
@@ -125,7 +128,7 @@ export default class BookService {
     return await bookRepository.findById(query)
   }
 
-  public async getBookByIndustryIdentifiers(req) {
+  public async getBookByIndustryIdentifiers(req): Promise<Book[]> {
     const query = {
       industryIdentifiers: {
         $in: req.query.industryIdentifiers
@@ -135,7 +138,7 @@ export default class BookService {
     return await bookRepository.find(query)
   }
 
-  public async getUserBooks(req) {
+  public async getUserBooks(req): Promise<AgreagationBookResponse> {
     let objIdBooks = req.query.books.map(el => mongoose.Types.ObjectId(el));
     const agreagateQuery = [{
       $match: {
@@ -158,7 +161,7 @@ export default class BookService {
     return await bookRepository.aggreagate(agreagateQuery)
   }
 
-  public async getSomeBooks(req) {
+  public async getSomeBooks(req): Promise<AgreagationBookResponse> {
     const agreagateQuery = [
       this.makeAgreagationQueryFor(listOfTable.categories), 
       this.makeAgreagationQueryFor(listOfTable.authors),
@@ -171,7 +174,7 @@ export default class BookService {
     return await bookRepository.aggreagate(agreagateQuery)
   }
 
-  public async updateBook(req) {
+  public async updateBook(req): Promise<Book> {
     let authors = [];
     let categories = [];
     
@@ -181,7 +184,7 @@ export default class BookService {
     })
 
     await categoryRepository.find({name: {$in: req.body.authors}})
-    .then((err, categoryList) => {
+    .then((categoryList) => {
       categories = this.makeObjectIdFrom(categoryList)
     })
 
@@ -194,13 +197,13 @@ export default class BookService {
       image: req.body.image
     }
 
-    return await Books.findOneAndUpdate(
+    return await bookRepository.findOneAndUpdate(
       {industryIdentifiers: req.body.industryIdentifiers},
       newBookData,
     )
   }
 
-  public async addBook(req) {
+  public async addBook(req): Promise<Book> {
     let listCategories = [];
     let listCategoriesId = [];
     let listAuthors = [];

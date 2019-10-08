@@ -1,21 +1,22 @@
 import { Category } from './../entities/category.model'
 import CategoryRepository from './../repositories/category.repository';
+import AuthorAndCategory from './../models/author-and-category.model';
 
 
 export const categoryRepository = new CategoryRepository(Category);
 
 export default class CategoriService {
-  public async getAllCategory(req) {
+  public async getAllCategory(req): Promise<AuthorAndCategory[]> {
     const query = {};
     return await categoryRepository.find(query)
   }
 
-  public async addCategory(req) {
+  public async addCategory(req): Promise<AuthorAndCategory> {
     const query = {
       name: req.body.name
     };
     
-    let resultOfSearch;
+    let resultOfSearch: AuthorAndCategory;
 
     await categoryRepository.findOne(query)
     .then((result) => {
@@ -34,7 +35,7 @@ export default class CategoriService {
     return resultOfSearch;
   }
 
-  public async deleteCategory(req) {
+  public async deleteCategory(req): Promise<AuthorAndCategory> {
     const query = {
       name: req.body.name
     };

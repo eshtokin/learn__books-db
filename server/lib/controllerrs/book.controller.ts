@@ -6,7 +6,7 @@ const bookService = new BookService();
 export class BookController {
 
   public getAllBook(req: Request, res: Response) {
-    bookService.getAllBook(req, res)
+    bookService.getAllBook(req)
     .then(list => res.json(list[0]))
     .catch(err => res.send(err))
   }
@@ -33,7 +33,7 @@ export class BookController {
 
   public updateBook(req: Request, res: Response) {
     bookService.updateBook(req)
-    .then(res => res.status(200).send({
+    .then(() => res.status(200).send({
       massage: 'Successfuly updated'
     }))
     .catch(err => res.send(err))

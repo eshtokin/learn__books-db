@@ -4,17 +4,15 @@ import CategoriService from './../services/category.service';
 const categoryService = new CategoriService();
 
 export class CategoryController {
-  public getAllCategory(req: Request, res: Response) {
+  public getAllCategory(req: Request, res: Response): void {
     categoryService.getAllCategory(req)
-    .then(value => {
-      res.send(value)
-    })
+    .then(value => res.send(value))
     .catch(err => {
       res.send(err)
     });
   }
 
-  public addCategory(req: Request, res: Response) {
+  public addCategory(req: Request, res: Response): void {
     categoryService.addCategory(req)
     .then(value => {
       if (value) {
@@ -33,7 +31,7 @@ export class CategoryController {
     })
   }
 
-  public deleteCategory(req: Request, res: Response) {
+  public deleteCategory(req: Request, res: Response): void {
     categoryService.deleteCategory(req)
     .then(() => {
       return res.status(200).send({

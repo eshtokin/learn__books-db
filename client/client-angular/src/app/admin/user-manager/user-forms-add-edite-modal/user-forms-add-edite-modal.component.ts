@@ -59,8 +59,6 @@ export class UserFormAddEditeModalComponent {
   }
 
   public checkPass(): void {
-    console.log('password', this.form.controls.password.value);
-    console.log('confirm', this.form.controls.confirmPassword.value);
     if (this.form.controls.password.value === this.form.controls.confirmPassword.value) {
       this.confPass =  true;
     } else {

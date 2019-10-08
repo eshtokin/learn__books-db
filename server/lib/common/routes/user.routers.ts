@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { UserController } from "../controllerrs/user.controller"
-import { AuthorizationController } from "../controllerrs/authorization.controller"
-import { UserRoles } from "../entities/user.model";
-import { AuthMiddleware } from '../middleware/auth.middleware';
-import { BookController } from '../controllerrs/book.controller';
-import { CategoryController } from '../controllerrs/category.controller';
-import { AuthorController } from '../controllerrs/author.controller';
+import { UserController } from "../../controllerrs/user.controller"
+import { AuthorizationController } from "../../controllerrs/authorization.controller"
+import { UserRoles } from "../../entities/user.model";
+import { AuthMiddleware } from '../../middleware/auth.middleware';
+import { BookController } from '../../controllerrs/book.controller';
+import { CategoryController } from '../../controllerrs/category.controller';
+import { AuthorController } from '../../controllerrs/author.controller';
 
 export class Routes {
     public userController : UserController = new UserController();
@@ -64,12 +64,12 @@ export class Routes {
         app.route("/category")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.categoryController.getAllCategory)
         .post(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.categoryController.addCategory)
-        .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.categoryController.deleteCategory)
+        // .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.categoryController.deleteCategory)
 
         app.route("/author")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.getAllAuthor)
         .post(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.addAuthor)
-        .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.deleteAuthor)
+        // .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.deleteAuthor)
 
         app.route("/author/:authorId")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.authorController.getAuthor)

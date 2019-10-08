@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import { Routes } from "./routes/user.routers"
+import { Routes } from "./common/routes/user.routers"
 import * as mongoose from "mongoose"
 import * as cors from "cors"
 import { dbInfo } from './enviroments/config'

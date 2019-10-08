@@ -1,14 +1,19 @@
 import UserRepository from "./../repositories/user.repository";
-import { User } from "./../entities/user.model";
 import * as jwt from "jsonwebtoken"
 import * as mongoose from "mongoose"
 import * as crypt from "bcryptjs"
 import { AuthConfig } from "./../enviroments/config";
 
+import { User } from "./../entities/user.model";
+import AgreagationQuery from "./../models/agreagation-query.model";
+import { AgreagationUserResponse } from "./../models/agreagation-response.model";
+import UserInterface from "./../models/user.mdoel";
+import AuthResponse from "./../models/auth-response.model";
+
 export const userRepository = new UserRepository(User);
 
 export default class UserService {
-  public makeAgreagationQueryForUser() {
+  public makeAgreagationQueryForUser(): AgreagationQuery {
     return {
       $lookup: {
         from: "books",
@@ -45,7 +50,7 @@ export default class UserService {
     return query;
   }
 
-  public async getAllUsers(req) {
+  public async getAllUsers(req): Promise<AgreagationUserResponse> {
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryForUser(),
       this.makePaginationQueryForUser(req),
@@ -54,7 +59,7 @@ export default class UserService {
     return await userRepository.aggreagate(agreagationQuery)
   }
 
-  public async getSomeUser(req) {
+  public async getSomeUser(req): Promise<AgreagationUserResponse> {
     const agreagationQuery: object[]= [
       {
         $match: {
@@ -71,7 +76,7 @@ export default class UserService {
     return await userRepository.aggreagate(agreagationQuery)
   }
 
-  public async getUserById(req) {
+  public async getUserById(req): Promise<UserInterface> {
     const query = {
       _id: req.params.userId
     };
@@ -83,17 +88,22 @@ export default class UserService {
     })
   }
 
-  public async getFavoriteBookFromUser(req) {
+  public async getFavoriteBookFromUser(req): Promise<string[]> {
     const user = jwt.decode(req.headers.authorization);
 
     const query = {
         _id: user.id
     };
+    
+    let userBooks: string[] = [];
 
-    return await userRepository.find(query)
+    await userRepository.find(query)
+    .then(result => userBooks = result[0].books)
+
+    return userBooks;
   }
 
-  public async updateUser(req) {
+  public async updateUser(req): Promise<UserInterface> {
     const data = req.body;
 
     if (req.body.password === '' ) {
@@ -115,14 +125,14 @@ export default class UserService {
     return await userRepository.findOneAndUpdate(query, data)
   }
 
-  public async deleteUser(req) {
+  public async deleteUser(req): Promise<UserInterface> {
     const query = {
       _id: req.params.userId
     };
     return await userRepository.findOneAndDelete(query)
   }
 
-  public async addBookToProfile(req) {
+  public async addBookToProfile(req): Promise<UserInterface> {
     const user = jwt.decode(req.headers.authorization);
         
     const query = {
@@ -135,7 +145,7 @@ export default class UserService {
     return await userRepository.findOneAndUpdate(query, data)
   }
 
-  public async findOne(req) {
+  public async findOne(req): Promise<UserInterface> {
     const query = {
       email: req.body.email
     };
@@ -143,7 +153,7 @@ export default class UserService {
     return await userRepository.findOne(query)
   }
 
-  public async createUser(req) {
+  public async createUser(req): Promise<UserInterface> {
     const newUser = {
       email: req.body.email,
       password: crypt.hashSync(req.body.password),
@@ -156,7 +166,7 @@ export default class UserService {
     return await userRepository.create(newUser)
   }
 
-  public async loginUser(req) {
+  public async loginUser(req): Promise<AuthResponse> {
     return await this.findOne(req)
     .then(user => {
       if (!user) {
@@ -183,7 +193,7 @@ export default class UserService {
     })
   }
   
-  public async registrateUser(req) {
+  public async registrateUser(req): Promise<void> {
     await this.findOne(req)
     .then(user => {
       if (!user) {
