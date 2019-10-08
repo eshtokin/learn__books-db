@@ -9,7 +9,7 @@ export class BookService {
   constructor() {}
 
   public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {
-    return Axios.get('/books', {params: pagination})
+    return Axios.get('/books', {params: {pagination}})
     .then(res => res.data)
     .catch(err => console.log(err));
   }

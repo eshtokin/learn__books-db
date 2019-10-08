@@ -41,5 +41,4 @@ export default class CategoriService {
 
     return await categoryRepository.findOneAndDelete(query)
   }
-
 }

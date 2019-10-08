@@ -56,7 +56,7 @@ export abstract class MongoRepository {
     })
   }
 
-  public Aggreagate(query) {
+  public aggreagate(query) {
     return this.collection.aggregate(query, (err, result) => {
       if (err) return err;
       return result

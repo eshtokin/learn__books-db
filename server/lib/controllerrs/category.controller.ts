@@ -1,9 +1,6 @@
-import { Category } from './../entities/category.model'
 import { Request, Response } from 'express'
-import CategoryRepository from './../repositories/category.repository';
-import CategoriService, { categoryRepository } from 'services/category.service';
+import CategoriService from './../services/category.service';
 
-export const RCategory = new CategoryRepository(Category);
 const categoryService = new CategoriService();
 
 export class CategoryController {
