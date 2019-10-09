@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken"
-import { UserRoles } from "../entities/user.model";
+import { UserRoles } from "../../entities/user.model";
 import { NextFunction } from "connect";
-import { AuthConfig } from "../enviroments/config";
+import { AuthConfig } from "../../enviroments/config";
 
 export const AuthMiddleware = (roles: UserRoles[]) => {
     return (req, res, next: NextFunction) => {

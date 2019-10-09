@@ -3,7 +3,6 @@ import BookRepository from './../repositories/book.repository';
 import { Books } from './../entities/book.model';
 import { authorRepository } from './../services/author.service';
 import { categoryRepository } from './../services/category.service';
-import AuthorAndCategory from 'models/author-and-category.model';
 import { AgreagationBookResponse } from 'models/agreagation-response.model';
 import Book from 'models/book.model';
 
@@ -113,8 +112,9 @@ export default class BookService {
   }
 
   public async deleteBook(req): Promise<Book> {
+    const book = JSON.parse(req.query.book)
     const query = {
-      industryIdentifiers: req.body.industryIdentifiers
+      industryIdentifiers: book.industryIdentifiers
     };
 
     return await bookRepository.findOneAndDelete(query)

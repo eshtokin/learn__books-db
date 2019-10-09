@@ -3,7 +3,6 @@ import * as jwt from "jsonwebtoken"
 import * as mongoose from "mongoose"
 import * as crypt from "bcryptjs"
 import { AuthConfig } from "./../enviroments/config";
-
 import { User } from "./../entities/user.model";
 import AgreagationQuery from "./../models/agreagation-query.model";
 import { AgreagationUserResponse } from "./../models/agreagation-response.model";
@@ -76,17 +75,17 @@ export default class UserService {
     return await userRepository.aggreagate(agreagationQuery)
   }
 
-  public async getUserById(req): Promise<UserInterface> {
-    const query = {
-      _id: req.params.userId
-    };
+  // public async getUserById(req): Promise<UserInterface> {
+  //   const query = {
+  //     _id: req.params.userId
+  //   };
 
-    return await userRepository.findById(query)
-    .then(value => {
-      value.password = '';
-      return value;
-    })
-  }
+  //   return await userRepository.findById(query)
+  //   .then(value => {
+  //     value.password = '';
+  //     return value;
+  //   })
+  // }
 
   public async getFavoriteBookFromUser(req): Promise<string[]> {
     const user = jwt.decode(req.headers.authorization);

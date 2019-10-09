@@ -2,7 +2,7 @@ import { Axios } from '../interceptor/token.interseptor';
 import { User } from '../models/user.model';
 import { Book } from '../models/book.model';
 import { PaginationEvent } from '../models/pagination-event.model';
-import { ServerResponce } from '../models/server-response.model';
+import { ServerResponceWithBook } from '../models/server-response.model';
 
 export class UserService {
     public login(user: {email: string, password: string}): Promise<any> {
@@ -41,7 +41,7 @@ export class UserService {
         .catch(err => console.log(err));
     }
 
-    public getUserBooks(books: string[], pagination: PaginationEvent, title?: string, ): Promise<ServerResponce> {
+    public getUserBooks(books: string[], pagination: PaginationEvent, title?: string, ): Promise<ServerResponceWithBook> {
         return Axios.get('/userbooks', {params: {books, pagination, title}})
         .then(res => res.data)
         .catch(err => console.log(err));

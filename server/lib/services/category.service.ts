@@ -6,40 +6,40 @@ import AuthorAndCategory from './../models/author-and-category.model';
 export const categoryRepository = new CategoryRepository(Category);
 
 export default class CategoriService {
-  public async getAllCategory(req): Promise<AuthorAndCategory[]> {
+  public async getAllCategory(): Promise<AuthorAndCategory[]> {
     const query = {};
     return await categoryRepository.find(query)
   }
 
-  public async addCategory(req): Promise<AuthorAndCategory> {
-    const query = {
-      name: req.body.name
-    };
+  // public async addCategory(req): Promise<AuthorAndCategory> {
+  //   const query = {
+  //     name: req.body.name
+  //   };
     
-    let resultOfSearch: AuthorAndCategory;
+  //   let resultOfSearch: AuthorAndCategory;
 
-    await categoryRepository.findOne(query)
-    .then((result) => {
-      resultOfSearch = result
-    });
+  //   await categoryRepository.findOne(query)
+  //   .then((result) => {
+  //     resultOfSearch = result
+  //   });
 
-    if (resultOfSearch) {
-      return resultOfSearch
-    }
+  //   if (resultOfSearch) {
+  //     return resultOfSearch
+  //   }
 
-    await categoryRepository.create(query)
-    .then(result => {
-      resultOfSearch = result
-    });
+  //   await categoryRepository.create(query)
+  //   .then(result => {
+  //     resultOfSearch = result
+  //   });
 
-    return resultOfSearch;
-  }
+  //   return resultOfSearch;
+  // }
 
-  public async deleteCategory(req): Promise<AuthorAndCategory> {
-    const query = {
-      name: req.body.name
-    };
+  // public async deleteCategory(req): Promise<AuthorAndCategory> {
+  //   const query = {
+  //     name: req.body.name
+  //   };
 
-    return await categoryRepository.findOneAndDelete(query)
-  }
+  //   return await categoryRepository.findOneAndDelete(query)
+  // }
 }

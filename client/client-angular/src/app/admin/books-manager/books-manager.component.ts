@@ -42,7 +42,7 @@ export class BooksManagerComponent implements OnInit {
       .then((el) => {
         this.userService.getUserFavoriteBooks()
           .then(favoriteBooks => {
-            this.books = (el.listOfItem as Book[]).map(book => {
+            this.books = el.listOfItem.map(book => {
               return {
                 ...book,
                 inFavorite: favoriteBooks.length
