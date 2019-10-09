@@ -1,4 +1,4 @@
-export default interface GetSomeBooksRequest {
+export default interface GetBooksByFitlerRequest {
   query: {
     data: BookFilter
   }

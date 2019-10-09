@@ -9,10 +9,10 @@ export default class AuthorService {
     return await authorRepository.find({});
   }
 
-  public async getAuthor(req): Promise<AuthorAndCategory> {
-    const query = req.params.authorId;
-    return await authorRepository.findById(query);
-  }
+  // public async getAuthor(req): Promise<AuthorAndCategory> {
+  //   const query = req.params.authorId;
+  //   return await authorRepository.findById(query);
+  // }
 
   public async addAuthor(name: string): Promise<AuthorAndCategory> {
     const isAuthExist = await this.isAuthorExist(name);

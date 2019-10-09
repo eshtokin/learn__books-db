@@ -9,7 +9,7 @@
         "baseUrl": "./lib"
     },
     "include": [
-        "lib/**/*.ts"
+        "lib/**/*.ts", "lib/models/request/user-controller/get-user-by-filter/.model.ts"
     ],
     "exclude": [
         "node_modules"

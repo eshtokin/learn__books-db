@@ -12,7 +12,7 @@ export class AuthorizationController {
     }
 
     public registration(req: AuthorizationRequest, res: Response) {
-        userService.registrateUser(req)
+        userService.registrateUser(req.body)
         .then(user => res.status(200).send({message: 'registrated'}))
         .catch(err => res.status(500).send(err))
     }

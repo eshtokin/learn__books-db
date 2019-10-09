@@ -1,4 +1,4 @@
-export default interface UserInterface {
+export default interface User {
   book_list: object[];
   books: string[] | string;
   email: string;

@@ -32,13 +32,13 @@ export class Routes {
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getAllUsers)
 
         app.route("/usersearch")
-        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getSomeUser)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserByFilter)
 
         app.route("/userfavorites")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getFavoriteBookFromUser)
 
         app.route("/user/:userId")
-        // .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.getUserById)
         .put(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.updateUser)
         .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.userController.deleteUser)
 
@@ -52,7 +52,7 @@ export class Routes {
         .delete(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.deleteBook)
 
         app.route("/somebooks")
-        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.getSomeBooks)
+        .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.getBooksByFitler)
 
         app.route("/getbookbyindustryIdentifiers")
         .get(AuthMiddleware([UserRoles.admin, UserRoles.user]), this.bookController.getBookByIndustryIdentifiers)

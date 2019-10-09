@@ -3,14 +3,14 @@ import * as jwt from "jsonwebtoken"
 import * as mongoose from "mongoose"
 import * as crypt from "bcryptjs"
 import { AuthConfig } from "./../enviroments/config";
-import { User } from "./../entities/user.model";
+import { UserModel } from "./../entities/user.model";
 import AgreagationQuery from "./../models/agreagation-query.model";
 import { AgreagationUserResponse } from "./../models/agreagation-response.model";
-import UserInterface from "./../models/user.mdoel";
+import User from "./../models/user.mdoel";
 import AuthResponse from "./../models/auth-response.model";
-import { ErrorHandler, handleError } from "./../common/helpers/errorHandler";
+import { ErrorHandler } from "./../common/helpers/errorHandler";
 
-export const userRepository = new UserRepository(User);
+export const userRepository = new UserRepository(UserModel);
 
 export default class UserService {
   public makeAgreagationQueryForUser(): AgreagationQuery {
@@ -24,8 +24,8 @@ export default class UserService {
     }
   }
   
-  public makePaginationQueryForUser(req) {
-    const pagination = JSON.parse(req.query.pagination);
+  public makePaginationQueryForUser(paginationString: string) {
+    const pagination = JSON.parse(paginationString);
 
     const skip = {
       $skip: (pagination.pageIndex) * (pagination.pageSize)
@@ -50,28 +50,28 @@ export default class UserService {
     return query;
   }
 
-  public async getAllUsers(req): Promise<AgreagationUserResponse> {
+  public async getAllUsers(pagination: string): Promise<AgreagationUserResponse> {
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryForUser(),
-      this.makePaginationQueryForUser(req),
+      this.makePaginationQueryForUser(pagination),
     ];
 
     return await userRepository.aggreagate(agreagationQuery)
   }
 
-  public async getSomeUser(req): Promise<AgreagationUserResponse> {
+  public async getUserByFilter(query: {searchString: string, pagination: string}): Promise<AgreagationUserResponse> {
     try {
       const agreagationQuery: object[]= [
         {
           $match: {
             email: {
-              $regex: `.*${req.query.searchString? req.query.searchString : ' '}*`,
+              $regex: `.*${query.searchString? query.searchString : ' '}*`,
               $options: 'i'
             }
           }
         },
         this.makeAgreagationQueryForUser(),
-        this.makePaginationQueryForUser(req),
+        this.makePaginationQueryForUser(query.pagination),
       ];
   
       return await userRepository.aggreagate(agreagationQuery)
@@ -80,24 +80,28 @@ export default class UserService {
     }
   }
 
-  // public async getUserById(req): Promise<UserInterface> {
-  //   const query = {
-  //     _id: req.params.userId
-  //   };
-
-  //   return await userRepository.findById(query)
-  //   .then(value => {
-  //     value.password = '';
-  //     return value;
-  //   })
-  // }
-
-  public async getFavoriteBookFromUser(req): Promise<string[]> {
+  public async getUserById(userId): Promise<User> {
     try {
-      const user = jwt.decode(req.headers.authorization);
+      const query = {
+        _id: userId
+      };
+  
+      return await userRepository.findById(query)
+      .then(value => {
+        value.password = '';
+        return value;
+      })
+    } catch(error) {
+      throw new ErrorHandler(500, 'Iternal server error')
+    }
+  }
+
+  public async getFavoriteBookFromUser(authorization: string): Promise<string[]> {
+    try {
+      const user = jwt.decode(authorization);
 
       const query = {
-          _id: user.id
+        _id: user.id
       };
       
       let userBooks: string[] = [];
@@ -111,33 +115,31 @@ export default class UserService {
     }
   }
 
-  public async updateUser(req): Promise<UserInterface> {
+  public async updateUser(user: User): Promise<User> {
     try {
-      const data = req.body;
-
-      if (req.body.password === '' ) {
-        delete data.password
-      } else if (req.body.password[0] !== '$') {
-        data.password = crypt.hashSync(req.body.password)
+      if (user.password === '' ) {
+        delete user.password
+      } else if (user.password[0] !== '$') {
+        user.password = crypt.hashSync(user.password)
       }
 
-      if (req.body.books) {
-        data.books = req.body.books.map(book => {
+      if (user.books) {
+        user.books = (user.books as string[]).map(book => {
           return mongoose.Types.ObjectId(book)
         })
       }
 
       const query = {
-        _id: req.body._id
+        _id: user._id
       };
 
-      return await userRepository.findOneAndUpdate(query, data)
+      return await userRepository.findOneAndUpdate(query, user)
     } catch(error) {
       throw new ErrorHandler(500, 'Internal server error')
     }
   }
 
-  public async deleteUser(req): Promise<UserInterface> {
+  public async deleteUser(req): Promise<User> {
     try {
       const query = {
         _id: req.params.userId
@@ -148,15 +150,15 @@ export default class UserService {
     }
   }
 
-  public async addBookToProfile(req): Promise<UserInterface> {
+  public async addBookToProfile(authorization: string, bookId: string): Promise<User> {
     try {
-      const user = jwt.decode(req.headers.authorization);
+      const user = jwt.decode(authorization);
         
       const query = {
           _id: mongoose.Types.ObjectId(user.id)
         };
         const data = {
-          $addToSet: { books: mongoose.Types.ObjectId(req.params.bookId)}
+          $addToSet: { books: mongoose.Types.ObjectId(bookId)}
       };
 
       return await userRepository.findOneAndUpdate(query, data)
@@ -165,10 +167,10 @@ export default class UserService {
     }
   }
 
-  public async findOne(req): Promise<UserInterface> {
+  public async findOne(user: User): Promise<User> {
     try {
       const query = {
-        email: req.body.email
+        email: user.email
       };
   
       return await userRepository.findOne(query)
@@ -177,14 +179,14 @@ export default class UserService {
     }
   }
 
-  public async createUser(req): Promise<UserInterface> {
+  public async createUser(user: User): Promise<User> {
     try {
       const newUser = {
-        email: req.body.email,
-        password: crypt.hashSync(req.body.password),
-        name: req.body.name,
+        email: user.email,
+        password: crypt.hashSync(user.password),
+        name: user.name,
         books: [],
-        role: req.body.role || 2,
+        role: user.role || 2,
         image: 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'
       }
   
@@ -224,11 +226,11 @@ export default class UserService {
     }
   }
   
-  public async registrateUser(req): Promise<void> {
+  public async registrateUser(userFromQuery: User): Promise<void> {
     try {
-      const user = await this.findOne(req)
+      const user = await this.findOne(userFromQuery)
       if (!user) {
-        this.createUser(req)
+        this.createUser(user)
       }
     } catch(error) {
       throw new ErrorHandler(500, 'Iternal server error')

@@ -5,6 +5,7 @@ import { authorRepository } from './../services/author.service';
 import { categoryRepository } from './../services/category.service';
 import { AgreagationBookResponse } from 'models/agreagation-response.model';
 import Book from 'models/book.model';
+import { BookFilter } from 'models/request/book-controller/get-books-by-filter.model';
 
 const listOfTable = {
   categories: 'categories',
@@ -65,8 +66,8 @@ export default class BookService {
     return query;
   }
 
-  public makePaginationQuery(req) {
-    const pagination = JSON.parse(req.query.pagination);
+  public makePaginationQuery(paginationQuery) {
+    const pagination = JSON.parse(paginationQuery);
 
     const skip = {
       $skip: (pagination.pageIndex) * (pagination.pageSize)
@@ -102,17 +103,17 @@ export default class BookService {
     }
   }
 
-  public async getAllBook(req): Promise<AgreagationBookResponse> {
+  public async getAllBook(pagination: string): Promise<AgreagationBookResponse> {
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryFor(listOfTable.categories),
       this.makeAgreagationQueryFor(listOfTable.authors),
-      this.makePaginationQuery(req)
+      this.makePaginationQuery(pagination)
     ];
     return await bookRepository.aggreagate(agreagationQuery)
   }
 
-  public async deleteBook(req): Promise<Book> {
-    const book = JSON.parse(req.query.book)
+  public async deleteBook(bookfromQuery: string): Promise<Book> {
+    const book = JSON.parse(bookfromQuery)
     const query = {
       industryIdentifiers: book.industryIdentifiers
     };
@@ -120,26 +121,25 @@ export default class BookService {
     return await bookRepository.findOneAndDelete(query)
   }
 
-  public async getBook(req): Promise<Book> {
-    const query = {
-      _id: req.params.bookId
-    };
+  // public async getBook(req): Promise<Book> {
+  //   const query = {
+  //     _id: req.params.bookId
+  //   };
 
-    return await bookRepository.findById(query)
-  }
-
-  public async getBookByIndustryIdentifiers(req): Promise<Book[]> {
+  //   return await bookRepository.findById(query)
+  // }
+  public async getBookByIndustryIdentifiers(identifiers: string[]): Promise<Book[]> {
     const query = {
       industryIdentifiers: {
-        $in: req.query.industryIdentifiers
+        $in: identifiers
       }
     };
 
     return await bookRepository.find(query)
   }
 
-  public async getUserBooks(req): Promise<AgreagationBookResponse> {
-    let objIdBooks = req.query.books.map(el => mongoose.Types.ObjectId(el));
+  public async getUserBooks(books: string[], pagination: string, title: string): Promise<AgreagationBookResponse> {
+    let objIdBooks = books.map(el => mongoose.Types.ObjectId(el));
     const agreagateQuery = [{
       $match: {
           _id: {$in: objIdBooks}
@@ -150,73 +150,65 @@ export default class BookService {
       {
         $match: {
           title: {
-            $regex: `.*${req.query.title? req.query.title: ' '}*`,
+            $regex: `.*${title? title: ' '}*`,
             $options: 'i'
           }, 
         }
       },
-      this.makePaginationQuery(req),
+      this.makePaginationQuery(pagination),
     ];
 
     return await bookRepository.aggreagate(agreagateQuery)
   }
 
-  public async getSomeBooks(req): Promise<AgreagationBookResponse> {
+  public async getBooksByFitler(data): Promise<AgreagationBookResponse> {
     const agreagateQuery = [
       this.makeAgreagationQueryFor(listOfTable.categories), 
       this.makeAgreagationQueryFor(listOfTable.authors),
       {
-        $match: this.makeQueryFromLinkForSomeBooks(req)
+        $match: this.makeQueryFromLinkForSomeBooks(data)
       },
-      this.makePaginationQuery(req),
+      this.makePaginationQuery(data),
     ];
-
-    return await bookRepository.aggreagate(agreagateQuery)
+    return await bookRepository.aggreagate(agreagateQuery);
   }
 
-  public async updateBook(req): Promise<Book> {
-    let authors = [];
-    let categories = [];
-    
-    await authorRepository.find({name: {$in: req.body.authors}})
-    .then((err, authorList) => {
-      authors = this.makeObjectIdFrom(authorList)
-    })
+  public async updateBook(book: Book): Promise<Book> {
+    const authorList = await authorRepository.find({name: {$in: book.authors}})
+    const authors = this.makeObjectIdFrom(authorList);
 
-    await categoryRepository.find({name: {$in: req.body.authors}})
-    .then((categoryList) => {
-      categories = this.makeObjectIdFrom(categoryList)
-    })
+    const categoryList = await categoryRepository.find({name: {$in: book.authors}})
+    const categories = this.makeObjectIdFrom(categoryList)
 
     const newBookData = {
-      title: req.body.title,
+      title: book.title,
       authors,
       categories,
-      description: req.body.description,
-      pageCount: req.body.pageCount,
-      image: req.body.image
+      description: book.description,
+      pageCount: book.pageCount,
+      image: book.image
     }
 
     return await bookRepository.findOneAndUpdate(
-      {industryIdentifiers: req.body.industryIdentifiers},
+      {industryIdentifiers: book.industryIdentifiers},
       newBookData,
     )
   }
 
-  public async addBook(req): Promise<Book> {
+  public async addBook(book: Book): Promise<Book> {
     let listCategories = [];
     let listCategoriesId = [];
     let listAuthors = [];
     let listAuthorsId =[];
 
-    let queryForCategory: object = req.body.book.categories_list ?
+    let queryForCategory: object = book.categories_list ?
     { name: {
-      $in: req.body.book.categories_list.map(el => {
+      $in: book.categories_list.map(el => {
         return el.name;
       })
     }}
     : { name: {
-      $in: req.body.book.categories
+      $in: book.categories
     }};
 
     await categoryRepository.find(queryForCategory)
@@ -226,7 +218,7 @@ export default class BookService {
       }
 
       if (categoryList.length === 0) {
-        req.body.book.categories.forEach(el => {
+        book.categories.forEach(el => {
           const id = mongoose.Types.ObjectId()
           listCategories.push({
             _id: id,
@@ -239,14 +231,14 @@ export default class BookService {
       }
     })
 
-    let queryForAuthor: object = req.body.book.authors_list ?
+    let queryForAuthor: object = book.authors_list ?
     { name: {
-      $in: req.body.book.authors_list.map(el => {
+      $in: book.authors_list.map(el => {
         return el.name;
       })
     }}
     : { name: {
-      $in: req.body.book.authors
+      $in: book.authors
     }};
   
     authorRepository.find(queryForAuthor)
@@ -254,8 +246,8 @@ export default class BookService {
       if (authors.length > 0) {
         listAuthorsId = this.makeObjectIdFrom(authors)
         
-        if (authors.length !== req.body.book.authors.length) {
-          req.body.book.authors.forEach(author => {
+        if (authors.length !== book.authors.length) {
+          book.authors.forEach(author => {
             authors.forEach(auth => {
               if (auth.name !== author) {
                 const id = mongoose.Types.ObjectId()
@@ -273,7 +265,7 @@ export default class BookService {
       }
 
       if (authors.length === 0) {
-        req.body.book.authors.forEach(el => {
+        book.authors.forEach(el => {
           const id = mongoose.Types.ObjectId()
           listAuthors.push({
             _id: id,
@@ -287,12 +279,12 @@ export default class BookService {
     })
 
     let industryIdentifiers = '';
-    req.body.book.industryIdentifiers.forEach((obj: {type: string, identifier: string}) => {
+    (book.industryIdentifiers as []).forEach((obj: {type: string, identifier: string}) => {
       industryIdentifiers += obj.type + obj.identifier;
     });
   
     let queryForBook= {
-      title: req.body.book.title,
+      title: book.title,
       industryIdentifiers
     };
 
@@ -310,13 +302,13 @@ export default class BookService {
 
       let newBook = {
         _id: bookId,
-        title: req.body.book.title,
+        title: book.title,
         authors: listAuthorsId,
         categories: listCategoriesId,
-        description: req.body.book.description,
-        image: req.body.book.image,
-        pageCount: req.body.book.pageCount,
-        printType: req.body.book.printType,
+        description: book.description,
+        image: book.image,
+        pageCount: book.pageCount,
+        printType: book.printType,
         industryIdentifiers
       };
 

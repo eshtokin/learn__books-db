@@ -1,4 +1,4 @@
-export default interface GetSomeUserRequest {
+export default interface GetUserByFilterRequest {
   query: {
     params: {
       searchString: string,

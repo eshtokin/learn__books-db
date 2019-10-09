@@ -4,7 +4,7 @@ export default interface GetUserBooksRequest {
   query: {
     params: {
       books: string[],
-      pagination: Pagination,
+      pagination: string,
       title?: string,
     }
   }

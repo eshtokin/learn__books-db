@@ -16,4 +16,4 @@ export enum UserRoles {
     user = 2
 }
 
-export const User = mongoose.model('User', UserSchema);
+export const UserModel = mongoose.model('User', UserSchema);
