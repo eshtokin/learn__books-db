@@ -93,7 +93,7 @@ export default class UserService {
     };
     
     let userBooks: string[] = await userRepository.find(query)
-
+    
     return userBooks;
   }
 

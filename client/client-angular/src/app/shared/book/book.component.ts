@@ -40,8 +40,9 @@ export class BookComponent implements OnInit {
     this.bookImage = this.book.imageLinks ? this.book.imageLinks.thumbnail : this.book.image;
   }
 
-  public addBookToFavorite(book: Book): void {
-    this.userService.addBookToProfile(book);
+  public async addBookToFavorite(book: Book) {
+    const result = await this.userService.addBookToProfile(book);
+    console.log(result)
     this.confirmDialog();
   }
 
