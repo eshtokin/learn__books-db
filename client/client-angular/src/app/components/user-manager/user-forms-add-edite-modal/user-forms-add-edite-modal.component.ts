@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../../../services/users.service';
 import { FormControleResult } from '../../../models/form-controle-result.model';
 import { User } from '../../../models/user.model';
-import { ReactiveFormHelper } from 'src/app/services/reactive-form-helper';
+import { validatorForFormControl, getRegExpFor } from 'src/app/services/reactive-form-helper';
 
 export enum UserRole {
   admin,
@@ -31,11 +31,11 @@ export class UserFormAddEditeModalComponent {
   public showAddBtn: boolean = this.data.user ? false : true;
 
   public form = new FormGroup({
-    name: new FormControl('', [Validators.required, this.formHelper.checkName]),
-    email: new FormControl('', [Validators.required, this.formHelper.checkEmail]),
-    role: new FormControl('', [Validators.required, this.formHelper.checkRole]),
-    password: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [Validators.required]) // this.checkPassword
+    email: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().email)]),
+    name: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().name)]),
+    password: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().password)]),
+    confirmPassword: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().password)]),
+    role: new FormControl([Validators.required, validatorForFormControl(getRegExpFor().role)]),
   });
 
   public okBtnStatus = false; // true - visible; false - hidden
@@ -43,7 +43,6 @@ export class UserFormAddEditeModalComponent {
   constructor(
     public dialogRef: MatDialogRef<UserFormAddEditeModalComponent>,
     private userService: UserService,
-    private formHelper: ReactiveFormHelper,
     @Inject(MAT_DIALOG_DATA) public data: {
       user: User,
       reloadPage: () => void

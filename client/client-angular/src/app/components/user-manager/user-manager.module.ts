@@ -6,7 +6,6 @@ import { UserDeleteModalComponent } from './user-delete-modal/user-delete-modal.
 import { RouterModule } from '@angular/router';
 import { UserService } from 'src/app/services/users.service';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ReactiveFormHelper } from 'src/app/services/reactive-form-helper';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,7 @@ import { ReactiveFormHelper } from 'src/app/services/reactive-form-helper';
     MatDialogModule,
     RouterModule.forChild([
       {path: '', component: UserManagerComponent}
-    ])
+    ]),
   ],
   entryComponents: [
     UserFormAddEditeModalComponent,
@@ -27,7 +26,6 @@ import { ReactiveFormHelper } from 'src/app/services/reactive-form-helper';
   ],
   providers: [
     UserService,
-    ReactiveFormHelper
   ],
   exports: []
 })

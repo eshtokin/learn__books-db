@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/users.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FormControleResult } from 'src/app/models/form-controle-result.model';
-import { ReactiveFormHelper } from 'src/app/services/reactive-form-helper';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { validatorForFormControl, getRegExpFor } from 'src/app/services/reactive-form-helper';
 
 @Component({
   selector: 'app-auth-form-reg',
@@ -17,17 +16,16 @@ export class AuthFormRegComponent {
   public confirmPassword: string;
 
   public registrateForm = new FormGroup({
-    email: new FormControl('', [Validators.required, this.formHelper.checkEmail]),
-    name: new FormControl('', [Validators.required, this.formHelper.checkName]),
-    password: new FormControl('', [Validators.required, this.formHelper.checkPassword]),
-    confirmPassword: new FormControl('', [Validators.required, this.formHelper.checkPassword]),
-    role: new FormControl([Validators.required, this.checkRole])
+    email: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().email)]),
+    name: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().name)]),
+    password: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().password)]),
+    confirmPassword: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().password)]),
+    role: new FormControl([Validators.required, validatorForFormControl(getRegExpFor().role)]),
   });
 
   constructor(
     private userService: UserService,
     private router: Router,
-    private formHelper: ReactiveFormHelper
   ) {
     this.confPass = true;
     this.user = {
@@ -48,10 +46,6 @@ export class AuthFormRegComponent {
     } else {
       this.confPass =  false;
     }
-  }
-// move to helper
-  public checkRole(control: FormControl): FormControleResult {
-    return control.value === 1 ? {result: true} : control.value === 2 ? {result: true} : {result: false} ;
   }
 
   public async registrate(): Promise<any> {

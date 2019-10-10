@@ -1,37 +1,17 @@
-import { FormControl } from '@angular/forms';
-import { FormControleResult } from '../models/form-controle-result.model';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-export class ReactiveFormHelper {
-  constructor() {}
+export function validatorForFormControl(nameRe: RegExp): ValidatorFn {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+    const forbidden = nameRe.test(control.value);
+    return !forbidden ? {forbiddenName: {value: control.value}} : null;
+  };
+}
 
-  public checkName(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  public checkEmail(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}@[\w]{1,16}.[a-z]{1,}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  public checkRole(control: FormControl): FormControleResult {
-    if (control.value !== 1 && control.value !== 2) {
-      return {
-        result: true
-      };
-    }
-  }
-  public checkPassword(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{4,16}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
+export function getRegExpFor() {
+  return {
+    name: /^[\w]{3,16}$/i,
+    email: /^[\w]{3,16}@[\w]{1,16}\.[a-z]{2,8}$/i,
+    password: /^[\w]{4,16}$/i,
+    role: /^[1, 2]{1}$/
+  };
 }

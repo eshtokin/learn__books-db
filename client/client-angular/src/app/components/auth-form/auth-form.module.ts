@@ -5,7 +5,6 @@ import { AuthFormRegComponent } from 'src/app/components/auth-form/auth-form-reg
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { UserService } from 'src/app/services/users.service';
-import { ReactiveFormHelper } from 'src/app/services/reactive-form-helper';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { ReactiveFormHelper } from 'src/app/services/reactive-form-helper';
   ],
   providers: [
     UserService,
-    ReactiveFormHelper
   ]
 })
 export class AuthModule { }
