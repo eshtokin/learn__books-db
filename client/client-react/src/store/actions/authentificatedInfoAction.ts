@@ -2,7 +2,7 @@ import * as authConstant from './../constants/authentificatedInfoConstant';
 import UserService from '../../service/users.service';
 import UserInfoService from '../../service/user-info.service';
 import { User } from '../../models/user.model';
-import { Props } from '../../AuthForm/AuthFormLogin/authFormLogin';
+import { Props } from '../../component/AuthForm/AuthFormLogin/authFormLogin';
 
 enum Role {
   Admin = 1,

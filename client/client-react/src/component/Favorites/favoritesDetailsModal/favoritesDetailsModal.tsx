@@ -1,6 +1,6 @@
 import React from 'react';
 import { Book } from '../../../models/book.model';
-import { BookComponent } from '../../BookComponent/BookComponent';
+import { BookComponent } from '../../../shared/BookComponent/BookComponent';
 
 interface Props {
   book: Book[];

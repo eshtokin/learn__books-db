@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import UserService, { UserServiceClass } from '../../service/users.service';
-import { User } from '../../models/user.model';
+import UserService, { UserServiceClass } from '../../../service/users.service';
+import { User } from '../../../models/user.model';
 
 interface State {
   user: User;

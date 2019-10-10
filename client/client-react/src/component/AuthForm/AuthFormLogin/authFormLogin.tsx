@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from 'react';
-import UserService, { UserServiceClass } from '../../service/users.service';
-import * as actions from './../../store/actions/authentificatedInfoAction';
+import UserService, { UserServiceClass } from '../../../service/users.service';
+import * as actions from '../../../store/actions/authentificatedInfoAction';
 import { connect } from 'react-redux';
-import UserInfoService, { UserInfo } from '../../service/user-info.service';
+import UserInfoService, { UserInfo } from '../../../service/user-info.service';
 import ReactModal from 'react-modal';
-import { AuthentificationState } from '../../store/reducers/authentificationInfoReducer';
-import { Store } from '../../store/store';
+import { AuthentificationState } from '../../../store/reducers/authentificationInfoReducer';
+import { Store } from '../../../store/store';
 import { History } from 'history';
 
 const customStyles = {

@@ -6,13 +6,13 @@ import { Switch, Route } from 'react-router-dom';
 import ProtectedUserRoute from './guard/protectedUserRoute';
 import ProtectedAdminRotue from './guard/protectedAdminRoute';
 
-const GoogleBook = React.lazy(() => import('./Admin/Google-Book/googleBook'));
-const BookManager = React.lazy(() => import('./Admin/BookManager/BookManager'));
-const UserManager = React.lazy(() => import('./Admin/UserManager/userManager'));
-const FilteredBook = React.lazy(() => import('./shared/FilteredBook/filteredBook'));
-const Profile = React.lazy(() => import('./shared/Profile/profileComponent'));
-const Favorites = React.lazy(() => import('./shared/Favorites/favorites'));
-const AuthForm = React.lazy(() => import('./AuthForm/authForm'));
+const GoogleBook = React.lazy(() => import('./component/Google-Book/googleBook'));
+const BookManager = React.lazy(() => import('./component/BookManager/BookManager'));
+const UserManager = React.lazy(() => import('./component/UserManager/userManager'));
+const FilteredBook = React.lazy(() => import('./component/FilteredBook/filteredBook'));
+const Profile = React.lazy(() => import('./component/Profile/profileComponent'));
+const Favorites = React.lazy(() => import('./component/Favorites/favorites'));
+const AuthForm = React.lazy(() => import('./component/AuthForm/authForm'));
 
 const App: React.FC = () => {
   return (

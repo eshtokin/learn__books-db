@@ -11,7 +11,7 @@ import './style.scss';
 import ReactModal from 'react-modal';
 import FavoritesDetailsModal from './favoritesDetailsModal/favoritesDetailsModal';
 import FavoritesDeleteModal from './favoritesDeleteModal/favoritesDeleteModal';
-import PaginationComponent from '../PaginationComponent/pagination';
+import PaginationComponent from '../../shared/PaginationComponent/pagination';
 
 const customStyles = {
   content : {
