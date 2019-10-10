@@ -49,6 +49,8 @@ export class FilteredBookComponent implements OnInit {
   }
 
   public getSomeBooks(): void {
+    console.log('this.data', this.data)
+
     this.bookService.getSomeBooks(this.data)
     .then((el: any) => {
       this.userService.getUser(this.userInfo.getCurrentUser().id)

@@ -19,7 +19,10 @@ export class BookController {
   }
 
   public getBooksByFitler(req: GetBooksByFitlerRequest, res: Response): void {
-    bookService.getBooksByFitler(req.query.data)
+    // console.log(req.query)
+  //   categories: [ '5d9da9427e695c137477ed7a' ],
+  // pagination: '{"pageIndex":0,"pageSize":5,"length":0,"previousPageIndex":0}' }
+    bookService.getBooksByFitler(req.query)
     .then(list => res.json(list))
     .catch(err => res.send(err))
   }

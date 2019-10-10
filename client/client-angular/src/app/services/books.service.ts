@@ -15,10 +15,9 @@ export class BookService {
   }
 
   public getSomeBooks(data: BookFilter): Promise<ServerResponceWithBook> {
-    console.log('Get some books', data);
     return Axios.get('/somebooks', {params: data})
     .then(res => {
-      console.log('Get books', res.data);
+      console.log('res.data', res);
       return res.data;
     })
     .catch(err => console.log(err));

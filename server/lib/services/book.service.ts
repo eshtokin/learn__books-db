@@ -22,28 +22,23 @@ export default class BookService {
     arr.forEach(author => {
       resultArrWithObjId.push(mongoose.Types.ObjectId(author._id))
     });
-
+    console.log('resultArrWithObjId', resultArrWithObjId);
     return resultArrWithObjId;
   }
 
   public makeQueryFromLinkForSomeBooks(req) {
-    const authorsFilter = [];
-    const categoriesFilter = [];
-
-    if (req.query.authors) {
-      req.query.authors.forEach(author => {
-        authorsFilter.push(mongoose.Types.ObjectId(author))
-      })
+    let authorsFilter = [];
+    let categoriesFilter = [];
+    if (req.authors) {
+      authorsFilter = this.makeObjectIdFrom(req.authors)
     }
-    if (req.query.categories) {
-      req.query.categories.forEach(category => {
-        categoriesFilter.push(mongoose.Types.ObjectId(category))
-      })
+    if (req.categories) {
+      categoriesFilter = this.makeObjectIdFrom(req.categories)
     }
 
-    const regExp = new RegExp(`.*${req.query.title? req.query.title: ' '}*`);
+    const regExp = new RegExp(`.*${req.title? req.title: ' '}*`);
 
-    const queryTitle =  (req.query.title !== undefined && req.query.title.length > 0)
+    const queryTitle =  (req.title !== undefined && req.title.length > 0)
     ? {
       $or: [
         {title: {$regex: regExp, $options: 'i'}}, 
@@ -62,7 +57,7 @@ export default class BookService {
         {...queryAuthors}
       ]
     };
-
+    
     return query;
   }
 
@@ -121,13 +116,6 @@ export default class BookService {
     return await bookRepository.findOneAndDelete(query)
   }
 
-  // public async getBook(req): Promise<Book> {
-  //   const query = {
-  //     _id: req.params.bookId
-  //   };
-
-  //   return await bookRepository.findById(query)
-  // }
   public async getBookByIndustryIdentifiers(identifiers: string[]): Promise<Book[]> {
     const query = {
       industryIdentifiers: {
@@ -168,9 +156,12 @@ export default class BookService {
       {
         $match: this.makeQueryFromLinkForSomeBooks(data)
       },
-      this.makePaginationQuery(data),
+      this.makePaginationQuery(data.pagination),
     ];
-    return await bookRepository.aggreagate(agreagateQuery);
+
+    const result = await bookRepository.aggreagate(agreagateQuery);
+    
+    return result;
   }
 
   public async updateBook(book: Book): Promise<Book> {
@@ -179,7 +170,7 @@ export default class BookService {
 
     const categoryList = await categoryRepository.find({name: {$in: book.authors}})
     const categories = this.makeObjectIdFrom(categoryList)
-
+    
     const newBookData = {
       title: book.title,
       authors,
