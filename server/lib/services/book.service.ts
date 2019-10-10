@@ -5,7 +5,6 @@ import { authorRepository } from './../services/author.service';
 import { categoryRepository } from './../services/category.service';
 import { AgreagationBookResponse } from 'models/agreagation-response.model';
 import Book from 'models/book.model';
-import { BookFilter } from 'models/request/book-controller/get-books-by-filter.model';
 
 const listOfTable = {
   categories: 'categories',
@@ -18,11 +17,9 @@ export const bookRepository = new BookRepository(Books);
 export default class BookService {
   public makeObjectIdFrom(arr) {
     const resultArrWithObjId = [];
-    
-    arr.forEach(author => {
-      resultArrWithObjId.push(mongoose.Types.ObjectId(author._id))
+    arr.forEach(id => {
+      resultArrWithObjId.push(mongoose.Types.ObjectId(id))
     });
-    console.log('resultArrWithObjId', resultArrWithObjId);
     return resultArrWithObjId;
   }
 
