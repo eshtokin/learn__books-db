@@ -42,7 +42,6 @@ export class BooksManagerComponent implements OnInit {
       .then((el) => {
         this.userService.getUserFavoriteBooks()
           .then(favoriteBooks => {
-            console.log('favoriteBooks: ', favoriteBooks)
             this.books = el.listOfItem.map(book => {
               return {
                 ...book,
@@ -51,7 +50,6 @@ export class BooksManagerComponent implements OnInit {
                 : null
               };
             });
-            console.log('Book at page: ', this.books)
             this.paginationParams.length = el.totalCount[0].count;
           });
       });

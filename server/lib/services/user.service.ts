@@ -84,17 +84,17 @@ export default class UserService {
       user.password = '';
       return user;
   }
-// : Promise<string[]>
-  public async getFavoriteBookFromUser(authorization) {
-    const user = jwt.decode(authorization);
+
+  public async getFavoriteBookFromUser(authorization): Promise<string[]> {
+    const userInfoFromToken = jwt.decode(authorization);
 
     const query = {
-      _id: user.id
+      _id: userInfoFromToken.id
     };
-    
-    let userBooks: string[] = await userRepository.find(query)
-    
-    return userBooks;
+  
+    let user: User = await userRepository.findOne(query)
+  
+    return user.books;
   }
 
   public async updateUser(user: User): Promise<User> {

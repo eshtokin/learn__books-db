@@ -1,6 +1,6 @@
 export default interface User {
   book_list: object[];
-  books: string[] | string;
+  books: string[];
   email: string;
   image: string | ArrayBuffer;
   name: string;
