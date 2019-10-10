@@ -8,7 +8,7 @@ import { AxiosResponse } from 'axios';
 
 export class BookServiceClass {
   public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {
-    return Axios.get('/books', {params: pagination})
+    return Axios.get('/books', {params: {pagination}})
     .then(res => res.data)
   }
 

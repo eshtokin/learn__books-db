@@ -6,7 +6,7 @@ const userService = new UserService();
 
 export class AuthorizationController {
     public login(req: AuthorizationRequest, res: Response) {
-        userService.loginUser(req)
+        userService.loginUser(req.body)
         .then(data => res.send(data))
         .catch(err => res.status(500).send(err))
     }

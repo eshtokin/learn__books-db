@@ -85,7 +85,7 @@ export default class UserService {
       return user;
   }
 
-  public async getFavoriteBookFromUser(authorization): Promise<string[]> {
+  public async getFavoriteBookFromUser(authorization: string): Promise<string[]> {
     const userInfoFromToken = jwt.decode(authorization);
 
     const query = {
@@ -137,9 +137,9 @@ export default class UserService {
     return await userRepository.findOneAndUpdate(query, data)
   }
 
-  public async findOne(user: User): Promise<User> {
+  public async findOneByEmail(email: string): Promise<User> {
     const query = {
-      email: user.email
+      email
     };
 
     return await userRepository.findOne(query)
@@ -158,14 +158,14 @@ export default class UserService {
     return await userRepository.create(newUser)
   }
 
-  public async loginUser(req): Promise<AuthResponse> {
-    const user = await this.findOne(req);
+  public async loginUser(loginData: {email: string, password: string}): Promise<AuthResponse> {
+    const user = await this.findOneByEmail(loginData.email);
     
     if (!user) {
       throw new ErrorHandler(418, 'User not found')
     }
 
-    const passwordIsValid = crypt.compareSync(req.body.password, user.password);
+    const passwordIsValid = crypt.compareSync(loginData.password, user.password);
     if (!passwordIsValid) {
       throw new ErrorHandler(100, 'Authorization failed')
     }
@@ -185,9 +185,9 @@ export default class UserService {
   }
   
   public async registrateUser(userFromQuery: User): Promise<void> {
-    const user = await this.findOne(userFromQuery)
+    const user = await this.findOneByEmail(userFromQuery.email)
     if (!user) {
-      this.createUser(user)
+      this.createUser(userFromQuery)
     }
   }
 }
