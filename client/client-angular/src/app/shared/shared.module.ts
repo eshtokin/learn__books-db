@@ -1,16 +1,17 @@
+
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BookComponent } from './book/book.component';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatPaginatorModule } from '@angular/material';
 import { AddBookModalComponent } from './book/book-add-modal/add-book-modal.component';
 import { BookDeleteFromFavModalComponent } from './book/book-delete-from-fav-modal/book-delete-from-fav-modal.component';
 import { BookDeleteModalComponent } from './book/book-delete-modal/book-delete-modal.component';
 import { BookEditeModalComponent } from './book/book-edite-modal/book-edite-modal.component';
 import { FilterComponent } from './filter/filter.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { UserService } from '../service/users.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserService } from '../services/users.service';
+import { MatPaginatorModule } from '@angular/material';
 
 @NgModule({
   declarations: [

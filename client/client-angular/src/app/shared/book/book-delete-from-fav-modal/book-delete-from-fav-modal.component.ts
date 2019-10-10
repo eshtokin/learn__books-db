@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserInfo } from 'src/app/service/user-info.service';
+import { UserInfo } from 'src/app/services/user-info.service';
 import { Book } from 'src/app/models/book.model';
 import { User } from 'src/app/models/user.model';
-import { UserService } from 'src/app/service/users.service';
+import { UserService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-book-delete-modal',

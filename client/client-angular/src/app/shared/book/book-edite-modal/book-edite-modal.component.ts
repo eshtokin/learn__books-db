@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from 'src/app/models/user.model';
 import { Book } from 'src/app/models/book.model';
-import { BookService } from 'src/app/service/books.service';
+import { BookService } from 'src/app/services/books.service';
 import { CategoryAuthor } from 'src/app/models/category-author.model';
 
 @Component({

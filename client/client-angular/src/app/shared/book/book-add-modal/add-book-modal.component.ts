@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserInfo } from 'src/app/service/user-info.service';
+import { UserInfo } from 'src/app/services/user-info.service';
 import { Book } from 'src/app/models/book.model';
 
 @Component({

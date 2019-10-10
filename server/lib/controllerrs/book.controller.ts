@@ -25,8 +25,7 @@ export class BookController {
   }
 
   public getUserBooks(req: GetUserBooksReq, res: Response): void {
-    const params = req.query.params;
-
+    const params = req.query;
     bookService.getUserBooks(params.books, params.pagination, params.title)
     .then(list => res.json(list))
     .catch(err => res.send(err))

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BookService } from 'src/app/service/books.service';
+import { BookService } from 'src/app/services/books.service';
 import { CategoryAuthor } from 'src/app/models/category-author.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';

@@ -6,7 +6,7 @@ import { AuthConfig } from "../../enviroments/config";
 export const AuthMiddleware = (roles: UserRoles[]) => {
     return (req, res, next: NextFunction) => {
         let token = req.headers["authorization"];
-
+        
         if (!token) {
             return res.status(401).send({
                 authorization: false,

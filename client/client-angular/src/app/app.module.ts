@@ -1,12 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { UserInfo } from './service/user-info.service';
-import { HeaderComponent } from './shared/header/header.component';
-import { CoreModule } from './core.module';
-
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { AppComponent } from 'src/app/app.component';
+import { UserInfo } from 'src/app/services/user-info.service';
+import { HeaderComponent } from 'src/app/shared/header/header.component';
+import { CoreModule } from 'src/app/core.module';
 
 @NgModule({
   declarations: [

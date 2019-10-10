@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Book } from 'src/app/models/book.model';
-import { UserInfo } from 'src/app/service/user-info.service';
-import { BookService } from 'src/app/service/books.service';
+import { UserInfo } from 'src/app/services/user-info.service';
+import { BookService } from 'src/app/services/books.service';
 import { MatDialog } from '@angular/material/dialog';
 import { BookEditeModalComponent } from './book-edite-modal/book-edite-modal.component';
 import { BookDeleteModalComponent } from './book-delete-modal/book-delete-modal.component';
 import { AddBookModalComponent } from './book-add-modal/add-book-modal.component';
-import { UserService } from 'src/app/service/users.service';
+import { UserService } from 'src/app/services/users.service';
 import { BookDeleteFromFavModalComponent } from './book-delete-from-fav-modal/book-delete-from-fav-modal.component';
 
 @Component({

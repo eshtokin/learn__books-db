@@ -1,11 +1,11 @@
-import { Request, Response } from "express"
+import { Response } from "express"
 import UserService from "./../services/user.service"
 import GetAllUsersRequest from "models/request/user-controller/get-all-users.model";
 import GetUserByFilterRequest from "models/request/user-controller/get-user-by-filter.model";
-import GetFavoritesBookFromUserRequest from "models/request/user-controller/get-favorites-book-from-user.model";
 import DeleteUserRequest from "models/request/user-controller/delete-user.model";
 import AddBookToProfileRequest from "models/request/user-controller/add-book-to-profile.model";
 import UpdateUserRequest from "models/request/user-controller/update-user.model";
+import GetFavoritesBookFromUserRequest from "models/request/user-controller/get-favorites-book-from-user.model";
 
 const userService =  new UserService();
 
@@ -17,18 +17,18 @@ export class UserController {
     }
     
     public getUserByFilter(req: GetUserByFilterRequest, res: Response): void {
-        userService.getUserByFilter(req.query.params)
+        userService.getUserByFilter(req.query)
         .then(result => res.status(200).send(result))
         .catch(err => res.send(err))
     }
 
     public getUserById(req: {params: {userId: string}}, res: Response): void {
-        userService.getUserById(req.params)
+        userService.getUserById(req.params.userId)
         .then(value => res.json(value))
         .catch(err => res.send(err))
     }
-
-    public getFavoriteBookFromUser(req: GetFavoritesBookFromUserRequest, res: Response): void {
+    
+    public getFavoriteBookFromUser(req: GetFavoritesBookFromUserRequest , res: Response): void {
         userService.getFavoriteBookFromUser(req.headers.authorization)
         .then( result => res.status(200).send(result))
         .catch(err => res.send(err))

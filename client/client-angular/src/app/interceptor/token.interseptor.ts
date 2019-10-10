@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { environment } from './../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 axios.defaults.baseURL = environment.mongoUrl;
 
