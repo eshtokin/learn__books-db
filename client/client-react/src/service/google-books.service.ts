@@ -2,7 +2,6 @@ import Axios from 'axios';
 import BookService, { BookServiceClass } from './books.service';
 import { Book } from '../models/book.model';
 import { PaginationEvent } from '../models/pagination-event.model';
-// import { identifier } from '@babel/types';
 
 export class GoogleBooks {
   private booksService: BookServiceClass

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class MongoRepository {
-    constructor(db, collectionName) {
-        this.collection = db.collection(collectionName);
+    constructor(db) {
+        this.collection = db;
     }
     create(data) {
         return this.collection.create(data, (err, result) => {
@@ -53,7 +53,7 @@ class MongoRepository {
             return result;
         });
     }
-    Aggreagate(query) {
+    aggreagate(query) {
         return this.collection.aggregate(query, (err, result) => {
             if (err)
                 return err;

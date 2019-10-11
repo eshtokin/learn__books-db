@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const bodyParser = require("body-parser");
-const user_routers_1 = require("./routes/user.routers");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const config_1 = require("./enviroments/config");
+const user_routers_1 = require("./common/routes/user.routers");
 class App {
     constructor() {
         this.route = new user_routers_1.Routes();
@@ -16,9 +16,7 @@ class App {
         this.mongoSetup();
     }
     config() {
-        // support application/json type post data
         this.app.use(bodyParser.json({ limit: '50mb' }));
-        //support application/x-www-form-urlencoded post data
         this.app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
     }
     mongoSetup() {

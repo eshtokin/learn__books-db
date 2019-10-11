@@ -6,59 +6,53 @@ import { ServerResponce } from '../models/server-response.model';
 import { AxiosResponse } from 'axios';
 
 export class UserServiceClass {
-    public login(user: {email: string, password: string}): Promise<AxiosResponse> {
-        return Axios.post('/login', user)
-        .then((res) => {
-            localStorage.clear();
-            localStorage.setItem('token', res.data.token);
-            return res;
-        })
+    public async login(user: {email: string, password: string}): Promise<AxiosResponse> {
+        const response = await Axios.post('/login', user);
+        localStorage.clear();
+        localStorage.setItem('token', response.data.token);
+        return response;
     }
 
-    public registrate(user: User): Promise<AxiosResponse> {
-        return Axios.post('/registration', user)
-        .then((res) => res)
+    public async registrate(user: User): Promise<AxiosResponse> {
+        const response = await Axios.post('/registration', user);
+        return response;
     }
 
-
-    public getAllUsers(pagination?: PaginationEvent): Promise<ServerResponce[]> {
-        return Axios.get('/user', {params: pagination})
-        .then((res) => {
-            return res.data;
-        })
+    public async getAllUsers(pagination?: PaginationEvent): Promise<ServerResponce[]> {
+        const response = await Axios.get('/user', {params: {pagination}});
+        return response.data;
     }
 
-    public getSomeUsers(searchString: string, pagination: PaginationEvent): Promise<ServerResponce[]> {
-        return Axios.get('/usersearch', {params: {searchString, pagination}})
-        .then(res => res.data)
+    public async getSomeUsers(searchString: string, pagination: PaginationEvent): Promise<ServerResponce[]> {
+        const response = await Axios.get('/usersearch', {params: {searchString, pagination}});
+        return response.data;
     }
 
-    public getUser(id: string): Promise<User> {
-        return Axios.get(`/user/${id}`)
-        .then((res) => res.data)
+    public async getUser(id: string): Promise<User> {
+        const response = await Axios.get(`/user/${id}`);
+        return response.data;
     }
 
-    public getUserBooks(books: string[], pagination: PaginationEvent, title?: string, ): Promise<ServerResponce[]> {
-        return Axios.get('/userbooks', {params: {books, pagination, title}})
-        .then((res) => res.data)
+    public async getUserBooks(books: string[], pagination: PaginationEvent, title?: string, ): Promise<ServerResponce[]> {
+        const response = await Axios.get('/userbooks', {params: {books, pagination, title}});
+        return response.data;
     }
 
-    public addBookToProfile(book: Book): Promise<AxiosResponse> {
-        return Axios.post(`/books/${book._id}`)
+    public async addBookToProfile(book: Book): Promise<AxiosResponse> {
+        return await Axios.post(`/books/${book._id}`);
     }
 
-    public getUserFavoriteBooks(): Promise<string[]> {
-        return Axios.get('/userfavorites')
-        .then((res) => res.data)
+    public async getUserFavoriteBooks(): Promise<string[]> {
+        const response = await Axios.get('/userfavorites');
+        return response.data;
     }
 
-    public delete(id: string): Promise<AxiosResponse> {
-        return Axios.delete(`/user/${id}`)
-        .then((res) => res)
+    public async delete(id: string): Promise<AxiosResponse> {
+        return await Axios.delete(`/user/${id}`);
     }
 
-    public edit(id: string, user: User): Promise<AxiosResponse> {
-        return Axios.put(`/user/${id}`, user)
+    public async edit(id: string, user: User): Promise<AxiosResponse> {
+        return await Axios.put(`/user/${id}`, user);
     }
 }
 

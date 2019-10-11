@@ -15,4 +15,5 @@ var UserRoles;
     UserRoles[UserRoles["admin"] = 1] = "admin";
     UserRoles[UserRoles["user"] = 2] = "user";
 })(UserRoles = exports.UserRoles || (exports.UserRoles = {}));
+exports.UserModel = mongoose.model('User', exports.UserSchema);
 //# sourceMappingURL=user.model.js.map

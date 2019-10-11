@@ -1,11 +1,11 @@
 import { Response } from "express"
 import UserService from "./../services/user.service"
-import GetAllUsersRequest from "models/request/user-controller/get-all-users.model";
-import GetUserByFilterRequest from "models/request/user-controller/get-user-by-filter.model";
-import DeleteUserRequest from "models/request/user-controller/delete-user.model";
-import AddBookToProfileRequest from "models/request/user-controller/add-book-to-profile.model";
+import GetAllUsersRequest from "./../models/request/user-controller/get-all-users.model";
+import GetUserByFilterRequest from "./../models/request/user-controller/get-user-by-filter.model";
+import DeleteUserRequest from "./../models/request/user-controller/delete-user.model";
+import AddBookToProfileRequest from "./../models/request/user-controller/add-book-to-profile.model";
 import UpdateUserRequest from "models/request/user-controller/update-user.model";
-import GetFavoritesBookFromUserRequest from "models/request/user-controller/get-favorites-book-from-user.model";
+import GetFavoritesBookFromUserRequest from "./../models/request/user-controller/get-favorites-book-from-user.model";
 
 const userService =  new UserService();
 

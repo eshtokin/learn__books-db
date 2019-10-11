@@ -12,4 +12,5 @@ exports.BookSchema = new Schema({
     printType: String,
     industryIdentifiers: String
 });
+exports.Books = mongoose.model('Books', exports.BookSchema);
 //# sourceMappingURL=book.model.js.map

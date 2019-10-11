@@ -22,10 +22,8 @@ export const toggleFlagExistInDB = (bookId: string) => {
 
 export const getBookByValue = (value: string) => {
   return async (dispatch: any) => {
-    await googleBookService.searchForBook(value)
-    .then(response => {
-      dispatch(setBooksAtPage(response));
-    })
+    const googleBookresponse = await googleBookService.searchForBook(value)
+    dispatch(setBooksAtPage(googleBookresponse));
   }
 }
 
@@ -42,12 +40,10 @@ export const addBookToDb = (book: Book) => {
       industryIdentifiers: book.industryIdentifiers
     };
     
-    bookService.addBookToDB(newBook)
-    .then(response => {
-      if (response.status === 200) {
-        alert('Book was added to DB');
-        dispatch(toggleFlagExistInDB(book._id as string));
-      }
-    })
+    const addBookResponse = await bookService.addBookToDB(newBook)
+    if (addBookResponse.status === 200) {
+      alert('Book was added to DB');
+      dispatch(toggleFlagExistInDB(book._id as string));
+    }
   }
 }

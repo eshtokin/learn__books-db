@@ -17,10 +17,10 @@ axios.interceptors.request.use(config => {
   return Promise.reject(err)
 });
 
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
+axios.interceptors.response.use(response => response,
+  error => {
   store.dispatch(setUserStatus(false));
+  console.error(error);
   return error;
 });
 

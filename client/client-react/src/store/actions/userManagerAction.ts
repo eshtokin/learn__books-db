@@ -17,63 +17,46 @@ export const setUserAtPage = (listOfUser: User[], totalCount: number) => {
 
 export const addUser = (user: User) => {
   return async () => {
-    await userService.registrate(user)
-    .then(response => {
-      if (response.status === 200) {
-        alert('User was added')
-      }
-    })
+    const response = await userService.registrate(user)
+    if (response.status === 200) {
+      alert('User was added')
+    }
   }
 }
 
 export const getAllUsers = (pagination: PaginationEvent) => {
   return async (dispatch: any) => {
-    await userService.getAllUsers(pagination)
-    .then(response => {
-      if (response) {
-        pagination.length = response[0].totalCount[0].count;
-        dispatch(setUserAtPage(response[0].listOfItem as User[], response[0].totalCount[0].count));
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      
-    })
+    const responseWithUser = await userService.getAllUsers(pagination)
+    if (responseWithUser) {
+      pagination.length = responseWithUser[0].totalCount[0].count;
+      dispatch(setUserAtPage(responseWithUser[0].listOfItem as User[], responseWithUser[0].totalCount[0].count));
+    }
   }
 }
 
 export const editeUser = (userId: string, user: User) => {
   return async () => {
     await userService.edit(userId, user)
-    .then(response => {
-      if (response.status === 200) {
-        
-      }
-    })
   }
 }
 
 export const deleteUser = (userId: string) => {
   return async () => {
-    await userService.delete(userId)
-    .then(response => {
-      if (response.status === 200) {
-        alert('successfuly deleted');
-      }
-    });
+    const response = await userService.delete(userId);
+    if (response.status === 200) {
+      alert('successfuly deleted');
+    }
   }
 }
 
 export function searchUserByEmail (userEmail: string, pagination: PaginationEvent) {
   return async (dispatch: any) => {
-    await userService.getSomeUsers(userEmail, pagination)
-    .then((response) => {
-      if (response[0].listOfItem.length) {
-        pagination.length = response[0].totalCount[0].count;
-        dispatch(setUserAtPage(response[0].listOfItem as User[], response[0].totalCount[0].count))
-      } else {
-        alert('User not found')
-      }
-    })
+  const responseWithUser = await userService.getSomeUsers(userEmail, pagination)
+    if (responseWithUser[0].listOfItem.length) {
+      pagination.length = responseWithUser[0].totalCount[0].count;
+      dispatch(setUserAtPage(responseWithUser[0].listOfItem as User[], responseWithUser[0].totalCount[0].count))
+    } else {
+      alert('User not found')
+    }
   }
 }

@@ -26,34 +26,28 @@ export const favoriteFlagToggle = (bookId: string) => {
 
 export const getAllBooks = (pagination: PaginationEvent) => {
   return async (dispatch: any) => {
-    await bookService.getAllBooks(pagination)
-    .then((el) => {
-      if (el.listOfItem.length) {
-        userService.getUserFavoriteBooks()
-        .then((favoriteBooks) => {
-          dispatch(setBookAtPage(
-            (el.listOfItem as Book[]).map(book => {
-              return {
-                ...book,
-                inFavorite: favoriteBooks.indexOf(book._id as string) === -1 ? false : true
-              }
-            })
-          ))
+    const el = await bookService.getAllBooks(pagination)
+    if (el.listOfItem.length) {
+      const favoritesBooks = await userService.getUserFavoriteBooks();
+      dispatch(setBookAtPage(
+        (el.listOfItem as Book[]).map(book => {
+          return {
+            ...book,
+            inFavorite: favoritesBooks.indexOf(book._id as string) === -1 ? false : true
+          }
         })
-        pagination.length = el.totalCount[0].count;
-      }
-    })
+      ))
+      pagination.length = el.totalCount[0].count;
+    }
   }
 }
 
 export const deleteBookFromDb = (book: Book) => {
   return async () => {
-    await bookService.deleteBook(book)
-    .then(response => {
-      if (response.status === 200) {
-        alert('book was deleted');
-      }
-    })
+    const response = await bookService.deleteBook(book)
+    if (response.status === 200) {
+      alert('book was deleted');
+    }
   }
 }
 
@@ -61,33 +55,25 @@ export const addDelBookFromFavorite = (book: Book) => {
   return async (dispatch: any) => {
     if (book.inFavorite) {
       let restOfBook: string[] = [];
-      await userService.getUserFavoriteBooks()
-      .then(list => {
-        if (!list) {
-          return list;
-        }
-        restOfBook = list.filter((id: string) => {
-          return id !== book._id
-        })
-      
-        userService.getUser((userInfoService.getCurrentUser() as User).id as string)
-        .then(user => {
-          user.books = restOfBook
-          userService.edit(user._id, user)
-          .then((response) => {
-            if (response.status === 200) {
-              dispatch(favoriteFlagToggle(book._id as string))
-            }
-          })
-        })
-      });
-    } else {
-      await userService.addBookToProfile(book)
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(favoriteFlagToggle(book._id as string)) 
-        }
+      const userFavoriteBooks = await userService.getUserFavoriteBooks()
+      if (!userFavoriteBooks) {
+        return userFavoriteBooks;
+      }
+      restOfBook = userFavoriteBooks.filter((id: string) => {
+        return id !== book._id
       })
+    
+      const user = await userService.getUser((userInfoService.getCurrentUser() as User).id as string)
+      user.books = restOfBook
+      const editeResonse = await userService.edit(user._id, user)
+      if (editeResonse.status === 200) {
+        dispatch(favoriteFlagToggle(book._id as string))
+      }
+    } else {
+      const respponseFromAddBook = await userService.addBookToProfile(book)
+      if (respponseFromAddBook.status === 200) {
+        dispatch(favoriteFlagToggle(book._id as string)) 
+      }
     }
   }
 }
