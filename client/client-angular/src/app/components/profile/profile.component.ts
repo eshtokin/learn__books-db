@@ -27,10 +27,8 @@ export class ProfileComponent implements OnInit {
     .then((user: User) => {
       this.user = user;
       if (user.books.length > 0) {
-        console.log('before user books', user.books);
         this.userService.getUserBooks(user.books as string[], {pageIndex: 0, pageSize: 6})
         .then((data) => {
-          console.log('in user books', data);
           this.books = data[0].listOfItem;
         });
       }

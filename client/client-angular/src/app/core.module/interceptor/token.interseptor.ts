@@ -16,8 +16,13 @@ axios.interceptors.request.use(config => {
   // }
   return config;
 }, err => {
+  console.error(err);
   return Promise.reject(err);
 });
 
+axios.interceptors.response.use(response => response, err => {
+  console.error(err);
+  return err;
+})
 
 export const Axios = axios;

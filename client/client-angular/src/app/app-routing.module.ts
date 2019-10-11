@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
-import { UserGuardService } from './guard/user-gurad.service';
-import { AdminGuardService } from './guard/admin-guard.service';
+import { UserGuardService } from './core.module/guard/user-gurad.service';
+import { AdminGuardService } from './core.module/guard/admin-guard.service';
 import { NgModule } from '@angular/core';
 
 const routes: Routes = [

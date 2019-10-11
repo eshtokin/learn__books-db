@@ -37,22 +37,20 @@ export class BooksManagerComponent implements OnInit {
     return pageEvent;
   }
 
-  public getBooks(): void {
-    this.bookService.getAllBooks(this.paginationParams)
-      .then((el) => {
-        this.userService.getUserFavoriteBooks()
-          .then(favoriteBooks => {
-            this.books = el.listOfItem.map(book => {
-              return {
-                ...book,
-                inFavorite: favoriteBooks.length
-                ? favoriteBooks.indexOf(book._id) === -1 ? false : true
-                : null
-              };
-            });
-            this.paginationParams.length = el.totalCount[0].count;
-          });
-      });
+  public async getBooks(): Promise<void> {
+    const responseWithBooks = await this.bookService.getAllBooks(this.paginationParams);
+    const favoriteBooks = await this.userService.getUserFavoriteBooks();
+
+    this.books = responseWithBooks.listOfItem.map(book => {
+      return {
+        ...book,
+        inFavorite: favoriteBooks.length
+        ? favoriteBooks.indexOf(book._id) === -1 ? false : true
+        : null
+      };
+    });
+    this.paginationParams.length = responseWithBooks.totalCount[0].count;
+
   }
 
   public getFilteredBooks(data): void {

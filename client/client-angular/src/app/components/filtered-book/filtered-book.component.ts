@@ -48,24 +48,20 @@ export class FilteredBookComponent implements OnInit {
     this.getSomeBooks();
   }
 
-  public getSomeBooks(): void {
-    this.bookService.getSomeBooks(this.data)
-    .then((el: any) => {
-      this.userService.getUser(this.userInfo.getCurrentUser().id)
-      .then((user: User) => {
-        this.favoritesId = user.books as string[];
+  public async getSomeBooks(): Promise<void> {
+    const el = await this.bookService.getSomeBooks(this.data);
+    this.favoritesId = await this.userService.getUserFavoriteBooks();
 
-        this.books = el[0].listOfItem.map((book: Book) => {
-          return {
-            ...book,
-            inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
-          };
-        });
-      });
-      if (el[0].totalCount[0]) {
-        this.data.pagination.length = el[0].totalCount[0].count;
-      }
+    this.books = el[0].listOfItem.map((book: Book) => {
+      return {
+        ...book,
+        inFavorite: this.favoritesId.indexOf(book._id) === -1 ? false : true
+      };
     });
+    if (el[0].totalCount[0]) {
+      this.data.pagination.length = el[0].totalCount[0].count;
+    }
+
   }
 
   public paginationHandler(pageEvent: PaginationEvent): PaginationEvent {

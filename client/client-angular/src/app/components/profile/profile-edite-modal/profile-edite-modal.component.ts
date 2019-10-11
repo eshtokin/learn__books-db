@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormControleResult } from 'src/app/models/form-controle-result.model';
 import { UserService } from 'src/app/services/users.service';
+import { validatorForFormControl, getRegExpFor } from 'src/app/services/reactive-form-helper';
 
 @Component({
   selector: 'app-profile-edite-modal',
@@ -13,10 +14,10 @@ import { UserService } from 'src/app/services/users.service';
 export class ProfileEditeModalComponent implements OnInit {
   public confPass = true;
   public profileForm = new FormGroup({
-    name: new FormControl('', [Validators.required, this.checkName]),
-    email: new FormControl('', [Validators.required, this.checkEmail]),
-    password: new FormControl('', []),
-    confirmPassword: new FormControl('', []) // this.checkPassword
+    name: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().name)]),
+    email: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().email)]),
+    password: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().password)]),
+    confirmPassword: new FormControl('', [Validators.required, validatorForFormControl(getRegExpFor().password)]) // this.checkPassword
   });
 
   constructor(
@@ -29,39 +30,6 @@ export class ProfileEditeModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-  }
-
-  public checkName(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  public checkEmail(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{3,16}@[\w]{1,16}.[a-z]{1,}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  public checkPassword(control: FormControl): FormControleResult {
-    if (control.value.search(/^[\w]{4,16}$/)) {
-      return {
-        result: true
-      };
-    }
-  }
-
-  public checkPass(): void {
-    if (this.profileForm.controls.password.value === this.profileForm.controls.confirmPassword.value) {
-
-      this.confPass =  true;
-    } else {
-      this.confPass =  false;
-    }
   }
 
   public closeModal(): void {

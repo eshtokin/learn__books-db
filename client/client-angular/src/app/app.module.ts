@@ -5,7 +5,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
 import { UserInfo } from 'src/app/services/user-info.service';
 import { HeaderComponent } from 'src/app/shared/header/header.component';
-import { CoreModule } from 'src/app/core.module';
+import { CoreModule } from 'src/app/core.module/core.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +25,7 @@ import { CoreModule } from 'src/app/core.module';
     AppComponent,
   ],
 })
+
 export class AppModule {
 
 }

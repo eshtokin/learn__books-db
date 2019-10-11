@@ -26,7 +26,7 @@ export class GoogleBooks {
     paginationParams: PaginationEvent
   };
 
-  async searchForBook(searchString: string): Promise<any> {
+  public async searchForBook(searchString: string): Promise<any> {
     const url = environment.googleBookDatebase + searchString;
     this.pageInfo.searchResult = searchString;
     const pagination = this.pageInfo.paginationParams;
@@ -35,34 +35,30 @@ export class GoogleBooks {
       maxResults: pagination.pageSize
     };
 
-    return await Axios.get(url, {params})
-      .then(res => {
-        this.pageInfo.paginationParams.length = res.data.totalItems / 4;
+    const response = await Axios.get(url, {params});
 
-        const industryIdentifiersArray: string[] = res.data.items.map((book): Book[] => {
-          return book.volumeInfo.industryIdentifiers.map(el => el.type + el.identifier).join('');
-        });
+    this.pageInfo.paginationParams.length = response.data.totalItems / 4;
 
-        return this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray)
-        .then((bookInBd: Book[]) => {
-          const arrayIdBookInBd = bookInBd.map((book) => {
-            return book.industryIdentifiers;
-          });
+    const industryIdentifiersArray: string[] = response.data.items.map((book): Book[] => {
+      return book.volumeInfo.industryIdentifiers.map(el => el.type + el.identifier).join('');
+    });
 
-          this.pageInfo.currentItems = res.data.items.map((el): Book => {
-            const industryIdentifiers = el.volumeInfo.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
-            return obj.type + obj.identifier;
-            }).join('');
+    const bookInBd = await this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray);
+    const arrayIdBookInBd = bookInBd.map((book) => {
+      return book.industryIdentifiers;
+    });
 
-            return {
-              alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
-              ...el.volumeInfo
-            };
-          });
-          return this.pageInfo.currentItems;
-        });
-      })
-      .catch(err => console.log(err));
+    this.pageInfo.currentItems = response.data.items.map((el): Book => {
+      const industryIdentifiers = el.volumeInfo.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
+      return obj.type + obj.identifier;
+      }).join('');
+
+      return {
+        alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
+        ...el.volumeInfo
+      };
+    });
+    return this.pageInfo.currentItems;
   }
 
   public getPageInfo() {

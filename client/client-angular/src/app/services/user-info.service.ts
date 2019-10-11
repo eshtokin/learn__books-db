@@ -1,5 +1,6 @@
 import decode from 'jwt-decode';
 import { User } from '../models/user.model';
+import UserRole from '../models/user-roles.enum';
 
 export class UserInfo {
     constructor() {
@@ -24,7 +25,7 @@ export class UserInfo {
         let user;
         if (localStorage.hasOwnProperty('token')) {
             user = decode(localStorage.getItem('token'));
-            if (1 === user.role) {
+            if (UserRole.admin === user.role) {
                 return true;
             }
         }

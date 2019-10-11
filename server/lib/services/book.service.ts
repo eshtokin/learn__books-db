@@ -16,11 +16,9 @@ export const bookRepository = new BookRepository(Books);
 
 export default class BookService {
   public makeObjectIdFrom(arr) {
-    const resultArrWithObjId = [];
-    arr.forEach(id => {
-      resultArrWithObjId.push(mongoose.Types.ObjectId(id))
+    return arr.map(id => {
+      return mongoose.Types.ObjectId(id)
     });
-    return resultArrWithObjId;
   }
 
   public makeQueryFromLinkForSomeBooks(req) {
@@ -199,25 +197,24 @@ export default class BookService {
       $in: book.categories
     }};
 
-    await categoryRepository.find(queryForCategory)
-    .then(categoryList => {
-      if (categoryList.length > 0) {
-        listCategoriesId = this.makeObjectIdFrom(categoryList)
-      }
+    const categoryList = await categoryRepository.find(queryForCategory)
+  
+    if (categoryList.length > 0) {
+      listCategoriesId = this.makeObjectIdFrom(categoryList)
+    }
 
-      if (categoryList.length === 0) {
-        book.categories.forEach(el => {
-          const id = mongoose.Types.ObjectId()
-          listCategories.push({
-            _id: id,
-            name: el,
-            _v: 0
-          });
-          listCategoriesId.push(id)
+    if (categoryList.length === 0) {
+      book.categories.forEach(el => {
+        const id = mongoose.Types.ObjectId()
+        listCategories.push({
+          _id: id,
+          name: el,
+          _v: 0
         });
-        categoryRepository.insertMany(listCategories);
-      }
-    })
+        listCategoriesId.push(id)
+      });
+      categoryRepository.insertMany(listCategories);
+    }
 
     let queryForAuthor: object = book.authors_list ?
     { name: {
@@ -229,42 +226,40 @@ export default class BookService {
       $in: book.authors
     }};
   
-    authorRepository.find(queryForAuthor)
-    .then(authors => {
-      if (authors.length > 0) {
-        listAuthorsId = this.makeObjectIdFrom(authors)
-        
-        if (authors.length !== book.authors.length) {
-          book.authors.forEach(author => {
-            authors.forEach(auth => {
-              if (auth.name !== author) {
-                const id = mongoose.Types.ObjectId()
-                listAuthors.push({
-                  _id: id,
-                  name: author,
-                  _v: 0
-                });
-                listAuthorsId.push(id)
-              }
-            })
+    const authors = await authorRepository.find(queryForAuthor);
+    if (authors.length > 0) {
+      listAuthorsId = this.makeObjectIdFrom(authors)
+      
+      if (authors.length !== book.authors.length) {
+        book.authors.forEach(author => {
+          authors.forEach(auth => {
+            if (auth.name !== author) {
+              const id = mongoose.Types.ObjectId()
+              listAuthors.push({
+                _id: id,
+                name: author,
+                _v: 0
+              });
+              listAuthorsId.push(id)
+            }
           })
-          authorRepository.insertMany(listAuthors);
-        }
-      }
-
-      if (authors.length === 0) {
-        book.authors.forEach(el => {
-          const id = mongoose.Types.ObjectId()
-          listAuthors.push({
-            _id: id,
-            name: el,
-            _v: 0
-          });
-          listAuthorsId.push(id)
-        });
+        })
         authorRepository.insertMany(listAuthors);
       }
-    })
+    }
+
+    if (authors.length === 0) {
+      book.authors.forEach(el => {
+        const id = mongoose.Types.ObjectId()
+        listAuthors.push({
+          _id: id,
+          name: el,
+          _v: 0
+        });
+        listAuthorsId.push(id)
+      });
+      authorRepository.insertMany(listAuthors);
+    }
 
     let industryIdentifiers = '';
     (book.industryIdentifiers as []).forEach((obj: {type: string, identifier: string}) => {
@@ -278,12 +273,10 @@ export default class BookService {
 
     let flagBookExist = false;
 
-    await bookRepository.findOne(queryForBook)
-    .then(book => {
-      if (book) {
-        flagBookExist = true
-      }
-    })
+    const bookFromRepository = await bookRepository.findOne(queryForBook)
+    if (bookFromRepository) {
+      flagBookExist = true
+    }
 
     if (flagBookExist === false) {
       const bookId = mongoose.Types.ObjectId();

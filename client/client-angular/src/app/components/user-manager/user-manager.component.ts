@@ -42,23 +42,19 @@ export class UserManagerComponent implements OnInit {
     this.init();
   }
 
-  public init(): void {
-    this.userService.getAllUsers(this.paginationParams)
-    .then(data => {
-      this.users = data[0].listOfItem;
-      this.paginationParams.length = data[0].totalCount[0].count;
-    });
+  public async init(): Promise<void> {
+    const responseWithUsers = await this.userService.getAllUsers(this.paginationParams);
+    this.users = responseWithUsers[0].listOfItem;
+    this.paginationParams.length = responseWithUsers[0].totalCount[0].count;
   }
 
-  public deleteUser(id: string): void {
-    this.userService.delete(id)
-    .then(() => {
-      this.init();
-    });
+  public async deleteUser(id: string): Promise<void> {
+    await this.userService.delete(id);
+    this.init();
   }
 
   public openDialog(user: User): void {
-    const dialogRef = this.dialog.open(UserFormAddEditeModalComponent, {
+    this.dialog.open(UserFormAddEditeModalComponent, {
       data: {
         user,
         reloadPage:  this.init.bind(this)
@@ -67,7 +63,7 @@ export class UserManagerComponent implements OnInit {
   }
 
   public confirmDialog(userId: string, userEmail: string): void {
-    const confirmDialog = this.dialog.open(UserDeleteModalComponent, {
+    this.dialog.open(UserDeleteModalComponent, {
       data: {
         userId,
         userEmail,
@@ -76,16 +72,14 @@ export class UserManagerComponent implements OnInit {
     });
   }
 
-  public userSearch(pagination: PaginationEvent = {pageSize: this.paginationParams.pageSize, pageIndex: 0 }): void {
-    this.userService.getSomeUsers(this.searchString, pagination)
-    .then(data => {
-      if (data[0].listOfItem.length) {
-        this.users = data[0].listOfItem;
-        this.paginationParams.length = data[0].totalCount[0].count;
-      } else {
-        alert('User not found');
-      }
-    });
+  public async userSearch(pagination: PaginationEvent = {pageSize: this.paginationParams.pageSize, pageIndex: 0 }): Promise<void> {
+    const responseWithUsers = await this.userService.getSomeUsers(this.searchString, pagination);
+    if (responseWithUsers[0].listOfItem.length) {
+      this.users = responseWithUsers[0].listOfItem;
+      this.paginationParams.length = responseWithUsers[0].totalCount[0].count;
+    } else {
+      alert('User not found');
+    }
   }
 
  public paginationHandler(pageEvent: PaginationEvent): PaginationEvent {

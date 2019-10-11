@@ -1,21 +1,14 @@
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { UserInfo } from '../services/user-info.service';
+import { UserInfo } from '../../services/user-info.service';
 
 
 @Injectable()
-export class UserGuardService implements CanActivate {
+export class AdminGuardService implements CanActivate {
     constructor(private userInfo: UserInfo) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      const currentUser = this.userInfo.getCurrentUser();
-      if (currentUser) {
-        if (currentUser.role === 1 || currentUser.role === 2) {
-          return true;
-        }
-      }
-
-      return false;
+        return this.userInfo.getStatus();
     }
 }

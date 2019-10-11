@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { validatorForFormControl, getRegExpFor } from 'src/app/services/reactive-form-helper';
+import UserRole from 'src/app/models/user-roles.enum';
 
 @Component({
   selector: 'app-auth-form-reg',
@@ -32,7 +33,7 @@ export class AuthFormRegComponent {
       email: '',
       password: '',
       name: '',
-      role: 2,
+      role: UserRole.user,
       books: [],
       image: '',
       _id: ''

@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken"
 import * as mongoose from "mongoose"
 import * as crypt from "bcryptjs"
 import { AuthConfig } from "./../enviroments/config";
-import { UserModel } from "./../entities/user.model";
+import { UserModel, UserRoles } from "./../entities/user.model";
 import AgreagationQuery from "./../models/agreagation-query.model";
 import { AgreagationUserResponse } from "./../models/agreagation-response.model";
 import User from "./../models/user.mdoel";
@@ -151,7 +151,7 @@ export default class UserService {
       password: crypt.hashSync(user.password),
       name: user.name,
       books: [],
-      role: user.role || 2,
+      role: user.role || UserRoles.user,
       image: 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama.png'
     }
 

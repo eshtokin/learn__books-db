@@ -1,4 +1,4 @@
-import { Axios } from '../interceptor/token.interseptor';
+import { Axios } from '../core.module/interceptor/token.interseptor';
 import { Book } from '../models/book.model';
 import { BookFilter } from '../models/book-filter.model';
 import { PaginationEvent } from '../models/pagination-event.model';
@@ -8,73 +8,46 @@ import { CategoryAuthor } from '../models/category-author.model';
 export class BookService {
   constructor() {}
 
-  public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponceWithBook> {
-    return Axios.get('/books', {params: {pagination}})
-    .then(res => res.data)
-    .catch(err => console.log(err));
+  public async getAllBooks(pagination?: PaginationEvent): Promise<ServerResponceWithBook> {
+    const response = await Axios.get('/books', {params: {pagination}});
+    return response.data;
   }
 
-  public getSomeBooks(data: BookFilter): Promise<ServerResponceWithBook> {
-    return Axios.get('/somebooks', {params: data})
-    .then(res => {
-      console.log('res.data', res);
-      return res.data;
-    })
-    .catch(err => console.log(err));
+  public async getSomeBooks(data: BookFilter): Promise<ServerResponceWithBook> {
+    const response = await Axios.get('/somebooks', {params: data});
+    return response.data;
   }
 
-  public getBookByIndustryIdentifiers(industryIdentifiers: string[]): Promise<Book[]>  {
-    return Axios.get('/getbookbyindustryIdentifiers', {params: {industryIdentifiers}})
-    .then(res => res.data)
-    .catch(err => console.log(err));
+  public async getBookByIndustryIdentifiers(industryIdentifiers: string[]): Promise<Book[]>  {
+    const response = await Axios.get('/getbookbyindustryIdentifiers', {params: {industryIdentifiers}});
+    return response.data;
   }
 
-  public addBookToDB(book: Book): Promise<any> {
-    return Axios.post('/books', {book})
-    .then(res => {
-      return res;
-    })
-    .catch(err => console.log(err));
+  public async addBookToDB(book: Book): Promise<any> {
+    const response = await Axios.post('/books', {book});
+    return response.data;
   }
 
-  public updateBook(book: Book): Promise<any> {
-    return Axios.put('/books', {book})
-    .then(res => {
-      return res;
-    })
-    .catch(err => console.log(err));
+  public async updateBook(book: Book): Promise<any> {
+    const response = await Axios.put('/books', {book});
+    return response.data;
   }
 
-  public changeImageInBook(data: {id: string, image: string | ArrayBuffer}): Promise<any> {
-    return Axios.post('/book', data)
-    .then(res => {
-      return res;
-    })
-    .catch(err => console.log(err));
+  public async changeImageInBook(data: {id: string, image: string | ArrayBuffer}): Promise<any> {
+    return await Axios.post('/book', data);
   }
 
-  public deleteBook(book: Book): Promise<any> {
-    return Axios.delete('/books', {params: {book}})
-    .then(res => {
-      return res;
-    })
-    .catch(err => console.log(err));
+  public async deleteBook(book: Book): Promise<any> {
+    return await Axios.delete('/books', {params: {book}});
   }
 
-  public getAllAuthors(): Promise<CategoryAuthor[]> {
-    return Axios.get('/author')
-    .then(res => {
-      return res.data;
-    })
-    .catch(err => console.log(err)
-    );
+  public async getAllAuthors(): Promise<CategoryAuthor[]> {
+    const response = await Axios.get('/author');
+    return response.data;
   }
 
-  public getAllCategories(): Promise<CategoryAuthor[]> {
-    return Axios.get('/category')
-    .then(res => {
-      return res.data;
-    })
-    .catch(err => console.log(err));
+  public async getAllCategories(): Promise<CategoryAuthor[]> {
+    const response =  await Axios.get('/category');
+    return response.data;
   }
 }

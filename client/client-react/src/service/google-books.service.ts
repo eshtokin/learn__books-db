@@ -38,12 +38,14 @@ export class GoogleBooks {
 
     return await Axios.get(url, {params})
       .then(res => {
-        console.log(res.data.items);
-        
         this.pageInfo.paginationParams.length = Math.round(res.data.totalItems / 4);
 
-        const industryIdentifiersArray: string[] = res.data.items.map((book: any): string[] => { // response from GooleBook
-          return book.volumeInfo.industryIdentifiers.map((el: {type: string, identifier: string}) => el.type + el.identifier).join('');
+        const industryIdentifiersArray: string[] = res.data.items.map((book: any) => { // response from GooleBook
+          if (book.volumeInfo.industryIdentifiers) {
+            return book.volumeInfo.industryIdentifiers.map((el: {type: string, identifier: string}) => el.type + el.identifier).join('')
+          } else {
+            return 'dontHvaeIndustryIdentifiers'
+          }
         });
 
         return this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray)
@@ -53,9 +55,12 @@ export class GoogleBooks {
           });
 
           this.pageInfo.currentItems = res.data.items.map((el: any): Book => { // el - response from GooleBook
-            const industryIdentifiers = el.volumeInfo.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
-            return obj.type + obj.identifier;
-            }).join('');
+            let industryIdentifiers;
+            if (el.volumeInfo.industryIdentifiers) {
+              industryIdentifiers = el.volumeInfo.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
+              return obj.type + obj.identifier;
+              }).join('');
+            }
 
             return {
               alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
