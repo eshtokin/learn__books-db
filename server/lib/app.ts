@@ -1,9 +1,9 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import { Routes } from "./common/routes/user.routers"
 import * as mongoose from "mongoose"
 import * as cors from "cors"
 import { dbInfo } from './enviroments/config'
+import { Routes } from "./common/routes/user.routers";
 import { handleError } from "./common/helpers/errorHandler";
 
 class App {
@@ -16,10 +16,7 @@ class App {
         this.config();
         this.route.routes(this.app);
         this.mongoSetup();
-        
-        this.app.use((err, req, res, next) => {
-            handleError(err, res);
-        });
+       
     }
 
     private config(): void{

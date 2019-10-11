@@ -4,7 +4,6 @@ const env = process.env.NODE_ENV
 
 
 // enableProdMode();
-
 app.listen(PORT, () => {
     console.log(`Express server listening on port: ${PORT}`);
 });

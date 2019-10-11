@@ -6,7 +6,7 @@ import AddBookRequest from '../models/request/book-controller/add-book.model';
 import UpdateBookReq from './../models/request/book-controller/update-book.model';
 import DeleteBookReq from './../models/request/book-controller/delete-book.model';
 import IndustryIdentifiersRequest from '../models/request/book-controller/industry-identifiers.model';
-import GetBooksByFitlerRequest from '../models/request/book-controller/get-books-by-filter.model';
+import GetBooksByFitlerRequest from './../models/request/book-controller/get-books-by-filter.model';
 
 
 const bookService = new BookService();
@@ -15,13 +15,9 @@ export class BookController {
   public getAllBook(req: GetAllBookRequest, res: Response): void {
     bookService.getAllBook(req.query.pagination)
     .then(list => res.json(list[0]))
-    .catch(err => res.send(err))
   }
 
   public getBooksByFitler(req: GetBooksByFitlerRequest, res: Response): void {
-    // console.log(req.query)
-  //   categories: [ '5d9da9427e695c137477ed7a' ],
-  // pagination: '{"pageIndex":0,"pageSize":5,"length":0,"previousPageIndex":0}' }
     bookService.getBooksByFitler(req.query)
     .then(list => res.json(list))
     .catch(err => res.send(err))
