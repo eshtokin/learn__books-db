@@ -2,7 +2,7 @@ import UserRepository from "./../repositories/user.repository";
 import * as jwt from "jsonwebtoken"
 import * as mongoose from "mongoose"
 import * as crypt from "bcryptjs"
-import { AuthConfig } from "./../enviroments/config";
+import { keys } from "../keys/config";
 import { UserModel, UserRoles } from "./../entities/user.model";
 import AgreagationQuery from "./../models/agreagation-query.model";
 import { AgreagationUserResponse } from "./../models/agreagation-response.model";
@@ -176,7 +176,7 @@ export default class UserService {
       email: user.email,
       name: user.name,
       role: user.role
-    }, AuthConfig.privateKey); // publicKey
+    }, keys.privateKey);
 
     return {
       authorization: true,

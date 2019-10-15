@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken"
 import { UserRoles } from "../../entities/user.model";
 import { NextFunction } from "connect";
-import { AuthConfig } from "../../enviroments/config";
+import { keys } from "../../keys/config";
 
 export const AuthMiddleware = (roles: UserRoles[]) => {
     return (req, res, next: NextFunction) => {
@@ -14,7 +14,7 @@ export const AuthMiddleware = (roles: UserRoles[]) => {
             })
         }
 
-        jwt.verify(token, AuthConfig.privateKey, (err, decoded) => {
+        jwt.verify(token, keys.privateKey, (err, decoded) => {
             if (err) {
                 return res.json({
                     authorization: false,
