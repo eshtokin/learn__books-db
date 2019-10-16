@@ -2,16 +2,14 @@ import * as jwt from "jsonwebtoken"
 import { UserRoles } from "../../entities/user.model";
 import { NextFunction } from "connect";
 import { keys } from "../../keys/config";
+import NotAuthorizedException from "./../../common/exceptions/not-authorized.exception";
 
 export const AuthMiddleware = (roles: UserRoles[]) => {
     return (req, res, next: NextFunction) => {
         let token = req.headers["authorization"];
         
         if (!token) {
-            return res.status(401).send({
-                authorization: false,
-                message: "no token provided"
-            })
+           throw new NotAuthorizedException();
         }
 
         jwt.verify(token, keys.privateKey, (err, decoded) => {

@@ -67,12 +67,14 @@ export default class Profile extends React.Component<Props, State> {
             books: data[0].listOfItem as Book[]
           })
         });
-        this.setState({user});
-      } else {
+        // this.setState({user});
+      } 
+      if (!user) {
         this.props.history.push({
           pathname: '/'
         })
       }
+      this.setState({user});
     })
   }
 

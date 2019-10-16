@@ -9,7 +9,7 @@ import { AgreagationUserResponse } from "./../models/agreagation-response.model"
 import User from "./../models/user.mdoel";
 import AuthResponse from "./../models/auth-response.model";
 import { ErrorHandler } from "./../common/helpers/errorHandler";
-import PostNotFoundException from "./../common/exceptions/post-not-found.exception";
+import NotAuthorizedException from "./../common/exceptions/not-authorized.exception";
 
 export const userRepository = new UserRepository(UserModel);
 
@@ -162,12 +162,12 @@ export default class UserService {
     const user = await this.findOneByEmail(loginData.email);
     
     if (!user) {
-      throw new ErrorHandler(418, 'User not found')
+      throw new NotAuthorizedException()
     }
 
     const passwordIsValid = crypt.compareSync(loginData.password, user.password);
     if (!passwordIsValid) {
-      throw new ErrorHandler(100, 'Authorization failed')
+      throw new ErrorHandler(401, 'Authorization failed')
     }
     
     const token = jwt.sign({

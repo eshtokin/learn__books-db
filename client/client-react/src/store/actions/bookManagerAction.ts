@@ -27,17 +27,19 @@ export const favoriteFlagToggle = (bookId: string) => {
 export const getAllBooks = (pagination: PaginationEvent) => {
   return async (dispatch: any) => {
     const el = await bookService.getAllBooks(pagination)
-    if (el.listOfItem.length) {
-      const favoritesBooks = await userService.getUserFavoriteBooks();
-      dispatch(setBookAtPage(
-        (el.listOfItem as Book[]).map(book => {
-          return {
-            ...book,
-            inFavorite: favoritesBooks.indexOf(book._id as string) === -1 ? false : true
-          }
-        })
-      ))
-      pagination.length = el.totalCount[0].count;
+    if (el) {
+      if (el.listOfItem.length) {
+        const favoritesBooks = await userService.getUserFavoriteBooks();
+        dispatch(setBookAtPage(
+          (el.listOfItem as Book[]).map(book => {
+            return {
+              ...book,
+              inFavorite: favoritesBooks.indexOf(book._id as string) === -1 ? false : true
+            }
+          })
+        ))
+        pagination.length = el.totalCount[0].count;
+      }
     }
   }
 }

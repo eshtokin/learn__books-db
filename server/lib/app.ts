@@ -16,7 +16,6 @@ class App {
         this.config();
         this.mongoSetup();
         new Routes().routes(this.app);
-        this.app.use(handleError);
     }
 
     private config(): void{
@@ -30,9 +29,5 @@ class App {
     }
 }
 
-// const Application = new App().app;
-// new Routes().routes(Application)
 
-// export default Application;
-
-export default new App().app;
+export default App;

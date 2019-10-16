@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "nodemon ./lib/server.ts",
-    "start": "cross-env NODE_ENV=development nodemon ./lib/server.ts",
-    "prod": "cross-env NODE_ENV=production npm run build && cross-env NODE_ENV=production npm run start"
+    "dev": "nodemon cross-env PORT=3000 ./lib/server.ts",
+    "command": "cross-env PORT=3000 NODE_ENV=development BASE=CRMdb nodemon ./lib/server.ts",
+    "start": "cross-env PORT=3000 NODE_ENV=development nodemon ./lib/server.ts",
+    "prod": "cross-env PORT=3000 NODE_ENV=production npm run build && cross-env NODE_ENV=production npm run start"
   },
   "repository": {
     "type": "git",
