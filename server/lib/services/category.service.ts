@@ -1,6 +1,7 @@
 import { Category } from './../entities/category.model'
 import CategoryRepository from './../repositories/category.repository';
 import AuthorAndCategory from './../models/author-and-category.model';
+import HttpException from './../common/exceptions/http.exception';
 
 
 export const categoryRepository = new CategoryRepository(Category);

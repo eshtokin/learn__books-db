@@ -9,6 +9,7 @@ import { AgreagationUserResponse } from "./../models/agreagation-response.model"
 import User from "./../models/user.mdoel";
 import AuthResponse from "./../models/auth-response.model";
 import { ErrorHandler } from "./../common/helpers/errorHandler";
+import PostNotFoundException from "./../common/exceptions/post-not-found.exception";
 
 export const userRepository = new UserRepository(UserModel);
 
@@ -55,7 +56,6 @@ export default class UserService {
       this.makeAgreagationQueryForUser(),
       this.makePaginationQueryForUser(pagination),
     ];
-
     return await userRepository.aggreagate(agreagationQuery)
   }
 

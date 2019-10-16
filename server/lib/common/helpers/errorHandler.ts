@@ -1,33 +1,21 @@
-export class ErrorHandler extends Error {
-  public statusCode;
+import { NextFunction } from "connect";
 
-  constructor(statusCode, message) {
+export class ErrorHandler extends Error {
+  public status;
+
+  constructor(status: number, message: string) {
     super();
-    this.statusCode = statusCode;
+    this.status = status;
     this.message = message;
   }
 }
 
-export const handleError = (error, response, req) => {
+export function handleError(error: ErrorHandler, request, response, next: NextFunction) {
   console.log('HANDLE ERROR')
-  if (error.statusCode === 500) {
-    // if (process.env.NODE_ENV == Environments.Production.toString()) {
-        var obj = {
-            message: error.message,
-            name: error.name,
-            stack: error.stack
-        };
-        // logger.log(obj);
-        return response.status(error.statusCode).send('Internal Server Error!');
-    // }
-    // else {
-    }
-    return response.status(error.statusCode).send('error.message');
-  }
-
-  // const { statusCode, message } = error;
-  // response.status(statusCode).json({
-  //   status: "error",
-  //   statusCode,
-  //   message,
-  // });
+  const status = error.status || 500;
+  const message = error.message || 'Something went wrong';
+  response.status(status).send({
+    status,
+    message,
+  })
+}

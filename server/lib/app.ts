@@ -4,17 +4,19 @@ import * as mongoose from "mongoose"
 import * as cors from "cors"
 import { Routes } from "./common/routes/user.routers";
 import { environment } from "./enviroments/environment";
+import { ErrorHandler, handleError } from "./common/helpers/errorHandler";
 
 class App {
     public app: express.Application;
-    public route: Routes = new Routes();
     public mongoUrl = environment().mongoDbConnectionString
+
     constructor() {
         this.app = express();
         this.app.use(cors());
         this.config();
-        this.route.routes(this.app);
         this.mongoSetup();
+        new Routes().routes(this.app);
+        this.app.use(handleError);
     }
 
     private config(): void{
@@ -27,5 +29,10 @@ class App {
         mongoose.connect(this.mongoUrl, { useNewUrlParser: true });
     }
 }
+
+// const Application = new App().app;
+// new Routes().routes(Application)
+
+// export default Application;
 
 export default new App().app;
