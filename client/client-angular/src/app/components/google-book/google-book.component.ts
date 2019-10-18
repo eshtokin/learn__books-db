@@ -18,7 +18,7 @@ export class GoogleBookComponent implements OnInit {
   public searchStringUpdate: Subject<string>;
   public listOfBook: Book[];
   public paginationParams: PaginationEvent;
-
+  public regExpr = /^[a-zA-Z0-9\s]+$/gm;
   constructor(
     private googleBooks: GoogleBooks,
     public userInfo: UserInfo
@@ -31,7 +31,7 @@ export class GoogleBookComponent implements OnInit {
       this.searchStringUpdate.pipe(
         debounceTime(500)
       ).subscribe(value => {
-        if (this.searchString.length > 0) {
+        if (this.searchString.length > 0 && this.regExpr.test(value)) {
           this.searchForBook(value);
         }
       });

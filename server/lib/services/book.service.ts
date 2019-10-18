@@ -95,6 +95,7 @@ export default class BookService {
   }
 
   public async getAllBook(pagination: string): Promise<AgreagationBookResponse> {
+    // throw new ErrorHandler(500, 'some shit')
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryFor(listOfTable.categories),
       this.makeAgreagationQueryFor(listOfTable.authors),

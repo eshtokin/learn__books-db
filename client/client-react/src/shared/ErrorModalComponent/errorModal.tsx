@@ -34,7 +34,7 @@ function ErrorModalComponent(props: any) {
 
 const mapStateToProps = (state: Store) => {
   return {
-    store: {...state.errorState}
+    store: {...state.error}
   }
 };
 

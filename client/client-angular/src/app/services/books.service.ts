@@ -4,13 +4,16 @@ import { BookFilter } from '../models/book-filter.model';
 import { PaginationEvent } from '../models/pagination-event.model';
 import { ServerResponceWithBook } from '../models/server-response.model';
 import { CategoryAuthor } from '../models/category-author.model';
+import { AxiosResponse } from 'axios';
 
 export class BookService {
   constructor() {}
 
-  public async getAllBooks(pagination?: PaginationEvent): Promise<ServerResponceWithBook> {
-    const response = await Axios.get('/books', {params: {pagination}});
-    return response.data;
+  public async getAllBooks(pagination?: PaginationEvent): Promise<any> {
+
+    const axios = await Axios.get('/books', {params: {pagination}});
+    // return axios.response.data;
+    return axios.data;
   }
 
   public async getSomeBooks(data: BookFilter): Promise<ServerResponceWithBook> {

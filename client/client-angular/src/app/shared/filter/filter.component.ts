@@ -28,7 +28,10 @@ export class FilterComponent implements OnInit {
     this.searchStringUpdate
       .pipe(debounceTime(500))
       .subscribe(value => {
-        this.filtering();
+        const regExpr = /^[a-zA-Z0-9\s]+$/gm;
+        if (regExpr.test(value)) {
+          this.filtering();
+        }
       });
   }
 

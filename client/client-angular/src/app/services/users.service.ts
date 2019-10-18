@@ -18,8 +18,6 @@ export class UserService {
 
     public async getAllUsers(pagination?: PaginationEvent): Promise<any> {
         const response = await Axios.get('/user', {params: {pagination}});
-        console.log(pagination);
-        
         return response.data;
     }
 

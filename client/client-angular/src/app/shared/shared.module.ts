@@ -12,6 +12,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../services/users.service';
 import { MatPaginatorModule } from '@angular/material';
+import { ModalComponent } from './modal/modal.component';
+import { ErrorModalComponent } from './error-modal/error-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { MatPaginatorModule } from '@angular/material';
     BookDeleteModalComponent,
     BookEditeModalComponent,
     FilterComponent,
+    ModalComponent,
+    ErrorModalComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +49,8 @@ import { MatPaginatorModule } from '@angular/material';
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule,
+    ModalComponent,
+    ErrorModalComponent,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

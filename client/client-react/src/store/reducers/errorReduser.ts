@@ -1,4 +1,4 @@
-import * as micromodalConstant from './../constants/micromodalConstant';
+import * as micromodalConstant from '../constants/micromodalConstant';
 import MicroModal from 'micromodal';
 
 export interface ErrorState {
@@ -15,7 +15,7 @@ export enum isVisible {
   visible = 1
 }
 
-export function errorState(state: ErrorState = {error: {status: 0, message: ""}}, action: Action): ErrorState {
+export function error(state: ErrorState = {error: {status: 0, message: ""}}, action: Action): ErrorState {
   switch(action.type) {
     case micromodalConstant.SAVE_ERROR:
       MicroModal.show('modal-1');

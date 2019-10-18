@@ -5,7 +5,7 @@ import { filter, FilterState } from './../reducers/filterReducer';
 import { filteredBook, FilteredBooksState } from './../reducers/filteredBooksReducer';
 import { authentificatedInfo, AuthentificationState } from './../reducers/authentificationInfoReducer';
 import { googleBook, GoogleBookState } from './../reducers/googleBookReducer';
-import { errorState , ErrorState } from './../reducers/micromodalReducer';
+import { error , ErrorState } from '../reducers/errorReduser';
 import thunk from 'redux-thunk';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,7 +17,7 @@ export interface Store {
   filter: FilterState;
   authentificatedInfo: AuthentificationState;
   googleBook: GoogleBookState;
-  errorState: ErrorState;
+  error: ErrorState;
 };
 
 const initialState = combineReducers<Store>({
@@ -27,7 +27,7 @@ const initialState = combineReducers<Store>({
   filter,
   authentificatedInfo,
   googleBook,
-  errorState,
+  error,
 })
 
 export const store = createStore(initialState, composeEnhancers(
