@@ -2,9 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Book } from '../../models/book.model';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
-import BookService, { BookServiceClass } from '../../service/books.service';
-import UserInfoService, { UserInfo } from '../../service/user-info.service';
-import UserService, { UserServiceClass } from '../../service/users.service';
 import Filter from '../../shared/FilterComponent/FilterComponent';
 import * as actions from '../../store/actions/bookManagerAction';
 import { PaginationEvent } from '../../models/pagination-event.model';
@@ -26,10 +23,6 @@ interface State {
 }
 
 class BookManager extends React.Component<Props, State>{
-  public userService: UserServiceClass;
-  public bookService: BookServiceClass;
-  public userInfoService: UserInfo;
-  
   constructor(props: Props) {
     super(props);
 
@@ -40,10 +33,6 @@ class BookManager extends React.Component<Props, State>{
         length: 0
       }
     }
-
-    this.userService = UserService;
-    this.bookService = BookService;
-    this.userInfoService = UserInfoService;
 
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
@@ -92,7 +81,8 @@ class BookManager extends React.Component<Props, State>{
               addBookToDB={() => {}}
             />)
           })
-          : <h1>Loading ...</h1>}
+          : <h2>Loading ...</h2>
+          }
           <PaginationComponent
             pagination={this.state.pagination}
             onPageSizeChange={(pageSize: number) => {

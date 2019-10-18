@@ -5,8 +5,7 @@ import { authorRepository } from './../services/author.service';
 import { categoryRepository } from './../services/category.service';
 import { AgreagationBookResponse } from 'models/agreagation-response.model';
 import Book from 'models/book.model';
-import { ErrorHandler } from './../common/helpers/errorHandler';
-import PostNotFoundException from './../common/exceptions/post-not-found.exception';
+import BadRequest from './../common/exceptions/bad-request.exception';
 
 const listOfTable = {
   categories: 'categories',
@@ -96,7 +95,7 @@ export default class BookService {
   }
 
   public async getAllBook(pagination: string): Promise<AgreagationBookResponse> {
-    throw new ErrorHandler(500, 'server error')
+    throw new BadRequest(`Error on the server. We cannot send all book.`)
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryFor(listOfTable.categories),
       this.makeAgreagationQueryFor(listOfTable.authors),

@@ -6,13 +6,11 @@ import DeleteUserRequest from "./../models/request/user-controller/delete-user.m
 import AddBookToProfileRequest from "./../models/request/user-controller/add-book-to-profile.model";
 import UpdateUserRequest from "models/request/user-controller/update-user.model";
 import GetFavoritesBookFromUserRequest from "./../models/request/user-controller/get-favorites-book-from-user.model";
-import { ErrorHandler } from "./../common/helpers/errorHandler";
 
 const userService =  new UserService();
 
 export class UserController {
     public getAllUsers(req: GetAllUsersRequest, res: Response, next: NextFunction): void {
-        // throw new ErrorHandler(418, 'error in controller')
         userService.getAllUsers(req.query.pagination)
         .then(result => res.status(200).send(result))
         .catch(next)

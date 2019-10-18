@@ -30,7 +30,6 @@ class GoogleBook extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    // this.googleBooks = new GoogleBooks(new BookService());
     this.googleBooks = GoogleBookService;
 
     this.state = {

@@ -2,22 +2,20 @@ import * as jwt from "jsonwebtoken"
 import { UserRoles } from "../../entities/user.model";
 import { NextFunction } from "connect";
 import { keys } from "../../keys/config";
-import NotAuthorizedException from "./../../common/exceptions/not-authorized.exception";
+import BadRequest from "./../../common/exceptions/bad-request.exception";
+import UnauthorizedException from "./../../common/exceptions/unauthorized.exception";
 
 export const AuthMiddleware = (roles: UserRoles[]) => {
     return (req, res, next: NextFunction) => {
         let token = req.headers["authorization"];
         
         if (!token) {
-           throw new NotAuthorizedException();
+            throw new BadRequest('Please enter with your account. No token provided')
         }
 
         jwt.verify(token, keys.privateKey, (err, decoded) => {
             if (err) {
-                return res.json({
-                    authorization: false,
-                    message: "no token provided"
-                })
+                throw new BadRequest('Please enter with your account. Incorrect token')
             }
 
             req.user = decoded;
@@ -25,10 +23,7 @@ export const AuthMiddleware = (roles: UserRoles[]) => {
             let isRoleExist = roles.find(item => item == req.user.role);
 
             if (!isRoleExist) {
-                return res.status(401).send({
-                    authorization: false,
-                    message: "Access denied"
-                })
+                throw new UnauthorizedException("Forbidden. Please enter with your account.")
             }
 
             next();

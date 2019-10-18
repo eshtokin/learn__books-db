@@ -1,6 +1,13 @@
 import React, { ChangeEvent } from 'react';
 import UserService, { UserServiceClass } from '../../../service/users.service';
 import { User } from '../../../models/user.model';
+import { connect } from 'react-redux';
+import * as actions from './../../../store/actions/authentificatedInfoAction';
+import { Store } from '../../../store/store';
+
+interface Props {
+  registrate: (user: User) => void
+}
 
 interface State {
   user: User;
@@ -8,10 +15,10 @@ interface State {
   valid: boolean;
 }
 
-export class AuthFormRegistr extends React.Component<any, State> {
+class AuthFormRegistr extends React.Component<Props, State> {
   public userService: UserServiceClass;
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       user: {
@@ -77,7 +84,7 @@ export class AuthFormRegistr extends React.Component<any, State> {
   }
 
   public registrate(): void {
-    this.userService.registrate(this.state.user)
+    this.props.registrate(this.state.user)
   }
 
   render() {
@@ -120,3 +127,19 @@ export class AuthFormRegistr extends React.Component<any, State> {
     )
   } 
 }
+
+const mapStateToProps = (state: Store) => {
+  return {
+    store: {...state.authentificatedInfo}
+  }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    registrate: (user: User) => {
+      dispatch(actions.registrate(user))
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthFormRegistr)

@@ -5,6 +5,8 @@ import Header from './shared/HeaderComponent/headerComponent'
 import { Switch, Route } from 'react-router-dom';
 import ProtectedUserRoute from './guard/protectedUserRoute';
 import ProtectedAdminRotue from './guard/protectedAdminRoute';
+import ServerErrorPage from './component/ServerErrorPage/serverErrorPage';
+import ErrorModalComponent from './shared/ErrorModalComponent/errorModal';
 
 const GoogleBook = React.lazy(() => import('./component/Google-Book/googleBook'));
 const BookManager = React.lazy(() => import('./component/BookManager/BookManager'));
@@ -28,8 +30,10 @@ const App: React.FC = () => {
         <ProtectedUserRoute exact path='/profile' component={Profile} />
         <ProtectedUserRoute path='/profile/favorites' component={Favorites} />
         <Route path='/auth' component={AuthForm} />
+        <Route path="/errorPage" component={ServerErrorPage} />
         <Route path="*" component={() => <h3>404 Page not found</h3>}/>
       </Switch>
+      <ErrorModalComponent/>
       </Suspense>
     </div>
   );

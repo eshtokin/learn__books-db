@@ -8,8 +8,7 @@ import AgreagationQuery from "./../models/agreagation-query.model";
 import { AgreagationUserResponse } from "./../models/agreagation-response.model";
 import User from "./../models/user.mdoel";
 import AuthResponse from "./../models/auth-response.model";
-import { ErrorHandler } from "./../common/helpers/errorHandler";
-import NotAuthorizedException from "./../common/exceptions/not-authorized.exception";
+import BadRequest from "./../common/exceptions/bad-request.exception";
 
 export const userRepository = new UserRepository(UserModel);
 
@@ -160,14 +159,10 @@ export default class UserService {
 
   public async loginUser(loginData: {email: string, password: string}): Promise<AuthResponse> {
     const user = await this.findOneByEmail(loginData.email);
-    
-    if (!user) {
-      throw new NotAuthorizedException()
-    }
 
     const passwordIsValid = crypt.compareSync(loginData.password, user.password);
     if (!passwordIsValid) {
-      throw new ErrorHandler(401, 'Authorization failed')
+      throw new BadRequest('Incorrect password or email.')
     }
     
     const token = jwt.sign({
@@ -186,8 +181,9 @@ export default class UserService {
   
   public async registrateUser(userFromQuery: User): Promise<void> {
     const user = await this.findOneByEmail(userFromQuery.email)
-    if (!user) {
-      this.createUser(userFromQuery)
+    if (user) {
+      throw new BadRequest('Sorry, user already exist. Please login or take another e-mail.')
     }
+    this.createUser(userFromQuery)
   }
 }

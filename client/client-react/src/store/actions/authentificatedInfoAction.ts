@@ -3,6 +3,7 @@ import UserService from '../../service/users.service';
 import UserInfoService from '../../service/user-info.service';
 import { User } from '../../models/user.model';
 import { Props } from '../../component/AuthForm/AuthFormLogin/authFormLogin';
+import { saveError } from './micromodalAction';
 
 enum Role {
   Admin = 1,
@@ -38,8 +39,30 @@ export const login = (user: {email: string, password: string}, props: Props) => 
         });
       }
     })
-    .catch(err => {
-      dispatch(toggleModalStatus(true))
+    .catch(error => {
+      // dispatch(toggleModalStatus(true))
+      dispatch(
+        saveError({
+          status: error.response.status,
+          message: error.response.data.message
+        })
+      )
+    })
+  }
+}
+
+
+export const registrate = (user: User) => {
+  return async (dispatch: any) => {
+    userService.registrate(user)
+    .catch(error => {
+      // dispatch(toggleModalStatus(true))
+      dispatch(
+        saveError({
+          status: error.response.status,
+          message: error.response.data.message
+        })
+      )
     })
   }
 }

@@ -19,9 +19,12 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => response,
   error => {
-  store.dispatch(setUserStatus(false));
-  console.error(error);
-  return error;
-});
+    if (error.response.data.status === 401) {
+      store.dispatch(setUserStatus(false));
+    }
+    console.error('interceptor', error)
+    return  Promise.reject(error);
+  }
+);
 
 export const Axios = axios;

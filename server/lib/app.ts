@@ -4,7 +4,6 @@ import * as mongoose from "mongoose"
 import * as cors from "cors"
 import { Routes } from "./common/routes/user.routers";
 import { environment } from "./enviroments/environment";
-import { ErrorHandler, handleError } from "./common/helpers/errorHandler";
 
 class App {
     public app: express.Application;
@@ -28,6 +27,5 @@ class App {
         mongoose.connect(this.mongoUrl, { useNewUrlParser: true });
     }
 }
-
 
 export default App;

@@ -1,67 +1,56 @@
 import { Book } from '../models/book.model';
 import { BookFilter } from '../models/book-filter.model';
 import { PaginationEvent } from '../models/pagination-event.model';
-import { ServerResponce } from './../models/server-response.model';
 import { CategoryAuthor } from '../models/category-author.model';
 import { Axios } from '../interceptor/token.interceptor';
 import { AxiosResponse } from 'axios';
+import { ServerResponce } from '../models/server-response.model';
 
 export class BookServiceClass {
-  public getAllBooks(pagination?: PaginationEvent): Promise<ServerResponce> {
-    return Axios.get('/books', {params: {pagination}})
-    .then(res => res.data)
+
+  public async getAllBooks(pagination: PaginationEvent): Promise<AxiosResponse<ServerResponce>> {
+    const response = await Axios.get('/books', {params: {pagination}});
+    return response;
   }
 
-  public getSomeBooks(data: BookFilter): Promise<ServerResponce[]> {
-    return Axios.get('/somebooks', {params: data})
-    .then(res => res.data)
+  public async getSomeBooks(data: BookFilter): Promise<AxiosResponse<ServerResponce[]>> {
+    const response = await Axios.get('/somebooks', {params: data});
+    return response;
   }
 
-  public getBookByIndustryIdentifiers(industryIdentifiers: string[]): Promise<Book[]>  {
-    return Axios.get('/getbookbyindustryIdentifiers', {params: {industryIdentifiers}})
-    .then(res => res.data)
+  public async getBookByIndustryIdentifiers(industryIdentifiers: string[]): Promise<AxiosResponse>  {
+    const response = await Axios.get('/getbookbyindustryIdentifiers', {params: {industryIdentifiers}});
+    return response;
   }
 
-  public addBookToDB(book: Book): Promise<AxiosResponse> {
-    return Axios.post('/books', {book})
-    .then(res => {
-      return res;
-    })
+  public async addBookToDB(book: Book): Promise<AxiosResponse> {
+    const response = await  Axios.post('/books', {book});
+    return response;
   }
 
-  public updateBook(data: Book): Promise<AxiosResponse> {
-    return Axios.put('/books', data)
-    .then(res => {
-      return res;
-    })
+  public async updateBook(data: Book): Promise<AxiosResponse> {
+    const response = await Axios.put('/books', data);
+    return response;
   }
 
-  public changeImageInBook(data: {id: string, image: string | ArrayBuffer}): Promise<AxiosResponse> {
-    return Axios.post('/book', data)
-    .then(res => {
-      return res;
-    })
+  public async changeImageInBook(data: {id: string, image: string | ArrayBuffer}): Promise<AxiosResponse> {
+    const response = await  Axios.post('/book', data);
+    return response;
   }
 
-  public deleteBook(data: Book): Promise<AxiosResponse> {
-    return Axios.delete('/books', {data})
-    .then(res => {
-      return res;
-    })
+  public async deleteBook(data: Book): Promise<AxiosResponse> {
+    const response = await Axios.delete('/books', {data});
+    return response;
   }
 
-  public getAllAuthors(): Promise<CategoryAuthor[]> {
-    return Axios.get('/author')
-    .then(res => {
-      return res.data;
-    })
+  public async getAllAuthors(): Promise<AxiosResponse<CategoryAuthor[]>>  {
+    const response = await Axios.get('/author');
+    return response;
   }
-
-  public getAllCategories(): Promise<CategoryAuthor[]> {
-    return Axios.get('/category')
-    .then(res => {
-      return res.data;
-    })
+ 
+  public async getAllCategories(): Promise<AxiosResponse<CategoryAuthor[]>> {
+    const response = await Axios.get('/category');
+    return response;
   }
 }
 const BookService = new BookServiceClass();

@@ -89,13 +89,13 @@ class Filter extends React.Component<Props, State> {
     .then(categories => {
       this.bookService.getAllAuthors()
       .then(authors => {
-        categories = categories.map(category => {
+        categories.data = categories.data.map(category => {
           return {
             ...category,
             checked: this.checkQuery(category)
           }
         });
-        authors = authors.map(author => {
+        authors.data = authors.data.map(author => {
           return {
             ...author,
             checked: this.checkQuery(author)
@@ -103,8 +103,8 @@ class Filter extends React.Component<Props, State> {
         });
 
         this.props.setFilter({
-          authors,
-          categories,
+          authors: authors.data,
+          categories: categories.data,
           title: ''
         })
       })

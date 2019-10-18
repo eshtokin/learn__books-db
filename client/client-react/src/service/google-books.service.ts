@@ -39,6 +39,8 @@ export class GoogleBooks {
       
       return await Axios.get(url, {params})
         .then(res => {
+          console.log(res);
+          
           this.pageInfo.paginationParams.length = Math.round(res.data.totalItems / 4);
           
           const industryIdentifiersArray: string[] = res.data.items.map((book: any) => { // response from GooleBook
@@ -50,14 +52,17 @@ export class GoogleBooks {
           });
           
           return this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray)
-          .then((bookInBd: Book[]) => {
-            const arrayIdBookInBd = bookInBd.map((book) => {
+          .then((res) => {
+            const arrayIdBookInBd = res.data.map((book: Book) => {
               return book.industryIdentifiers;
             });
-            this.pageInfo.currentItems = res.data.items.map((el: any): Book => { // el - response from GooleBook
+            this.pageInfo.currentItems = res.data.map((el: any): Book => { // el - response from GooleBook;
+              
               let industryIdentifiers;
-              if (el.volumeInfo.industryIdentifiers) {
-                industryIdentifiers = el.volumeInfo.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
+              console.log('el.industryIdentifiers', res.data);
+              
+              if (el.data.items.industryIdentifiers) {
+                industryIdentifiers = el.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
                   return obj.type + obj.identifier;
                 }).join('');
               }
@@ -78,6 +83,7 @@ export class GoogleBooks {
     public getPageInfo() {
       return this.pageInfo;
   }
+
 }
 
 const GoogleBookService = new GoogleBooks();

@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Book } from '../../models/book.model';
-import UserService, { UserServiceClass } from '../../service/users.service';
-import BookService, { BookServiceClass } from '../../service/books.service';
-import UserInfoService, { UserInfo } from '../../service/user-info.service';
 import { BookComponent } from '../../shared/BookComponent/BookComponent';
 import Filter from '../../shared/FilterComponent/FilterComponent';
 import * as actions from '../../store/actions/filteredBookAction';
@@ -29,10 +26,6 @@ interface State {
 }
 
 class FilteredBook extends React.Component<Props, State>{
-  public userInfoService: UserInfo;
-  public userService: UserServiceClass;
-  public bookService: BookServiceClass;
-
   constructor(props: Props) {
     super(props);
 
@@ -44,10 +37,6 @@ class FilteredBook extends React.Component<Props, State>{
       },
       searchQuery: ''
     }
-
-    this.userInfoService = UserInfoService;
-    this.userService = UserService;
-    this.bookService = BookService;
 
     this.addBookToFavorite = this.addBookToFavorite.bind(this);
     this.deleteBookFromDB = this.deleteBookFromDB.bind(this);

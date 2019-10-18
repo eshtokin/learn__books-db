@@ -143,8 +143,10 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
 
   private loadOptionsCategory = (inputValue: any, callback: any) => {
     this.bookService.getAllCategories()
-    .then(categories => {      
-      categories = categories.map(category => {
+    .then((categories) => {
+      console.log('categories edite modal');
+      
+      const categoryArr = categories.data.map(category => {
         return {
           ...category,
           label: category.name,
@@ -152,7 +154,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
         }
       });
       this.setState({
-        categories
+        categories: categoryArr
       });
       callback(this.state.categories);
     })
@@ -161,7 +163,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
   private loadOptionsAuth = (inputValue: any, callback: any) => {
     this.bookService.getAllAuthors()
     .then(authors => {
-      authors = authors.map(author => {
+      const authorsArr = authors.data.map(author => {
         return {
           ...author,
           label: author.name,
@@ -169,7 +171,7 @@ export class EditeModal extends React.Component<EditeProps, EditeState> {
         }
       });
       this.setState({
-        authors
+        authors: authorsArr
       })
       callback(this.state.authors);
     })
