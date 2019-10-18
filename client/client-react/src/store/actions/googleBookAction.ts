@@ -24,20 +24,10 @@ export const toggleFlagExistInDB = (bookId: string) => {
 export const getBookByValue = (value: string) => {
   return async (dispatch: any) => {
     try {
-      const googleBookResponse = await googleBookService.searchForBook(value)
-      console.log('googleBookRespons' ,googleBookResponse);
-      
+      const googleBookResponse = await googleBookService.searchForBook(value);      
       dispatch(setBooksAtPage(googleBookResponse));
     } catch (error) {
-      console.log(error);
-      
-      // console.log('JSON parse', error)
-      // dispatch(
-      //   saveError({
-      //     status: error.response.status,
-      //     message: error.response.data.message
-      //   })
-      // )
+      alert('Something went wrong. =(')
     }
   }
 }
@@ -62,18 +52,12 @@ export const addBookToDb = (book: Book) => {
         dispatch(toggleFlagExistInDB(book._id as string));
       }
     } catch(error) {
-      console.log(error);
-      for (const props in error) {
-        console.log(props);
-        
-      }
-      
-      // dispatch(
-      //   saveError({
-      //     status: error.response.status,
-      //     message: error.response.data.message
-      //   })
-      // )
+      dispatch(
+        saveError({
+          status: error.response.status,
+          message: error.response.data.message
+        })
+      )
     }
   }
 }

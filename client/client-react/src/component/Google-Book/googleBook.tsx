@@ -58,7 +58,10 @@ class GoogleBook extends React.Component<Props, State> {
 
 
   public getBookFromGoogle(value: string) {
-    this.props.getBooksByValue(value)
+    const regExpr = /^[a-zA-Z0-9\s]+$/gm;
+    if (regExpr.test(value)) {
+      this.props.getBooksByValue(value)
+    }
   }
 
   render() {

@@ -19,10 +19,13 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => response,
   error => {
-    if (error.response.data.status === 401) {
+    if (error.response.data.status === 500) {
       store.dispatch(setUserStatus(false));
+      // localStorage.clear();
+      // setTimeout(() => {
+      //   window.location.href = 'http://localhost:3001/errorPage';
+      // }, 3000)
     }
-    console.error('interceptor', error)
     return  Promise.reject(error);
   }
 );

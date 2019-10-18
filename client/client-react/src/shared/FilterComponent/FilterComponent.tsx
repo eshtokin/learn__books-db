@@ -56,6 +56,7 @@ class Filter extends React.Component<Props, State> {
     this.bookService = BookService;
     this.filterHandler = this.filterHandler.bind(this);
     this.loadFilterData = this.loadFilterData.bind(this);
+    this.checkSearchString = this.checkSearchString.bind(this);
   }
 
   UNSAFE_componentWillMount() {
@@ -150,12 +151,19 @@ class Filter extends React.Component<Props, State> {
     this.props.getSomeBooks();
   }
 
+  public checkSearchString(event: React.ChangeEvent<HTMLInputElement>) {
+    const regExpr = /^[a-zA-Z0-9\s]+$/gm;
+    if (regExpr.test(event.target.value)) {
+      this.onSearchStringChange.next(event.target.value)
+    }
+  }
+
   render() {
     return (
       <div className="col s2 filters">
         <div className="input-field">
           <input type="text" id="searchField" 
-          onChange={event => this.onSearchStringChange.next(event.target.value)}
+          onChange={this.checkSearchString}
           defaultValue={this.state.data.title}/>
           <label
           className={this.state.data.title ? 'active' : ''}

@@ -38,12 +38,10 @@ export class GoogleBooks {
       };
       
       return await Axios.get(url, {params})
-        .then(res => {
-          console.log(res);
+        .then(responseFromGoogle => {
+          this.pageInfo.paginationParams.length = Math.round(responseFromGoogle.data.totalItems / 4);
           
-          this.pageInfo.paginationParams.length = Math.round(res.data.totalItems / 4);
-          
-          const industryIdentifiersArray: string[] = res.data.items.map((book: any) => { // response from GooleBook
+          const industryIdentifiersArray: string[] = responseFromGoogle.data.items.map((book: any) => {
             if (book.volumeInfo.industryIdentifiers) {
               return book.volumeInfo.industryIdentifiers.map((el: {type: string, identifier: string}) => el.type + el.identifier).join('')
             } else {
@@ -52,24 +50,22 @@ export class GoogleBooks {
           });
           
           return this.booksService.getBookByIndustryIdentifiers(industryIdentifiersArray)
-          .then((res) => {
-            const arrayIdBookInBd = res.data.map((book: Book) => {
+          .then((bookFromBd) => {
+            const bookInBd: Book[] = bookFromBd.data;
+            const arrayIdBookInBd = bookInBd.map((book) => {
               return book.industryIdentifiers;
             });
-            this.pageInfo.currentItems = res.data.map((el: any): Book => { // el - response from GooleBook;
-              
+            this.pageInfo.currentItems = responseFromGoogle.data.items.map((el: any): Book => {
               let industryIdentifiers;
-              console.log('el.industryIdentifiers', res.data);
-              
-              if (el.data.items.industryIdentifiers) {
-                industryIdentifiers = el.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
+              if (el.volumeInfo.industryIdentifiers) {
+                industryIdentifiers = el.volumeInfo.industryIdentifiers.map((obj: {type: string, identifier: string}) => {
                   return obj.type + obj.identifier;
                 }).join('');
               }
               
               return {
                 alreadyExistInBD: arrayIdBookInBd.indexOf(industryIdentifiers) === -1 ? false : true,
-                _id: industryIdentifiers, // this is change
+                _id: industryIdentifiers,
                 ...el.volumeInfo
               };
             });
