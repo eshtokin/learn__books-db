@@ -28,9 +28,9 @@ export class AuthFormLoginComponent {
     this.userService.login(this.user)
     .then((data) => {
       this.route.navigate(['/profile']);
-    })
-    .catch(err => {
-      alert('incorrect password or email');
     });
+    // .catch(err => {
+    //   alert('incorrect password or email');
+    // });
   }
 }

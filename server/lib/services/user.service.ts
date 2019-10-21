@@ -53,7 +53,6 @@ export default class UserService {
 
   public async getAllUsers(pagination: string): Promise<AgreagationUserResponse> {
     // throw new ErrorHandler(500, 'from uers')
-    
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryForUser(),
       this.makePaginationQueryForUser(pagination),
@@ -162,7 +161,6 @@ export default class UserService {
 
   public async loginUser(loginData: {email: string, password: string}): Promise<AuthResponse> {
     const user = await this.findOneByEmail(loginData.email);
-
     const passwordIsValid = crypt.compareSync(loginData.password, user.password);
     if (!passwordIsValid) {
       throw new BadRequest('Incorrect password or email.')

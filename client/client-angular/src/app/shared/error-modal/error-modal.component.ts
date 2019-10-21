@@ -1,5 +1,6 @@
 import { OnInit, Component, Input } from '@angular/core';
 import MicroModal from 'micromodal';
+import { errorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-error-modal',

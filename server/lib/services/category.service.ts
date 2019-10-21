@@ -8,7 +8,7 @@ export const categoryRepository = new CategoryRepository(Category);
 
 export default class CategoriService {
   public async getAllCategory(): Promise<AuthorAndCategory[]> {
-    // throw new ErrorHandler(500, 'from categories')
+    // throw new ErrorHandler(418, 'from categories')
     const query = {};
     return await categoryRepository.find(query)
   }

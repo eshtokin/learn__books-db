@@ -12,6 +12,7 @@ export class ErrorService {
   clearMessage() {
     this.myMessage.next('');
   }
+
   getMessage(): Observable<string> {
     return this.myMessage;
   }

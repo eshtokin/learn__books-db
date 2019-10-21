@@ -23,7 +23,10 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => response, err => {
   if (err.response.data) {
-    console.log(err.response.data);
+    if (err.response.data.status === 500) {
+      window.location.href = '/server-err';
+      return err;
+    }
     errorService.updateMessage(err.response.data.message);
   }
   return err;

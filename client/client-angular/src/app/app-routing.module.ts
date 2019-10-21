@@ -39,9 +39,13 @@ const routes: Routes = [
     canActivate: [AdminGuardService]
   },
   {
+    path: 'server-err',
+    loadChildren: () => import('src/app/components/server-err-page/server-err-page.module').then(m => m.ServerErrPageModule),
+  },
+  {
     path: '**',
     loadChildren: () => import('src/app/components/not-found/not-found.module').then(m => m.NotFoundModule)
-  }
+  },
 ];
 
 @NgModule({
