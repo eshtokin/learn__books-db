@@ -9,6 +9,7 @@ import { AgreagationUserResponse } from "./../models/agreagation-response.model"
 import User from "./../models/user.mdoel";
 import AuthResponse from "./../models/auth-response.model";
 import BadRequest from "./../common/exceptions/bad-request.exception";
+import ErrorHandler from "./../common/exceptions/error-handler.exception";
 
 export const userRepository = new UserRepository(UserModel);
 
@@ -51,6 +52,8 @@ export default class UserService {
   }
 
   public async getAllUsers(pagination: string): Promise<AgreagationUserResponse> {
+    // throw new ErrorHandler(500, 'from uers')
+    
     const agreagationQuery: object[] = [
       this.makeAgreagationQueryForUser(),
       this.makePaginationQueryForUser(pagination),

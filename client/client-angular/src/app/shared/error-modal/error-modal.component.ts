@@ -1,5 +1,4 @@
 import { OnInit, Component, Input } from '@angular/core';
-import {ErrorService} from './../../services/error.service';
 import MicroModal from 'micromodal';
 
 @Component({
@@ -18,5 +17,4 @@ export class ErrorModalComponent implements OnInit {
       MicroModal.show('modal-1');
     }
   }
-
 }

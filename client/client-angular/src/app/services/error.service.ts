@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ErrorService {
@@ -17,3 +17,4 @@ export class ErrorService {
   }
 }
 
+export const errorService = new ErrorService();

@@ -6,7 +6,6 @@ import { AppComponent } from 'src/app/app.component';
 import { UserInfo } from 'src/app/services/user-info.service';
 import { HeaderComponent } from 'src/app/shared/header/header.component';
 import { CoreModule } from 'src/app/core.module/core.module';
-import { ErrorModalComponent } from './shared/error-modal/error-modal.component';
 import {ErrorService} from './services/error.service';
 
 @NgModule({

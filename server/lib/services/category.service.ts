@@ -1,13 +1,14 @@
 import { Category } from './../entities/category.model'
 import CategoryRepository from './../repositories/category.repository';
 import AuthorAndCategory from './../models/author-and-category.model';
-import HttpException from '../common/exceptions/error-handler.exception';
+import ErrorHandler from '../common/exceptions/error-handler.exception';
 
 
 export const categoryRepository = new CategoryRepository(Category);
 
 export default class CategoriService {
   public async getAllCategory(): Promise<AuthorAndCategory[]> {
+    // throw new ErrorHandler(500, 'from categories')
     const query = {};
     return await categoryRepository.find(query)
   }

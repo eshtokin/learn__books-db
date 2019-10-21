@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
+import { errorService } from 'src/app/services/error.service';
 
 axios.defaults.baseURL = environment.mongoUrl;
 
@@ -21,6 +22,10 @@ axios.interceptors.request.use(config => {
 });
 
 axios.interceptors.response.use(response => response, err => {
+  if (err.response.data) {
+    console.log(err.response.data);
+    errorService.updateMessage(err.response.data.message);
+  }
   return err;
 });
 

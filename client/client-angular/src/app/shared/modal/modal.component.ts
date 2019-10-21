@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {ErrorService} from 'src/app/services/error.service';
-import MicroModal from 'micromodal';
+import { errorService } from 'src/app/services/error.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,18 +11,18 @@ export class ModalComponent implements OnInit, OnDestroy {
   public errorText;
   subscription: Subscription;
 
-  constructor(private messageService: ErrorService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.subscription = this.messageService.getMessage()
+    this.subscription = errorService.getMessage()
     .subscribe(mymessage => {
       if (mymessage) {
         this.errorText = mymessage;
       }
     });
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
 }
