@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
 import { errorService } from 'src/app/services/error.service';
+import MicroModal from 'micromodal';
 
 axios.defaults.baseURL = environment.mongoUrl;
 
@@ -28,6 +29,7 @@ axios.interceptors.response.use(response => response, err => {
       return err;
     }
     errorService.updateMessage(err.response.data.message);
+    MicroModal.show('modal-1');
   }
   return err;
 });
