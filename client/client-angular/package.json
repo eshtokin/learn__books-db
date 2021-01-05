@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "~8.1.0",
     "@angular/router": "~8.1.0",
     "@types/axios": "^0.14.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcrypt": "^3.0.6",
     "jw-angular-pagination": "^1.1.0",
     "jwt-decode": "^2.2.0",
